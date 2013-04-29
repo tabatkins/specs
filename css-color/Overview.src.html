@@ -78,10 +78,10 @@ Foreground color: the 'color' property</h2>
 	There are different ways to specify lime green:
 
 	<div class="example">
-		<pre><code class="language-css">
+		<pre>
 		em { color: lime }               /* color keyword */
 		em { color: rgb(0,255,0) }       /* RGB range 0-255   */
-		</code></pre>
+		</pre>
 	</div>
 
 	<dl>
@@ -304,7 +304,7 @@ The HSL functional notations: ''hsl()'' and ''hsla()''</h3>
 		For example, the following colors can all be generated off of the basic "green" hue,
 		just by varying the other two arguments:
 
-		<pre>
+		<pre class='literal'>
 		hsl(120, 100%, 50%) <span style="color:black; background:hsl(120,100%,50%);">lime green</span>
 		hsl(120, 100%, 25%) <span style="color:white; background:hsl(120,100%,25%);">dark green</span>
 		hsl(120, 100%, 75%) <span style="color:black; background:hsl(120,100%,75%);">light green</span>
@@ -776,7 +776,7 @@ The ''currentcolor'' keyword</h4>
 		by default matches the text color
 		even as the 'color' property changes across elements.
 
-		<pre>
+		<pre class="language-markup">
 			&lt;p>&lt;em>Some &lt;strong>really&lt;/strong> emphasized text.&lt;/em>
 			&lt;style>
 			p { color: black; }
@@ -936,7 +936,7 @@ Sample style sheet for (X)HTML</h2>
 
 	This appendix is informative, not normative.  This style sheet could be used by an implementation as part of its default styling of HTML4, XHTML1, XHTML1.1, XHTML Basic, and other XHTML Family documents.
 
-	<pre>
+	<pre class="lang-css">
 	html { 
 		color: black;
 		background: white;

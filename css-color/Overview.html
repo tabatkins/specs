@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <title>CSS Color Module Level 4</title>
-  <link href="http://dev.w3.org/csswg/default.css" type="text/css" rel="stylesheet">
-  <link href="http://dev.w3.org/csslogo.ico" type="image/x-icon" rel="shortcut icon">
-  <script src="../prism.js"></script>
-  <link href="../prism.css" type="text/css" rel="stylesheet">
-  <style>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>CSS Color Module Level 4</title>
+	<link href="http://dev.w3.org/csswg/default.css" type="text/css" rel="stylesheet">
+	<link href="http://dev.w3.org/csslogo.ico" type="image/x-icon" rel="shortcut icon">
+	<script src="../prism.js"></script>
+	<script>
+	window.findAll = window.findAll || function(sel){ return [].slice.call(document.querySelectorAll(sel)) };
+	Function.prototype.aritize = function(numArgs) {
+		var fn = this;
+		return function() {
+			var args = [].slice.call(arguments, 0, numArgs);
+			return fn.apply(this, args);
+		}
+	};
+	window.addEventListener('load', function() {
+		findAll(".example pre:not(.literal), pre[class*='lang-'], pre[class*='language-']")
+			.map(Prism.highlightElement.aritize(1));
+	}, false);
+	</script>
+	<link href="../prism.css" type="text/css" rel="stylesheet">
+	<style>
 body { 
-  background: white url(http://www.w3.org/StyleSheets/TR/logo-unofficial.png) top left no-repeat fixed; 
-  font-family: sans-serif;
-  color: black;
+	background: white url(http://www.w3.org/StyleSheets/TR/logo-unofficial.png) top left no-repeat fixed; 
+	font-family: sans-serif;
+	color: black;
 }
 
 :link { color: #00C; }
@@ -35,36 +49,36 @@ p.copyright { font-size: small }
 p.copyright small { font-size: small }
 
 ul.toc, ol.toc {
-  list-style: none;
+	list-style: none;
 }
 
 pre { margin-left: 2em }
 
 dt { font-weight: bold }
-  </style>
+	</style>
 </head>
-<body class="h-entry">
+<body class="h-entry lang-css">
 <div class="head">
-  <p data-fill-with="logo"></p>
-  <h1 class="p-name no-ref" id="title">CSS Color Module Level 4</h1>
-  <h2 class="no-num no-toc no-ref" id="subtitle">Unofficial Proposal Draft,
-    <span class="dt-updated"><span class="value-title" title="20130426">26 April 2013</span></span></h2>
-  <div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/UD-css-color-4-20130426" class="u-url">http://www.w3.org/TR/2013/UD-css-color-4-20130426</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html</a>
+	<p data-fill-with="logo"></p>
+	<h1 class="p-name no-ref" id="title">CSS Color Module Level 4</h1>
+	<h2 class="no-num no-toc no-ref" id="subtitle">Unofficial Proposal Draft,
+		<span class="dt-updated"><span class="value-title" title="20130429">29 April 2013</span></span></h2>
+	<div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/UD-css-color-4-20130429" class="u-url">http://www.w3.org/TR/2013/UD-css-color-4-20130429</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html</a>
 </dd><dt>Feedback:</dt>
     <dd><a href="mailto:www-style@w3.org?subject=%5Bcss-color%5D%20feedback">www-style@w3.org</a> 
         with subject line 
         &#8220;<kbd>[css-color] <var>&#8230; message topic &#8230;</var></kbd>&#8221;
         (<a href="http://lists.w3.org/Archives/Public/www-style/" rel="discussion">archives</a>)</dd><dt>Editors:
 </dt><dd class="p-author h-card vcard"><span class="p-name fn">Chris Lilley</span> (<span class="p-org org">W3C</span>), <a href="mailto:chris@w3.org" class="u-email email">chris@w3.org</a></dd><dd class="p-author h-card vcard"><span class="p-name fn">L. David Baron</span> (<span class="p-org org">Mozilla Corporation</span>), <a href="mailto:dbaron@dbaron.org" class="u-email email">dbaron@dbaron.org</a></dd><dd class="p-author h-card vcard"><a href="http://xanthir.com/contact" class="p-name fn u-url url">Tab Atkins Jr.</a> (<span class="p-org org">Google</span>)</dd></dl></div>
-  <div data-fill-with="warning"></div>
-  <p data-fill-with="copyright" class="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img src="http://i.creativecommons.org/p/zero/1.0/80x15.png" alt="CC0"></a>
+	<div data-fill-with="warning"></div>
+	<p data-fill-with="copyright" class="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img src="http://i.creativecommons.org/p/zero/1.0/80x15.png" alt="CC0"></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 26 April 2013, 
+In addition, as of 29 April 2013, 
 the editors have made this specification available under the
 <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.</p>
-  <hr title="Separator for header">
+	<hr title="Separator for header">
 </div>
 
 <h2 id="abstract" class="no-num no-toc no-ref">Abstract</h2>
@@ -163,10 +177,9 @@ Foreground color: the <a data-autolink="property" class="property" title="color"
 </p><p>	There are different ways to specify lime green:
 
 	</p><div class="example">
-		<pre><code class="language-css">
-em { color: lime }               /* color keyword */
+		<pre>em { color: lime }               /* color keyword */
 em { color: rgb(0,255,0) }       /* RGB range 0-255   */
-</code></pre>	</div>
+</pre>	</div>
 
 	<dl>
 		<dt><a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a>
@@ -383,7 +396,7 @@ The HSL functional notations: <a data-autolink="maybe" class="css" href="#hsl-fu
 		For example, the following colors can all be generated off of the basic "green" hue,
 		just by varying the other two arguments:
 
-		<pre>hsl(120, 100%, 50%) <span style="color:black; background:hsl(120,100%,50%);">lime green</span>
+		<pre class="literal">hsl(120, 100%, 50%) <span style="color:black; background:hsl(120,100%,50%);">lime green</span>
 hsl(120, 100%, 25%) <span style="color:white; background:hsl(120,100%,25%);">dark green</span>
 hsl(120, 100%, 75%) <span style="color:black; background:hsl(120,100%,75%);">light green</span>
 hsl(120, 75%, 85%)  <span style="color:black; background:hsl(120,75%,85%);">pastel green</span>
@@ -846,7 +859,7 @@ The <a data-autolink="maybe" class="css" href="#currentcolor">currentcolor</a> k
 		by default matches the text color
 		even as the <a data-autolink="property" class="property" title="color" href="#color">color</a> property changes across elements.
 
-		<pre>  &lt;p&gt;&lt;em&gt;Some &lt;strong&gt;really&lt;/strong&gt; emphasized text.&lt;/em&gt;
+		<pre class="language-markup">  &lt;p&gt;&lt;em&gt;Some &lt;strong&gt;really&lt;/strong&gt; emphasized text.&lt;/em&gt;
   &lt;style&gt;
   p { color: black; }
   em { text-emphasis: dot; }
@@ -984,7 +997,7 @@ Sample style sheet for (X)HTML</h2>
 
 <p>	This appendix is informative, not normative.  This style sheet could be used by an implementation as part of its default styling of HTML4, XHTML1, XHTML1.1, XHTML Basic, and other XHTML Family documents.
 
-	</p><pre>html { 
+	</p><pre class="lang-css">html { 
   color: black;
   background: white;
 }
@@ -1145,7 +1158,7 @@ Normative References</h3>
 
 <h3 id="informative" class="no-num no-ref">
 Informative References</h3>
-<div data-fill-with="informative-references"><dl><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
+<div data-fill-with="informative-references"><dl><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
 
 <h2 id="index" class="no-num no-ref">
 Index</h2>
