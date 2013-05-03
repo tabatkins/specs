@@ -33,7 +33,7 @@ table.colortable th {text-align:center; background:black; color:white; }
 .hslexample table { padding:1em; margin:0; float:left; }
 .hslexample td, .hslexample th { font-size:smaller; }
 .hslexample th { white-space: pre-line; }
-.hslexample td { background: currentColor; }
+.hslexample td { background: currentcolor; }
 [data-autolink="property"]::before, [data-autolink="maybe"]::before {content: "\2018";}
 [data-autolink="property"]::after, [data-autolink="maybe"]::after {content: "\2019";}
 </style>
@@ -44,7 +44,7 @@ Introduction</h2>
 	<em>This section is not normative.</em>
 
 	This module describes CSS properties which allow authors to specify the foreground color and opacity of an element.
-	This module also describes in detail the CSS &lt;color&gt; value type.
+	This module also describes in detail the CSS <<color>> value type.
 
 
 	It not only defines the color-related properties and values that
@@ -68,8 +68,8 @@ Foreground color: the 'color' property</h2>
 	</pre>
 
 	This property describes the foreground color of an element's text content. 
-	In addition, it provides the value that <a>currentColor</a> resolves to.
-	If the <a>currentColor</a> keyword is set on the 'color' property itself, it is treated as ''color: inherit''.
+	In addition, it provides the value that <a>currentcolor</a> resolves to.
+	If the <a>currentcolor</a> keyword is set on the 'color' property itself, it is treated as ''color: inherit''.
 
 	The initial value of this property is a UA-defined color.
 	In many existing user-agents, it is ''black''.
@@ -798,7 +798,7 @@ The ''currentcolor'' keyword</h4>
 
 	Note: Multi-word keywords in CSS usually separate their component words with hyphens.
 	''currentcolor'' doesn't, because it was originally introduced in SVG 
-	as a special attribute value spelled "currentColor",
+	as a special attribute value spelled "currentcolor",
 	rather than a CSS value.
 	Only later did CSS pick it up,
 	at which point the capitalization stopped mattering,
