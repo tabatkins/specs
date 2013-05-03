@@ -712,6 +712,79 @@ Examples of HSL colors</h4>
 		</table>
 	</div>
 
+<h3 id='the-hwb-notation'>
+The HWB functional notation: ''hwb()''</h3>
+
+	HWB (short for Hue-Whiteness-Blackness) is another method of specifying colors,
+	similar to HSL, but often even easier for humans to work with.
+	It describes colors with a starting hue,
+	then a degree of whiteness and blackness to mix into that base hue.
+
+	Many color-pickers are based on the HWB color system,
+	due to its intuitiveness.
+
+	<figure>
+		<img src="images/color-picker.png">
+		<figcaption>
+			This is a screenshot of Chrome's color picker,
+			shown when a user activates an <code class='lang-markup'>&lt;input type='color'></code>.
+			The outer wheel is used to select the hue,
+			then the relative amounts of white and black are selected by clicking on the inner triangle.
+		</figcaption>
+	</figure>
+
+	The syntax of the ''hwb()'' function is:
+
+	<pre class='prod'>
+	<dfn data-export>hwb()</dfn> = hwb( <<hue>>, <<percentage>>, <<percentage>> [, <<alpha-value>> ]? )
+	</pre>
+
+	The first argument specifies the hue,
+	and is interpreted identically to ''hsl()''.
+
+	The second argument specifies the amount of white to mix in,
+	as a percentage from ''0%'' (no whiteness) to ''100%'' (full whiteness).
+	Similarly, the third argument specifies the amount of black to mix in,
+	also from ''0%'' (no blackness) to ''100%'' (full blackness).
+	Values outside of these ranges make the function invalid.
+	If the sum of these two arguments is greater than 100%,
+	then at computed-value time they are normalized to add up to 100%,
+	with the same relative ratio.
+
+	The fourth argument specifies the alpha channel of the color.
+	It's interpreted identically to the fourth argument of the ''rgb()'' function.
+	If omitted, it defaults to ''100%''.
+
+	The resulting color can be thought of conceptually as a mixture of paint in the chosen hue,
+	white paint, and black paint,
+	with the relative amounts of each determined by the percentages.
+	If white+black is equal to ''100%'' (after normalization),
+	it defines an <i>achromatic color</i>,
+	or some shade of gray,
+	without any hint of the chosen hue.
+
+<h4 id='hwb-to-rgb'>
+Converting HWB colors to RGB colors</h4>
+
+	Converting an HWB color to RGB is straightforward, 
+	and related to how one converts HSL to RGB.
+	The following Javascript implementation of the algorithm assumes that the white and black components have already been normalized,
+	so their sum is no larger than 100%,
+	and have been converted into numbers in the range [0,1].
+
+	<pre class="lang-javascript">
+	function hwbToRgb(hue, white, black) {
+		var rgb = hslToRgb(hue, 1, .5);
+		for(var i = 0; i &lt; 3; i++) {
+			rgb[i] *= (1 - white - black);
+			rgb[i] += white;
+		}
+		return rgb;
+	}
+	</pre>
+
+
+
 <h3 id='named-colors'>
 Named Colors</h3>
 
