@@ -129,8 +129,9 @@ The RGB functional notations: ''rgb()'' and ''rgba()''</h3>
 	Its syntax is:
 
 	<pre class='prod'>
-	<dfn data-export>rgb()</dfn> = rgb( <<component>>, <<component>>, <<component>>)
+	<dfn data-export>rgb()</dfn> = rgb( <<component>>, <<component>>, <<component>> [, <<alpha-value>> ]? )
 	<dfn data-export>&lt;component></dfn> = <<number>> | <<percentage>>
+	<dfn data-export>&lt;alpha-value></dfn> = <<number>> | <<percentage>>
 	</pre>
 
 	The three <<component>>s specify the red, green, and blue channels of the color, respectively.
@@ -151,17 +152,6 @@ The RGB functional notations: ''rgb()'' and ''rgba()''</h3>
 	For this reason, values outside of the 0%-100% range are allowed,
 	but are clamped to the device's gamut.)
 
-	The alpha of a color specified via ''rgb()'' is always ''100%''.
-
-	The ''rgba()'' function is identical to ''rgb()'', but has a fourth argument for specifying the alpha of the color:
-
-	<pre class='prod'>
-	<dfn data-export>rgba()</dfn> = rgba( <<component>>, <<component>>, <<component>>, <<alpha-value>>)
-	<dfn data-export>&lt;alpha-value></dfn> = <<number>> | <<percentage>>
-	</pre>
-
-	The three <<component>>s, exactly like ''rgb()'', specify the red, green, and blue channels of the color, respectively.
-
 	The final argument, the <<alpha-value>>, specifies the alpha of the color.
 	If given as a <<number>>, the useful range of the value is ''0''
 	(representing a fully transparent color)
@@ -171,6 +161,16 @@ The RGB functional notations: ''rgb()'' and ''rgba()''</h3>
 	while ''100%'' represents a fully opaque color.
 	Values outside these ranges are not invalid,
 	but are clamped to the ranges defined here at computed-value time.
+	If omitted, it defaults to ''100%''.
+
+	For legacy purposes,
+	an ''rgba()'' function is defined.
+	It's identical to ''rgb()'',
+	except that the fourth argument
+	(for the alpha channel)
+	is not optional.
+
+	<pre class='prod'><dfn data-export>rgba()</dfn> = rgba( <<component>>, <<component>>, <<component>>, <<alpha-value>>)</pre>
 
 <h3 id='hex-notation'>
 The RGB hexadecimal notations: ''#RRGGBB''</h3>
@@ -261,7 +261,7 @@ The HSL functional notations: ''hsl()'' and ''hsla()''</h3>
 	HSL colors are specified as a triplet of hue, saturation, and lightness.
 	The syntax of the ''hsl()'' function is:
 
-	<pre class='prod'><dfn data-export>hsl()</dfn> = hsl( [ <<number>> | <<angle>> ], <<percentage>>, <<percentage>> )</pre>
+	<pre class='prod'><dfn data-export>hsl()</dfn> = hsl( [ <<number>> | <<angle>> ], <<percentage>>, <<percentage>> [, <<alpha-value>> ]? )</pre>
 
 	The first argument specifies the hue.
 	Hue is represented as an angle of the color circle
@@ -291,7 +291,9 @@ The HSL functional notations: ''hsl()'' and ''hsla()''</h3>
 	(that is, it's shouldn't be the same thing as clipping an RGB component to the device's gamut),
 	but this specification does not define how to do so.
 
-	The alpha channel of a color specified with ''hsl()'' is always fully opaque.
+	The final argument specifies the alpha channel of the color.
+	It's interpreted identically to the fourth argument of the ''rgb()'' function.
+	If omitted, it defaults to ''100%''.
 
 	<div class='example'>
 		For example, an ordinary red,
@@ -318,14 +320,14 @@ The HSL functional notations: ''hsl()'' and ''hsla()''</h3>
 		</pre>
 	</div>
 
-	The ''hsla()'' function is identical to ''hsl()'', but has a fourth argument for specifying the alpha of the color:
+	For legacy purposes,
+	an ''hsla()'' function is defined.
+	It is identical to ''hsl()'',
+	except that the fourth argument
+	(for the alpha channel)
+	is not optional.
 
 	<pre class='prod'><dfn data-export>hsla()</dfn> = hsla( [ <<number>> | <<angle>> ], <<percentage>>, <<percentage>>, <<alpha-value>> )</pre>
-
-	The first three arguments are interpreted identically to ''hsl()'',
-	giving the hue, saturation, and lightness of the color, respectively.
-	The final argument, the <<alpha-value>>, specifies the alpha of the color.
-	It's interpreted identically to the fourth argument of the ''rgba()'' function.
 
 <h4 id='hsl-to-rgb'>
 Converting HSL colors to RGB colors</h4>

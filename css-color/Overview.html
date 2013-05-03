@@ -62,8 +62,8 @@ dt { font-weight: bold }
 	<p data-fill-with="logo"></p>
 	<h1 class="p-name no-ref" id="title">CSS Color Module Level 4</h1>
 	<h2 class="no-num no-toc no-ref" id="subtitle">Unofficial Proposal Draft,
-		<span class="dt-updated"><span class="value-title" title="20130429">29 April 2013</span></span></h2>
-	<div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/UD-css-color-4-20130429" class="u-url">http://www.w3.org/TR/2013/UD-css-color-4-20130429</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html</a>
+		<span class="dt-updated"><span class="value-title" title="20130503">3 May 2013</span></span></h2>
+	<div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/UD-css-color-4-20130503" class="u-url">http://www.w3.org/TR/2013/UD-css-color-4-20130503</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html</a>
 </dd><dt>Feedback:</dt>
     <dd><a href="mailto:www-style@w3.org?subject=%5Bcss-color%5D%20feedback">www-style@w3.org</a> 
         with subject line 
@@ -74,7 +74,7 @@ dt { font-weight: bold }
 	<p data-fill-with="copyright" class="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img src="http://i.creativecommons.org/p/zero/1.0/80x15.png" alt="CC0"></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 29 April 2013, 
+In addition, as of 3 May 2013, 
 the editors have made this specification available under the
 <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -226,8 +226,9 @@ The RGB functional notations: <a data-autolink="maybe" class="css" href="#rgb-fu
 <p>	The <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a> function defines an RGB color by specifying the red, green, and blue channels directly.
 	Its syntax is:
 
-	</p><pre class="prod"><dfn data-export="" id="rgb-function">rgb()</dfn> = rgb( <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>)
+	</p><pre class="prod"><dfn data-export="" id="rgb-function">rgb()</dfn> = rgb( <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a> [, <a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a> ]? )
 <dfn data-export="" id="component-production">&lt;component&gt;</dfn> = <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>
+<dfn data-export="" id="alpha-value-production">&lt;alpha-value&gt;</dfn> = <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>
 </pre>
 <p>	The three <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>s specify the red, green, and blue channels of the color, respectively.
 	<a data-autolink="maybe" class="css">0%</a> represents the minimum value for that color channel in the sRGB gamut,
@@ -247,15 +248,6 @@ The RGB functional notations: <a data-autolink="maybe" class="css" href="#rgb-fu
 	For this reason, values outside of the 0%-100% range are allowed,
 	but are clamped to the device's gamut.)
 
-</p><p>	The alpha of a color specified via <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a> is always <a data-autolink="maybe" class="css">100%</a>.
-
-</p><p>	The <a data-autolink="maybe" class="css" href="#rgba-function">rgba()</a> function is identical to <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a>, but has a fourth argument for specifying the alpha of the color:
-
-	</p><pre class="prod"><dfn data-export="" id="rgba-function">rgba()</dfn> = rgba( <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a>)
-<dfn data-export="" id="alpha-value-production">&lt;alpha-value&gt;</dfn> = <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>
-</pre>
-<p>	The three <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>s, exactly like <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a>, specify the red, green, and blue channels of the color, respectively.
-
 </p><p>	The final argument, the <a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a>, specifies the alpha of the color.
 	If given as a <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a>, the useful range of the value is <a data-autolink="maybe" class="css">0</a>
 	(representing a fully transparent color)
@@ -265,8 +257,17 @@ The RGB functional notations: <a data-autolink="maybe" class="css" href="#rgb-fu
 	while <a data-autolink="maybe" class="css">100%</a> represents a fully opaque color.
 	Values outside these ranges are not invalid,
 	but are clamped to the ranges defined here at computed-value time.
+	If omitted, it defaults to <a data-autolink="maybe" class="css">100%</a>.
 
-</p><h3 id="hex-notation" data-level="3.2"><span class="secno">3.2 </span>
+</p><p>	For legacy purposes,
+	an <a data-autolink="maybe" class="css" href="#rgba-function">rgba()</a> function is defined.
+	It's identical to <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a>,
+	except that the fourth argument
+	(for the alpha channel)
+	is not optional.
+
+</p><pre class="prod"><dfn data-export="" id="rgba-function">rgba()</dfn> = rgba( <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a>)</pre>
+<h3 id="hex-notation" data-level="3.2"><span class="secno">3.2 </span>
 The RGB hexadecimal notations: <a data-autolink="maybe" class="css">#RRGGBB</a></h3>
 
 <p>	The CSS <dfn data-export="" id="hex-color">hex color</dfn> notation allows a color to be specified by giving the channels as hexadecimal numbers,
@@ -355,7 +356,7 @@ The HSL functional notations: <a data-autolink="maybe" class="css" href="#hsl-fu
 </p><p>	HSL colors are specified as a triplet of hue, saturation, and lightness.
 	The syntax of the <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a> function is:
 
-</p><pre class="prod"><dfn data-export="" id="hsl-function">hsl()</dfn> = hsl( [ <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;angle&gt;</var></a> ], <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>, <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> )</pre>
+</p><pre class="prod"><dfn data-export="" id="hsl-function">hsl()</dfn> = hsl( [ <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;angle&gt;</var></a> ], <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>, <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> [, <a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a> ]? )</pre>
 <p>	The first argument specifies the hue.
 	Hue is represented as an angle of the color circle
 	(the rainbow, twisted around into a circle).
@@ -384,7 +385,9 @@ The HSL functional notations: <a data-autolink="maybe" class="css" href="#hsl-fu
 	(that is, it's shouldn't be the same thing as clipping an RGB component to the device's gamut),
 	but this specification does not define how to do so.
 
-</p><p>	The alpha channel of a color specified with <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a> is always fully opaque.
+</p><p>	The final argument specifies the alpha channel of the color.
+	It's interpreted identically to the fourth argument of the <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a> function.
+	If omitted, it defaults to <a data-autolink="maybe" class="css">100%</a>.
 
 	</p><div class="example">
 		For example, an ordinary red,
@@ -409,15 +412,15 @@ hsl(120, 100%, 75%) <span style="color:black; background:hsl(120,100%,75%);">lig
 hsl(120, 75%, 85%)  <span style="color:black; background:hsl(120,75%,85%);">pastel green</span>
 </pre>	</div>
 
-<p>	The <a data-autolink="maybe" class="css" href="#hsla-function">hsla()</a> function is identical to <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a>, but has a fourth argument for specifying the alpha of the color:
+<p>	For legacy purposes,
+	an <a data-autolink="maybe" class="css" href="#hsla-function">hsla()</a> function is defined.
+	It is identical to <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a>,
+	except that the fourth argument
+	(for the alpha channel)
+	is not optional.
 
 </p><pre class="prod"><dfn data-export="" id="hsla-function">hsla()</dfn> = hsla( [ <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;angle&gt;</var></a> ], <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>, <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>, <a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a> )</pre>
-<p>	The first three arguments are interpreted identically to <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a>,
-	giving the hue, saturation, and lightness of the color, respectively.
-	The final argument, the <a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a>, specifies the alpha of the color.
-	It's interpreted identically to the fourth argument of the <a data-autolink="maybe" class="css" href="#rgba-function">rgba()</a> function.
-
-</p><h4 id="hsl-to-rgb" data-level="3.3.1"><span class="secno">3.3.1 </span>
+<h4 id="hsl-to-rgb" data-level="3.3.1"><span class="secno">3.3.1 </span>
 Converting HSL colors to RGB colors</h4>
 
 <p>	Converting an HSL color to RGB is straightforward mathematically.
@@ -1161,11 +1164,11 @@ References</h2>
 
 <h3 id="normative" class="no-num no-ref">
 Normative References</h3>
-<div data-fill-with="normative-references"><dl><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
+<div data-fill-with="normative-references"><dl><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
 
 <h3 id="informative" class="no-num no-ref">
 Informative References</h3>
-<div data-fill-with="informative-references"><dl><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
+<div data-fill-with="informative-references"><dl><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd></dl></div>
 
 <h2 id="index" class="no-num no-ref">
 Index</h2>
