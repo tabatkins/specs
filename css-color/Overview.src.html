@@ -260,7 +260,10 @@ The HSL functional notations: ''hsl()'' and ''hsla()''</h3>
 	HSL colors are specified as a triplet of hue, saturation, and lightness.
 	The syntax of the ''hsl()'' function is:
 
-	<pre class='prod'><dfn data-export>hsl()</dfn> = hsl( [ <<number>> | <<angle>> ], <<percentage>>, <<percentage>> [, <<alpha-value>> ]? )</pre>
+	<pre class='prod'>
+	<dfn data-export>hsl()</dfn> = hsl( <<hue>>, <<percentage>>, <<percentage>> [, <<alpha-value>> ]? )
+	<dfn data-export>&lt;hue></dfn> = <<number>> | <<angle>>
+	</pre>
 
 	The first argument specifies the hue.
 	Hue is represented as an angle of the color circle
