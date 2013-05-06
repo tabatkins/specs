@@ -37,6 +37,8 @@ table.named-color-table th {text-align:center; background:black; color:white; }
 .color-table th { white-space: pre-line; }
 .color-table td { background: currentcolor; }
 .color-table .white { color: white; }
+
+#named-hue-table td * { color: inherit; }
 </style>
 
 <h2 id="introduction">
@@ -264,7 +266,7 @@ The HSL functional notations: ''hsl()'' and ''hsla()''</h3>
 
 	<pre class='prod'>
 	<dfn data-export>hsl()</dfn> = hsl( <<hue>>, <<percentage>>, <<percentage>> [, <<alpha-value>> ]? )
-	<dfn data-export>&lt;hue></dfn> = <<number>> | <<angle>>
+	<dfn data-export>&lt;hue></dfn> = <<number>> | <<angle>> | <<named-hue>>
 	</pre>
 
 	The first argument specifies the hue.
@@ -278,6 +280,10 @@ The HSL functional notations: ''hsl()'' and ''hsla()''</h3>
 	Because this value is so often given in degrees,
 	the argument can also be given as a number,
 	which is interpreted as an a number of degrees.
+	Alternately, as many people have trouble associating numbers with hues,
+	a <<named-hue>> may be used to give the hue.
+	This allows for the hue to be specified with easy-to-understand terms,
+	like ''red'' or ''greenish blue''.
 
 	The next two arguments are the saturation and lightness, respectively.
 	For saturation, ''100%'' is a fully-saturated, bright color,
@@ -1126,6 +1132,118 @@ The ''currentcolor'' keyword</h4>
 	Only later did CSS pick it up,
 	at which point the capitalization stopped mattering,
 	as CSS keywords are case-insensitive.
+
+
+<h4 id='simple-hues'>
+Simple Named Hues: the <<named-hue>> term</h4>
+
+	The ''hsl()'' and ''hwb()'' notations both start from a saturated hue,
+	and then modify it in various ways to achieve the exact color desired.
+	This hue can be specified as a number/angle,
+	but many people do not intuitively associate colors with numbers.
+	Instead, the hue can be specified using simple color names and mixtures between them.
+
+	The syntax of <<named-hue>> is:
+
+	<pre class='prod'>
+		<dfn>&lt;named-hue></dfn> = <<base-hue>> | <<base-hue>> <<base-hue>> | <<splash-hue>> <<base-hue>>
+		<dfn>&lt;base-hue></dfn> = red | orange |  yellow | green | blue | purple
+		<dfn>&lt;splash-hue></dfn> = reddish | orangish | yellowish | greenish | bluish | purplish
+	</pre>
+
+	A named hue can be specified as one of the six base hues (like ''red''),
+	as an equal mixture of two base hues (like ''red orange'' or ''orange red''),
+	or as an unequal mixture of a base hue and a splash hue (like ''reddish orange'' or ''orangish red'').
+	A hue can only be mixed with hues that are "next" to it around the color wheel:
+	red is next to orange and purple, but not yellow or green or blue,
+	etc.
+
+	There are a total of 24 named hues, arranged evenly around the color wheel:
+
+	<table id='named-hue-table'>
+		<tr>
+			<th>Name
+			<th>Equivalent Hue Angle
+		<tr style="background: hsl(0,100%,50%); color: white;">
+			<td>''red''
+			<td>''0deg''
+		<tr style="background: hsl(7.5,100%,50%); color: white;">
+			<td>''orangish red''
+			<td>''7.5deg''
+		<tr style="background: hsl(15,100%,50%); color: black;">
+			<td>''red orange'' or ''orange red''
+			<td>''15deg''
+		<tr style="background: hsl(22.5,100%,50%); color: black;">
+			<td>''reddish orange''
+			<td>''22.5deg''
+		<tr style="background: hsl(30,100%,50%); color: black;">
+			<td>''orange''
+			<td>''30deg''
+		<tr style="background: hsl(37.5,100%,50%); color: black;">
+			<td>''yellowish orange''
+			<td>''37.5deg''
+		<tr style="background: hsl(45,100%,50%); color: black;">
+			<td>''orange yellow'' or ''yellow orange''
+			<td>''45deg''
+		<tr style="background: hsl(52.5,100%,50%); color: black;">
+			<td>''orangish yellow''
+			<td>''52.5deg''
+		<tr style="background: hsl(60,100%,50%); color: black;">
+			<td>''yellow''
+			<td>''60deg''
+		<tr style="background: hsl(75,100%,50%); color: black;">
+			<td>''greenish yellow''
+			<td>''75deg''
+		<tr style="background: hsl(90,100%,50%); color: black;">
+			<td>''yellow green'' or ''green yellow''
+			<td>''90deg''
+		<tr style="background: hsl(105,100%,50%); color: black;">
+			<td>''yellowish green''
+			<td>''105deg''
+		<tr style="background: hsl(120,100%,50%); color: black;">
+			<td>''green''
+			<td>''120deg''
+		<tr style="background: hsl(150,100%,50%); color: black;">
+			<td>''bluish green''
+			<td>''150deg''
+		<tr style="background: hsl(180,100%,50%); color: black;">
+			<td>''green blue'' or ''blue green''
+			<td>''180deg''
+		<tr style="background: hsl(210,100%,50%); color: white;">
+			<td>''greenish blue''
+			<td>''210deg''
+		<tr style="background: hsl(240,100%,50%); color: white;">
+			<td>''blue''
+			<td>''240deg''
+		<tr style="background: hsl(255,100%,50%); color: white;">
+			<td>''purplish blue''
+			<td>''255deg''
+		<tr style="background: hsl(270,100%,50%); color: white;">
+			<td>''blue purple'' or ''purple blue''
+			<td>''270deg''
+		<tr style="background: hsl(285,100%,50%); color: white;">
+			<td>''bluish purple''
+			<td>''285deg''
+		<tr style="background: hsl(300,100%,50%); color: white;">
+			<td>''purple''
+			<td>''300deg''
+		<tr style="background: hsl(315,100%,50%); color: white;">
+			<td>''reddish purple''
+			<td>''315deg''
+		<tr style="background: hsl(330,100%,50%); color: white;">
+			<td>''red purple'' or ''purple red''
+			<td>''330deg''
+		<tr style="background: hsl(345,100%,50%); color: white;">
+			<td>''purplish red''
+			<td>''345deg''
+	</table>
+
+	Note: The named hue cycle isn't perfectly even.
+	If it was, every hue would be 15deg apart.
+	Instead, it adds orange and omits cyan,
+	in order to bias the words closer to English usage,
+	and make the colors themselves denser in colors that the human eye can see better.
+
 
 
 <h3 id="notes">
