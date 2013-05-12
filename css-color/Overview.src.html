@@ -2,7 +2,7 @@
 
 <pre class=metadata>
 Group: personal
-Status: UD
+Status: DREAM
 ED: http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html
 Shortname: css-color
 Level: 4
@@ -1260,7 +1260,7 @@ Notes on using colors</h3>
 
 
 <h2 id='modifying-colors'>
-Modifying colors: the ''color()'' function</h2>
+Modifying colors</h2>
 
 	When specifying a color scheme for a site,
 	one often wants a color that is close to another color,
@@ -1269,14 +1269,88 @@ Modifying colors: the ''color()'' function</h2>
 	where an author may wish to define a "base" color,
 	and then produce an array of slightly modified colors to use elsewhere.
 
-	The ''color()'' function modifies an existing color in various ways.
-	It takes a color and a list of modification instructions,
-	each of which can adjust one "channel" of the color.
+<h3 id='the-color-function'>
+Per-channel Modifications: the ''color()'' function</h2>
+
+	The ''color()'' function modifies an existing color by manipulating its HSL or HWB "channels".
+	It can set any channel directly,
+	adjust a channel by a given amount,
+	or scale a channel by a given amount. 
 
 	<pre class='prod'>
 		<dfn>color()</dfn> = color( <<color>> <<color-adjuster>># )
-		<dfn>&lt;color-adjuster></dfn> = ...
+		<dfn>&lt;color-adjuster></dfn> = 
+		    hue ['+' | '-' | '*']? <<angle>> |
+		    saturation ['+' | '-' | '*']? <<percentage>> |
+		    lightness ['+' | '-' | '*']? <<percentage>> |
+		    whiteness ['+' | '-' | '*']? <<percentage>> |
+		    blackness ['+' | '-' | '*']? <<percentage>> |
+		    alpha ['+' | '-' | '*']? <<percentage>>
 	</pre>
+
+	Each <<color-adjuster>> modifies one "channel" of the passed <<color>>,
+	interpreting the color as an HSL or HWB color (as appropriate).
+	The <<color-adjuster>>s are processed in order,
+	and the list can alter the same "channel" more than once.
+
+	The behavior of a <<color-adjuster>> depends on the mathematical operation specified:
+
+	<dl>
+		<dt>nothing
+		<dd>
+			The given channel is set to the given value,
+			ignoring whatever value it had previously.
+
+		<dt>''+'' or ''-''
+		<dd>
+			The given channel has the given value added or subtracted from its previous value.
+
+		<dt>''*''
+		<dd>
+			The given channel has its previous value multipled by the given value.
+	</dl>
+
+	The computed value of a ''color()'' function is the given color,
+	after applying all <<color-adjuster>>s.
+
+	Note: While scaling can be specified without any spaces,
+	like ''lightness*150%'',
+	adding/subtracting must be done with spaces around the +/-,
+	or else the +/- will be interpreted as part of the channel name or the value
+	by the CSS parser.
+
+
+<h3 id='tint-shade'>
+Tints and Shades: the ''tint()'' and ''shade()'' functions</h3>
+
+	While the ''color()'' function does allow arbitrary adjustment of colors,
+	the peculiarities of how the HWB system works makes it somewhat more difficult to use.
+	(The fact that a fully-saturated color has 0% white and black is harder to work with 
+	than if it had 100% anti-white and anti-black.)
+	However, producing tints and shades of existing colors is common and useful.
+	To help with this, the ''tint()'' and ''shade()'' functions allow for more convenient manipulation of the white and black in a color.
+
+	<pre class='prod'>
+		<dfn>tint()</dfn> = tint( <<color>>, <<percentage>> )
+		<dfn>shade()</dfn> = shade( <<color>>, <<percentage>> )
+	</pre>
+
+	The ''tint()'' and ''shade()'' functions mix a given color with white or black,
+	in the specified percentage.
+	They will never produce pure white or pure black unless the <<percentage>> specified is ''100%''
+	(ignoring rounding, of course).
+
+	Specifying a <<percentage>> less than ''0%'' or greater than ''100%'' is a syntax error,
+	and makes the function invalid.
+
+	The computed value of a ''tint()'' or ''shade()'' function is determined by
+	taking the given color,
+	interpreted as an RGB color,
+	and linearly interpolating each color channel with white or black, respectively,
+	according to the <<percentage>>:
+	for each channel,
+	the result is the given colors' channel multipled by the <<percentage>>,
+	plus the channel from white or black multiplied by <code>100% - <<percentage>></code>.
 
 
 
