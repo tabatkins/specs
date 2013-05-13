@@ -1280,12 +1280,12 @@ Per-channel Modifications: the ''color()'' function</h2>
 	<pre class='prod'>
 		<dfn>color()</dfn> = color( <<color>> <<color-adjuster>># )
 		<dfn>&lt;color-adjuster></dfn> = 
-		    hue ['+' | '-' | '*']? <<angle>> |
-		    saturation ['+' | '-' | '*']? <<percentage>> |
-		    lightness ['+' | '-' | '*']? <<percentage>> |
-		    whiteness ['+' | '-' | '*']? <<percentage>> |
-		    blackness ['+' | '-' | '*']? <<percentage>> |
-		    alpha ['+' | '-' | '*']? <<percentage>>
+		    [hue | h] ['+' | '-' | '*']? <<angle>> |
+		    [saturation | s] ['+' | '-' | '*']? <<percentage>> |
+		    [lightness | l] ['+' | '-' | '*']? <<percentage>> |
+		    [whiteness | w] ['+' | '-' | '*']? <<percentage>> |
+		    [blackness | b] ['+' | '-' | '*']? <<percentage>> |
+		    [alpha | a] ['+' | '-' | '*']? <<percentage>>
 	</pre>
 
 	Each <<color-adjuster>> modifies one "channel" of the passed <<color>>,
