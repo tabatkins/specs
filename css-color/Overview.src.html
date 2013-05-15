@@ -1037,6 +1037,30 @@ Examples of HWB Colors</h4>
 	</div>
 
 
+<h3 id='grays'>
+Specifying grays: the ''gray()'' functional notation</h3>
+
+	Grays are a very special set of colors.
+	They're fully desaturated
+	(lacking any actual color at all),
+	which means that specifying a gray with any of the other notations requires specifying some redundant information:
+	if specifying the color with ''rgb()'', all three channels are identical;
+	if specifying the color with ''hsl()'', the hue is irrelevant and the saturation is locked to ''0%''.
+
+	The ''gray()'' functional notation simplifies specifying this common set of colors, 
+	so that only the necessary information is required.
+
+	<pre class='prod'>
+	<dfn>gray()</dfn> = gray( [<<number>> | <<percentage>>] [, <<alpha-value>>]? )
+	</pre>
+
+	The first argument specifies the shade of gray,
+	while the second optional argument specifies the alpha channel of the color.
+
+	''gray(A)'' represents the same color as ''rgb(A,A,A)''.
+	''gray(A,B)'' represents the same color as ''rgb(A,A,A,B)''.
+
+
 
 <h3 id='named-colors'>
 Named Colors</h3>
