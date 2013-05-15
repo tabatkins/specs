@@ -1467,7 +1467,7 @@ RGBA Adjustment</h3>
 </p><p>			If the operator is <a data-autolink="maybe" class="css">*</a>,
 			the given channel is multipled by the given value.
 
-		</p></dd><dt>''rgb ['+' | <a data-autolink="property" class="property" title="-">-</a>]? [<a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>]{3}''
+		</p></dd><dt>''rgb ['+' | '-']? [<a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>]{3}''
 		</dt><dd>
 			Adjusts the <var>base color</var> in the red, green, and blue channels simultaneously.
 			All three channels are interpreted as the matching type (<a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> or <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>)
@@ -1476,7 +1476,7 @@ RGBA Adjustment</h3>
 			the second value adjusting the green channel,
 			and the third value adjusting the blue channel.
 
-		</dd><dt>''rgb ['+' | <a data-autolink="property" class="property" title="-">-</a>] <a data-autolink="link" class="production"><var>&lt;hash&gt;</var></a>''
+		</dd><dt>''rgb ['+' | '-'] <a data-autolink="link" class="production"><var>&lt;hash&gt;</var></a>''
 		</dt><dd>
 			Identical to the previous clause,
 			except that the adjustments to the three channels are specified in hexadecimal format;
@@ -1491,7 +1491,7 @@ RGBA Adjustment</h3>
 			and the green channel is increased by 44<sub>16</sub>,
 			resulting in a final color of <a data-autolink="maybe" class="css">#ff4400</a>.
 
-		</p></dd><dt>''rgb <a data-autolink="property" class="property" title="*">*</a> <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>''
+		</p></dd><dt>''rgb '*' <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>''
 		</dt><dd>
 			The red, green, and blue channels of the <var>base color</var> are multiplied by the given value.
 	</dd></dl>
@@ -1896,7 +1896,7 @@ Normative References</h3>
 
 <h3 id="informative" class="no-num no-ref">
 Informative References</h3>
-<div data-fill-with="informative-references"><dl><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
+<div data-fill-with="informative-references"><dl><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
 
 <h2 id="index" class="no-num no-ref">
 Index</h2>
