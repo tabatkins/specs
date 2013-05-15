@@ -1394,12 +1394,14 @@ RGBA Adjustment</h3>
 			then the red, green, and blue channels of the color
 			are applied as adjustments to the <var>base color</var>.
 
-			For example, in ''color(red rgb + #004400)'',
-			the <var>base color</var> is ''red'' (''#ff0000'').
-			The red and blue channels aren't adjusted at all
-			(those channels in the <a>hex color</a> are both 0),
-			and the green channel is increased by 44<sub>16</sub>,
-			resulting in a final color of ''#ff4400''.
+			<div class='example'>
+				For example, in ''color(red rgb + #004400)'',
+				the <var>base color</var> is ''red'' (''#ff0000'').
+				The red and blue channels aren't adjusted at all
+				(those channels in the given color are both 0),
+				and the green channel is increased by 44<sub>16</sub>,
+				resulting in a final color of ''#ff4400''.
+			</div>
 
 		<dt>''rgb '*' <<percentage>>''
 		<dd>
