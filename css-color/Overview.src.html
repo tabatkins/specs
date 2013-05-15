@@ -1260,7 +1260,7 @@ Notes on using colors</h3>
 
 
 <h2 id='modifying-colors'>
-Modifying colors</h2>
+Modifying colors: the ''color()'' function</h2>
 
 	When specifying a color scheme for a site,
 	one often wants a color that is close to another color,
@@ -1269,16 +1269,22 @@ Modifying colors</h2>
 	where an author may wish to define a "base" color,
 	and then produce an array of slightly modified colors to use elsewhere.
 
-<h3 id='the-color-function'>
-Per-channel Modifications: the ''color()'' function</h2>
+	The ''color()'' function takes an existing color,
+	and applies zero or more "color adjusters" to it,
+	which specify how to manipulate the color in some way.
 
-	The ''color()'' function modifies an existing color by manipulating its HSL or HWB "channels".
-	It can set any channel directly,
-	adjust a channel by a given amount,
-	or scale a channel by a given amount. 
+	Several of the color adjusters straightforwardly manipulate the color
+	as an RGB, HSL, or HWB color,
+	as if you'd specified a color in the appropriate syntax with one argument slightly modified.
+	Others perform more complex manipulations of the color,
+	such as inverting it
+	or finding contrasting colors.
+
+	Additionally, the ''color()'' function defines a new, more intuitive syntax for specifying named colors,
+	based on <abbr title="Color Naming System">CNS</abbr>.
 
 	<pre class='prod'>
-		<dfn>color()</dfn> = color( <<color>> <<color-adjuster>># )
+		<dfn>color()</dfn> = color( [ <<color>> | <<hue>> ] <<color-adjuster>>* )
 		<dfn>&lt;color-adjuster></dfn> = 
 		    [hue | h] ['+' | '-' | '*']? <<angle>> |
 		    [saturation | s] ['+' | '-' | '*']? <<percentage>> |
@@ -1287,6 +1293,11 @@ Per-channel Modifications: the ''color()'' function</h2>
 		    [blackness | b] ['+' | '-' | '*']? <<percentage>> |
 		    [alpha | a] ['+' | '-' | '*']? <<percentage>>
 	</pre>
+
+	The first argument specifies the <var>base color</var>.
+	If a <<hue>> is given,
+	the <var>base color</var> is the HSL color with the given <<hue>>, 100% saturation, and 50% lightness
+	(in other words, the fully-saturated color with the given hue).
 
 	Each <<color-adjuster>> modifies one "channel" of the passed <<color>>,
 	interpreting the color as an HSL or HWB color (as appropriate).
