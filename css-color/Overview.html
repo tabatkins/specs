@@ -124,7 +124,8 @@ Notes on using colors</a></li></ul></li><li><a href="#modifying-colors"><span cl
 Modifying colors: the <span data-autolink="maybe" class="css">color()</span> function</a><ul class="toc"><li><a href="#rgba-adjusters"><span class="secno">4.1 </span>
 RGBA Adjustment</a></li><li><a href="#hsl-hwb-adjusters"><span class="secno">4.2 </span>
 HSL/HWB Adjustment</a></li><li><a href="#tint-shade-adjusters"><span class="secno">4.3 </span>
-Tints and Shades: the <span data-autolink="maybe" class="css">tint</span> and <span data-autolink="maybe" class="css">shade</span> adjusters</a></li></ul></li><li><a href="#transparency"><span class="secno">5 </span>
+Tints and Shades: the <span data-autolink="maybe" class="css">tint</span> and <span data-autolink="maybe" class="css">shade</span> adjusters</a></li><li><a href="#blend-adjuster"><span class="secno">4.4 </span>
+Color Blending: the <span data-autolink="maybe" class="css">blend</span> and <span data-autolink="maybe" class="css">blenda</span> adjusters</a></li></ul></li><li><a href="#transparency"><span class="secno">5 </span>
 Transparency: the <span data-autolink="property" class="property" title="opacity">opacity</span> property</a><ul class="toc"><li><a href="#alpha"><span class="secno">5.1 </span>
 Simple alpha compositing</a></li></ul></li><li><a href="#color-management"><span class="secno">6 </span>
 Color Management: the <span data-autolink="property" class="property" title="color-correction">color-correction</span> property</a></li><li><a href="#sample"><span class="secno">7 </span>
@@ -1390,8 +1391,11 @@ Modifying colors: the <a data-autolink="maybe" class="css" href="#color-function
       [blackness | b] ['+' | '-' | '*']? <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> |
 
       tint <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> |
-      shade <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>
-</pre>
+      shade <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> |
+
+      blend <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a> <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> |
+      blenda <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a> &lt;<percentage>
+</percentage></pre>
 <p>	The first argument specifies the <var>base color</var>.
 	If a <a data-autolink="link" class="production" href="#hue-production"><var>&lt;hue&gt;</var></a> is given,
 	the <var>base color</var> is the HSL color with the given <a data-autolink="link" class="production" href="#hue-production"><var>&lt;hue&gt;</var></a>, 100% saturation, and 50% lightness
@@ -1538,6 +1542,32 @@ Tints and Shades: the <a data-autolink="maybe" class="css">tint</a> and <a data-
 <p>			Identical to the previous clause,
 			except the <var>base color</var> is mixed with pure black (<a data-autolink="maybe" class="css">rgb(0,0,0)</a>) rather than pure white.
 	</p></dd></dl>
+
+<h3 id="blend-adjuster" data-level="4.4"><span class="secno">4.4 </span>
+Color Blending: the <a data-autolink="maybe" class="css">blend</a> and <a data-autolink="maybe" class="css">blenda</a> adjusters</h3>
+
+<p>	The <a data-autolink="maybe" class="css">tint</a> and <a data-autolink="maybe" class="css">shade</a> adjusters are common cases of the more general <a data-autolink="maybe" class="css">blend</a> adjuster,
+	which mixes the <var>base color</var> with an arbitrary color.
+
+	</p><dl>
+		<dt><a data-autolink="maybe" class="css">blend</a>
+		</dt><dd>
+			Mixes the <var>base color</var> with the given color to produce an intermediate color.
+
+<p>			Specifying a <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> less than <a data-autolink="maybe" class="css">0%</a> or greater than <a data-autolink="maybe" class="css">100%</a> is a syntax error,
+			and makes the function invalid.
+
+</p><p>			Linearly interpolate the red, green, and blue channels of the <var>base color</var>
+			with the red, green, and blue channels of the given color,
+			where <a data-autolink="maybe" class="css">0%</a> returns the <var>base color</var>
+			and <a data-autolink="maybe" class="css">100%</a> returns the given color.
+
+		</p></dd><dt><a data-autolink="maybe" class="css">blenda</a>
+		</dt><dd>
+			Identical to the previous clause,
+			but also interpolates the alpha channel of the <var>base color</var> and the given color.
+			(<a data-autolink="maybe" class="css">blend</a> ignores the alpha channel, leaving the <var>base color</var>&#8217;s alpha untouched.)
+	</dd></dl>
 
 
 <h2 id="transparency" data-level="5"><span class="secno">5 </span>

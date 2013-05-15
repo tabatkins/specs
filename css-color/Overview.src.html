@@ -1299,7 +1299,10 @@ Modifying colors: the ''color()'' function</h2>
 		    [blackness | b] ['+' | '-' | '*']? <<percentage>> |
 
 		    tint <<percentage>> |
-		    shade <<percentage>>
+		    shade <<percentage>> |
+
+		    blend <<color>> <<percentage>> |
+		    blenda <<color>> <<percentage>
 	</pre>
 
 	The first argument specifies the <var>base color</var>.
@@ -1447,6 +1450,32 @@ Tints and Shades: the ''tint'' and ''shade'' adjusters</h3>
 
 			Identical to the previous clause,
 			except the <var>base color</var> is mixed with pure black (''rgb(0,0,0)'') rather than pure white.
+	</dl>
+
+<h3 id='blend-adjuster'>
+Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
+
+	The ''tint'' and ''shade'' adjusters are common cases of the more general ''blend'' adjuster,
+	which mixes the <var>base color</var> with an arbitrary color.
+
+	<dl>
+		<dt>''blend''
+		<dd>
+			Mixes the <var>base color</var> with the given color to produce an intermediate color.
+
+			Specifying a <<percentage>> less than ''0%'' or greater than ''100%'' is a syntax error,
+			and makes the function invalid.
+
+			Linearly interpolate the red, green, and blue channels of the <var>base color</var>
+			with the red, green, and blue channels of the given color,
+			where ''0%'' returns the <var>base color</var>
+			and ''100%'' returns the given color.
+
+		<dt>''blenda''
+		<dd>
+			Identical to the previous clause,
+			but also interpolates the alpha channel of the <var>base color</var> and the given color.
+			(''blend'' ignores the alpha channel, leaving the <var>base color</var>’s alpha untouched.)
 	</dl>
 
 
