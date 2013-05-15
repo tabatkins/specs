@@ -1290,7 +1290,7 @@ Modifying colors: the ''color()'' function</h2>
 		    [red | green | blue | alpha | a] '*' <<percentage>> |
 		    rgb ['+' | '-'] [<<number>> | <<percentage>>]{3} |
 		    rgb ['+' | '-'] <<hash>> |
-		    rgb '*' <<percentage>>
+		    rgb '*' <<percentage>> |
 
 		    [hue | h] ['+' | '-' | '*']? <<angle>> |
 		    [saturation | s] ['+' | '-' | '*']? <<percentage>> |
@@ -1298,6 +1298,8 @@ Modifying colors: the ''color()'' function</h2>
 		    [whiteness | w] ['+' | '-' | '*']? <<percentage>> |
 		    [blackness | b] ['+' | '-' | '*']? <<percentage>> |
 
+		    tint <<percentage>> |
+		    shade <<percentage>>
 	</pre>
 
 	The first argument specifies the <var>base color</var>.
@@ -1418,38 +1420,34 @@ HSL/HWB Adjustment</h3>
 	</dl>
 
 
-<h3 id='tint-shade'>
-Tints and Shades: the ''tint()'' and ''shade()'' functions</h3>
+<h3 id='tint-shade-adjusters'>
+Tints and Shades: the ''tint'' and ''shade'' adjusters</h3>
 
-	While the ''color()'' function does allow arbitrary adjustment of colors,
-	the peculiarities of how the HWB system works makes it somewhat more difficult to use.
-	(The fact that a fully-saturated color has 0% white and black is harder to work with 
-	than if it had 100% anti-white and anti-black.)
-	However, producing tints and shades of existing colors is common and useful.
-	To help with this, the ''tint()'' and ''shade()'' functions allow for more convenient manipulation of the white and black in a color.
+	While the ''color()'' function does allow HWB adjustment of colors,
+	the peculiarities of how HWB is defined make it more difficult than it should be to just define a lighter or darker version of a color.
+	The ''tint'' and ''shade'' adjusters fix this,
+	by simply mixing the <var>base color</var> with white or black.
 
-	<pre class='prod'>
-		<dfn>tint()</dfn> = tint( <<color>>, <<percentage>> )
-		<dfn>shade()</dfn> = shade( <<color>>, <<percentage>> )
-	</pre>
+	<dl>
+		<dt>''tint''
+		<dd>
+			Mixes the <var>base color</var> with pure white to produce a lighter version of the <var>base color</var>.
 
-	The ''tint()'' and ''shade()'' functions mix a given color with white or black,
-	in the specified percentage.
-	They will never produce pure white or pure black unless the <<percentage>> specified is ''100%''
-	(ignoring rounding, of course).
+			Specifying a <<percentage>> less than ''0%'' or greater than ''100%'' is a syntax error,
+			and makes the function invalid.
 
-	Specifying a <<percentage>> less than ''0%'' or greater than ''100%'' is a syntax error,
-	and makes the function invalid.
+			Linearly interpolate the red, green, and blue channels of the <var>base color</var>
+			with the red, green, and blue channels of pure white (''rgb(255,255,255)''),
+			where ''0%'' returns the <var>base color</var>
+			and ''100%'' returns pure white.
 
-	The computed value of a ''tint()'' or ''shade()'' function is determined by
-	taking the given color,
-	interpreted as an RGB color,
-	and linearly interpolating each color channel with white or black, respectively,
-	according to the <<percentage>>:
-	for each channel,
-	the result is the given colors' channel multipled by the <<percentage>>,
-	plus the channel from white or black multiplied by <code>100% - <<percentage>></code>.
+		<dt>''shade''
+		<dd>
+			Mixes the <var>base color</var> with pure black to produce a darker version of the <var>base color</var>.
 
+			Identical to the previous clause,
+			except the <var>base color</var> is mixed with pure black (''rgb(0,0,0)'') rather than pure white.
+	</dl>
 
 
 <h2 id="transparency">
