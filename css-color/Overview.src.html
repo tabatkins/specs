@@ -1325,8 +1325,8 @@ Modifying colors: the ''color()'' function</h2>
 		    tint <<percentage>> |
 		    shade <<percentage>> |
 
-		    blend <<color>> <<percentage>> |
-		    blenda <<color>> <<percentage>
+		    blend <<color>> <<percentage>> [rgb | hsl | hwb]? |
+		    blenda <<color>> <<percentage>> [rgb | hsl | hwb]?
 	</pre>
 
 	The first argument specifies the <var>base color</var>.
@@ -1490,10 +1490,46 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 			Specifying a <<percentage>> less than ''0%'' or greater than ''100%'' is a syntax error,
 			and makes the function invalid.
 
-			Linearly interpolate the red, green, and blue channels of the <var>base color</var>
-			with the red, green, and blue channels of the given color,
-			where ''0%'' returns the <var>base color</var>
-			and ''100%'' returns the given color.
+			The final argument specifies which color space to blend the colors in,
+			defaulting to ''rgb'' if not specified.
+			Both the <var>base color</var> and the given color are interpreted as colors in the given color space,
+			then the components are blended.
+
+			<div class='example'>
+				For example, ''color(yellow blend blue 50%)'' blends yellow (''#ffff00'') with blue (''#0000ff'') equally,
+				resulting in ''#808080'', a medium gray.
+
+				On the other hand, ''color(yellow blend blue 50% hsl)'' blends the same colors in HSL space, 
+				where yellow is ''hsl(60, 100%, 50%)'' and blue is ''hsl(240, 100%, 50%)'',
+				which results in ''hsl(150, 100%, 50%)'', a fully-saturated shade of green.
+			</div>
+
+			To determine the resulting color,
+			interpret the <var>base color</var> and the given color in the appropriate color space
+			(RGB, HSL, or HWB).
+			Linearly interpolate each of the channels of the colors according to the given <<percentage>>,
+			where ''0%'' produces the <var>base color</var>
+			and ''100%'' produces the given color.
+ 
+			If the color space is ''hsl'' or ''hwb'',
+			interpolate the hue channel either clockwise or counterclockwise,
+			whichever results in a shorter "path" between the two hue angles.
+			If the two hue angles are on opposite sides of the hue circle
+			(separated by 180 degrees),
+			take the clockwise path.
+			(This choice is arbitrary, and was chosen merely to provide an unambiguous answer.
+			To achieve counter-clockwise behavior, 
+			adjust either color's hue angle by a small amount toward the desired direction.)
+
+			<div class='example'>
+				For example, blending ''yellow'' (hue angle ''60deg'') with 50% ''purple'' (hue angle ''300deg'')
+				results in ''red'' (hue angle ''0deg''), 
+				not ''cyan'' (hue angle ''180deg''),
+				even though <code>60*50% + 300*50% == 180</code>,
+				because the distance between the two colors when moving counter-clockwise is only 120 degrees,
+				as opposed to 240 degrees when going clockwise.
+			</div>
+			
 
 		<dt>''blenda''
 		<dd>

@@ -1416,9 +1416,9 @@ Modifying colors: the <a data-autolink="maybe" class="css" href="#color-function
       tint <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> |
       shade <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> |
 
-      blend <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a> <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> |
-      blenda <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a> &lt;<percentage>
-</percentage></pre>
+      blend <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a> <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> [rgb | hsl | hwb]? |
+      blenda <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a> <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> [rgb | hsl | hwb]?
+</pre>
 <p>	The first argument specifies the <var>base color</var>.
 	If a <a data-autolink="link" class="production" href="#hue-production"><var>&lt;hue&gt;</var></a> is given,
 	the <var>base color</var> is the HSL color with the given <a data-autolink="link" class="production" href="#hue-production"><var>&lt;hue&gt;</var></a>, 100% saturation, and 50% lightness
@@ -1580,12 +1580,48 @@ Color Blending: the <a data-autolink="maybe" class="css">blend</a> and <a data-a
 <p>			Specifying a <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> less than <a data-autolink="maybe" class="css">0%</a> or greater than <a data-autolink="maybe" class="css">100%</a> is a syntax error,
 			and makes the function invalid.
 
-</p><p>			Linearly interpolate the red, green, and blue channels of the <var>base color</var>
-			with the red, green, and blue channels of the given color,
-			where <a data-autolink="maybe" class="css">0%</a> returns the <var>base color</var>
-			and <a data-autolink="maybe" class="css">100%</a> returns the given color.
+</p><p>			The final argument specifies which color space to blend the colors in,
+			defaulting to <a data-autolink="maybe" class="css">rgb</a> if not specified.
+			Both the <var>base color</var> and the given color are interpreted as colors in the given color space,
+			then the components are blended.
 
-		</p></dd><dt><a data-autolink="maybe" class="css">blenda</a>
+			</p><div class="example">
+				For example, <a data-autolink="maybe" class="css">color(yellow blend blue 50%)</a> blends yellow (<a data-autolink="maybe" class="css">#ffff00</a>) with blue (<a data-autolink="maybe" class="css">#0000ff</a>) equally,
+				resulting in <a data-autolink="maybe" class="css">#808080</a>, a medium gray.
+
+<p>				On the other hand, <a data-autolink="maybe" class="css">color(yellow blend blue 50% hsl)</a> blends the same colors in HSL space, 
+				where yellow is <a data-autolink="maybe" class="css">hsl(60, 100%, 50%)</a> and blue is <a data-autolink="maybe" class="css">hsl(240, 100%, 50%)</a>,
+				which results in <a data-autolink="maybe" class="css">hsl(150, 100%, 50%)</a>, a fully-saturated shade of green.
+			</p></div>
+
+<p>			To determine the resulting color,
+			interpret the <var>base color</var> and the given color in the appropriate color space
+			(RGB, HSL, or HWB).
+			Linearly interpolate each of the channels of the colors according to the given <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>,
+			where <a data-autolink="maybe" class="css">0%</a> produces the <var>base color</var>
+			and <a data-autolink="maybe" class="css">100%</a> produces the given color.
+ 
+</p><p>			If the color space is <a data-autolink="maybe" class="css">hsl</a> or <a data-autolink="maybe" class="css">hwb</a>,
+			interpolate the hue channel either clockwise or counterclockwise,
+			whichever results in a shorter "path" between the two hue angles.
+			If the two hue angles are on opposite sides of the hue circle
+			(separated by 180 degrees),
+			take the clockwise path.
+			(This choice is arbitrary, and was chosen merely to provide an unambiguous answer.
+			To achieve counter-clockwise behavior, 
+			adjust either color's hue angle by a small amount toward the desired direction.)
+
+			</p><div class="example">
+				For example, blending <a data-autolink="maybe" class="css" href="#yellow">yellow</a> (hue angle <a data-autolink="maybe" class="css">60deg</a>) with 50% <a data-autolink="maybe" class="css" href="#purple">purple</a> (hue angle <a data-autolink="maybe" class="css">300deg</a>)
+				results in <a data-autolink="maybe" class="css" href="#red">red</a> (hue angle <a data-autolink="maybe" class="css">0deg</a>), 
+				not <a data-autolink="maybe" class="css" href="#cyan">cyan</a> (hue angle <a data-autolink="maybe" class="css">180deg</a>),
+				even though <code>60*50% + 300*50% == 180</code>,
+				because the distance between the two colors when moving counter-clockwise is only 120 degrees,
+				as opposed to 240 degrees when going clockwise.
+			</div>
+			
+
+		</dd><dt><a data-autolink="maybe" class="css">blenda</a>
 		</dt><dd>
 			Identical to the previous clause,
 			but also interpolates the alpha channel of the <var>base color</var> and the given color.
@@ -1856,11 +1892,11 @@ References</h2>
 
 <h3 id="normative" class="no-num no-ref">
 Normative References</h3>
-<div data-fill-with="normative-references"><dl><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
+<div data-fill-with="normative-references"><dl><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
 
 <h3 id="informative" class="no-num no-ref">
 Informative References</h3>
-<div data-fill-with="informative-references"><dl><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd></dl></div>
+<div data-fill-with="informative-references"><dl><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
 
 <h2 id="index" class="no-num no-ref">
 Index</h2>
