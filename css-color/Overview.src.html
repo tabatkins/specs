@@ -1286,12 +1286,18 @@ Modifying colors: the ''color()'' function</h2>
 	<pre class='prod'>
 		<dfn>color()</dfn> = color( [ <<color>> | <<hue>> ] <<color-adjuster>>* )
 		<dfn>&lt;color-adjuster></dfn> = 
+		    [red | green | blue | alpha | a] ['+' | '-']? [<<number>> | <<percentage>>] |
+		    [red | green | blue | alpha | a] '*' <<percentage>> |
+		    rgb ['+' | '-'] [<<number>> | <<percentage>>]{3} |
+		    rgb ['+' | '-'] <<hash>> |
+		    rgb '*' <<percentage>>
+
 		    [hue | h] ['+' | '-' | '*']? <<angle>> |
 		    [saturation | s] ['+' | '-' | '*']? <<percentage>> |
 		    [lightness | l] ['+' | '-' | '*']? <<percentage>> |
 		    [whiteness | w] ['+' | '-' | '*']? <<percentage>> |
 		    [blackness | b] ['+' | '-' | '*']? <<percentage>> |
-		    [alpha | a] ['+' | '-' | '*']? <<percentage>>
+
 	</pre>
 
 	The first argument specifies the <var>base color</var>.
@@ -1299,36 +1305,117 @@ Modifying colors: the ''color()'' function</h2>
 	the <var>base color</var> is the HSL color with the given <<hue>>, 100% saturation, and 50% lightness
 	(in other words, the fully-saturated color with the given hue).
 
-	Each <<color-adjuster>> modifies one "channel" of the passed <<color>>,
-	interpreting the color as an HSL or HWB color (as appropriate).
-	The <<color-adjuster>>s are processed in order,
-	and the list can alter the same "channel" more than once.
+	After the <var>base color</var>,
+	zero or more <<color-adjuster>>s can be specified.
+	Each <<color-adjuster>> modifies the color in some way,
+	passing a new <var>base color</var> to the next <<color-adjuster>> in the list.
+	The same <<color-adjuster>> can be specified more than once in the list,
+	such as ''color(red s - 10% s - 10%)'';
+	each instance just modifies the color appropriately
+	(in this case, lowering the saturation of ''red'' by 20%).
 
-	The behavior of a <<color-adjuster>> depends on the mathematical operation specified:
+	There are several classes of <<color-adjuster>>s
+	with various effects,
+	defined in the following sections.
 
-	<dl>
-		<dt>nothing
-		<dd>
-			The given channel is set to the given value,
-			ignoring whatever value it had previously.
-
-		<dt>''+'' or ''-''
-		<dd>
-			The given channel has the given value added or subtracted from its previous value.
-
-		<dt>''*''
-		<dd>
-			The given channel has its previous value multipled by the given value.
-	</dl>
-
-	The computed value of a ''color()'' function is the given color,
-	after applying all <<color-adjuster>>s.
+	The computed value of a ''color()'' function is the color produced by applying all the <<color-adjuster>>s to the <var>base color</var>.
 
 	Note: While scaling can be specified without any spaces,
 	like ''lightness*150%'',
 	adding/subtracting must be done with spaces around the +/-,
 	or else the +/- will be interpreted as part of the channel name or the value
 	by the CSS parser.
+
+<h3 id='rgba-adjusters'>
+RGBA Adjustment</h3>
+
+	The most basic set of <<color-adjuster>>s modify the color's channels directly,
+	altering the amount of red, green, blue, or alpha in the color.
+
+	<dl>
+		<dt>''red'', ''blue'', or ''green''
+		<dt>''a'' or ''alpha''
+		<dd>
+			Sets or adjust the red, blue, green, or alpha channels of the <var>base color</var>.
+
+			If there is no operator,
+			the given channel is set to the given value.
+
+			If the operator is ''+'' or ''-'',
+			the given channel is interpreted as the matching type (<<number>> or <<percentage>>)
+			and then incremented or decremented by the given value.
+
+			If the operator is ''*'',
+			the given channel is multipled by the given value.
+
+		<dt>''rgb [&apos;+&apos; | &apos;-&apos;]? [<<number>> | <<percentage>>]{3}''
+		<dd>
+			Adjusts the <var>base color</var> in the red, green, and blue channels simultaneously.
+			All three channels are interpreted as the matching type (<<number>> or <<percentage>>)
+			and then incremented or decremented by the given values,
+			with the first value adjusting the red channel,
+			the second value adjusting the green channel,
+			and the third value adjusting the blue channel.
+
+		<dt>''rgb [&apos;+&apos; | &apos;-&apos;] <<hash>>''
+		<dd>
+			Identical to the previous clause,
+			except that the adjustments to the three channels are specified in hexadecimal format;
+			the <<hash>> is interpreted as a <a>hex color</a>,
+			then the red, green, and blue channels of the color
+			are applied as adjustments to the <var>base color</var>.
+
+			For example, in ''color(red rgb + #004400)'',
+			the <var>base color</var> is ''red'' (''#ff0000'').
+			The red and blue channels aren't adjusted at all
+			(those channels in the <a>hex color</a> are both 0),
+			and the green channel is increased by 44<sub>16</sub>,
+			resulting in a final color of ''#ff4400''.
+
+		<dt>''rgb '*' <<percentage>>''
+		<dd>
+			The red, green, and blue channels of the <var>base color</var> are multiplied by the given value.
+	</dl>
+
+
+
+<h3 id='hsl-hwb-adjusters'>
+HSL/HWB Adjustment</h3>
+
+	The ''hsl()'' and ''hwb()'' functions provide alternative ways to specify colors numerically,
+	intended to be easier and more intuitive for humans.
+	Similarly, the ''color()'' function allows a color to be adjusted in these "virtual channels".
+
+	<dl>
+		<dt>''h'' or ''hue''
+		<dd>
+			Sets or adjusts the hue of the <var>base color</var>,
+			when <var>base color</var> is interpreted as an HSL color.
+
+			If there is no operator,
+			the hue is set to the given value.
+
+			Otherwise,
+			the hue is incremented or decremented, as appropriate,
+			by the given value.
+
+		<dt>''s'' or ''saturation''
+		<dt>''l'' or ''lightness''
+		<dt>''w'' or ''whiteness''
+		<dt>''b'' or ''blackness''
+		<dd>
+			Sets or adjusts the saturation, lightness, whiteness, or blackness of the <var>base color</var>,
+			when <var>base color</var> is interpreted as an HSL or HWB color, as appropriate.
+
+			If there is no operator,
+			the given channel is set to the given value.
+
+			If the operator is ''+'' or ''-'',
+			the given channel is incremented or decremented by the given value.
+
+			If the operator is ''*'',
+			the given channel is multiplied by the given value.
+	</dl>
 
 
 <h3 id='tint-shade'>
