@@ -1363,6 +1363,26 @@ Modifying colors: the ''color()'' function</h2>
 	or else the +/- will be interpreted as part of the channel name or the value
 	by the CSS parser.
 
+	<div class='issue'>
+		More possibilities:
+
+		<ul>
+			<li>
+				Muted colors.  
+				Closure CSS Compiler computes a muted color from a FG and BG color: 
+				take the FG's hue, 
+				drop the FG saturation some amount, 
+				average FG and BG lightness.
+				I want more use-cases and visual examples of this being used.
+
+			<li>
+				Inverting a color.  Use-cases?  
+				Is this just done by inverting the r/g/b channels?
+				Is the ''contrast'' adjuster what people really mean when they ask for invert?
+		</ul>
+	</div>
+
+
 <h3 id='rgba-adjusters'>
 RGBA Adjustment</h3>
 
@@ -1658,11 +1678,6 @@ Guaranteeing Adequate Contrast: the ''constrast'' adjuster</h3>
 
 	Note: The contrast ratio of two colors is contained within the range [1,21],
 	where two identical colors are 1 and the ratio of white and black is 21.
-
-<!--
-	More possibilities:
-	* muted colors - given a FG and BG, take the FG's hue, drop the FG saturation some amount, blend FG and BG lightness.
--->
 
 
 <h2 id="transparency">

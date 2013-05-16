@@ -1454,7 +1454,27 @@ Modifying colors: the <a data-autolink="maybe" class="css" href="#color-function
 	or else the +/- will be interpreted as part of the channel name or the value
 	by the CSS parser.
 
-</p><h3 id="rgba-adjusters" data-level="4.1"><span class="secno">4.1 </span>
+	</p><div class="issue">
+		More possibilities:
+
+<p>		</p><ul>
+			<li>
+				Muted colors.  
+				Closure CSS Compiler computes a muted color from a FG and BG color: 
+				take the FG's hue, 
+				drop the FG saturation some amount, 
+				average FG and BG lightness.
+				I want more use-cases and visual examples of this being used.
+
+			</li><li>
+				Inverting a color.  Use-cases?  
+				Is this just done by inverting the r/g/b channels?
+				Is the <span data-autolink="maybe" class="css">contrast</span> adjuster what people really mean when they ask for invert?
+		</li></ul>
+	</div>
+
+
+<h3 id="rgba-adjusters" data-level="4.1"><span class="secno">4.1 </span>
 RGBA Adjustment</h3>
 
 <p>	The most basic set of <a data-autolink="link" class="production" href="#color-adjuster-production"><var>&lt;color-adjuster&gt;</var></a>s modify the color's channels directly,
@@ -1750,11 +1770,6 @@ Guaranteeing Adequate Contrast: the <span data-autolink="maybe" class="css">cons
 <p class="note">	Note: The contrast ratio of two colors is contained within the range [1,21],
 	where two identical colors are 1 and the ratio of white and black is 21.
 
-<!--
-	More possibilities:
-	* muted colors - given a FG and BG, take the FG's hue, drop the FG saturation some amount, blend FG and BG lightness.
--->
-
 
 </p><h2 id="transparency" data-level="5"><span class="secno">5 </span>
 Transparency: the <a data-autolink="property" class="property" title="opacity" href="#opacity">opacity</a> property</h2>
@@ -2023,7 +2038,7 @@ Normative References</h3>
 
 <h3 id="informative" class="no-num no-ref">
 Informative References</h3>
-<div data-fill-with="informative-references"><dl><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
+<div data-fill-with="informative-references"><dl><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd></dl></div>
 
 <h2 id="index" class="no-num no-ref">
 Index</h2>
