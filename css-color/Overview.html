@@ -106,31 +106,31 @@ Parts of this work may be from an existing specification document.  If so, those
 <h2 id="contents" class="no-num no-toc no-ref">Table of contents</h2>
 <div data-fill-with="table-of-contents"><ul class="toc"><li><a href="#introduction"><span class="secno">1 </span>
 Introduction</a></li><li><a href="#the-color-property"><span class="secno">2 </span>
-Foreground color: the <span data-autolink="property" class="property" title="color">color</span> property</a></li><li><a href="#color-type"><span class="secno">3 </span>
-The <span data-autolink="link" class="production"><var>&lt;color&gt;</var></span> type</a><ul class="toc"><li><a href="#the-rgba-function"><span class="secno">3.1 </span>
-The RGB functional notations: <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a> and <a data-autolink="maybe" class="css" href="#rgba-function">rgba()</a></a></li><li><a href="#hex-notation"><span class="secno">3.2 </span>
+Foreground color: the <span data-autolink="property" href="#color" class="property" title="color">color</span> property</a></li><li><a href="#color-type"><span class="secno">3 </span>
+The <span data-autolink="link" href="#color-production" class="production"><var>&lt;color&gt;</var></span> type</a><ul class="toc"><li><a href="#the-rgba-function"><span class="secno">3.1 </span>
+The RGB functional notations: <span data-autolink="maybe" href="#rgb-function" class="css">rgb()</span> and <span data-autolink="maybe" href="#rgba-function" class="css">rgba()</span></a></li><li><a href="#hex-notation"><span class="secno">3.2 </span>
 The RGB hexadecimal notations: <span data-autolink="maybe" class="css">#RRGGBB</span></a></li><li><a href="#the-hsl-notation"><span class="secno">3.3 </span>
-The HSL functional notations: <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a> and <a data-autolink="maybe" class="css" href="#hsla-function">hsla()</a></a><ul class="toc"><li><a href="#hsl-to-rgb"><span class="secno">3.3.1 </span>
+The HSL functional notations: <span data-autolink="maybe" href="#hsl-function" class="css">hsl()</span> and <span data-autolink="maybe" href="#hsla-function" class="css">hsla()</span></a><ul class="toc"><li><a href="#hsl-to-rgb"><span class="secno">3.3.1 </span>
 Converting HSL colors to RGB colors</a></li><li><a href="#hsl-examples"><span class="secno">3.3.2 </span>
 Examples of HSL colors</a></li></ul></li><li><a href="#the-hwb-notation"><span class="secno">3.4 </span>
-The HWB functional notation: <a data-autolink="maybe" class="css" href="#hwb-function">hwb()</a></a><ul class="toc"><li><a href="#hwb-to-rgb"><span class="secno">3.4.1 </span>
+The HWB functional notation: <span data-autolink="maybe" href="#hwb-function" class="css">hwb()</span></a><ul class="toc"><li><a href="#hwb-to-rgb"><span class="secno">3.4.1 </span>
 Converting HWB colors to RGB colors</a></li><li><a href="#hwb-examples"><span class="secno">3.4.2 </span>
 Examples of HWB Colors</a></li></ul></li><li><a href="#grays"><span class="secno">3.5 </span>
-Specifying grays: the <a data-autolink="maybe" class="css" href="#gray-function">gray()</a> functional notation</a></li><li><a href="#named-colors"><span class="secno">3.6 </span>
+Specifying grays: the <span data-autolink="maybe" href="#gray-function" class="css">gray()</span> functional notation</a></li><li><a href="#named-colors"><span class="secno">3.6 </span>
 Named Colors</a><ul class="toc"><li><a href="#transparent-color"><span class="secno">3.6.1 </span>
-The <a data-autolink="maybe" class="css" href="#transparent">transparent</a> keyword</a></li><li><a href="#currentcolor-color"><span class="secno">3.6.2 </span>
-The <a data-autolink="maybe" class="css" href="#currentcolor">currentcolor</a> keyword</a></li><li><a href="#simple-hues"><span class="secno">3.6.3 </span>
-Simple Named Hues: the <span data-autolink="link" class="production"><var>&lt;named-hue&gt;</var></span> term</a></li></ul></li><li><a href="#notes"><span class="secno">3.7 </span>
+The <span data-autolink="maybe" href="#transparent" class="css">transparent</span> keyword</a></li><li><a href="#currentcolor-color"><span class="secno">3.6.2 </span>
+The <span data-autolink="maybe" href="#currentcolor" class="css">currentcolor</span> keyword</a></li><li><a href="#simple-hues"><span class="secno">3.6.3 </span>
+Simple Named Hues: the <span data-autolink="link" href="#named-hue-production" class="production"><var>&lt;named-hue&gt;</var></span> term</a></li></ul></li><li><a href="#notes"><span class="secno">3.7 </span>
 Notes on using colors</a></li></ul></li><li><a href="#modifying-colors"><span class="secno">4 </span>
-Modifying colors: the <a data-autolink="maybe" class="css" href="#color-function">color()</a> function</a><ul class="toc"><li><a href="#rgba-adjusters"><span class="secno">4.1 </span>
+Modifying colors: the <span data-autolink="maybe" href="#color-function" class="css">color()</span> function</a><ul class="toc"><li><a href="#rgba-adjusters"><span class="secno">4.1 </span>
 RGBA Adjustment</a></li><li><a href="#hsl-hwb-adjusters"><span class="secno">4.2 </span>
 HSL/HWB Adjustment</a></li><li><a href="#tint-shade-adjusters"><span class="secno">4.3 </span>
 Tints and Shades: the <span data-autolink="maybe" class="css">tint</span> and <span data-autolink="maybe" class="css">shade</span> adjusters</a></li><li><a href="#blend-adjuster"><span class="secno">4.4 </span>
 Color Blending: the <span data-autolink="maybe" class="css">blend</span> and <span data-autolink="maybe" class="css">blenda</span> adjusters</a></li><li><a href="#contrast-adjuster"><span class="secno">4.5 </span>
 Guaranteeing Adequate Contrast: the <span data-autolink="maybe" class="css">constrast</span> adjuster</a></li></ul></li><li><a href="#transparency"><span class="secno">5 </span>
-Transparency: the <span data-autolink="property" class="property" title="opacity">opacity</span> property</a><ul class="toc"><li><a href="#alpha"><span class="secno">5.1 </span>
+Transparency: the <span data-autolink="property" href="#opacity" class="property" title="opacity">opacity</span> property</a><ul class="toc"><li><a href="#alpha"><span class="secno">5.1 </span>
 Simple alpha compositing</a></li></ul></li><li><a href="#color-management"><span class="secno">6 </span>
-Color Management: the <span data-autolink="property" class="property" title="color-correction">color-correction</span> property</a></li><li><a href="#sample"><span class="secno">7 </span>
+Color Management: the <span data-autolink="property" href="#color-correction" class="property" title="color-correction">color-correction</span> property</a></li><li><a href="#sample"><span class="secno">7 </span>
 Sample style sheet for (X)HTML</a></li><li><a href="#system-colors">
 Appendix A: Deprecated CSS System Colors</a></li><li><a href="#acknowledgments">
 Acknowledgments</a></li><li><a href="#changes"><span class="secno">8 </span>
@@ -2020,7 +2020,7 @@ Index</h2>
 
 <h2 id="property-index" class="no-num no-ref">
 Property index</h2>
-<div data-fill-with="property-index"><table class="proptable"><thead><tr><th scope="col">Name</th><th scope="col">Values</th><th scope="col">Initial</th><th scope="col">Applies To</th><th scope="col">Inh.</th><th scope="col">%ages</th><th scope="col">Media</th><th scope="col">Computed Value</th><th scope="col">Value</th></tr><tr><th scope="row"><a data-property="" data-autolink="link" href="#color">color</a></th><td></td><td>UA-defined, see prose</td><td>all elements</td><td>yes</td><td>N/A</td><td>visual</td><td>an RGBA color</td><td><a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a></td></tr><tr><th scope="row"><a data-property="" data-autolink="link" href="#opacity">opacity</a></th><td></td><td>1</td><td>all elements</td><td>no</td><td>N/A</td><td>visual</td><td>The specified value, clamped to the range [0,1].</td><td><a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a></td></tr><tr><th scope="row"><a data-property="" data-autolink="link" href="#color-correction">color-correction</a></th><td>auto | sRGB</td><td>auto</td><td>all elements</td><td>yes</td><td>N/A</td><td>visual</td><td>as specified</td><td></td></tr></thead></table></div>
+<div data-fill-with="property-index"><table class="proptable"><thead><tr><th scope="col">Name</th><th scope="col">Values</th><th scope="col">Initial</th><th scope="col">Applies To</th><th scope="col">Inh.</th><th scope="col">%ages</th><th scope="col">Media</th><th scope="col">Computed Value</th><th scope="col">Value</th></tr><tr><th scope="row"><a data-property="">color</a></th><td></td><td>UA-defined, see prose</td><td>all elements</td><td>yes</td><td>N/A</td><td>visual</td><td>an RGBA color</td><td><a data-autolink="link" class="production"><var>&lt;color&gt;</var></a></td></tr><tr><th scope="row"><a data-property="">opacity</a></th><td></td><td>1</td><td>all elements</td><td>no</td><td>N/A</td><td>visual</td><td>The specified value, clamped to the range [0,1].</td><td><a data-autolink="link" class="production"><var>&lt;alpha-value&gt;</var></a></td></tr><tr><th scope="row"><a data-property="">color-correction</a></th><td>auto | sRGB</td><td>auto</td><td>all elements</td><td>yes</td><td>N/A</td><td>visual</td><td>as specified</td><td></td></tr></thead></table></div>
 
 
 </body></html>
