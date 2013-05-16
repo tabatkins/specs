@@ -68,9 +68,9 @@ dt { font-weight: bold }
 <div class="head">
 	<p data-fill-with="logo"></p>
 	<h1 class="p-name no-ref" id="title">CSS Color Of My Dreams</h1>
-	<h2 class="no-num no-toc no-ref" id="subtitle">Throw-Shit-Against-The-Wall-And-See-If-It-Sticks Draft,
+	<h2 class="no-num no-toc no-ref" id="subtitle">A Collection of Interesting Ideas,
 		<span class="dt-updated"><span class="value-title" title="20130516">16 May 2013</span></span></h2>
-	<div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/DREAM-css-color-4-20130516" class="u-url">http://www.w3.org/TR/2013/DREAM-css-color-4-20130516</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html</a>
+	<div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/DREAM-css-color-4-20130516/" class="u-url">http://www.w3.org/TR/2013/DREAM-css-color-4-20130516/</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html</a>
 </dd><dt>Feedback:</dt>
     <dd><a href="mailto:www-style@w3.org?subject=%5Bcss-color%5D%20feedback">www-style@w3.org</a> 
         with subject line 
@@ -212,11 +212,11 @@ The <a data-autolink="link" class="production" href="#color-production"><var>&lt
 
 <p>	CSS colors are represented by a triplet of values &#8212;
 	red, green, and blue &#8212;
-	identifying a point in the sRGB color space <a data-autolink="biblio" U00022="" data-biblio-type="normative" title="SRGB" href="#srgb">[SRGB]</a>.
+	identifying a point in the sRGB color space <a data-autolink="biblio" data-biblio-type="normative" title="SRGB" href="#srgb">[SRGB]</a>.
 	This is an internationally-recognized, device-independent color space,
 	and so is useful for specifying colors that will be displayed on a computer screen,
 	but is also useful for displaying colors on other types of devices, like printers.
-	(See <a data-autolink="biblio" U00022="" data-biblio-type="informative" title="COLORIMETRY" href="#colorimetry">[COLORIMETRY]</a>.)
+	(See <a data-autolink="biblio" data-biblio-type="informative" title="COLORIMETRY" href="#colorimetry">[COLORIMETRY]</a>.)
 	Additionally, every color is accompanied by an alpha component,
 	indicating how transparent it is,
 	and how much of the backdrop one can see behind the color.
@@ -1227,7 +1227,7 @@ The <a data-autolink="maybe" class="css" href="#currentcolor">currentcolor</a> k
 </pre>	</div>
 
 	<div class="example">
-		For example, the <a data-autolink="property" class="property" title="text-emphasis-color">text-emphasis-color</a> property <a data-autolink="biblio" U00022="" data-biblio-type="informative" title="CSS3-TEXT-DECOR" href="#css3-text-decor">[CSS3-TEXT-DECOR]</a>,
+		For example, the <a data-autolink="property" class="property" title="text-emphasis-color">text-emphasis-color</a> property <a data-autolink="biblio" data-biblio-type="informative" title="CSS3-TEXT-DECOR" href="#css3-text-decor">[CSS3-TEXT-DECOR]</a>,
 		whose initial value is <a data-autolink="maybe" class="css" href="#currentcolor">currentcolor</a>,
 		by default matches the text color
 		even as the <a data-autolink="property" class="property" title="color" href="#color">color</a> property changes across elements.
@@ -1367,7 +1367,7 @@ Notes on using colors</h3>
 
 <p>	Although colors can add significant amounts of information to
 	document and make them more readable, please consider the 
-	W3C Web Content Accessibility Guidelines <a data-autolink="biblio" U00022="" data-biblio-type="informative" title="WCAG20" href="#wcag20">[WCAG20]</a> when including color in your documents.
+	W3C Web Content Accessibility Guidelines <a data-autolink="biblio" data-biblio-type="informative" title="WCAG20" href="#wcag20">[WCAG20]</a> when including color in your documents.
 
 </p><p>	</p><ul>
 		<li><a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#visual-audio-contrast-without-color"><em>1.4.1 Use of Color:</em> Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element</a>
@@ -1672,17 +1672,17 @@ Transparency: the <a data-autolink="property" class="property" title="opacity" h
 	If the element is in a context where the <a data-autolink="property" class="property" title="z-index">z-index</a> property applies,
 	the <a data-autolink="maybe" class="css" href="#color-correction-auto">auto</a> value is treated as <a data-autolink="maybe" class="css">0</a> for the element.
 	See <a href="http://www.w3.org/TR/CSS21/visuren.html#layers">section 9.9</a> 
-	and <a href="http://www.w3.org/TR/CSS21/zindex.html">Appendix E</a> of <a data-autolink="biblio" U00022="" data-biblio-type="normative" title="CSS21" href="#css21">[CSS21]</a> 
+	and <a href="http://www.w3.org/TR/CSS21/zindex.html">Appendix E</a> of <a data-autolink="biblio" data-biblio-type="normative" title="CSS21" href="#css21">[CSS21]</a> 
 	for more information on stacking contexts.  
 	The rules in this paragraph do not apply to SVG elements, 
-	since SVG has its own <a href="http://www.w3.org/TR/SVG11/render.html">rendering model</a> (<a data-autolink="biblio" U00022="" data-biblio-type="normative" title="SVG11" href="#svg11">[SVG11]</a>, Chapter 3).
+	since SVG has its own <a href="http://www.w3.org/TR/SVG11/render.html">rendering model</a> (<a data-autolink="biblio" data-biblio-type="normative" title="SVG11" href="#svg11">[SVG11]</a>, Chapter 3).
 
 
 </p><h3 id="alpha" data-level="5.1"><span class="secno">5.1 </span>
 Simple alpha compositing</h3>
 
 <p>	When drawing, implementations must handle alpha 
-	according to the rules in <a href="http://www.w3.org/TR/2003/REC-SVG11-20030114/masking.html#SimpleAlphaBlending">Section 14.2 Simple alpha compositing</a> of <a data-autolink="biblio" U00022="" data-biblio-type="normative" title="SVG11" href="#svg11">[SVG11]</a>. 
+	according to the rules in <a href="http://www.w3.org/TR/2003/REC-SVG11-20030114/masking.html#SimpleAlphaBlending">Section 14.2 Simple alpha compositing</a> of <a data-autolink="biblio" data-biblio-type="normative" title="SVG11" href="#svg11">[SVG11]</a>. 
 	(If the <a data-autolink="property" class="property" title="color-interpolation">color-interpolation</a> 
 	or <a data-autolink="property" class="property" title="color-rendering">color-rendering</a> properties mentioned in that section 
 	are not implemented or do not apply, implementations must act as though they have their initial values.)
@@ -1691,8 +1691,8 @@ Simple alpha compositing</h3>
 </p><h2 id="color-management" data-level="6"><span class="secno">6 </span>
 Color Management: the <a data-autolink="property" class="property" title="color-correction" href="#color-correction">color-correction</a> property</h2>
 
-<p>	CSS Level 1 (<a data-autolink="biblio" U00022="" data-biblio-type="informative" title="CSS1" href="#css1">[CSS1]</a>), CSS Level 2 (<a data-autolink="biblio" U00022="" data-biblio-type="normative" title="CSS21" href="#css21">[CSS21]</a>), and CSS Color Level 3 (<a data-autolink="biblio" U00022="" data-biblio-type="informative" title="CSS3COLOR" href="#css3color">[CSS3COLOR]</a>) 
-	define colors specified in CSS to be in the sRGB color space (<a data-autolink="biblio" U00022="" data-biblio-type="normative" title="SRGB" href="#srgb">[SRGB]</a>).  
+<p>	CSS Level 1 (<a data-autolink="biblio" data-biblio-type="informative" title="CSS1" href="#css1">[CSS1]</a>), CSS Level 2 (<a data-autolink="biblio" data-biblio-type="normative" title="CSS21" href="#css21">[CSS21]</a>), and CSS Color Level 3 (<a data-autolink="biblio" data-biblio-type="informative" title="CSS3COLOR" href="#css3color">[CSS3COLOR]</a>) 
+	define colors specified in CSS to be in the sRGB color space (<a data-autolink="biblio" data-biblio-type="normative" title="SRGB" href="#srgb">[SRGB]</a>).  
 	However, most or all existing Web browser implementations do not correct colors specified in HTML, CSS, or untagged images 
 	even when the proper correction is known.
 
@@ -1901,11 +1901,11 @@ References</h2>
 
 <h3 id="normative" class="no-num no-ref">
 Normative References</h3>
-<div data-fill-with="normative-references"><dl><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
+<div data-fill-with="normative-references"><dl><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd></dl></div>
 
 <h3 id="informative" class="no-num no-ref">
 Informative References</h3>
-<div data-fill-with="informative-references"><dl><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
+<div data-fill-with="informative-references"><dl><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
 
 <h2 id="index" class="no-num no-ref">
 Index</h2>
