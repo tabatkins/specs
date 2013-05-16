@@ -1529,9 +1529,14 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 			If the two hue angles are on opposite sides of the hue circle
 			(separated by 180 degrees),
 			take the clockwise path.
-			(This choice is arbitrary, and was chosen merely to provide an unambiguous answer.
+			If one of the colors is achromatic
+			(0% saturation, or sum of whiteness and blackness is at least 100%),
+			treat the hue as being identical to the hue of the other color,
+			so no visible hue transition takes place.
+			
+			Note: This choice is arbitrary, and was chosen merely to provide an unambiguous answer.
 			To achieve counter-clockwise behavior, 
-			adjust either color's hue angle by a small amount toward the desired direction.)
+			adjust either color's hue angle by a small amount toward the desired direction.
 
 			<div class='example'>
 				For example, blending ''yellow'' (hue angle ''60deg'') with 50% ''purple'' (hue angle ''300deg'')
