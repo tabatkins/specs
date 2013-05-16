@@ -1540,6 +1540,13 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 			(''blend'' ignores the alpha channel, leaving the <var>base color</var>’s alpha untouched.)
 	</dl>
 
+<!--
+	More possibilities:
+	* muted colors - given a FG and BG, take the FG's hue, drop the FG saturation some amount, blend FG and BG lightness.
+	* contrasting colors - draw a line in HWB space from base color to black/white (whichever contrasts more). 
+	    Find color with minimum contrast along the line. Colors between this and the maximum contrast are picked out by similarity %.
+-->
+
 
 <h2 id="transparency">
 Transparency: the 'opacity' property</h2>
