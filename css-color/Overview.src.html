@@ -1326,7 +1326,9 @@ Modifying colors: the ''color()'' function</h2>
 		    shade <<percentage>> |
 
 		    blend <<color>> <<percentage>> [rgb | hsl | hwb]? |
-		    blenda <<color>> <<percentage>> [rgb | hsl | hwb]?
+		    blenda <<color>> <<percentage>> [rgb | hsl | hwb]? |
+
+		    contrast <<percentage>>
 	</pre>
 
 	The first argument specifies the <var>base color</var>.
@@ -1542,11 +1544,113 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 			(''blend'' ignores the alpha channel, leaving the <var>base color</var>’s alpha untouched.)
 	</dl>
 
+
+<h3 id='contrast-adjuster'>
+Guaranteeing Adequate Contrast: the ''constrast'' adjuster</h3>
+
+	Guaranteeing that foreground and background colors contrast sufficiently is important,
+	but even if you know the mathematical definition of "appropriate contrast",
+	it's not trivial to calculate and figure out whether two arbitrary colors are good enough.
+	The ''contrast'' adjuster makes this easy,
+	automatically computing a color that is sufficiently contrasting with the <var>base color</var> to satisfy accessibility guidelines.
+
+	<dl>
+		<dt>''contrast <<percentage>>''
+		<dd>
+			Finds a color that contrasts with the <var>base color</var> suffficiently to satisfy accessibility guidelines,
+			using the definition of "contrast" given by <a href="http://www.w3.org/TR/WCAG/#visual-audio-contrast-contrast">WCAG 2.0 Guideline 1.4.3</a>.
+
+			The <<percentage>> specifies the desired similarity between the <var>base color</var> and the returned color.
+			''0%'' will return white or black
+			(whichever contrasts the <var>base color</var> more)
+			while ''100%'' will return the <var>minimum-contrast color</var>
+			(the closest color to the <var>base color</var> that still contrasts sufficiently).
+			Specifying a value less than ''0%'' or greater than ''100%'' is invalid and a syntax error.
+
+			<ol>
+				<li>
+					Compute the <a>luminance</a> of the <var>base color</var>.
+					If it's less than .5,
+					the <var>maximum-contrast color</var> is ''hwb(X, 100%, 0%)'',
+					where X is the hue angle of the <var>base color</var>.
+					Otherwise,
+					the <var>maximum-contrast color</var> is ''hwb(X, 0%, 100%)'',
+					where X is the hue angle of the <var>base color</var>.
+
+					Note: In other words, the <var>maximum-contrast color</var> is either white or black,
+					but with the hue set up correctly for the next step's linear interpolation.
+
+				<li>
+					Looking only at colors that are linear interpolations in HWB space (a la the ''blend'' adjuster) between the <var>base color</var>
+					and the <var>maximum-contrast color</var>,
+					find the color with the smallest <a>contrast ratio</a> that is greater than 4.5.
+					This is the <var>minimum-contrast color</var>.
+					If there is no color with contrast ratio greather than 4.5,
+					return the <var>maximum-contrast color</var> immediately.
+
+					Note: 4.5 is the contrast ratio required by WCAG for Level AA contrast.
+
+					Note: Using this method, the contrast ratio will be monotonically non-increasing 
+					as you go from the <var>maximum-contrast color</var> to the <var>base color</var>,
+					so a simple binary search will identify the <var>minimum-contrast color</var> in a small number of iterations.
+
+				<li>
+					Blend the <var>minimum-contrast color</var> and <var>maximum-contrast color</var> according to the specified <<percentage>>,
+					as if ''color(<var>minimum-contrast color</var> blend <var>maximum-contrast color</var> <<percentage>> hwb)'' were specified.
+					Return the blended color.
+			</ol>
+	</dl>
+
+	<p>
+		To compute the <dfn>luminance</dfn> of a color:
+
+	<ol>
+		<li>
+			Scale the red, green, and blue channels of the color to the range [0,1].
+
+		<li>
+			For each channel,
+			if the channel's value is less than or equal to 0.03928,
+			set the channel's value to 
+			<code>channel / 12.92</code>.
+			Otherwise, set the channel's value to 
+			<code>((channel + 0.055) / 1.055) ^ 2.4</code>.
+
+			Note: This reverses the logarithmic power scaling of the sRGB gamut,
+			so the value of the channel is approximately linear related to the amount of light required to represent it.
+
+		<li>
+			The luminance is:
+
+			<code>0.2126*R + 0.7152*G + 0.0722*B</code>
+
+			where R, G, and B are the adjusted red, green, and blue channels from the previous step.
+	</ol>
+
+	Note: The luminance of a color within the sRGB gamut is contained within the range [0,1],
+	where black is 0 and white is 1.
+
+	<p>
+		To compute the <dfn>contrast ratio</dfn> of two colors:
+
+	<ol>
+		<li>
+			Compute the <a>luminance</a> of both colors.
+
+		<li>
+			The contrast ratio is:
+
+			<code>(L1 + 0.05) / (L2 + 0.05)</code>
+
+			where L1 is the smaller of the two luminances, and L2 is the larger.
+	</ol>
+
+	Note: The contrast ratio of two colors is contained within the range [1,21],
+	where two identical colors are 1 and the ratio of white and black is 21.
+
 <!--
 	More possibilities:
 	* muted colors - given a FG and BG, take the FG's hue, drop the FG saturation some amount, blend FG and BG lightness.
-	* contrasting colors - draw a line in HWB space from base color to black/white (whichever contrasts more). 
-	    Find color with minimum contrast along the line. Colors between this and the maximum contrast are picked out by similarity %.
 -->
 
 
