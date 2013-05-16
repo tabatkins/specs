@@ -108,21 +108,21 @@ Parts of this work may be from an existing specification document.  If so, those
 Introduction</a></li><li><a href="#the-color-property"><span class="secno">2 </span>
 Foreground color: the <span data-autolink="property" class="property" title="color">color</span> property</a></li><li><a href="#color-type"><span class="secno">3 </span>
 The <span data-autolink="link" class="production"><var>&lt;color&gt;</var></span> type</a><ul class="toc"><li><a href="#the-rgba-function"><span class="secno">3.1 </span>
-The RGB functional notations: <span data-autolink="maybe" class="css">rgb()</span> and <span data-autolink="maybe" class="css">rgba()</span></a></li><li><a href="#hex-notation"><span class="secno">3.2 </span>
+The RGB functional notations: <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a> and <a data-autolink="maybe" class="css" href="#rgba-function">rgba()</a></a></li><li><a href="#hex-notation"><span class="secno">3.2 </span>
 The RGB hexadecimal notations: <span data-autolink="maybe" class="css">#RRGGBB</span></a></li><li><a href="#the-hsl-notation"><span class="secno">3.3 </span>
-The HSL functional notations: <span data-autolink="maybe" class="css">hsl()</span> and <span data-autolink="maybe" class="css">hsla()</span></a><ul class="toc"><li><a href="#hsl-to-rgb"><span class="secno">3.3.1 </span>
+The HSL functional notations: <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a> and <a data-autolink="maybe" class="css" href="#hsla-function">hsla()</a></a><ul class="toc"><li><a href="#hsl-to-rgb"><span class="secno">3.3.1 </span>
 Converting HSL colors to RGB colors</a></li><li><a href="#hsl-examples"><span class="secno">3.3.2 </span>
 Examples of HSL colors</a></li></ul></li><li><a href="#the-hwb-notation"><span class="secno">3.4 </span>
-The HWB functional notation: <span data-autolink="maybe" class="css">hwb()</span></a><ul class="toc"><li><a href="#hwb-to-rgb"><span class="secno">3.4.1 </span>
+The HWB functional notation: <a data-autolink="maybe" class="css" href="#hwb-function">hwb()</a></a><ul class="toc"><li><a href="#hwb-to-rgb"><span class="secno">3.4.1 </span>
 Converting HWB colors to RGB colors</a></li><li><a href="#hwb-examples"><span class="secno">3.4.2 </span>
 Examples of HWB Colors</a></li></ul></li><li><a href="#grays"><span class="secno">3.5 </span>
-Specifying grays: the <span data-autolink="maybe" class="css">gray()</span> functional notation</a></li><li><a href="#named-colors"><span class="secno">3.6 </span>
+Specifying grays: the <a data-autolink="maybe" class="css" href="#gray-function">gray()</a> functional notation</a></li><li><a href="#named-colors"><span class="secno">3.6 </span>
 Named Colors</a><ul class="toc"><li><a href="#transparent-color"><span class="secno">3.6.1 </span>
-The <span data-autolink="maybe" class="css">transparent</span> keyword</a></li><li><a href="#currentcolor-color"><span class="secno">3.6.2 </span>
-The <span data-autolink="maybe" class="css">currentcolor</span> keyword</a></li><li><a href="#simple-hues"><span class="secno">3.6.3 </span>
+The <a data-autolink="maybe" class="css" href="#transparent">transparent</a> keyword</a></li><li><a href="#currentcolor-color"><span class="secno">3.6.2 </span>
+The <a data-autolink="maybe" class="css" href="#currentcolor">currentcolor</a> keyword</a></li><li><a href="#simple-hues"><span class="secno">3.6.3 </span>
 Simple Named Hues: the <span data-autolink="link" class="production"><var>&lt;named-hue&gt;</var></span> term</a></li></ul></li><li><a href="#notes"><span class="secno">3.7 </span>
 Notes on using colors</a></li></ul></li><li><a href="#modifying-colors"><span class="secno">4 </span>
-Modifying colors: the <span data-autolink="maybe" class="css">color()</span> function</a><ul class="toc"><li><a href="#rgba-adjusters"><span class="secno">4.1 </span>
+Modifying colors: the <a data-autolink="maybe" class="css" href="#color-function">color()</a> function</a><ul class="toc"><li><a href="#rgba-adjusters"><span class="secno">4.1 </span>
 RGBA Adjustment</a></li><li><a href="#hsl-hwb-adjusters"><span class="secno">4.2 </span>
 HSL/HWB Adjustment</a></li><li><a href="#tint-shade-adjusters"><span class="secno">4.3 </span>
 Tints and Shades: the <span data-autolink="maybe" class="css">tint</span> and <span data-autolink="maybe" class="css">shade</span> adjusters</a></li><li><a href="#blend-adjuster"><span class="secno">4.4 </span>
@@ -191,7 +191,7 @@ Foreground color: the <a data-autolink="property" class="property" title="color"
 <table class="propdef"><tbody><tr><th>Name:</th><td><dfn id="color">color</dfn></td></tr><tr><th>Value:</th><td><a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a></td></tr><tr><th>Initial:</th><td>UA-defined, see prose</td></tr><tr><th>Applies To:</th><td>all elements</td></tr><tr><th>Inherited:</th><td>yes</td></tr><tr><th>Percentages:</th><td>N/A</td></tr><tr><th>Media:</th><td>visual</td></tr><tr><th>Computed Value:</th><td>an RGBA color</td></tr></tbody></table>
 <p>	This property describes the foreground color of an element's text content. 
 	In addition, it provides the value that <a data-autolink="link" href="#currentcolor">currentcolor</a> resolves to.
-	If the <a data-autolink="link" href="#currentcolor">currentcolor</a> keyword is set on the <a data-autolink="property" class="property" title="color" href="#color">color</a> property itself, it is treated as <a data-autolink="maybe" class="css">color: inherit</a>.
+	If the <a data-autolink="link" href="#currentcolor">currentcolor</a> keyword is set on the <a data-autolink="property" class="property" title="color" href="#color">color</a> property itself, it is treated as <span data-autolink="maybe" class="css">color: inherit</span>.
 
 </p><p>	The initial value of this property is a UA-defined color.
 	In many existing user-agents, it is <a data-autolink="maybe" class="css" href="#black">black</a>.
@@ -238,7 +238,7 @@ The <a data-autolink="link" class="production" href="#color-production"><var>&lt
 </p><p>	In total, a <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a> can be expressed with
 	the <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a> and <a data-autolink="maybe" class="css" href="#rgba-function">rgba()</a> functions,
 	the <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a> and <a data-autolink="maybe" class="css" href="#hsla-function">hsla()</a> functions,
-	the <a data-autolink="maybe" class="css">hswb()</a> notation,
+	the <span data-autolink="maybe" class="css">hswb()</span> notation,
 	the <a data-autolink="link" href="#hex-color">hex color</a> notations,
 	or as a <a data-autolink="link" href="#named-color">named color</a>.
 
@@ -253,12 +253,12 @@ The RGB functional notations: <a data-autolink="maybe" class="css" href="#rgb-fu
 <dfn data-export="" id="alpha-value-production">&lt;alpha-value&gt;</dfn> = <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>
 </pre>
 <p>	The three <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>s specify the red, green, and blue channels of the color, respectively.
-	<a data-autolink="maybe" class="css">0%</a> represents the minimum value for that color channel in the sRGB gamut,
-	and <a data-autolink="maybe" class="css">100%</a> represents the maximum value.
+	<span data-autolink="maybe" class="css">0%</span> represents the minimum value for that color channel in the sRGB gamut,
+	and <span data-autolink="maybe" class="css">100%</span> represents the maximum value.
 	A <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> is equivalent to a <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>,
 	but with a different range:
-	<a data-autolink="maybe" class="css">0</a> again represents the minimum value for the color channel,
-	but <a data-autolink="maybe" class="css">255</a> represents the maximum.
+	<span data-autolink="maybe" class="css">0</span> again represents the minimum value for the color channel,
+	but <span data-autolink="maybe" class="css">255</span> represents the maximum.
 	These values come from the fact that emany graphics engines store the color channels internally as a single byte,
 	which can hold integers between 0 and 255.
 	However, the CSS syntax allows full <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a>s,
@@ -266,20 +266,20 @@ The RGB functional notations: <a data-autolink="maybe" class="css" href="#rgb-fu
 	for authoring convenience.
 
 </p><p>	Some devices can output colors technically outside of the sRGB gamut,
-	represented by channels with values less than <a data-autolink="maybe" class="css">0%</a> or greater than <a data-autolink="maybe" class="css">100%</a>.
+	represented by channels with values less than <span data-autolink="maybe" class="css">0%</span> or greater than <span data-autolink="maybe" class="css">100%</span>.
 	For this reason, values outside of the 0%-100% range are allowed,
 	but are clamped to the device's gamut.)
 
 </p><p>	The final argument, the <a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a>, specifies the alpha of the color.
-	If given as a <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a>, the useful range of the value is <a data-autolink="maybe" class="css">0</a>
+	If given as a <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a>, the useful range of the value is <span data-autolink="maybe" class="css">0</span>
 	(representing a fully transparent color)
-	to <a data-autolink="maybe" class="css">1</a>
+	to <span data-autolink="maybe" class="css">1</span>
 	(representing a fully opaque color).
-	If given as a <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>, <a data-autolink="maybe" class="css">0%</a> represents a fully transparent color,
-	while <a data-autolink="maybe" class="css">100%</a> represents a fully opaque color.
+	If given as a <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>, <span data-autolink="maybe" class="css">0%</span> represents a fully transparent color,
+	while <span data-autolink="maybe" class="css">100%</span> represents a fully opaque color.
 	Values outside these ranges are not invalid,
 	but are clamped to the ranges defined here at computed-value time.
-	If omitted, it defaults to <a data-autolink="maybe" class="css">100%</a>.
+	If omitted, it defaults to <span data-autolink="maybe" class="css">100%</span>.
 
 </p><p>	For legacy purposes,
 	an <a data-autolink="maybe" class="css" href="#rgba-function">rgba()</a> function is defined.
@@ -290,7 +290,7 @@ The RGB functional notations: <a data-autolink="maybe" class="css" href="#rgb-fu
 
 </p><pre class="prod"><dfn data-export="" id="rgba-function">rgba()</dfn> = rgba( <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#component-production"><var>&lt;component&gt;</var></a>, <a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a>)</pre>
 <h3 id="hex-notation" data-level="3.2"><span class="secno">3.2 </span>
-The RGB hexadecimal notations: <a data-autolink="maybe" class="css">#RRGGBB</a></h3>
+The RGB hexadecimal notations: <span data-autolink="maybe" class="css">#RRGGBB</span></h3>
 
 <p>	The CSS <dfn data-export="" id="hex-color">hex color</dfn> notation allows a color to be specified by giving the channels as hexadecimal numbers,
 	which is similar to how colors are often written directly in computer code.
@@ -299,7 +299,7 @@ The RGB hexadecimal notations: <a data-autolink="maybe" class="css">#RRGGBB</a><
 </p><p>	The syntax of a <a data-autolink="link" href="#hex-color">hex color</a> is a <a data-autolink="link" class="production"><var>&lt;hash&gt;</var></a> token whose value consists of 3, 4, 6, or 8 hexadecimal digits.
 	In other words, a hex color is written as a hash character, "#", 
 	followed by some number of digits 0-9 or letters a-f
-	(the case of the letters doesn't matter - <a data-autolink="maybe" class="css">#00ff00</a> is identical to <a data-autolink="maybe" class="css">#00FF00</a>).
+	(the case of the letters doesn't matter - <span data-autolink="maybe" class="css">#00ff00</span> is identical to <span data-autolink="maybe" class="css">#00FF00</span>).
 
 </p><p>	The number of hex digits given determines how to decode the hex notation into an RGB color:
 
@@ -308,15 +308,15 @@ The RGB hexadecimal notations: <a data-autolink="maybe" class="css">#RRGGBB</a><
 		</dt><dd>
 			The first pair of digits, interpreted as a hexadecimal number,
 			specifies the red channel of the color,
-			where <a data-autolink="maybe" class="css">00</a> represents the minimum value
-			and <a data-autolink="maybe" class="css">ff</a> (255 in decimal) represents the maximum.
+			where <span data-autolink="maybe" class="css">00</span> represents the minimum value
+			and <span data-autolink="maybe" class="css">ff</span> (255 in decimal) represents the maximum.
 			The next pair of digits, interpreted in the same way,
 			specifies the green channel,
 			and the last pair specifies the blue.
 			The alpha channel of the color is fully opaque.
 
 			<div class="example">
-				In other words, <a data-autolink="maybe" class="css">#00ff00</a> represents the same color as <a data-autolink="maybe" class="css">rgb(0, 255, 0)</a> (a lime green).
+				In other words, <span data-autolink="maybe" class="css">#00ff00</span> represents the same color as <span data-autolink="maybe" class="css">rgb(0, 255, 0)</span> (a lime green).
 			</div>
 
 		</dd><dt>8 digits
@@ -324,11 +324,11 @@ The RGB hexadecimal notations: <a data-autolink="maybe" class="css">#RRGGBB</a><
 			The first 6 digits are interpreted identically to the 6-digit notation.
 			The last pair of digits, interpreted as a hexadecimal number,
 			specifies the alpha channel of the color,
-			where <a data-autolink="maybe" class="css">00</a> represents a fully transparent color
-			and <a data-autolink="maybe" class="css">ff</a> represent a fully opaque color.
+			where <span data-autolink="maybe" class="css">00</span> represents a fully transparent color
+			and <span data-autolink="maybe" class="css">ff</span> represent a fully opaque color.
 
 			<div class="example">
-				In other words, <a data-autolink="maybe" class="css">#0000ffcc</a> represents the same color as <a data-autolink="maybe" class="css">rgba(0, 0, 100%, 80%)</a> (a slightly-transparent blue).
+				In other words, <span data-autolink="maybe" class="css">#0000ffcc</span> represents the same color as <span data-autolink="maybe" class="css">rgba(0, 0, 100%, 80%)</span> (a slightly-transparent blue).
 			</div>
 
 		</dd><dt>3 digits
@@ -336,15 +336,15 @@ The RGB hexadecimal notations: <a data-autolink="maybe" class="css">#RRGGBB</a><
 			This is a shorter variant of the 6-digit notation.
 			The first digit, interpreted as a hexadecimal number,
 			specifies the red channel of the color,
-			where <a data-autolink="maybe" class="css">0</a> represents the minimum value
-			and <a data-autolink="maybe" class="css">f</a> represents the maximum.
+			where <span data-autolink="maybe" class="css">0</span> represents the minimum value
+			and <span data-autolink="maybe" class="css">f</span> represents the maximum.
 			The next two digits represent the green and blue channels, respectively,
 			in the same way.
 			The alpha channel of the color is fully opaque.
 
 			<div class="example">
 				This syntax is often explained by saying that it's identical to a 6-digit notation obtained by "duplicating" all of the digits.
-				For example, the notation <a data-autolink="maybe" class="css">#123</a> specifies the same color as the notation <a data-autolink="maybe" class="css">#112233</a>.
+				For example, the notation <span data-autolink="maybe" class="css">#123</span> specifies the same color as the notation <span data-autolink="maybe" class="css">#112233</span>.
 				This method of specifying a color has lower "resolution" than the 6-digit notation;
 				there are only 4096 possible colors expressible in the 3-digit hex syntax,
 				as opposed to approximately 17 million in 6-digit hex syntax.
@@ -356,8 +356,8 @@ The RGB hexadecimal notations: <a data-autolink="maybe" class="css">#RRGGBB</a><
 			"expanded" in the same way as the 3-digit notation is.
 			The first digit, interpreted as a hexadecimal number,
 			specifies the red channel fo the color,
-			where <a data-autolink="maybe" class="css">0</a> represents the minimum value
-			and <a data-autolink="maybe" class="css">f</a> represents the maximum.
+			where <span data-autolink="maybe" class="css">0</span> represents the minimum value
+			and <span data-autolink="maybe" class="css">f</span> represents the maximum.
 			The next three digits represent the green, blue, and alpha channels, respectively.
 	</dd></dl>
 
@@ -384,29 +384,29 @@ The HSL functional notations: <a data-autolink="maybe" class="css" href="#hsl-fu
 <p>	The first argument specifies the hue.
 	Hue is represented as an angle of the color circle
 	(the rainbow, twisted around into a circle).
-	The angle <a data-autolink="maybe" class="css">0deg</a> represents red
-	(as does <a data-autolink="maybe" class="css">360deg</a>, <a data-autolink="maybe" class="css">720deg</a>, etc.),
+	The angle <span data-autolink="maybe" class="css">0deg</span> represents red
+	(as does <span data-autolink="maybe" class="css">360deg</span>, <span data-autolink="maybe" class="css">720deg</span>, etc.),
 	and the rest of the hues are spread around the circle,
-	so <a data-autolink="maybe" class="css">120deg</a> represents green,
-	<a data-autolink="maybe" class="css">240deg</a> represents blue, etc.
+	so <span data-autolink="maybe" class="css">120deg</span> represents green,
+	<span data-autolink="maybe" class="css">240deg</span> represents blue, etc.
 	Because this value is so often given in degrees,
 	the argument can also be given as a number,
 	which is interpreted as an a number of degrees.
 	Alternately, as many people have trouble associating numbers with hues,
 	a <a data-autolink="link" class="production" href="#named-hue-production"><var>&lt;named-hue&gt;</var></a> may be used to give the hue.
 	This allows for the hue to be specified with easy-to-understand terms,
-	like <a data-autolink="maybe" class="css" href="#red">red</a> or <a data-autolink="maybe" class="css">greenish blue</a>.
+	like <a data-autolink="maybe" class="css" href="#red">red</a> or <span data-autolink="maybe" class="css">greenish blue</span>.
 
 </p><p>	The next two arguments are the saturation and lightness, respectively.
-	For saturation, <a data-autolink="maybe" class="css">100%</a> is a fully-saturated, bright color,
-	and <a data-autolink="maybe" class="css">0%</a> is a fully-unsaturated gray.
-	For lightness, <a data-autolink="maybe" class="css">50%</a> represents the "normal" color,
-	while <a data-autolink="maybe" class="css">100%</a> is white and <a data-autolink="maybe" class="css">0%</a> is black.
-	If the saturation or lightness is less than <a data-autolink="maybe" class="css">0%</a>
-	or the lightness is greater than <a data-autolink="maybe" class="css">100%</a>,
+	For saturation, <span data-autolink="maybe" class="css">100%</span> is a fully-saturated, bright color,
+	and <span data-autolink="maybe" class="css">0%</span> is a fully-unsaturated gray.
+	For lightness, <span data-autolink="maybe" class="css">50%</span> represents the "normal" color,
+	while <span data-autolink="maybe" class="css">100%</span> is white and <span data-autolink="maybe" class="css">0%</span> is black.
+	If the saturation or lightness is less than <span data-autolink="maybe" class="css">0%</span>
+	or the lightness is greater than <span data-autolink="maybe" class="css">100%</span>,
 	they are clipped to those values before being converted to an RGB color.
-	Some output devices may support saturations greater than <a data-autolink="maybe" class="css">100%</a>,
-	just as they support RGB values greater than <a data-autolink="maybe" class="css">100%</a>.
+	Some output devices may support saturations greater than <span data-autolink="maybe" class="css">100%</span>,
+	just as they support RGB values greater than <span data-autolink="maybe" class="css">100%</span>.
 	If the saturation exceeds the output device's gamut,
 	it must be clipped to that device's gamut before being converted to an RGB color.
 	This clipping <em>should</em> preserve the hue of the color
@@ -415,13 +415,13 @@ The HSL functional notations: <a data-autolink="maybe" class="css" href="#hsl-fu
 
 </p><p>	The final argument specifies the alpha channel of the color.
 	It's interpreted identically to the fourth argument of the <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a> function.
-	If omitted, it defaults to <a data-autolink="maybe" class="css">100%</a>.
+	If omitted, it defaults to <span data-autolink="maybe" class="css">100%</span>.
 
 	</p><div class="example">
 		For example, an ordinary red,
 		the same color you would see from the keyword <a data-autolink="maybe" class="css" href="#red">red</a>
-		or the hex notation <a data-autolink="maybe" class="css">#f00</a>,
-		is represented in HSL as <a data-autolink="maybe" class="css">hsl(0, 100%, 50%)</a>.
+		or the hex notation <span data-autolink="maybe" class="css">#f00</span>,
+		is represented in HSL as <span data-autolink="maybe" class="css">hsl(0, 100%, 50%)</span>.
 	</div>
 
 <p>	The advantage of HSL over RGB is that it is far more intuitive:
@@ -856,9 +856,9 @@ The HWB functional notation: <a data-autolink="maybe" class="css" href="#hwb-fun
 	and is interpreted identically to <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a>.
 
 </p><p>	The second argument specifies the amount of white to mix in,
-	as a percentage from <a data-autolink="maybe" class="css">0%</a> (no whiteness) to <a data-autolink="maybe" class="css">100%</a> (full whiteness).
+	as a percentage from <span data-autolink="maybe" class="css">0%</span> (no whiteness) to <span data-autolink="maybe" class="css">100%</span> (full whiteness).
 	Similarly, the third argument specifies the amount of black to mix in,
-	also from <a data-autolink="maybe" class="css">0%</a> (no blackness) to <a data-autolink="maybe" class="css">100%</a> (full blackness).
+	also from <span data-autolink="maybe" class="css">0%</span> (no blackness) to <span data-autolink="maybe" class="css">100%</span> (full blackness).
 	Values outside of these ranges make the function invalid.
 	If the sum of these two arguments is greater than 100%,
 	then at computed-value time they are normalized to add up to 100%,
@@ -866,13 +866,13 @@ The HWB functional notation: <a data-autolink="maybe" class="css" href="#hwb-fun
 
 </p><p>	The fourth argument specifies the alpha channel of the color.
 	It's interpreted identically to the fourth argument of the <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a> function.
-	If omitted, it defaults to <a data-autolink="maybe" class="css">100%</a>.
+	If omitted, it defaults to <span data-autolink="maybe" class="css">100%</span>.
 
 </p><p>	The resulting color can be thought of conceptually as a mixture of paint in the chosen hue,
 	white paint, and black paint,
 	with the relative amounts of each determined by the percentages.
-	If white+black is equal to <a data-autolink="maybe" class="css">100%</a> (after normalization),
-	it defines an <a data-autolink="link">achromatic color</a>,
+	If white+black is equal to <span data-autolink="maybe" class="css">100%</span> (after normalization),
+	it defines an <i data-autolink="link">achromatic color</i>,
 	or some shade of gray,
 	without any hint of the chosen hue.
 
@@ -1148,7 +1148,7 @@ Specifying grays: the <a data-autolink="maybe" class="css" href="#gray-function"
 	(lacking any actual color at all),
 	which means that specifying a gray with any of the other notations requires specifying some redundant information:
 	if specifying the color with <a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a>, all three channels are identical;
-	if specifying the color with <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a>, the hue is irrelevant and the saturation is locked to <a data-autolink="maybe" class="css">0%</a>.
+	if specifying the color with <a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a>, the hue is irrelevant and the saturation is locked to <span data-autolink="maybe" class="css">0%</span>.
 
 </p><p>	The <a data-autolink="maybe" class="css" href="#gray-function">gray()</a> functional notation simplifies specifying this common set of colors, 
 	so that only the necessary information is required.
@@ -1158,8 +1158,8 @@ Specifying grays: the <a data-autolink="maybe" class="css" href="#gray-function"
 <p>	The first argument specifies the shade of gray,
 	while the second optional argument specifies the alpha channel of the color.
 
-</p><p>	<a data-autolink="maybe" class="css">gray(A)</a> represents the same color as <a data-autolink="maybe" class="css">rgb(A,A,A)</a>.
-	<a data-autolink="maybe" class="css">gray(A,B)</a> represents the same color as <a data-autolink="maybe" class="css">rgb(A,A,A,B)</a>.
+</p><p>	<span data-autolink="maybe" class="css">gray(A)</span> represents the same color as <span data-autolink="maybe" class="css">rgb(A,A,A)</span>.
+	<span data-autolink="maybe" class="css">gray(A,B)</span> represents the same color as <span data-autolink="maybe" class="css">rgb(A,A,A,B)</span>.
 
 
 
@@ -1195,7 +1195,7 @@ The <a data-autolink="maybe" class="css" href="#transparent">transparent</a> key
 <p>	The keyword <dfn data-export="" id="transparent"><a data-autolink="maybe" class="css" href="#transparent">transparent</a></dfn> specifies a transparent black color;
 	that is, a color with its red, green, and blue channels all set to the minimum value
 	and its alpha channel set to full transparency,
-	equivalent to <a data-autolink="maybe" class="css">rgba(0, 0, 0, 0)</a>.
+	equivalent to <span data-autolink="maybe" class="css">rgba(0, 0, 0, 0)</span>.
 
 
 </p><h4 id="currentcolor-color" data-level="3.6.2"><span class="secno">3.6.2 </span>
@@ -1269,8 +1269,8 @@ Simple Named Hues: the <a data-autolink="link" class="production" href="#named-h
   <dfn id="splash-hue-production">&lt;splash-hue&gt;</dfn> = reddish | orangish | yellowish | greenish | bluish | purplish
 </pre>
 <p>	A named hue can be specified as one of the six base hues (like <a data-autolink="maybe" class="css" href="#red">red</a>),
-	as an equal mixture of two base hues (like <a data-autolink="maybe" class="css">red orange</a> or <a data-autolink="maybe" class="css">orange red</a>),
-	or as an unequal mixture of a base hue and a splash hue (like <a data-autolink="maybe" class="css">reddish orange</a> or <a data-autolink="maybe" class="css">orangish red</a>).
+	as an equal mixture of two base hues (like <span data-autolink="maybe" class="css">red orange</span> or <span data-autolink="maybe" class="css">orange red</span>),
+	or as an unequal mixture of a base hue and a splash hue (like <span data-autolink="maybe" class="css">reddish orange</span> or <span data-autolink="maybe" class="css">orangish red</span>).
 	A hue can only be mixed with hues that are "next" to it around the color wheel:
 	red is next to orange and purple, but not yellow or green or blue,
 	etc.
@@ -1283,76 +1283,76 @@ Simple Named Hues: the <a data-autolink="link" class="production" href="#named-h
 			</th><th>Equivalent Hue Angle
 		</th></tr><tr style="background: hsl(0,100%,50%); color: white;">
 			<td><a data-autolink="maybe" class="css" href="#red">red</a>
-			</td><td><a data-autolink="maybe" class="css">0deg</a>
+			</td><td><span data-autolink="maybe" class="css">0deg</span>
 		</td></tr><tr style="background: hsl(7.5,100%,50%); color: white;">
-			<td><a data-autolink="maybe" class="css">orangish red</a>
-			</td><td><a data-autolink="maybe" class="css">7.5deg</a>
+			<td><span data-autolink="maybe" class="css">orangish red</span>
+			</td><td><span data-autolink="maybe" class="css">7.5deg</span>
 		</td></tr><tr style="background: hsl(15,100%,50%); color: black;">
-			<td><a data-autolink="maybe" class="css">red orange</a> or <a data-autolink="maybe" class="css">orange red</a>
-			</td><td><a data-autolink="maybe" class="css">15deg</a>
+			<td><span data-autolink="maybe" class="css">red orange</span> or <span data-autolink="maybe" class="css">orange red</span>
+			</td><td><span data-autolink="maybe" class="css">15deg</span>
 		</td></tr><tr style="background: hsl(22.5,100%,50%); color: black;">
-			<td><a data-autolink="maybe" class="css">reddish orange</a>
-			</td><td><a data-autolink="maybe" class="css">22.5deg</a>
+			<td><span data-autolink="maybe" class="css">reddish orange</span>
+			</td><td><span data-autolink="maybe" class="css">22.5deg</span>
 		</td></tr><tr style="background: hsl(30,100%,50%); color: black;">
 			<td><a data-autolink="maybe" class="css" href="#orange">orange</a>
-			</td><td><a data-autolink="maybe" class="css">30deg</a>
+			</td><td><span data-autolink="maybe" class="css">30deg</span>
 		</td></tr><tr style="background: hsl(37.5,100%,50%); color: black;">
-			<td><a data-autolink="maybe" class="css">yellowish orange</a>
-			</td><td><a data-autolink="maybe" class="css">37.5deg</a>
+			<td><span data-autolink="maybe" class="css">yellowish orange</span>
+			</td><td><span data-autolink="maybe" class="css">37.5deg</span>
 		</td></tr><tr style="background: hsl(45,100%,50%); color: black;">
-			<td><a data-autolink="maybe" class="css">orange yellow</a> or <a data-autolink="maybe" class="css">yellow orange</a>
-			</td><td><a data-autolink="maybe" class="css">45deg</a>
+			<td><span data-autolink="maybe" class="css">orange yellow</span> or <span data-autolink="maybe" class="css">yellow orange</span>
+			</td><td><span data-autolink="maybe" class="css">45deg</span>
 		</td></tr><tr style="background: hsl(52.5,100%,50%); color: black;">
-			<td><a data-autolink="maybe" class="css">orangish yellow</a>
-			</td><td><a data-autolink="maybe" class="css">52.5deg</a>
+			<td><span data-autolink="maybe" class="css">orangish yellow</span>
+			</td><td><span data-autolink="maybe" class="css">52.5deg</span>
 		</td></tr><tr style="background: hsl(60,100%,50%); color: black;">
 			<td><a data-autolink="maybe" class="css" href="#yellow">yellow</a>
-			</td><td><a data-autolink="maybe" class="css">60deg</a>
+			</td><td><span data-autolink="maybe" class="css">60deg</span>
 		</td></tr><tr style="background: hsl(75,100%,50%); color: black;">
-			<td><a data-autolink="maybe" class="css">greenish yellow</a>
-			</td><td><a data-autolink="maybe" class="css">75deg</a>
+			<td><span data-autolink="maybe" class="css">greenish yellow</span>
+			</td><td><span data-autolink="maybe" class="css">75deg</span>
 		</td></tr><tr style="background: hsl(90,100%,50%); color: black;">
-			<td><a data-autolink="maybe" class="css">yellow green</a> or <a data-autolink="maybe" class="css">green yellow</a>
-			</td><td><a data-autolink="maybe" class="css">90deg</a>
+			<td><span data-autolink="maybe" class="css">yellow green</span> or <span data-autolink="maybe" class="css">green yellow</span>
+			</td><td><span data-autolink="maybe" class="css">90deg</span>
 		</td></tr><tr style="background: hsl(105,100%,50%); color: black;">
-			<td><a data-autolink="maybe" class="css">yellowish green</a>
-			</td><td><a data-autolink="maybe" class="css">105deg</a>
+			<td><span data-autolink="maybe" class="css">yellowish green</span>
+			</td><td><span data-autolink="maybe" class="css">105deg</span>
 		</td></tr><tr style="background: hsl(120,100%,50%); color: black;">
 			<td><a data-autolink="maybe" class="css" href="#green">green</a>
-			</td><td><a data-autolink="maybe" class="css">120deg</a>
+			</td><td><span data-autolink="maybe" class="css">120deg</span>
 		</td></tr><tr style="background: hsl(150,100%,50%); color: black;">
-			<td><a data-autolink="maybe" class="css">bluish green</a>
-			</td><td><a data-autolink="maybe" class="css">150deg</a>
+			<td><span data-autolink="maybe" class="css">bluish green</span>
+			</td><td><span data-autolink="maybe" class="css">150deg</span>
 		</td></tr><tr style="background: hsl(180,100%,50%); color: black;">
-			<td><a data-autolink="maybe" class="css">green blue</a> or <a data-autolink="maybe" class="css">blue green</a>
-			</td><td><a data-autolink="maybe" class="css">180deg</a>
+			<td><span data-autolink="maybe" class="css">green blue</span> or <span data-autolink="maybe" class="css">blue green</span>
+			</td><td><span data-autolink="maybe" class="css">180deg</span>
 		</td></tr><tr style="background: hsl(210,100%,50%); color: white;">
-			<td><a data-autolink="maybe" class="css">greenish blue</a>
-			</td><td><a data-autolink="maybe" class="css">210deg</a>
+			<td><span data-autolink="maybe" class="css">greenish blue</span>
+			</td><td><span data-autolink="maybe" class="css">210deg</span>
 		</td></tr><tr style="background: hsl(240,100%,50%); color: white;">
 			<td><a data-autolink="maybe" class="css" href="#blue">blue</a>
-			</td><td><a data-autolink="maybe" class="css">240deg</a>
+			</td><td><span data-autolink="maybe" class="css">240deg</span>
 		</td></tr><tr style="background: hsl(255,100%,50%); color: white;">
-			<td><a data-autolink="maybe" class="css">purplish blue</a>
-			</td><td><a data-autolink="maybe" class="css">255deg</a>
+			<td><span data-autolink="maybe" class="css">purplish blue</span>
+			</td><td><span data-autolink="maybe" class="css">255deg</span>
 		</td></tr><tr style="background: hsl(270,100%,50%); color: white;">
-			<td><a data-autolink="maybe" class="css">blue purple</a> or <a data-autolink="maybe" class="css">purple blue</a>
-			</td><td><a data-autolink="maybe" class="css">270deg</a>
+			<td><span data-autolink="maybe" class="css">blue purple</span> or <span data-autolink="maybe" class="css">purple blue</span>
+			</td><td><span data-autolink="maybe" class="css">270deg</span>
 		</td></tr><tr style="background: hsl(285,100%,50%); color: white;">
-			<td><a data-autolink="maybe" class="css">bluish purple</a>
-			</td><td><a data-autolink="maybe" class="css">285deg</a>
+			<td><span data-autolink="maybe" class="css">bluish purple</span>
+			</td><td><span data-autolink="maybe" class="css">285deg</span>
 		</td></tr><tr style="background: hsl(300,100%,50%); color: white;">
 			<td><a data-autolink="maybe" class="css" href="#purple">purple</a>
-			</td><td><a data-autolink="maybe" class="css">300deg</a>
+			</td><td><span data-autolink="maybe" class="css">300deg</span>
 		</td></tr><tr style="background: hsl(315,100%,50%); color: white;">
-			<td><a data-autolink="maybe" class="css">reddish purple</a>
-			</td><td><a data-autolink="maybe" class="css">315deg</a>
+			<td><span data-autolink="maybe" class="css">reddish purple</span>
+			</td><td><span data-autolink="maybe" class="css">315deg</span>
 		</td></tr><tr style="background: hsl(330,100%,50%); color: white;">
-			<td><a data-autolink="maybe" class="css">red purple</a> or <a data-autolink="maybe" class="css">purple red</a>
-			</td><td><a data-autolink="maybe" class="css">330deg</a>
+			<td><span data-autolink="maybe" class="css">red purple</span> or <span data-autolink="maybe" class="css">purple red</span>
+			</td><td><span data-autolink="maybe" class="css">330deg</span>
 		</td></tr><tr style="background: hsl(345,100%,50%); color: white;">
-			<td><a data-autolink="maybe" class="css">purplish red</a>
-			</td><td><a data-autolink="maybe" class="css">345deg</a>
+			<td><span data-autolink="maybe" class="css">purplish red</span>
+			</td><td><span data-autolink="maybe" class="css">345deg</span>
 	</td></tr></tbody></table>
 
 <p class="note">	Note: The named hue cycle isn't perfectly even.
@@ -1432,9 +1432,9 @@ Modifying colors: the <a data-autolink="maybe" class="css" href="#color-function
 	Each <a data-autolink="link" class="production" href="#color-adjuster-production"><var>&lt;color-adjuster&gt;</var></a> modifies the color in some way,
 	passing a new <var>base color</var> to the next <a data-autolink="link" class="production" href="#color-adjuster-production"><var>&lt;color-adjuster&gt;</var></a> in the list.
 	The same <a data-autolink="link" class="production" href="#color-adjuster-production"><var>&lt;color-adjuster&gt;</var></a> can be specified more than once in the list,
-	such as <a data-autolink="maybe" class="css">color(red s - 10% s - 10%)</a>;
+	such as <span data-autolink="maybe" class="css">color(red s - 10% s - 10%)</span>;
 	each instance just modifies the color appropriately
-	(in this case, producing <a data-autolink="maybe" class="css">hsl(0deg, 80%, 50%)</a>).
+	(in this case, producing <span data-autolink="maybe" class="css">hsl(0deg, 80%, 50%)</span>).
 
 </p><p>	There are several classes of <a data-autolink="link" class="production" href="#color-adjuster-production"><var>&lt;color-adjuster&gt;</var></a>s
 	with various effects,
@@ -1443,7 +1443,7 @@ Modifying colors: the <a data-autolink="maybe" class="css" href="#color-function
 </p><p>	The computed value of a <a data-autolink="maybe" class="css" href="#color-function">color()</a> function is the color produced by applying all the <a data-autolink="link" class="production" href="#color-adjuster-production"><var>&lt;color-adjuster&gt;</var></a>s to the <var>base color</var>.
 
 </p><p class="note">	Note: While scaling can be specified without any spaces,
-	like <a data-autolink="maybe" class="css">lightness*150%</a>,
+	like <span data-autolink="maybe" class="css">lightness*150%</span>,
 	adding/subtracting must be done with spaces around the +/-,
 	or else the +/- will be interpreted as part of the channel name or the value
 	by the CSS parser.
@@ -1456,21 +1456,21 @@ RGBA Adjustment</h3>
 
 	</p><dl>
 		<dt><a data-autolink="maybe" class="css" href="#red">red</a>, <a data-autolink="maybe" class="css" href="#blue">blue</a>, or <a data-autolink="maybe" class="css" href="#green">green</a>
-		</dt><dt><a data-autolink="maybe" class="css">a</a> or <a data-autolink="maybe" class="css">alpha</a>
+		</dt><dt><span data-autolink="maybe" class="css">a</span> or <span data-autolink="maybe" class="css">alpha</span>
 		</dt><dd>
 			Sets or adjust the red, blue, green, or alpha channels of the <var>base color</var>.
 
 <p>			If there is no operator,
 			the given channel is set to the given value.
 
-</p><p>			If the operator is <a data-autolink="maybe" class="css">+</a> or <a data-autolink="maybe" class="css">-</a>,
+</p><p>			If the operator is <span data-autolink="maybe" class="css">+</span> or <span data-autolink="maybe" class="css">-</span>,
 			the given channel is interpreted as the matching type (<a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> or <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>)
 			and then incremented or decremented by the given value.
 
-</p><p>			If the operator is <a data-autolink="maybe" class="css">*</a>,
+</p><p>			If the operator is <span data-autolink="maybe" class="css">*</span>,
 			the given channel is multipled by the given value.
 
-		</p></dd><dt>''rgb ['+' | '-']? [<a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>]{3}''
+		</p></dd><dt><span data-autolink="maybe" class="css">rgb ['+' | '-']? [<a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>]{3}</span>
 		</dt><dd>
 			Adjusts the <var>base color</var> in the red, green, and blue channels simultaneously.
 			All three channels are interpreted as the matching type (<a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> or <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>)
@@ -1479,7 +1479,7 @@ RGBA Adjustment</h3>
 			the second value adjusting the green channel,
 			and the third value adjusting the blue channel.
 
-		</dd><dt>''rgb ['+' | '-'] <a data-autolink="link" class="production"><var>&lt;hash&gt;</var></a>''
+		</dd><dt><span data-autolink="maybe" class="css">rgb ['+' | '-'] <a data-autolink="link" class="production"><var>&lt;hash&gt;</var></a></span>
 		</dt><dd>
 			Identical to the previous clause,
 			except that the adjustments to the three channels are specified in hexadecimal format;
@@ -1488,15 +1488,15 @@ RGBA Adjustment</h3>
 			are applied as adjustments to the <var>base color</var>.
 
 			<div class="example">
-				For example, in <a data-autolink="maybe" class="css">color(red rgb + #004400)</a>,
-				the <var>base color</var> is <a data-autolink="maybe" class="css" href="#red">red</a> (<a data-autolink="maybe" class="css">#ff0000</a>).
+				For example, in <span data-autolink="maybe" class="css">color(red rgb + #004400)</span>,
+				the <var>base color</var> is <a data-autolink="maybe" class="css" href="#red">red</a> (<span data-autolink="maybe" class="css">#ff0000</span>).
 				The red and blue channels aren't adjusted at all
 				(those channels in the given color are both 0),
 				and the green channel is increased by 44<sub>16</sub>,
-				resulting in a final color of <a data-autolink="maybe" class="css">#ff4400</a>.
+				resulting in a final color of <span data-autolink="maybe" class="css">#ff4400</span>.
 			</div>
 
-		</dd><dt>''rgb '*' <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>''
+		</dd><dt><span data-autolink="maybe" class="css">rgb '*' <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a></span>
 		</dt><dd>
 			The red, green, and blue channels of the <var>base color</var> are multiplied by the given value.
 	</dd></dl>
@@ -1511,7 +1511,7 @@ HSL/HWB Adjustment</h3>
 	Similarly, the <a data-autolink="maybe" class="css" href="#color-function">color()</a> function allows a color to be adjusted in these "virtual channels".
 
 	</p><dl>
-		<dt><a data-autolink="maybe" class="css">h</a> or <a data-autolink="maybe" class="css">hue</a>
+		<dt><span data-autolink="maybe" class="css">h</span> or <span data-autolink="maybe" class="css">hue</span>
 		</dt><dd>
 			Sets or adjusts the hue of the <var>base color</var>,
 			when <var>base color</var> is interpreted as an HSL color.
@@ -1523,10 +1523,10 @@ HSL/HWB Adjustment</h3>
 			the hue is incremented or decremented, as appropriate,
 			by the given value.
 
-		</p></dd><dt><a data-autolink="maybe" class="css">s</a> or <a data-autolink="maybe" class="css">saturation</a>
-		</dt><dt><a data-autolink="maybe" class="css">l</a> or <a data-autolink="maybe" class="css">lightness</a>
-		</dt><dt><a data-autolink="maybe" class="css">w</a> or <a data-autolink="maybe" class="css">whiteness</a>
-		</dt><dt><a data-autolink="maybe" class="css">b</a> or <a data-autolink="maybe" class="css">blackness</a>
+		</p></dd><dt><span data-autolink="maybe" class="css">s</span> or <span data-autolink="maybe" class="css">saturation</span>
+		</dt><dt><span data-autolink="maybe" class="css">l</span> or <span data-autolink="maybe" class="css">lightness</span>
+		</dt><dt><span data-autolink="maybe" class="css">w</span> or <span data-autolink="maybe" class="css">whiteness</span>
+		</dt><dt><span data-autolink="maybe" class="css">b</span> or <span data-autolink="maybe" class="css">blackness</span>
 		</dt><dd>
 			Sets or adjusts the saturation, lightness, whiteness, or blackness of the <var>base color</var>,
 			when <var>base color</var> is interpreted as an HSL or HWB color, as appropriate.
@@ -1534,81 +1534,81 @@ HSL/HWB Adjustment</h3>
 <p>			If there is no operator,
 			the given channel is set to the given value.
 
-</p><p>			If the operator is <a data-autolink="maybe" class="css">+</a> or <a data-autolink="maybe" class="css">-</a>,
+</p><p>			If the operator is <span data-autolink="maybe" class="css">+</span> or <span data-autolink="maybe" class="css">-</span>,
 			the given channel is incremented or decremented by the given value.
 
-</p><p>			If the operator is <a data-autolink="maybe" class="css">*</a>,
+</p><p>			If the operator is <span data-autolink="maybe" class="css">*</span>,
 			the given channel is multiplied by the given value.
 	</p></dd></dl>
 
 
 <h3 id="tint-shade-adjusters" data-level="4.3"><span class="secno">4.3 </span>
-Tints and Shades: the <a data-autolink="maybe" class="css">tint</a> and <a data-autolink="maybe" class="css">shade</a> adjusters</h3>
+Tints and Shades: the <span data-autolink="maybe" class="css">tint</span> and <span data-autolink="maybe" class="css">shade</span> adjusters</h3>
 
 <p>	While the <a data-autolink="maybe" class="css" href="#color-function">color()</a> function does allow HWB adjustment of colors,
 	the peculiarities of how HWB is defined make it more difficult than it should be to just define a lighter or darker version of a color.
-	The <a data-autolink="maybe" class="css">tint</a> and <a data-autolink="maybe" class="css">shade</a> adjusters fix this,
+	The <span data-autolink="maybe" class="css">tint</span> and <span data-autolink="maybe" class="css">shade</span> adjusters fix this,
 	by simply mixing the <var>base color</var> with white or black.
 
 	</p><dl>
-		<dt><a data-autolink="maybe" class="css">tint</a>
+		<dt><span data-autolink="maybe" class="css">tint</span>
 		</dt><dd>
 			Mixes the <var>base color</var> with pure white to produce a lighter version of the <var>base color</var>.
 
-<p>			Specifying a <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> less than <a data-autolink="maybe" class="css">0%</a> or greater than <a data-autolink="maybe" class="css">100%</a> is a syntax error,
+<p>			Specifying a <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> less than <span data-autolink="maybe" class="css">0%</span> or greater than <span data-autolink="maybe" class="css">100%</span> is a syntax error,
 			and makes the function invalid.
 
 </p><p>			Linearly interpolate the red, green, and blue channels of the <var>base color</var>
-			with the red, green, and blue channels of pure white (<a data-autolink="maybe" class="css">rgb(255,255,255)</a>),
-			where <a data-autolink="maybe" class="css">0%</a> returns the <var>base color</var>
-			and <a data-autolink="maybe" class="css">100%</a> returns pure white.
+			with the red, green, and blue channels of pure white (<span data-autolink="maybe" class="css">rgb(255,255,255)</span>),
+			where <span data-autolink="maybe" class="css">0%</span> returns the <var>base color</var>
+			and <span data-autolink="maybe" class="css">100%</span> returns pure white.
 
-</p><p class="note">			Note: <a data-autolink="maybe" class="css">tint X%</a> is identical to <a data-autolink="maybe" class="css">blend white X% rgb</a>.
+</p><p class="note">			Note: <span data-autolink="maybe" class="css">tint X%</span> is identical to <span data-autolink="maybe" class="css">blend white X% rgb</span>.
 
-		</p></dd><dt><a data-autolink="maybe" class="css">shade</a>
+		</p></dd><dt><span data-autolink="maybe" class="css">shade</span>
 		</dt><dd>
 			Mixes the <var>base color</var> with pure black to produce a darker version of the <var>base color</var>.
 
 <p>			Identical to the previous clause,
-			except the <var>base color</var> is mixed with pure black (<a data-autolink="maybe" class="css">rgb(0,0,0)</a>) rather than pure white.
+			except the <var>base color</var> is mixed with pure black (<span data-autolink="maybe" class="css">rgb(0,0,0)</span>) rather than pure white.
 	</p></dd></dl>
 
 <h3 id="blend-adjuster" data-level="4.4"><span class="secno">4.4 </span>
-Color Blending: the <a data-autolink="maybe" class="css">blend</a> and <a data-autolink="maybe" class="css">blenda</a> adjusters</h3>
+Color Blending: the <span data-autolink="maybe" class="css">blend</span> and <span data-autolink="maybe" class="css">blenda</span> adjusters</h3>
 
-<p>	The <a data-autolink="maybe" class="css">tint</a> and <a data-autolink="maybe" class="css">shade</a> adjusters are common cases of the more general <a data-autolink="maybe" class="css">blend</a> adjuster,
+<p>	The <span data-autolink="maybe" class="css">tint</span> and <span data-autolink="maybe" class="css">shade</span> adjusters are common cases of the more general <span data-autolink="maybe" class="css">blend</span> adjuster,
 	which mixes the <var>base color</var> with an arbitrary color.
 
 	</p><dl>
-		<dt><a data-autolink="maybe" class="css">blend</a>
+		<dt><span data-autolink="maybe" class="css">blend</span>
 		</dt><dd>
 			Mixes the <var>base color</var> with the given color to produce an intermediate color.
 
-<p>			Specifying a <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> less than <a data-autolink="maybe" class="css">0%</a> or greater than <a data-autolink="maybe" class="css">100%</a> is a syntax error,
+<p>			Specifying a <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> less than <span data-autolink="maybe" class="css">0%</span> or greater than <span data-autolink="maybe" class="css">100%</span> is a syntax error,
 			and makes the function invalid.
 
 </p><p>			The final argument specifies which color space to blend the colors in,
-			defaulting to <a data-autolink="maybe" class="css">rgb</a> if not specified.
+			defaulting to <span data-autolink="maybe" class="css">rgb</span> if not specified.
 			Both the <var>base color</var> and the given color are interpreted as colors in the given color space,
 			then the components are blended.
 
 			</p><div class="example">
-				For example, <a data-autolink="maybe" class="css">color(yellow blend blue 50%)</a> blends yellow (<a data-autolink="maybe" class="css">#ffff00</a>) with blue (<a data-autolink="maybe" class="css">#0000ff</a>) equally,
-				resulting in <a data-autolink="maybe" class="css">#808080</a>, a medium gray.
+				For example, <span data-autolink="maybe" class="css">color(yellow blend blue 50%)</span> blends yellow (<span data-autolink="maybe" class="css">#ffff00</span>) with blue (<span data-autolink="maybe" class="css">#0000ff</span>) equally,
+				resulting in <span data-autolink="maybe" class="css">#808080</span>, a medium gray.
 
-<p>				On the other hand, <a data-autolink="maybe" class="css">color(yellow blend blue 50% hsl)</a> blends the same colors in HSL space, 
-				where yellow is <a data-autolink="maybe" class="css">hsl(60, 100%, 50%)</a> and blue is <a data-autolink="maybe" class="css">hsl(240, 100%, 50%)</a>,
-				which results in <a data-autolink="maybe" class="css">hsl(150, 100%, 50%)</a>, a fully-saturated shade of green.
+<p>				On the other hand, <span data-autolink="maybe" class="css">color(yellow blend blue 50% hsl)</span> blends the same colors in HSL space, 
+				where yellow is <span data-autolink="maybe" class="css">hsl(60, 100%, 50%)</span> and blue is <span data-autolink="maybe" class="css">hsl(240, 100%, 50%)</span>,
+				which results in <span data-autolink="maybe" class="css">hsl(150, 100%, 50%)</span>, a fully-saturated shade of green.
 			</p></div>
 
 <p>			To determine the resulting color,
 			interpret the <var>base color</var> and the given color in the appropriate color space
 			(RGB, HSL, or HWB).
 			Linearly interpolate each of the channels of the colors according to the given <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>,
-			where <a data-autolink="maybe" class="css">0%</a> produces the <var>base color</var>
-			and <a data-autolink="maybe" class="css">100%</a> produces the given color.
+			where <span data-autolink="maybe" class="css">0%</span> produces the <var>base color</var>
+			and <span data-autolink="maybe" class="css">100%</span> produces the given color.
  
-</p><p>			If the color space is <a data-autolink="maybe" class="css">hsl</a> or <a data-autolink="maybe" class="css">hwb</a>,
+</p><p>			If the color space is <span data-autolink="maybe" class="css">hsl</span> or <span data-autolink="maybe" class="css">hwb</span>,
 			interpolate the hue channel either clockwise or counterclockwise,
 			whichever results in a shorter "path" between the two hue angles.
 			If the two hue angles are on opposite sides of the hue circle
@@ -1619,60 +1619,60 @@ Color Blending: the <a data-autolink="maybe" class="css">blend</a> and <a data-a
 			adjust either color's hue angle by a small amount toward the desired direction.)
 
 			</p><div class="example">
-				For example, blending <a data-autolink="maybe" class="css" href="#yellow">yellow</a> (hue angle <a data-autolink="maybe" class="css">60deg</a>) with 50% <a data-autolink="maybe" class="css" href="#purple">purple</a> (hue angle <a data-autolink="maybe" class="css">300deg</a>)
-				results in <a data-autolink="maybe" class="css" href="#red">red</a> (hue angle <a data-autolink="maybe" class="css">0deg</a>), 
-				not <a data-autolink="maybe" class="css" href="#cyan">cyan</a> (hue angle <a data-autolink="maybe" class="css">180deg</a>),
+				For example, blending <a data-autolink="maybe" class="css" href="#yellow">yellow</a> (hue angle <span data-autolink="maybe" class="css">60deg</span>) with 50% <a data-autolink="maybe" class="css" href="#purple">purple</a> (hue angle <span data-autolink="maybe" class="css">300deg</span>)
+				results in <a data-autolink="maybe" class="css" href="#red">red</a> (hue angle <span data-autolink="maybe" class="css">0deg</span>), 
+				not <a data-autolink="maybe" class="css" href="#cyan">cyan</a> (hue angle <span data-autolink="maybe" class="css">180deg</span>),
 				even though <code>60*50% + 300*50% == 180</code>,
 				because the distance between the two colors when moving counter-clockwise is only 120 degrees,
 				as opposed to 240 degrees when going clockwise.
 			</div>
 			
 
-		</dd><dt><a data-autolink="maybe" class="css">blenda</a>
+		</dd><dt><span data-autolink="maybe" class="css">blenda</span>
 		</dt><dd>
 			Identical to the previous clause,
 			but also interpolates the alpha channel of the <var>base color</var> and the given color.
-			(<a data-autolink="maybe" class="css">blend</a> ignores the alpha channel, leaving the <var>base color</var>&#8217;s alpha untouched.)
+			(<span data-autolink="maybe" class="css">blend</span> ignores the alpha channel, leaving the <var>base color</var>&#8217;s alpha untouched.)
 	</dd></dl>
 
 
 <h3 id="contrast-adjuster" data-level="4.5"><span class="secno">4.5 </span>
-Guaranteeing Adequate Contrast: the <a data-autolink="maybe" class="css">constrast</a> adjuster</h3>
+Guaranteeing Adequate Contrast: the <span data-autolink="maybe" class="css">constrast</span> adjuster</h3>
 
 <p>	Guaranteeing that foreground and background colors contrast sufficiently is important,
 	but even if you know the mathematical definition of "appropriate contrast",
 	it's not trivial to calculate and figure out whether two arbitrary colors are good enough.
-	The <a data-autolink="maybe" class="css">contrast</a> adjuster makes this easy,
+	The <span data-autolink="maybe" class="css">contrast</span> adjuster makes this easy,
 	automatically computing a color that is sufficiently contrasting with the <var>base color</var> to satisfy accessibility guidelines.
 
 	</p><dl>
-		<dt>''contrast <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>''
+		<dt><span data-autolink="maybe" class="css">contrast <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a></span>
 		</dt><dd>
 			Finds a color that contrasts with the <var>base color</var> suffficiently to satisfy accessibility guidelines,
 			using the definition of "contrast" given by <a href="http://www.w3.org/TR/WCAG/#visual-audio-contrast-contrast">WCAG 2.0 Guideline 1.4.3</a>.
 
 <p>			The <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> specifies the desired similarity between the <var>base color</var> and the returned color.
-			<a data-autolink="maybe" class="css">0%</a> will return white or black
+			<span data-autolink="maybe" class="css">0%</span> will return white or black
 			(whichever contrasts the <var>base color</var> more)
-			while <a data-autolink="maybe" class="css">100%</a> will return the <var>minimum-contrast color</var>
+			while <span data-autolink="maybe" class="css">100%</span> will return the <var>minimum-contrast color</var>
 			(the closest color to the <var>base color</var> that still contrasts sufficiently).
-			Specifying a value less than <a data-autolink="maybe" class="css">0%</a> or greater than <a data-autolink="maybe" class="css">100%</a> is invalid and a syntax error.
+			Specifying a value less than <span data-autolink="maybe" class="css">0%</span> or greater than <span data-autolink="maybe" class="css">100%</span> is invalid and a syntax error.
 
 			</p><ol>
 				<li>
 					Compute the <a data-autolink="link" href="#luminance">luminance</a> of the <var>base color</var>.
 					If it's less than .5,
-					the <var>maximum-contrast color</var> is <a data-autolink="maybe" class="css">hwb(X, 100%, 0%)</a>,
+					the <var>maximum-contrast color</var> is <span data-autolink="maybe" class="css">hwb(X, 100%, 0%)</span>,
 					where X is the hue angle of the <var>base color</var>.
 					Otherwise,
-					the <var>maximum-contrast color</var> is <a data-autolink="maybe" class="css">hwb(X, 0%, 100%)</a>,
+					the <var>maximum-contrast color</var> is <span data-autolink="maybe" class="css">hwb(X, 0%, 100%)</span>,
 					where X is the hue angle of the <var>base color</var>.
 
 <p class="note">					Note: In other words, the <var>maximum-contrast color</var> is either white or black,
 					but with the hue set up correctly for the next step's linear interpolation.
 
 				</p></li><li>
-					Looking only at colors that are linear interpolations in HWB space (a la the <a data-autolink="maybe" class="css">blend</a> adjuster) between the <var>base color</var>
+					Looking only at colors that are linear interpolations in HWB space (a la the <span data-autolink="maybe" class="css">blend</span> adjuster) between the <var>base color</var>
 					and the <var>maximum-contrast color</var>,
 					find the color with the smallest <a data-autolink="link" href="#contrast-ratio">contrast ratio</a> that is greater than 4.5.
 					This is the <var>minimum-contrast color</var>.
@@ -1687,7 +1687,7 @@ Guaranteeing Adequate Contrast: the <a data-autolink="maybe" class="css">constra
 
 				</p></li><li>
 					Blend the <var>minimum-contrast color</var> and <var>maximum-contrast color</var> according to the specified <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>,
-					as if ''color(<var>minimum-contrast color</var> blend <var>maximum-contrast color</var> <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> hwb)'' were specified.
+					as if <span data-autolink="maybe" class="css">color(<var>minimum-contrast color</var> blend <var>maximum-contrast color</var> <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> hwb)</span> were specified.
 					Return the blended color.
 			</li></ol>
 	</dd></dl>
@@ -1777,7 +1777,7 @@ Transparency: the <a data-autolink="property" class="property" title="opacity" h
 	This means that any content outside of it cannot be layered in z-order between pieces of content inside of it,
 	and vice versa.
 	If the element is in a context where the <a data-autolink="property" class="property" title="z-index">z-index</a> property applies,
-	the <a data-autolink="maybe" class="css" href="#color-correction-auto">auto</a> value is treated as <a data-autolink="maybe" class="css">0</a> for the element.
+	the <a data-autolink="maybe" class="css" href="#color-correction-auto">auto</a> value is treated as <span data-autolink="maybe" class="css">0</span> for the element.
 	See <a href="http://www.w3.org/TR/CSS21/visuren.html#layers">section 9.9</a> 
 	and <a href="http://www.w3.org/TR/CSS21/zindex.html">Appendix E</a> of <a data-autolink="biblio" data-biblio-type="normative" title="CSS21" href="#css21">[CSS21]</a> 
 	for more information on stacking contexts.  
