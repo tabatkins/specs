@@ -1060,6 +1060,12 @@ Specifying grays: the ''gray()'' functional notation</h3>
 	''gray(A)'' represents the same color as ''rgb(A,A,A)''.
 	''gray(A,B)'' represents the same color as ''rgb(A,A,A,B)''.
 
+	<p class='issue'>
+		Maybe gray() should, instead of being a simple expansion to ''rgb()'',
+		actually compute the gray with the specified luminance?
+		The sRGB power curve means that grays are much darker than they "should" be;
+		50% gray has a luminance of .21, for example, rather than .5.
+
 
 
 <h3 id='named-colors'>
