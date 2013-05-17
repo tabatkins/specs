@@ -11,7 +11,7 @@ Previous Editors: L. David Baron, Mozilla Corporation, dbaron@dbaron.org
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact
 Abstract: This specification describes CSS <<color>> values and properties for foreground color and group opacity.
 Ignored Properties: z-index, color-rendering, text-emphasis-color, color-interpolation
-Ignored Terms: stacking context, <number>, <angle>, <integer>, <percentage>, <ident>, <hash>, achromatic color
+Ignored Terms: stacking context, <number>, <angle>, <integer>, <percentage>, <ident>, <hash>
 </pre>
 
 <style>
@@ -124,6 +124,16 @@ The <<color>> type</h2>
 	the ''hswb()'' notation,
 	the <a>hex color</a> notations,
 	or as a <a>named color</a>.
+
+	Some operations work differently on <dfn data-export>achromatic</dfn> colors.
+	An <a>achromatic</a> color is a shade of gray:
+	in the RGB colorspace,
+	a color is <a>achromatic</a> if the red, green, and blue channels are all the same value;
+	in the HSL colorspace,
+	a color is <a>achromatic</a> if the saturation is ''0%'';
+	in the HWB colorspace,
+	a color is <a>achromatic</a> if the sum of the whiteness and blackness is at least ''100%''.
+
 
 <h3 id='the-rgba-function'>
 The RGB functional notations: ''rgb()'' and ''rgba()''</h3>
@@ -767,7 +777,7 @@ The HWB functional notation: ''hwb()''</h3>
 	white paint, and black paint,
 	with the relative amounts of each determined by the percentages.
 	If white+black is equal to ''100%'' (after normalization),
-	it defines an <i>achromatic color</i>,
+	it defines an <a>achromatic</a> color,
 	or some shade of gray,
 	without any hint of the chosen hue.
 
@@ -1402,6 +1412,54 @@ Modifying colors: the ''color()'' function</h2>
 	or else the +/- will be interpreted as part of the channel name or the value
 	by the CSS parser.
 
+	An <a>achromatic</a> color doesn't have a unique hue,
+	so some <<color-adjuster>>s that would make the color no longer <a>achromatic</a>
+	(such as ''s 50%'')
+	have special behavior for <a>achromatic</a> colors,
+	as described in each adjuster's description.
+	However, it is possible for, within the space of a single ''color()'' function,
+	for the <var>base color</var> to be chromatic,
+	an adjuster to make it <a>achromatic</a>,
+	and a following adjuster to make it chromatic again,
+	with an author having the reasonable expectation that the hue is maintained.
+
+	To allow this,
+	during the evaluation of a ''color()'' function's <<color-adjuster>>s,
+	rather than storing intermediate colors as a 4-tuple of red, green, blue, and alpha,
+	as usual for CSS colors,
+	intermediate colors must be stored as a <dfn data-noexport title="hue angle is null|null">5-tuple of red, green, blue, alpha, and hue angle</dfn>,
+	where the hue angle may be null for some colors and after some operations.
+
+	Whenever an operation interprets an <a>achromatic</a> color in HSL or HWB space,
+	if the color has a non-null hue angle,
+	that hue must be used for the color's HSL/HWB interpretation.
+	(Individual operations define how to handle null hue angles.)
+
+	If the <var>base color</var> is <a>achromatic</a>,
+	the hue angle is initially null.
+
+	<div class='example'>
+		For example, here's a possible ''color()'' function that lightens and brightens the <var>base color</var>:
+
+		<pre>color(X w + 20% s + 20%)</pre>
+
+		If X is a color like ''blue'',
+		this works in the expected way -
+		after each operation,
+		the color is still chromatic
+		(and the return value is ''#33f'').
+
+		On the other hand, if X is a greenish gray like ''#787'',
+		which is represented in HWB as ''hwb(120deg, 44%, 50%)'',
+		the first operation will boost the sum of white and black to greater than ''100%'',
+		making it an <a>achromatic</a> gray 
+		(''#8f8f8f'', to be specific).
+		However, the ''color()'' function remembers that the hue of the color was originally ''120deg'',
+		so when the second operation saturates the color,
+		it will result in a greenish-gray again
+		(''hsl(120deg, 20%, 56%)'', slightly lighter and brighter than the original color).
+	</div>
+
 	<div class='issue'>
 		More possibilities:
 
@@ -1478,6 +1536,10 @@ RGBA Adjustment</h3>
 			The red, green, and blue channels of the <var>base color</var> are multiplied by the given value.
 	</dl>
 
+	All <<color-adjuster>>s in this section,
+	except for ''alpha'' and ''a'',
+	set the hue angle to <a>null</a> if the resulting color is <a>achromatic</a>.
+
 
 
 <h3 id='hsl-hwb-adjusters'>
@@ -1494,11 +1556,14 @@ HSL/HWB Adjustment</h3>
 			when <var>base color</var> is interpreted as an HSL color.
 
 			If there is no operator,
-			the hue is set to the given value.
+			the hue is set to the given value,
+			regardless of what the hue angle was previously.
 
 			Otherwise,
 			the hue is incremented or decremented, as appropriate,
 			by the given value.
+			If the <a>hue angle is null</a>,
+			the adjuster instead does nothing.
 
 		<dt>''[saturation | s] ['+' | '-' | '*']? <<percentage>>''
 		<dt>''[lightness | l] ['+' | '-' | '*']? <<percentage>>''
@@ -1516,6 +1581,18 @@ HSL/HWB Adjustment</h3>
 
 			If the operator is ''*'',
 			the given channel is multiplied by the given value.
+
+			If the <a>hue angle is null</a>,
+			the operation is ''s'' or ''saturation'',
+			and the adjuster would make the saturation greater than 100%,
+			it instead does nothing.
+
+			If the <a>hue angle is null</a>,
+			the operation is ''w'', ''white'', ''b'', or ''black'',
+			and the adjuster would make the sum of whiteness and blackness less than 100%,
+			it additionally adjusts the opposite HWB channel
+			to make the sum equal to 100%.
+			(That is, ''color(white w - 20%)'' would represent the same color as ''hwb(0, 80%, 20%)''.)
 	</dl>
 
 
@@ -1591,12 +1668,15 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 			If the two hue angles are on opposite sides of the hue circle
 			(separated by 180 degrees),
 			take the clockwise path.
-			If one of the colors is achromatic
-			(0% saturation, or sum of whiteness and blackness is at least 100%),
-			treat the hue as being identical to the hue of the other color,
-			so no visible hue transition takes place.
+
+			If the <a>hue angle is null</a>
+			for one of the colors but not the other,
+			treat the null hue angle as being equal to the non-null hue angle for the purpose of this adjuster.
+			If both hue angles are <a>null</a>,
+			the resulting color's hue angle is <a>null</a> as well.
 			
-			Note: This choice is arbitrary, and was chosen merely to provide an unambiguous answer.
+			Note: The choice of how to transition when the difference is ''180deg'' is arbitrary, 
+			and was chosen merely to provide an unambiguous answer.
 			To achieve counter-clockwise behavior, 
 			adjust either color's hue angle by a small amount toward the desired direction.
 
