@@ -69,8 +69,8 @@ dt { font-weight: bold }
 	<p data-fill-with="logo"></p>
 	<h1 class="p-name no-ref" id="title">CSS Color Of My Dreams</h1>
 	<h2 class="no-num no-toc no-ref" id="subtitle">A Collection of Interesting Ideas,
-		<span class="dt-updated"><span class="value-title" title="20130516">16 May 2013</span></span></h2>
-	<div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/DREAM-css-color-4-20130516/" class="u-url">http://www.w3.org/TR/2013/DREAM-css-color-4-20130516/</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html</a>
+		<span class="dt-updated"><span class="value-title" title="20130517">17 May 2013</span></span></h2>
+	<div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/DREAM-css-color-4-20130517/" class="u-url">http://www.w3.org/TR/2013/DREAM-css-color-4-20130517/</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html</a>
 </dd><dt>Feedback:</dt>
     <dd><a href="mailto:www-style@w3.org?subject=%5Bcss-color%5D%20feedback">www-style@w3.org</a> 
         with subject line 
@@ -81,7 +81,7 @@ dt { font-weight: bold }
 	<p data-fill-with="copyright" class="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img src="http://i.creativecommons.org/p/zero/1.0/80x15.png" alt="CC0"></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 16 May 2013, 
+In addition, as of 17 May 2013, 
 the editors have made this specification available under the
 <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -1481,8 +1481,8 @@ RGBA Adjustment</h3>
 	altering the amount of red, green, blue, or alpha in the color.
 
 	</p><dl>
-		<dt><a data-autolink="maybe" class="css" href="#red">red</a>, <a data-autolink="maybe" class="css" href="#blue">blue</a>, or <a data-autolink="maybe" class="css" href="#green">green</a>
-		</dt><dt><span data-autolink="maybe" class="css">a</span> or <span data-autolink="maybe" class="css">alpha</span>
+		<dt><span data-autolink="maybe" class="css">[red | green | blue | alpha | a] ['+' | '-']? [<a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> | <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>]</span>
+		</dt><dt><span data-autolink="maybe" class="css">[red | green | blue | alpha | a] '*' <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a></span>
 		</dt><dd>
 			Sets or adjust the red, blue, green, or alpha channels of the <var>base color</var>.
 
@@ -1537,7 +1537,7 @@ HSL/HWB Adjustment</h3>
 	Similarly, the <a data-autolink="maybe" class="css" href="#color-function">color()</a> function allows a color to be adjusted in these "virtual channels".
 
 	</p><dl>
-		<dt><span data-autolink="maybe" class="css">h</span> or <span data-autolink="maybe" class="css">hue</span>
+		<dt><span data-autolink="maybe" class="css">[hue | h] ['+' | '-' | '*']? <a data-autolink="link" class="production"><var>&lt;angle&gt;</var></a></span>
 		</dt><dd>
 			Sets or adjusts the hue of the <var>base color</var>,
 			when <var>base color</var> is interpreted as an HSL color.
@@ -1549,10 +1549,10 @@ HSL/HWB Adjustment</h3>
 			the hue is incremented or decremented, as appropriate,
 			by the given value.
 
-		</p></dd><dt><span data-autolink="maybe" class="css">s</span> or <span data-autolink="maybe" class="css">saturation</span>
-		</dt><dt><span data-autolink="maybe" class="css">l</span> or <span data-autolink="maybe" class="css">lightness</span>
-		</dt><dt><span data-autolink="maybe" class="css">w</span> or <span data-autolink="maybe" class="css">whiteness</span>
-		</dt><dt><span data-autolink="maybe" class="css">b</span> or <span data-autolink="maybe" class="css">blackness</span>
+		</p></dd><dt><span data-autolink="maybe" class="css">[saturation | s] ['+' | '-' | '*']? <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a></span>
+		</dt><dt><span data-autolink="maybe" class="css">[lightness | l] ['+' | '-' | '*']? <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a></span>
+		</dt><dt><span data-autolink="maybe" class="css">[whiteness | w] ['+' | '-' | '*']? <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a></span>
+		</dt><dt><span data-autolink="maybe" class="css">[blackness | b] ['+' | '-' | '*']? <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a></span>
 		</dt><dd>
 			Sets or adjusts the saturation, lightness, whiteness, or blackness of the <var>base color</var>,
 			when <var>base color</var> is interpreted as an HSL or HWB color, as appropriate.
@@ -1577,7 +1577,7 @@ Tints and Shades: the <span data-autolink="maybe" class="css">tint</span> and <s
 	by simply mixing the <var>base color</var> with white or black.
 
 	</p><dl>
-		<dt><span data-autolink="maybe" class="css">tint</span>
+		<dt><span data-autolink="maybe" class="css">tint <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a></span>
 		</dt><dd>
 			Mixes the <var>base color</var> with pure white to produce a lighter version of the <var>base color</var>.
 
@@ -1591,7 +1591,7 @@ Tints and Shades: the <span data-autolink="maybe" class="css">tint</span> and <s
 
 </p><p class="note">			Note: <span data-autolink="maybe" class="css">tint X%</span> is identical to <span data-autolink="maybe" class="css">blend white X% rgb</span>.
 
-		</p></dd><dt><span data-autolink="maybe" class="css">shade</span>
+		</p></dd><dt><span data-autolink="maybe" class="css">shade <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a></span>
 		</dt><dd>
 			Mixes the <var>base color</var> with pure black to produce a darker version of the <var>base color</var>.
 
@@ -1606,7 +1606,7 @@ Color Blending: the <span data-autolink="maybe" class="css">blend</span> and <sp
 	which mixes the <var>base color</var> with an arbitrary color.
 
 	</p><dl>
-		<dt><span data-autolink="maybe" class="css">blend</span>
+		<dt><span data-autolink="maybe" class="css">blend <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a> <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> [rgb | hsl | hwb]?</span>
 		</dt><dd>
 			Mixes the <var>base color</var> with the given color to produce an intermediate color.
 
@@ -1659,7 +1659,7 @@ Color Blending: the <span data-autolink="maybe" class="css">blend</span> and <sp
 			</div>
 			
 
-		</dd><dt><span data-autolink="maybe" class="css">blenda</span>
+		</dd><dt><span data-autolink="maybe" class="css">blenda <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a> <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> [rgb | hsl | hwb]?</span>
 		</dt><dd>
 			Identical to the previous clause,
 			but also interpolates the alpha channel of the <var>base color</var> and the given color.
@@ -1780,7 +1780,7 @@ Transparency: the <a data-autolink="property" class="property" title="opacity" h
 	the current composite rendering.
 	See <a href="#alpha">simple alpha compositing</a> for details.
 
-</p><table class="propdef"><tbody><tr><th>Name:</th><td><dfn id="opacity">opacity</dfn></td></tr><tr><th>Value:</th><td><a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a></td></tr><tr><th>Initial:</th><td>1</td></tr><tr><th>Applies To:</th><td>all elements</td></tr><tr><th>Inherited:</th><td>no</td></tr><tr><th>Percentages:</th><td>N/A</td></tr><tr><th>Media:</th><td>visual</td></tr><tr><th>Computed Value:</th><td>The specified value, clamped to the range [0,1].</td></tr></tbody></table>
+</p><table class="propdef"><tbody><tr><th>Name:</th><td><dfn id="opacity">opacity</dfn></td></tr><tr><th>Value:</th><td><a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a></td></tr><tr><th>Initial:</th><td>1</td></tr><tr><th>Applies to:</th><td>all elements</td></tr><tr><th>Inherited:</th><td>no</td></tr><tr><th>Percentages:</th><td>N/A</td></tr><tr><th>Media:</th><td>visual</td></tr><tr><th>Computed value:</th><td>The specified value, clamped to the range [0,1].</td></tr></tbody></table>
 	<dl>
 		<dt><a data-autolink="link" class="production" href="#alpha-value-production"><var>&lt;alpha-value&gt;</var></a>
 		</dt><dd>
@@ -1843,7 +1843,7 @@ Color Management: the <a data-autolink="property" class="property" title="color-
 	Therefore, this specification provides a way to clearly opt in to that correct behavior, 
 	but provides an default behavior (initial value) that may be equivalent to this opt-in.
 
-</p><table class="propdef"><tbody><tr><th>Name:</th><td><dfn id="color-correction">color-correction</dfn></td></tr><tr><th>Value:</th><td>auto | sRGB</td></tr><tr><th>Initial:</th><td>auto</td></tr><tr><th>Applies To:</th><td>all elements</td></tr><tr><th>Inherited:</th><td>yes</td></tr><tr><th>Percentages:</th><td>N/A</td></tr><tr><th>Media:</th><td>visual</td></tr><tr><th>Computed Value:</th><td>as specified</td></tr></tbody></table>
+</p><table class="propdef"><tbody><tr><th>Name:</th><td><dfn id="color-correction">color-correction</dfn></td></tr><tr><th>Value:</th><td>auto | sRGB</td></tr><tr><th>Initial:</th><td>auto</td></tr><tr><th>Applies to:</th><td>all elements</td></tr><tr><th>Inherited:</th><td>yes</td></tr><tr><th>Percentages:</th><td>N/A</td></tr><tr><th>Media:</th><td>visual</td></tr><tr><th>Computed value:</th><td>as specified</td></tr></tbody></table>
 <p>	The <a data-autolink="property" class="property" title="color-correction" href="#color-correction">color-correction</a> property specifies the color space that colors specified in CSS 
 	and colors in <a data-autolink="link" href="#untagged-image">untagged images</a> are in.
 	An <dfn id="untagged-image">untagged image</dfn> is an image that is not explicitly assigned a color profile,
@@ -2034,11 +2034,11 @@ References</h2>
 
 <h3 id="normative" class="no-num no-ref">
 Normative References</h3>
-<div data-fill-with="normative-references"><dl><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
+<div data-fill-with="normative-references"><dl><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
 
 <h3 id="informative" class="no-num no-ref">
 Informative References</h3>
-<div data-fill-with="informative-references"><dl><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd></dl></div>
+<div data-fill-with="informative-references"><dl><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd></dl></div>
 
 <h2 id="index" class="no-num no-ref">
 Index</h2>
@@ -2046,7 +2046,7 @@ Index</h2>
 
 <h2 id="property-index" class="no-num no-ref">
 Property index</h2>
-<div data-fill-with="property-index"><table class="proptable"><thead><tr><th scope="col">Name</th><th scope="col">Value</th><th scope="col">Initial</th><th scope="col">Applies To</th><th scope="col">Inh.</th><th scope="col">%ages</th><th scope="col">Media</th><th scope="col">Computed Value</th></tr><tr><th scope="row"><a data-property="">color</a></th><td><a data-autolink="link" class="production"><var>&lt;color&gt;</var></a></td><td>UA-defined, see prose</td><td>all elements</td><td>yes</td><td>N/A</td><td>visual</td><td>an RGBA color</td></tr><tr><th scope="row"><a data-property="">opacity</a></th><td><a data-autolink="link" class="production"><var>&lt;alpha-value&gt;</var></a></td><td>1</td><td>all elements</td><td>no</td><td>N/A</td><td>visual</td><td>The specified value, clamped to the range [0,1].</td></tr><tr><th scope="row"><a data-property="">color-correction</a></th><td>auto | sRGB</td><td>auto</td><td>all elements</td><td>yes</td><td>N/A</td><td>visual</td><td>as specified</td></tr></thead></table></div>
+<div data-fill-with="property-index"><table class="proptable"><thead><tr><th scope="col">Name</th><th scope="col">Value</th><th scope="col">Initial</th><th scope="col">Applies To</th><th scope="col">Inh.</th><th scope="col">%ages</th><th scope="col">Media</th><th scope="col">Computed value</th><th scope="col">Applies to</th><th scope="col">Computed Value</th></tr><tr><th scope="row"><a data-property="">color</a></th><td><a data-autolink="link" class="production"><var>&lt;color&gt;</var></a></td><td>UA-defined, see prose</td><td>all elements</td><td>yes</td><td>N/A</td><td>visual</td><td></td><td></td><td>an RGBA color</td></tr><tr><th scope="row"><a data-property="">opacity</a></th><td><a data-autolink="link" class="production"><var>&lt;alpha-value&gt;</var></a></td><td>1</td><td></td><td>no</td><td>N/A</td><td>visual</td><td>The specified value, clamped to the range [0,1].</td><td>all elements</td><td></td></tr><tr><th scope="row"><a data-property="">color-correction</a></th><td>auto | sRGB</td><td>auto</td><td></td><td>yes</td><td>N/A</td><td>visual</td><td>as specified</td><td>all elements</td><td></td></tr></thead></table></div>
 
 
 </body></html>

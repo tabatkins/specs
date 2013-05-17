@@ -1390,8 +1390,8 @@ RGBA Adjustment</h3>
 	altering the amount of red, green, blue, or alpha in the color.
 
 	<dl>
-		<dt>''red'', ''blue'', or ''green''
-		<dt>''a'' or ''alpha''
+		<dt>''[red | green | blue | alpha | a] ['+' | '-']? [<<number>> | <<percentage>>]''
+		<dt>''[red | green | blue | alpha | a] '*' <<percentage>>''
 		<dd>
 			Sets or adjust the red, blue, green, or alpha channels of the <var>base color</var>.
 
@@ -1405,7 +1405,7 @@ RGBA Adjustment</h3>
 			If the operator is ''*'',
 			the given channel is multipled by the given value.
 
-		<dt>''rgb [&apos;+&apos; | &apos;-&apos;]? [<<number>> | <<percentage>>]{3}''
+		<dt>''rgb ['+' | '-']? [<<number>> | <<percentage>>]{3}''
 		<dd>
 			Adjusts the <var>base color</var> in the red, green, and blue channels simultaneously.
 			All three channels are interpreted as the matching type (<<number>> or <<percentage>>)
@@ -1446,7 +1446,7 @@ HSL/HWB Adjustment</h3>
 	Similarly, the ''color()'' function allows a color to be adjusted in these "virtual channels".
 
 	<dl>
-		<dt>''h'' or ''hue''
+		<dt>''[hue | h] ['+' | '-' | '*']? <<angle>>''
 		<dd>
 			Sets or adjusts the hue of the <var>base color</var>,
 			when <var>base color</var> is interpreted as an HSL color.
@@ -1458,10 +1458,10 @@ HSL/HWB Adjustment</h3>
 			the hue is incremented or decremented, as appropriate,
 			by the given value.
 
-		<dt>''s'' or ''saturation''
-		<dt>''l'' or ''lightness''
-		<dt>''w'' or ''whiteness''
-		<dt>''b'' or ''blackness''
+		<dt>''[saturation | s] ['+' | '-' | '*']? <<percentage>>''
+		<dt>''[lightness | l] ['+' | '-' | '*']? <<percentage>>''
+		<dt>''[whiteness | w] ['+' | '-' | '*']? <<percentage>>''
+		<dt>''[blackness | b] ['+' | '-' | '*']? <<percentage>>''
 		<dd>
 			Sets or adjusts the saturation, lightness, whiteness, or blackness of the <var>base color</var>,
 			when <var>base color</var> is interpreted as an HSL or HWB color, as appropriate.
@@ -1486,7 +1486,7 @@ Tints and Shades: the ''tint'' and ''shade'' adjusters</h3>
 	by simply mixing the <var>base color</var> with white or black.
 
 	<dl>
-		<dt>''tint''
+		<dt>''tint <<percentage>>''
 		<dd>
 			Mixes the <var>base color</var> with pure white to produce a lighter version of the <var>base color</var>.
 
@@ -1500,7 +1500,7 @@ Tints and Shades: the ''tint'' and ''shade'' adjusters</h3>
 
 			Note: ''tint X%'' is identical to ''blend white X% rgb''.
 
-		<dt>''shade''
+		<dt>''shade <<percentage>>''
 		<dd>
 			Mixes the <var>base color</var> with pure black to produce a darker version of the <var>base color</var>.
 
@@ -1515,7 +1515,7 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 	which mixes the <var>base color</var> with an arbitrary color.
 
 	<dl>
-		<dt>''blend''
+		<dt>''blend <<color>> <<percentage>> [rgb | hsl | hwb]?''
 		<dd>
 			Mixes the <var>base color</var> with the given color to produce an intermediate color.
 
@@ -1568,7 +1568,7 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 			</div>
 			
 
-		<dt>''blenda''
+		<dt>''blenda <<color>> <<percentage>> [rgb | hsl | hwb]?''
 		<dd>
 			Identical to the previous clause,
 			but also interpolates the alpha channel of the <var>base color</var> and the given color.
@@ -1693,11 +1693,11 @@ Transparency: the 'opacity' property</h2>
 	Name: opacity
 	Value: <<alpha-value>>
 	Initial: 1
-	Applies To: all elements
+	Applies to: all elements
 	Inherited: no
 	Percentages: N/A
 	Media: visual
-	Computed Value: The specified value, clamped to the range [0,1].
+	Computed value: The specified value, clamped to the range [0,1].
 	</pre>
 
 	<dl>
@@ -1766,11 +1766,11 @@ Color Management: the 'color-correction' property</h2>
 	Name: color-correction
 	Value: auto | sRGB
 	Initial: auto
-	Applies To: all elements
+	Applies to: all elements
 	Inherited: yes
 	Percentages: N/A
 	Media: visual
-	Computed Value: as specified
+	Computed value: as specified
 	</pre>
 
 	The 'color-correction' property specifies the color space that colors specified in CSS 
