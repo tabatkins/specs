@@ -1659,8 +1659,8 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 			interpret the <var>base color</var> and the given color in the appropriate color space
 			(RGB, HSL, or HWB).
 			Linearly interpolate each of the channels of the colors according to the given <<percentage>>,
-			where ''0%'' produces the <var>base color</var>
-			and ''100%'' produces the given color.
+			where ''0%'' produces the specified <<color>>
+			and ''100%'' produces the <var>base color</var>.
  
 			If the color space is ''hsl'' or ''hwb'',
 			interpolate the hue channel either clockwise or counterclockwise,
@@ -1693,9 +1693,39 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 		<dt>''blenda <<color>> <<percentage>> [rgb | hsl | hwb]?''
 		<dd>
 			Identical to the previous clause,
-			but also interpolates the alpha channel of the <var>base color</var> and the given color.
-			(''blend'' ignores the alpha channel, leaving the <var>base color</var>’s alpha untouched.)
+			except it pays attention to the alpha channel of the two colors
+			(''blend'' just preserves the alpha channel of the <var>base color</var>).
+
+			Let <var>w</var> be the specified <<percentage>>, 
+			rescaled to the range [-1,1],
+			where ''0%'' maps to -1 and ''100%'' maps to 1.
+			Let <var>a</var> be the difference of the alpha channels of the <var>base color</var> and the specified <<color>>,
+			also rescaled to the range [-1,1],
+			where ''-100%'' (''0%'' <var>base color</var> alpha and ''100%'' specified color alpha) maps to -1
+			and ''100%'' maps to 1.
+
+			If <code>w * a == -1</code>,
+			let <var>new weight</var> equal <var>w</var>.
+			Otherwise, let <var>new weight</var> equal <code>(w + a) / (1 + w*a)</code>.
+
+			Reinterpret <var>new weight</var> as a percentage in the range [0%, 100%],
+			where -1 maps to ''0%'' and 1 maps to ''100%''.
+			Calculate the result color as if ''blend'' had been specified,
+			using the <var>new weight</var> percentage instead of the specified <<percentage>>,
+			and set the alpha channel of the result color to the average of the alpha channels of the <var>base color</var> and the specified <<color>>.
+
+			<p class='issue'>
+				This blends the two colors in a way that pays attention to alpha,
+				similar to how compositing does.
+				Is there a better formula?
+				The current one was determined empirically to give good results,
+				but isn't motivated by any theory.
 	</dl>
+
+	<p class='issue'>
+		Should we swap the defaults,
+		so ''blend'' does the alpha blending,
+		and another name (or maybe another parameter) ignores alpha like ''blend'' currently does?
 
 
 <h3 id='contrast-adjuster'>

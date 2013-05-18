@@ -1750,8 +1750,8 @@ Color Blending: the <span data-autolink="maybe" class="css">blend</span> and <sp
 			interpret the <var>base color</var> and the given color in the appropriate color space
 			(RGB, HSL, or HWB).
 			Linearly interpolate each of the channels of the colors according to the given <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>,
-			where <span data-autolink="maybe" class="css">0%</span> produces the <var>base color</var>
-			and <span data-autolink="maybe" class="css">100%</span> produces the given color.
+			where <span data-autolink="maybe" class="css">0%</span> produces the specified <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a>
+			and <span data-autolink="maybe" class="css">100%</span> produces the <var>base color</var>.
  
 </p><p>			If the color space is <span data-autolink="maybe" class="css">hsl</span> or <span data-autolink="maybe" class="css">hwb</span>,
 			interpolate the hue channel either clockwise or counterclockwise,
@@ -1784,12 +1784,42 @@ Color Blending: the <span data-autolink="maybe" class="css">blend</span> and <sp
 		</dd><dt><span data-autolink="maybe" class="css">blenda <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a> <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a> [rgb | hsl | hwb]?</span>
 		</dt><dd>
 			Identical to the previous clause,
-			but also interpolates the alpha channel of the <var>base color</var> and the given color.
-			(<span data-autolink="maybe" class="css">blend</span> ignores the alpha channel, leaving the <var>base color</var>&#8217;s alpha untouched.)
-	</dd></dl>
+			except it pays attention to the alpha channel of the two colors
+			(<span data-autolink="maybe" class="css">blend</span> just preserves the alpha channel of the <var>base color</var>).
+
+<p>			Let <var>w</var> be the specified <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>, 
+			rescaled to the range [-1,1],
+			where <span data-autolink="maybe" class="css">0%</span> maps to -1 and <span data-autolink="maybe" class="css">100%</span> maps to 1.
+			Let <var>a</var> be the difference of the alpha channels of the <var>base color</var> and the specified <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a>,
+			also rescaled to the range [-1,1],
+			where <span data-autolink="maybe" class="css">-100%</span> (<span data-autolink="maybe" class="css">0%</span> <var>base color</var> alpha and <span data-autolink="maybe" class="css">100%</span> specified color alpha) maps to -1
+			and <span data-autolink="maybe" class="css">100%</span> maps to 1.
+
+</p><p>			If <code>w * a == -1</code>,
+			let <var>new weight</var> equal <var>w</var>.
+			Otherwise, let <var>new weight</var> equal <code>(w + a) / (1 + w*a)</code>.
+
+</p><p>			Reinterpret <var>new weight</var> as a percentage in the range [0%, 100%],
+			where -1 maps to <span data-autolink="maybe" class="css">0%</span> and 1 maps to <span data-autolink="maybe" class="css">100%</span>.
+			Calculate the result color as if <span data-autolink="maybe" class="css">blend</span> had been specified,
+			using the <var>new weight</var> percentage instead of the specified <a data-autolink="link" class="production"><var>&lt;percentage&gt;</var></a>,
+			and set the alpha channel of the result color to the average of the alpha channels of the <var>base color</var> and the specified <a data-autolink="link" class="production" href="#color-production"><var>&lt;color&gt;</var></a>.
+
+			</p><p class="issue">
+				This blends the two colors in a way that pays attention to alpha,
+				similar to how compositing does.
+				Is there a better formula?
+				The current one was determined empirically to give good results,
+				but isn't motivated by any theory.
+	</p></dd></dl>
+
+	<p class="issue">
+		Should we swap the defaults,
+		so <span data-autolink="maybe" class="css">blend</span> does the alpha blending,
+		and another name (or maybe another parameter) ignores alpha like <span data-autolink="maybe" class="css">blend</span> currently does?
 
 
-<h3 id="contrast-adjuster" data-level="4.5"><span class="secno">4.5 </span>
+</p><h3 id="contrast-adjuster" data-level="4.5"><span class="secno">4.5 </span>
 Guaranteeing Adequate Contrast: the <span data-autolink="maybe" class="css">constrast</span> adjuster</h3>
 
 <p>	Guaranteeing that foreground and background colors contrast sufficiently is important,
@@ -2156,11 +2186,11 @@ References</h2>
 
 <h3 id="normative" class="no-num no-ref">
 Normative References</h3>
-<div data-fill-with="normative-references"><dl><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
+<div data-fill-with="normative-references"><dl><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
 
 <h3 id="informative" class="no-num no-ref">
 Informative References</h3>
-<div data-fill-with="informative-references"><dl><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd></dl></div>
+<div data-fill-with="informative-references"><dl><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
 
 <h2 id="index" class="no-num no-ref">
 Index</h2>
