@@ -1,0 +1,309 @@
+<h1>CSS Toggle States</h1>
+
+<pre class='metadata'>
+Group: personal
+Status: DREAM
+ED: http://rawgithub.com/tabatkins/specs/master/css-toggle-states/Overview.html
+Shortname: css-toggle-states
+Level: 1
+Editor: Tab Atkins Jr., Google, http://xanthir.com/contact
+Abstract: This specification defines a way to associate a toggleable state with an element which can be used in Selectors to select an element, and declarative ways to set and modify the state on the element.
+Ignored Properties: toggle-*
+Ignored Terms: <integer>, <string>, <selector>
+</pre>
+
+<h2 id="introduction">
+Introduction</h2>
+
+	<em>This section is not normative.</em>
+
+	Some user-interface languages define elements which can have "toggleable state", 
+	which can be modified by user interaction and selected using CSS Selectors.
+	For example, in HTML, the <code>&lt;input type=checkbox></code> has a "checked" state
+	which toggles between true and false when the user activates the element,
+	and which is selected by the '':checked'' pseudoclass.
+
+	<div class='example'>
+		The following markup example shows how to lightly abuse HTML semantics to declaratively use toggleable state:
+
+		<pre>
+			&lt;ul class='ingredients'>
+			  &lt;li>&lt;label>&lt;input type=checkbox>&lt;span>1 banana&lt;/span>&lt;/label>
+			  &lt;li>&lt;label>&lt;input type=checkbox>&lt;span>1 cup blueberries&lt;/span>&lt;/label>
+			  ...
+			&lt;/ul>
+			&lt;style>
+			input[type='checkbox'] { 
+			  display: none; 
+			}
+			input[type='checkbox']:checked + span {
+			  color: silver;
+			  text-decoration: line-through;
+			}
+			&lt;/style>
+		</pre>
+
+		In this markup, 
+		one can cross out ingredients as they're used in the recipe
+		by simply clicking on them.
+	</div>
+
+	This module generalizes this ability and allows it to be applied to any element via CSS.
+	Elements can be declared to have toggleable state,
+	with any number of states that can be toggled between.
+	Multiple elements can share access to the same toggleable state,
+	similar to HTML's <code>&lt;input type=radio></code> element.
+	This state can be manipulated by activating the element or other specified elements,
+	or by other user interactions.
+
+
+<h2 id=toggle-states-property>
+Creating a Toggleable Element: the 'toggle-states' and 'toggle-initial' property</h2>
+
+	<pre class='propdef'>
+	Name: toggle-states
+	Value: none | <<integer>> [cycle | sticky]?
+	Initial: none
+	Applies to: all elements
+	Inherited: no
+	Percentages: n/a
+	Media: interactive
+	Computed value: as specified
+	Animatable: no
+	</pre>
+
+	<pre class='propdef'>
+	Name: toggle-initial
+	Value: <<integer>>
+	Initial: 0
+	Applies to: all elements
+	Inherited: no
+	Percentages: n/a
+	Media: interactive
+	Computed value: as specified
+	Animatable: no
+	</pre>
+
+	The 'toggle-states' property controls whether an element has toggleable state or not.
+
+	<dl>
+		<dt><dfn id='toggle-states-none' title='toggle-states-none'>none</dfn>
+		<dd>
+			Indicates that the element does not have toggleable state.
+
+		<dt><dfn id='toggle-states-int' title='toggle-states-int'><<integer>> [cycle | sticky]?</dfn>
+		<dd>
+			Indicates that the element is <a>toggleable</a>.
+			The <<integer>> gives the number of states;
+			it must be 2 or greater, or else the property is invalid.
+			The following optional keyword defines the behavior 
+			when the element is already at its last state,
+			and is toggled again:
+			''cycle'' defines that it should cycle back around to the first state,
+			while ''sticky'' defines that it should stay at the last state.
+	</dl>
+
+	If an element is <dfn>toggleable</dfn>,
+	it has a <dfn>toggle state</dfn>,
+	which is an integer from 0 to some maximum value,
+	as defined by 'toggle-states'.
+	This state is incremented whenever the element is activated by the user,
+	using the same defininition of "activated" as the <a href="http://dev.w3.org/csswg/selectors4/#the-active-pseudo">'':active'' pseudo-class</a>,
+	and can be selected by the '':checked'' or '':checked()'' pseudo-classes,
+	as defined later in this specification.
+
+	<div class='example'>
+		Revisiting the example in the Introduction,
+		the same ingredient list can be specified in simple HTML and CSS:
+
+		<pre>
+			&lt;ul class='ingredients'>
+			  &lt;li>1 banana
+			  &lt;li>1 cup blueberries
+			  ...
+			&lt;/ul>
+			&lt;style>
+			li {
+			  toggle-states: 2;
+			}
+			li:checked {
+			  color: silver;
+			  text-decoration: line-through;
+			}
+			&lt;/style>
+		</pre>
+
+		The effect is identical to what was specified in the Introduction example,
+		except the markup is much simpler and more semantic.
+	</div>
+
+	The 'toggle-initial' property sets the initial <a>toggle state</a> of the element.
+	Its value must be a non-negative integer,
+	or else the property is invalid.
+	If the value is equal to or greater than the number of states defined by 'toggle-states',
+	it computes to the greatest toggle state.
+
+
+<h3 id=toggle-group-property>
+Linking Toggle States: the 'toggle-group' property</h3>
+
+	<pre class='propdef'>
+	Name: toggle-group
+	Value: none | <<string>>
+	Initial: none
+	Applies to: all elements
+	Inherited: no
+	Percentages: n/a
+	Media: interactive
+	Computed value: as specified
+	Animatable: no
+	</pre>
+
+	By default, each <a>toggleable</a> element's <a>toggle state</a> is independent;
+	incrementing one has no effect an any other.
+	The 'toggle-group' property allows elements to link their <a>toggle states</a> together
+	by declaring them to be part of a named <dfn>toggle group</dfn>,
+	such that only one can have a non-zero <a>toggle state</a> at a time,
+	similar to HTML's <code>&lt;input type=radio></code> element.
+
+	<dl>
+		<dt><dfn id=toggle-group-none title='toggle-group-none'>none</dfn>
+		<dd>
+			The element is not in a <a>toggle group</a>.
+			It's <a>toggle state</a> is independent of any other elements'.
+
+		<dt><dfn id=toggle-group-string title='toggle-group-string'><<string>></dfn>
+		<dd>
+			The element is in the <a>toggle group</a> named by the <<string>>.
+			Any time an element in the given <a>toggle group</a> has its <a>toggle state</a> incremented,
+			the <a>toggle state</a> of every other element in the same <a>toggle group</a> is set to 0.
+	</dl>
+
+	<div class='example'>
+		For example, 'toggle-group' can be used to control a tabbed display,
+		so that only one panel is displayed at a time:
+
+		<pre>
+			.tab {
+			  toggle-states: 2 sticky;
+			  toggle-group: "tabs";
+			  toggle-share: select(attr(for idref));
+			}
+			.panel {
+			  toggle-states: 2 sticky;
+			  toggle-group: "panels";
+			}
+			.tab:checked {
+			  /* styling for the active tab */
+			}
+			.panel:not(:checked) {
+			  display: none;
+			}
+		</pre>
+
+		Clicking on any tab will increment its <a>toggle state</a> from 0 to 1
+		(and the ''sticky'' keyword will keep it at 1 if activated multiple times),
+		while resetting the rest of the tabs' <a>toggle states</a> to 0.
+		The same happens to the panels,
+		using the 'toggle-share' property defined in a later section.
+		The active tab and panel are styled and shown differently than the other tabs and panels.
+	</div>
+
+	<p class='issue'>
+		The name is global to the page.
+		Should we have a way to specify more implicit groups?
+		Maybe a ''parent'' keyword,
+		or a way to scope names to a subtree?
+
+
+<h3 id='toggle-share-property'>
+Sharing Toggle Activations: the 'toggle-share' property</h3>
+
+	<pre class='propdef'>
+	Name: toggle-share
+	Value: none | <<selector>>
+	Initial: none
+	Applies to: all elements
+	Inherited: no
+	Percentages: n/a
+	Media: interactive
+	Computed value: as specified
+	Animatable: no
+	</pre>
+
+	By default, activating an element only increments its own <a>toggle state</a>.
+	The 'toggle-share' property allows an element to additionally increment the <a>toggle state</a> of another element.
+
+	<dl>
+		<dt><dfn id=toggle-share-none title='toggle-share-none'>none</dfn>
+		<dd>
+			Activating the element only increments its own <a>toggle state</a>
+			(assuming the element is <a>toggleable</a>).
+
+		<dt><dfn id=toggle-share-selector title='toggle-share-selector'><<selector>></dfn>
+		<dd>
+			Activating the element increments the <a>toggle state</a>
+			of both itself and all the elements matched by the given selector
+			(assuming the elements are <a>toggleable</a>).
+
+			If the set of elements sharing the activation includes elements that share a <a>toggle group</a>,
+			only the last such element (in document order) per group has its <a>toggle state</a> incremented.
+	</dl>
+
+	<div class='example'>
+		The preceding section for 'toggle-group' contained an example showing off 'toggle-share'.
+		When the user activates a tab, 
+		the activation is shared with the associated panel.
+	</div>
+
+	Note: This functionality is similar in nature to HTML's <code>&lt;label></code> element,
+	but not identical.
+	'toggle-share' causes the activation to be <em>shared</em>,
+	rather than transferred like <code>&lt;label></code> does.
+	Additionally, this sharing <strong>only</strong> affects the <a>toggle state</a>,
+	while <code>&lt;label</code> more strongly transfers the concept of "activating",
+	affecting things such as click events and the '':hover'' pseudo-class.
+
+
+<h2 id='checked-pseudoclass'>
+Selecting Elements Based on Toggle State: the '':checked'' and '':checked()'' pseudo-class</h2>
+
+	The <dfn>:checked</dfn> and <dfn>:checked()</dfn> pseudo-classes select elements based on their <a>toggle state</a>.
+
+	The '':checked'' pseudo-class selects any elements whose <a>toggle state</a> is non-zero.
+	The '':checked(<<integer>>)'' pseudo-class selects any elements whose <a>toggle state</a> has the value given by its argument.
+
+<h3 id='checked-problems'>
+Problems with Combining '':checked'' and 'toggle-*' Properties</h3>
+
+	Naively combining '':checked'' and the 'toggle-*' properties causes circularity issues.
+
+	<div class='example'>
+		For example,
+		in the following code,
+		the element starts in a state that matches '':checked'',
+		but the '':checked'' selector makes the element no longer <a>toggleable</a>,
+		so it no longer matches '':checked''.
+
+		<pre>
+			#foo {
+				toggle-states: 2;
+				toggle-initial: 1;	
+			}
+			#foo:checked {
+				toggle-states: none;
+			}
+		</pre>
+	</div>
+
+	To avoid this,
+	the 'toggle-states' and 'toggle-initial' are defined as <dfn title="selector-affecting property">selector-affecting properties</dfn>,
+	and the '':checked'' and '':checked()'' pseudo-classes are defined as <dfn title="property-affected selector">property-affected selectors</dfn>.
+	In any style rule whose selector includes a <a>property-affected selector</a>,
+	any <a>selector-affecting properties</a> are invalid.
+
+	<p class='issue'>
+		I'm not sure this is sufficient.
+		For example, you could set the property in an animation,
+		which is triggered by an affected selector.
+		Is there a better way to define this so that it's reliable?
