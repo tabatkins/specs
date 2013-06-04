@@ -6,3 +6,4 @@ Spec proposals that aren't yet approved by the relevant Working Group.  Everythi
 Live copies of the specs, using rawgithub.com because I'm too lazy to maintain a `gh-pages` branch:
 
 * [CSS Color Level 4](http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html)
+* [CSS Toggle States Level 1](http://rawgithub.com/tabatkins/specs/master/css-toggle-states/Overview.html)
