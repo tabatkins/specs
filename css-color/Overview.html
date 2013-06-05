@@ -69,8 +69,8 @@ dt { font-weight: bold }
 	<p data-fill-with="logo"></p>
 	<h1 class="p-name no-ref" id="title">CSS Color Of My Dreams</h1>
 	<h2 class="no-num no-toc no-ref" id="subtitle">A Collection of Interesting Ideas,
-		<span class="dt-updated"><span class="value-title" title="20130603">3 June 2013</span></span></h2>
-	<div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/DREAM-css-color-4-20130603/" class="u-url">http://www.w3.org/TR/2013/DREAM-css-color-4-20130603/</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html</a>
+		<span class="dt-updated"><span class="value-title" title="20130604">4 June 2013</span></span></h2>
+	<div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/DREAM-css-color-4-20130604/" class="u-url">http://www.w3.org/TR/2013/DREAM-css-color-4-20130604/</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-color/Overview.html</a>
 </dd><dt>Feedback:</dt>
     <dd><a href="mailto:www-style@w3.org?subject=%5Bcss-color%5D%20feedback">www-style@w3.org</a> 
         with subject line 
@@ -81,7 +81,7 @@ dt { font-weight: bold }
 	<p data-fill-with="copyright" class="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img src="http://i.creativecommons.org/p/zero/1.0/80x15.png" alt="CC0"></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 3 June 2013, 
+In addition, as of 4 June 2013, 
 the editors have made this specification available under the
 <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -2174,7 +2174,7 @@ Changes</h2>
 <h3 id="changes-from-3">
 Changes from Colors 3</h3>
 
-<p>	</p><ul>
+	<ol>
 		<li><a data-autolink="maybe" class="css" href="#rgb-function">rgb()</a> and <a data-autolink="maybe" class="css" href="#rgba-function">rgba()</a> functions now accept <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> rather than <a data-autolink="link" class="production"><var>&lt;integer&gt;</var></a>.
 
 		</li><li><a data-autolink="maybe" class="css" href="#hsl-function">hsl()</a> and <a data-autolink="maybe" class="css" href="#hsla-function">hsla()</a> functions now accept <a data-autolink="link" class="production"><var>&lt;angle&gt;</var></a> as well as <a data-autolink="link" class="production"><var>&lt;number&gt;</var></a> for hues.
@@ -2184,17 +2184,29 @@ Changes from Colors 3</h3>
 		</li><li>4 and 8-digit hex colors have been added, to specify transparency.
 
 		</li><li>The <a data-autolink="property" class="property" title="color-correction" href="#color-correction">color-correction</a> property has been pulled in from the unpublished Color Correction proposal.
-	</li></ul>
+	</li></ol>
+
+<p>	Several brand new features have been added:
+
+	</p><ol>
+		<li><a data-autolink="maybe" class="css" href="#gray-function">gray()</a> function, for specifying grays compactly.  (And maybe allowing specification via luminance.)
+
+		</li><li><a data-autolink="maybe" class="css" href="#hwb-function">hwb()</a> function, for specifying colors in the HWB notation.
+
+		</li><li><a data-autolink="maybe" class="css" href="#color-function">color()</a> function, for manipulating colors.
+
+		</li><li><a data-autolink="link" class="production" href="#named-hue-production"><var>&lt;named-hue&gt;</var></a>, for specifying hsl/hwb hue with readable names, rather than a more opaque angle.
+	</li></ol>
 <h2 id="references" class="no-num no-ref">
 References</h2>
 
 <h3 id="normative" class="no-num no-ref">
 Normative References</h3>
-<div data-fill-with="normative-references"><dl><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
+<div data-fill-with="normative-references"><dl><dt id="srgb" title="SRGB">[SRGB]</dt><dd>???. <a href="http://www.iec.ch/nr1899.htm%20">Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB</a>. as amended by Amendment A1:2003.  URL: <a href="http://www.iec.ch/nr1899.htm%20">http://www.iec.ch/nr1899.htm </a></dd><dt id="svg11" title="SVG11">[SVG11]</dt><dd>Erik Dahlstr&#246;m; et al. <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-SVG11-20110816/">http://www.w3.org/TR/2011/REC-SVG11-20110816/</a></dd><dt id="css21" title="CSS21">[CSS21]</dt><dd>Bert Bos; et al. <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-CSS2-20110607/">http://www.w3.org/TR/2011/REC-CSS2-20110607/</a></dd></dl></div>
 
 <h3 id="informative" class="no-num no-ref">
 Informative References</h3>
-<div data-fill-with="informative-references"><dl><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd></dl></div>
+<div data-fill-with="informative-references"><dl><dt id="css3-text-decor" title="CSS3-TEXT-DECOR">[CSS3-TEXT-DECOR]</dt><dd>Elika J. Etemad; Koji Ishii. <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">CSS Text Decoration Module Level 3</a>. 3 January 2013. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/">http://www.w3.org/TR/2013/WD-css-text-decor-3-20130103/</a></dd><dt id="wcag20" title="WCAG20">[WCAG20]</dt><dd>Ben Caldwell; et al. <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">Web Content Accessibility Guidelines (WCAG) 2.0</a>. 11 December 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/">http://www.w3.org/TR/2008/REC-WCAG20-20081211/</a></dd><dt id="css1" title="CSS1">[CSS1]</dt><dd>H&#229;kon Wium Lie; Bert Bos. <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">Cascading Style Sheets (CSS1) Level 1 Specification</a>. 11 April 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2008/REC-CSS1-20080411">http://www.w3.org/TR/2008/REC-CSS1-20080411</a></dd><dt id="css3color" title="CSS3COLOR">[CSS3COLOR]</dt><dd>Tantek &#199;elik; Chris Lilley; L. David Baron. <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2011/REC-css3-color-20110607">http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dd><dt id="colorimetry" title="COLORIMETRY">[COLORIMETRY]</dt><dd>???. <a href="None">Colorimetry, Third Edition</a>. ISBN 978-3-901906-33-6 URL: <a href="None">None</a></dd></dl></div>
 
 <h2 id="index" class="no-num no-ref">
 Index</h2>

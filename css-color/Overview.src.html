@@ -2105,7 +2105,7 @@ Changes</h2>
 <h3 id='changes-from-3'>
 Changes from Colors 3</h3>
 
-	<ul>
+	<ol>
 		<li>''rgb()'' and ''rgba()'' functions now accept <<number>> rather than <<integer>>.
 
 		<li>''hsl()'' and ''hsla()'' functions now accept <<angle>> as well as <<number>> for hues.
@@ -2115,4 +2115,16 @@ Changes from Colors 3</h3>
 		<li>4 and 8-digit hex colors have been added, to specify transparency.
 
 		<li>The 'color-correction' property has been pulled in from the unpublished Color Correction proposal.
-	</ul>
+	</ol>
+
+	Several brand new features have been added:
+
+	<ol>
+		<li>''gray()'' function, for specifying grays compactly.  (And maybe allowing specification via luminance.)
+
+		<li>''hwb()'' function, for specifying colors in the HWB notation.
+
+		<li>''color()'' function, for manipulating colors.
+
+		<li><<named-hue>>, for specifying hsl/hwb hue with readable names, rather than a more opaque angle.
+	</ol>
