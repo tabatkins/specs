@@ -1383,7 +1383,7 @@ Modifying colors: the ''color()'' function</h2>
 		    blend <<color>> <<percentage>> [rgb | hsl | hwb]? |
 		    blenda <<color>> <<percentage>> [rgb | hsl | hwb]? |
 
-		    contrast <<percentage>>
+		    contrast <<percentage>>?
 	</pre>
 
 	<p class='issue'>
@@ -1742,7 +1742,7 @@ Guaranteeing Adequate Contrast: the ''constrast'' adjuster</h3>
 	automatically computing a color that is sufficiently contrasting with the <var>base color</var> to satisfy accessibility guidelines.
 
 	<dl>
-		<dt>''contrast <<percentage>>''
+		<dt>''contrast <<percentage>>?''
 		<dd>
 			Finds a color that contrasts with the <var>base color</var> suffficiently to satisfy accessibility guidelines,
 			using the definition of "contrast" given by <a href="http://www.w3.org/TR/WCAG/#visual-audio-contrast-contrast">WCAG 2.0 Guideline 1.4.3</a>.
@@ -1753,6 +1753,7 @@ Guaranteeing Adequate Contrast: the ''constrast'' adjuster</h3>
 			while ''100%'' will return the <var>maximum-contrast color</var>
 			(white or black, whichever contrasts the <var>base color</var> more)
 			Specifying a value less than ''0%'' or greater than ''100%'' is invalid and a syntax error.
+			If omitted, the <<percentage>> defaults to ''100%''.
 
 			<ol>
 				<li>
