@@ -1748,10 +1748,10 @@ Guaranteeing Adequate Contrast: the ''constrast'' adjuster</h3>
 			using the definition of "contrast" given by <a href="http://www.w3.org/TR/WCAG/#visual-audio-contrast-contrast">WCAG 2.0 Guideline 1.4.3</a>.
 
 			The <<percentage>> specifies the desired similarity between the <var>base color</var> and the returned color.
-			''0%'' will return white or black
-			(whichever contrasts the <var>base color</var> more)
-			while ''100%'' will return the <var>minimum-contrast color</var>
-			(the closest color to the <var>base color</var> that still contrasts sufficiently).
+			''0%'' will return the <var>minimum-contrast color</var>
+			(the closest color to the <var>base color</var> that still contrasts sufficiently),
+			while ''100%'' will return the <var>maximum-contrast color</var>
+			(white or black, whichever contrasts the <var>base color</var> more)
 			Specifying a value less than ''0%'' or greater than ''100%'' is invalid and a syntax error.
 
 			<ol>
@@ -1783,7 +1783,7 @@ Guaranteeing Adequate Contrast: the ''constrast'' adjuster</h3>
 
 				<li>
 					Blend the <var>minimum-contrast color</var> and <var>maximum-contrast color</var> according to the specified <<percentage>>,
-					as if ''color(<var>minimum-contrast color</var> blend <var>maximum-contrast color</var> <<percentage>> hwb)'' were specified.
+					as if ''color(<var>maximum-contrast color</var> blend <var>minimum-contrast color</var> <<percentage>> hwb)'' were specified.
 					Return the blended color.
 			</ol>
 	</dl>
