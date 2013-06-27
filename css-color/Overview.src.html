@@ -1365,30 +1365,26 @@ Modifying colors: the ''color()'' function</h2>
 	<pre class='prod'>
 		<dfn>color()</dfn> = color( [ <<color>> | <<hue>> ] <<color-adjuster>>* )
 		<dfn>&lt;color-adjuster></dfn> = 
-		    [red | green | blue | alpha | a] ['+' | '-']? [<<number>> | <<percentage>>] |
-		    [red | green | blue | alpha | a] '*' <<percentage>> |
-		    rgb ['+' | '-'] [<<number>> | <<percentage>>]{3} |
-		    rgb ['+' | '-'] <<hash>> |
-		    rgb '*' <<percentage>> |
+		    [red( | green( | blue( | alpha( | a(] ['+' | '-']? [<<number>> | <<percentage>>] ) |
+		    [red( | green( | blue( | alpha( | a(] '*' <<percentage>> ) |
+		    rgb( ['+' | '-'] [<<number>> | <<percentage>>]{3} ) |
+		    rgb( ['+' | '-'] <<hash>> ) |
+		    rgb( '*' <<percentage>> ) |
 
-		    [hue | h] ['+' | '-' | '*']? <<angle>> |
-		    [saturation | s] ['+' | '-' | '*']? <<percentage>> |
-		    [lightness | l] ['+' | '-' | '*']? <<percentage>> |
-		    [whiteness | w] ['+' | '-' | '*']? <<percentage>> |
-		    [blackness | b] ['+' | '-' | '*']? <<percentage>> |
+		    [hue( | h(] ['+' | '-' | '*']? <<angle>> ) |
+		    [saturation( | s(] ['+' | '-' | '*']? <<percentage>> ) |
+		    [lightness( | l(] ['+' | '-' | '*']? <<percentage>> ) |
+		    [whiteness( | w(] ['+' | '-' | '*']? <<percentage>> ) |
+		    [blackness( | b(] ['+' | '-' | '*']? <<percentage>> ) |
 
-		    tint <<percentage>> |
-		    shade <<percentage>> |
+		    tint( <<percentage>> ) |
+		    shade( <<percentage>> ) |
 
-		    blend <<color>> <<percentage>> [rgb | hsl | hwb]? |
-		    blenda <<color>> <<percentage>> [rgb | hsl | hwb]? |
+		    blend( <<color>> <<percentage>> [rgb | hsl | hwb]? ) |
+		    blenda( <<color>> <<percentage>> [rgb | hsl | hwb]? ) |
 
-		    contrast <<percentage>>?
+		    contrast( <<percentage>>? )
 	</pre>
-
-	<p class='issue'>
-		I think this may be more readable as a set of functions instead.  
-		That does mean nesting functions, but only by one level, similar to filter().
 
 	The first argument specifies the <var>base color</var>.
 	If a <<hue>> is given,
@@ -1400,7 +1396,7 @@ Modifying colors: the ''color()'' function</h2>
 	Each <<color-adjuster>> modifies the color in some way,
 	passing a new <var>base color</var> to the next <<color-adjuster>> in the list.
 	The same <<color-adjuster>> can be specified more than once in the list,
-	such as ''color(red s - 10% s - 10%)'';
+	such as ''color(red s(- 10%) s(- 10%))'';
 	each instance just modifies the color appropriately
 	(in this case, producing ''hsl(0deg, 80%, 50%)'').
 
@@ -1411,14 +1407,14 @@ Modifying colors: the ''color()'' function</h2>
 	The computed value of a ''color()'' function is the color produced by applying all the <<color-adjuster>>s to the <var>base color</var>.
 
 	Note: While scaling can be specified without any spaces,
-	like ''lightness*150%'',
-	adding/subtracting must be done with spaces around the +/-,
-	or else the +/- will be interpreted as part of the channel name or the value
+	like ''lightness(*150%)'',
+	adding/subtracting must be done with spaces after the +/-,
+	or else the +/- will be interpreted as part of the number
 	by the CSS parser.
 
 	An <a>achromatic</a> color doesn't have a unique hue,
 	so some <<color-adjuster>>s that would make the color no longer <a>achromatic</a>
-	(such as ''s 50%'')
+	(such as ''s(50%)'')
 	have special behavior for <a>achromatic</a> colors,
 	as described in each adjuster's description.
 	However, it is possible for, within the space of a single ''color()'' function,
@@ -1445,7 +1441,7 @@ Modifying colors: the ''color()'' function</h2>
 	<div class='example'>
 		For example, here's a possible ''color()'' function that lightens and brightens the <var>base color</var>:
 
-		<pre>color(X w + 20% s + 20%)</pre>
+		<pre>color(X w(+ 20%) s(+ 20%))</pre>
 
 		If X is a color like ''blue'',
 		this works in the expected way -
@@ -1458,10 +1454,11 @@ Modifying colors: the ''color()'' function</h2>
 		the first operation will boost the sum of white and black to greater than ''100%'',
 		making it an <a>achromatic</a> gray 
 		(''#8f8f8f'', to be specific).
+
 		However, the ''color()'' function remembers that the hue of the color was originally ''120deg'',
 		so when the second operation saturates the color,
 		it will result in a greenish-gray again
-		(''hsl(120deg, 20%, 56%)'', slightly lighter and brighter than the original color).
+		(''hsl(120deg, 20%, 56%)'', slightly lighter and brighter than the original color, which is what was intended).
 	</div>
 
 	<div class='issue'>
@@ -1479,7 +1476,7 @@ Modifying colors: the ''color()'' function</h2>
 			<li>
 				Inverting a color.  Use-cases?  
 				Is this just done by inverting the r/g/b channels?
-				Is the ''contrast'' adjuster what people really mean when they ask for invert?
+				Is the ''contrast()'' adjuster what people really mean when they ask for invert?
 
 			<li>
 				Warmer/cooler.  How to define?  What's warmer, red or yellow?  What's cooler, blue or green?
@@ -1494,8 +1491,8 @@ RGBA Adjustment</h3>
 	altering the amount of red, green, blue, or alpha in the color.
 
 	<dl>
-		<dt>''[red | green | blue | alpha | a] ['+' | '-']? [<<number>> | <<percentage>>]''
-		<dt>''[red | green | blue | alpha | a] '*' <<percentage>>''
+		<dt>''[red( | green( | blue( | alpha( | a(] ['+' | '-']? [<<number>> | <<percentage>>] )''
+		<dt>''[red( | green( | blue( | alpha( | a(] '*' <<percentage>> )''
 		<dd>
 			Sets or adjust the red, blue, green, or alpha channels of the <var>base color</var>.
 
@@ -1509,7 +1506,7 @@ RGBA Adjustment</h3>
 			If the operator is ''*'',
 			the given channel is multipled by the given value.
 
-		<dt>''rgb ['+' | '-']? [<<number>> | <<percentage>>]{3}''
+		<dt>''rgb( ['+' | '-']? [<<number>> | <<percentage>>]{3} )''
 		<dd>
 			Adjusts the <var>base color</var> in the red, green, and blue channels simultaneously.
 			All three channels are interpreted as the matching type (<<number>> or <<percentage>>)
@@ -1518,7 +1515,7 @@ RGBA Adjustment</h3>
 			the second value adjusting the green channel,
 			and the third value adjusting the blue channel.
 
-		<dt>''rgb [&apos;+&apos; | &apos;-&apos;] <<hash>>''
+		<dt>''rgb( [&apos;+&apos; | &apos;-&apos;] <<hash>> )''
 		<dd>
 			Identical to the previous clause,
 			except that the adjustments to the three channels are specified in hexadecimal format;
@@ -1527,7 +1524,7 @@ RGBA Adjustment</h3>
 			are applied as adjustments to the <var>base color</var>.
 
 			<div class='example'>
-				For example, in ''color(red rgb + #004400)'',
+				For example, in ''color(red rgb(+ #004400))'',
 				the <var>base color</var> is ''red'' (''#ff0000'').
 				The red and blue channels aren't adjusted at all
 				(those channels in the given color are both 0),
@@ -1535,13 +1532,13 @@ RGBA Adjustment</h3>
 				resulting in a final color of ''#ff4400''.
 			</div>
 
-		<dt>''rgb '*' <<percentage>>''
+		<dt>''rgb( '*' <<percentage>> )''
 		<dd>
 			The red, green, and blue channels of the <var>base color</var> are multiplied by the given value.
 	</dl>
 
 	All <<color-adjuster>>s in this section,
-	except for ''alpha'' and ''a'',
+	except for ''alpha()'' and ''a()'',
 	set the hue angle to <a>null</a> if the resulting color is <a>achromatic</a>.
 
 
@@ -1554,7 +1551,7 @@ HSL/HWB Adjustment</h3>
 	Similarly, the ''color()'' function allows a color to be adjusted in these "virtual channels".
 
 	<dl>
-		<dt>''[hue | h] ['+' | '-' | '*']? <<angle>>''
+		<dt>''[hue( | h(] ['+' | '-' | '*']? <<angle>> )''
 		<dd>
 			Sets or adjusts the hue of the <var>base color</var>,
 			when <var>base color</var> is interpreted as an HSL color.
@@ -1569,10 +1566,10 @@ HSL/HWB Adjustment</h3>
 			If the <a>hue angle is null</a>,
 			the adjuster instead does nothing.
 
-		<dt>''[saturation | s] ['+' | '-' | '*']? <<percentage>>''
-		<dt>''[lightness | l] ['+' | '-' | '*']? <<percentage>>''
-		<dt>''[whiteness | w] ['+' | '-' | '*']? <<percentage>>''
-		<dt>''[blackness | b] ['+' | '-' | '*']? <<percentage>>''
+		<dt>''[saturation( | s(] ['+' | '-' | '*']? <<percentage>> )''
+		<dt>''[lightness( | l(] ['+' | '-' | '*']? <<percentage>> )''
+		<dt>''[whiteness( | w(] ['+' | '-' | '*']? <<percentage>> )''
+		<dt>''[blackness( | b(] ['+' | '-' | '*']? <<percentage>> )''
 		<dd>
 			Sets or adjusts the saturation, lightness, whiteness, or blackness of the <var>base color</var>,
 			when <var>base color</var> is interpreted as an HSL or HWB color, as appropriate.
@@ -1587,16 +1584,16 @@ HSL/HWB Adjustment</h3>
 			the given channel is multiplied by the given value.
 
 			If the <a>hue angle is null</a>,
-			the operation is ''s'' or ''saturation'',
+			the operation is ''s()'' or ''saturation()'',
 			and the adjuster would make the saturation greater than 100%,
 			it instead does nothing.
 
 			If the <a>hue angle is null</a>,
-			the operation is ''w'', ''white'', ''b'', or ''black'',
+			the operation is ''w()'', ''white()'', ''b()'', or ''black()'',
 			and the adjuster would make the sum of whiteness and blackness less than 100%,
 			it additionally adjusts the opposite HWB channel
 			to make the sum equal to 100%.
-			(That is, ''color(white w - 20%)'' would represent the same color as ''hwb(0, 80%, 20%)''.)
+			(That is, ''color(white w(- 20%))'' would represent the same color as ''hwb(0, 80%, 20%)''.)
 	</dl>
 
 
@@ -1609,7 +1606,7 @@ Tints and Shades: the ''tint'' and ''shade'' adjusters</h3>
 	by simply mixing the <var>base color</var> with white or black.
 
 	<dl>
-		<dt>''tint <<percentage>>''
+		<dt>''tint( <<percentage>> )''
 		<dd>
 			Mixes the <var>base color</var> with pure white to produce a lighter version of the <var>base color</var>.
 
@@ -1621,9 +1618,9 @@ Tints and Shades: the ''tint'' and ''shade'' adjusters</h3>
 			where ''0%'' returns the <var>base color</var>
 			and ''100%'' returns pure white.
 
-			Note: ''tint X%'' is identical to ''blend white X% rgb''.
+			Note: ''tint(X%)'' is identical to ''blend(white X% rgb)''.
 
-		<dt>''shade <<percentage>>''
+		<dt>''shade( <<percentage>> )''
 		<dd>
 			Mixes the <var>base color</var> with pure black to produce a darker version of the <var>base color</var>.
 
@@ -1634,11 +1631,11 @@ Tints and Shades: the ''tint'' and ''shade'' adjusters</h3>
 <h3 id='blend-adjuster'>
 Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 
-	The ''tint'' and ''shade'' adjusters are common cases of the more general ''blend'' adjuster,
+	The ''tint()'' and ''shade()'' adjusters are common cases of the more general ''blend()'' adjuster,
 	which mixes the <var>base color</var> with an arbitrary color.
 
 	<dl>
-		<dt>''blend <<color>> <<percentage>> [rgb | hsl | hwb]?''
+		<dt>''blend( <<color>> <<percentage>> [rgb | hsl | hwb]? )''
 		<dd>
 			Mixes the <var>base color</var> with the given color to produce an intermediate color.
 
@@ -1651,10 +1648,10 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 			then the components are blended.
 
 			<div class='example'>
-				For example, ''color(yellow blend blue 50%)'' blends yellow (''#ffff00'') with blue (''#0000ff'') equally,
+				For example, ''color(yellow blend(blue 50%))'' blends yellow (''#ffff00'') with blue (''#0000ff'') equally,
 				resulting in ''#808080'', a medium gray.
 
-				On the other hand, ''color(yellow blend blue 50% hsl)'' blends the same colors in HSL space, 
+				On the other hand, ''color(yellow blend(blue 50% hsl))'' blends the same colors in HSL space, 
 				where yellow is ''hsl(60, 100%, 50%)'' and blue is ''hsl(240, 100%, 50%)'',
 				which results in ''hsl(150, 100%, 50%)'', a fully-saturated shade of green.
 			</div>
@@ -1694,11 +1691,11 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 			</div>
 			
 
-		<dt>''blenda <<color>> <<percentage>> [rgb | hsl | hwb]?''
+		<dt>''blenda( <<color>> <<percentage>> [rgb | hsl | hwb]? )''
 		<dd>
 			Identical to the previous clause,
 			except it pays attention to the alpha channel of the two colors
-			(''blend'' just preserves the alpha channel of the <var>base color</var>).
+			(''blend()'' just preserves the alpha channel of the <var>base color</var>).
 
 			Let <var>w</var> be the specified <<percentage>>, 
 			rescaled to the range [-1,1],
@@ -1714,7 +1711,7 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 
 			Reinterpret <var>new weight</var> as a percentage in the range [0%, 100%],
 			where -1 maps to ''0%'' and 1 maps to ''100%''.
-			Calculate the result color as if ''blend'' had been specified,
+			Calculate the result color as if ''blend()'' had been specified,
 			using the <var>new weight</var> percentage instead of the specified <<percentage>>,
 			and set the alpha channel of the result color to the average of the alpha channels of the <var>base color</var> and the specified <<color>>.
 
@@ -1728,21 +1725,21 @@ Color Blending: the ''blend'' and ''blenda'' adjusters</h3>
 
 	<p class='issue'>
 		Should we swap the defaults,
-		so ''blend'' does the alpha blending,
-		and another name (or maybe another parameter) ignores alpha like ''blend'' currently does?
+		so ''blend()'' does the alpha blending,
+		and another name (or maybe another parameter) ignores alpha like ''blend()'' currently does?
 
 
 <h3 id='contrast-adjuster'>
 Guaranteeing Adequate Contrast: the ''constrast'' adjuster</h3>
 
 	Guaranteeing that foreground and background colors contrast sufficiently is important,
-	but even if you know the mathematical definition of "appropriate contrast",
+	but even if one knows the mathematical definition of "appropriate contrast",
 	it's not trivial to calculate and figure out whether two arbitrary colors are good enough.
-	The ''contrast'' adjuster makes this easy,
+	The ''contrast()'' adjuster makes this easy,
 	automatically computing a color that is sufficiently contrasting with the <var>base color</var> to satisfy accessibility guidelines.
 
 	<dl>
-		<dt>''contrast <<percentage>>?''
+		<dt>''contrast( <<percentage>>? )''
 		<dd>
 			Finds a color that contrasts with the <var>base color</var> suffficiently to satisfy accessibility guidelines,
 			using the definition of "contrast" given by <a href="http://www.w3.org/TR/WCAG/#visual-audio-contrast-contrast">WCAG 2.0 Guideline 1.4.3</a>.
@@ -1769,7 +1766,7 @@ Guaranteeing Adequate Contrast: the ''constrast'' adjuster</h3>
 					but with the hue set up correctly for the next step's linear interpolation.
 
 				<li>
-					Looking only at colors that are linear interpolations in HWB space (a la the ''blend'' adjuster) between the <var>base color</var>
+					Looking only at colors that are linear interpolations in HWB space (a la the ''blend()'' adjuster) between the <var>base color</var>
 					and the <var>maximum-contrast color</var>,
 					find the color with the smallest <a>contrast ratio</a> with the <var>base color</var> that is greater than 4.5.
 					This is the <var>minimum-contrast color</var>.
@@ -1784,7 +1781,7 @@ Guaranteeing Adequate Contrast: the ''constrast'' adjuster</h3>
 
 				<li>
 					Blend the <var>minimum-contrast color</var> and <var>maximum-contrast color</var> according to the specified <<percentage>>,
-					as if ''color(<var>maximum-contrast color</var> blend <var>minimum-contrast color</var> <<percentage>> hwb)'' were specified.
+					as if ''color(<var>maximum-contrast color</var> blend(<var>minimum-contrast color</var> <<percentage>> hwb))'' were specified.
 					Return the blended color.
 			</ol>
 	</dl>
