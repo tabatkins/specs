@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<!DOCTYPE html><html lang=en><head>
+	<meta content="text/html; charset=utf-8" http-equiv=Content-Type>
 	<title>CSS Toggle States</title>
-	<link href="../common/default.css" type="text/css" rel="stylesheet">
-	<link href="http://dev.w3.org/csslogo.ico" type="image/x-icon" rel="shortcut icon">
-	<script src="../common/prism.js"></script>
+	<link href=../common/default.css rel=stylesheet type=text/css>
+	<link href=http://dev.w3.org/csslogo.ico rel="shortcut icon" type=image/x-icon>
+	<meta content=summary name=twitter:card>
+	<meta content="CSS Toggle States" name=twitter:title>
+	<meta content="This specification defines a way to associate a toggleable state with an element which can be used in Selectors to select an element, and declarative ways to set and modify the state on the element." name=twitter:description>
+	<meta content=@tabatkins name=twitter:creator>
+	<script src=../common/prism.js></script>
 	<script>
 	window.findAll = window.findAll || function(sel){ return [].slice.call(document.querySelectorAll(sel)) };
 	Function.prototype.aritize = function(numArgs) {
@@ -19,7 +22,7 @@
 			.map(Prism.highlightElement.aritize(1));
 	}, false);
 	</script>
-	<link href="../common/prism.css" type="text/css" rel="stylesheet">
+	<link href=../common/prism.css rel=stylesheet type=text/css>
 	<style>
 body { 
 	background: white url(http://www.w3.org/StyleSheets/TR/logo-unofficial.png) top left no-repeat fixed; 
@@ -65,72 +68,72 @@ dt { font-weight: bold }
 	</style>
 </head>
 <body class="h-entry lang-css">
-<div class="head">
-	<p data-fill-with="logo"></p>
-	<h1 class="p-name no-ref" id="title">CSS Toggle States</h1>
-	<h2 class="no-num no-toc no-ref" id="subtitle">A Collection of Interesting Ideas,
-		<span class="dt-updated"><span class="value-title" title="20130604">4 June 2013</span></span></h2>
-	<div data-fill-with="spec-metadata"><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2013/DREAM-css-toggle-states-1-20130604/" class="u-url">http://www.w3.org/TR/2013/DREAM-css-toggle-states-1-20130604/</a></dd><dt>Editor's Draft:</dt><dd><a href="http://rawgithub.com/tabatkins/specs/master/css-toggle-states/Overview.html">http://rawgithub.com/tabatkins/specs/master/css-toggle-states/Overview.html</a>
-</dd><dt>Feedback:</dt>
+<div class=head>
+	<p data-fill-with=logo></p>
+	<h1 class="p-name no-ref" id=title>CSS Toggle States</h1>
+	<h2 class="no-num no-toc no-ref" id=subtitle>A Collection of Interesting Ideas,
+		<span class=dt-updated><span class=value-title title=20130709>9 July 2013</span></span></h2>
+	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2013/DREAM-css-toggle-states-1-20130709/>http://www.w3.org/TR/2013/DREAM-css-toggle-states-1-20130709/</a><dt>Editor's Draft:<dd><a href=http://tabatkins.github.io/specs/css-toggle-states/Overview.html>http://tabatkins.github.io/specs/css-toggle-states/Overview.html</a>
+<dt>Feedback:</dt>
     <dd><a href="mailto:www-style@w3.org?subject=%5Bcss-toggle-states%5D%20feedback">www-style@w3.org</a> 
         with subject line 
-        &#8220;<kbd>[css-toggle-states] <var>&#8230; message topic &#8230;</var></kbd>&#8221;
-        (<a href="http://lists.w3.org/Archives/Public/www-style/" rel="discussion">archives</a>)</dd><dt>Editors:
-</dt><dd class="p-author h-card vcard"><a href="http://xanthir.com/contact" class="p-name fn u-url url">Tab Atkins Jr.</a> (<span class="p-org org">Google</span>)</dd></dl></div>
-	<div data-fill-with="warning"></div>
-	<p data-fill-with="copyright" class="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img src="http://i.creativecommons.org/p/zero/1.0/80x15.png" alt="CC0"></a>
+        “<kbd>[css-toggle-states] <var>… message topic …</var></kbd>”
+        (<a href=http://lists.w3.org/Archives/Public/www-style/ rel=discussion>archives</a>)<dt>Test Suite<dd>None Yet<dt>Editors:
+<dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact>Tab Atkins Jr.</a> (<span class="p-org org">Google</span>)</dl></div>
+	<div data-fill-with=warning></div>
+	<p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 4 June 2013, 
+In addition, as of 9 July 2013, 
 the editors have made this specification available under the
-<a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
+<a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from an existing specification document.  If so, those parts are instead covered by the license of the existing specification document.</p>
 	<hr title="Separator for header">
 </div>
 
-<h2 id="abstract" class="no-num no-toc no-ref">Abstract</h2>
-<p data-fill-with="abstract" class="p-summary">This specification defines a way to associate a toggleable state with an element which can be used in Selectors to select an element, and declarative ways to set and modify the state on the element.</p>
+<h2 class="no-num no-toc no-ref" id=abstract>Abstract</h2>
+<p class=p-summary data-fill-with=abstract>This specification defines a way to associate a toggleable state with an element which can be used in Selectors to select an element, and declarative ways to set and modify the state on the element.</p>
 
-<h2 id="status" class="no-num no-toc no-ref">Status of this document</h2>
-<div data-fill-with="status"><p>
+<h2 class="no-num no-toc no-ref" id=status>Status of this document</h2>
+<div data-fill-with=status><p>
 	This is a <strong>really</strong> unofficial draft.
 	It's not meant to capture any consensus,
 	beyond my own personal feelings about what sounds interesting.
 	It is provided for discussion only and may change at any moment,
 	and should not be taken as "official" or even "unofficial, but planned".
 	Its publication here does not imply endorsement of its contents by W3C. 
-	Don't cite this document other than as a collection of interesting ideas.</p></div>
-<div data-fill-with="at-risk"></div>
+	Don't cite this document other than as a collection of interesting ideas.</div>
+<div data-fill-with=at-risk></div>
 
-<h2 id="contents" class="no-num no-toc no-ref">Table of contents</h2>
-<div data-fill-with="table-of-contents"><ul class="toc"><li><a href="#introduction"><span class="secno">1 </span>
-Introduction</a></li><li><a href="#toggle-states-property"><span class="secno">2 </span>
-Creating a Toggleable Element: the <span data-autolink="property" href="#toggle-states" class="property" title="toggle-states">toggle-states</span> and <span data-autolink="property" href="#toggle-initial" class="property" title="toggle-initial">toggle-initial</span> property</a><ul class="toc"><li><a href="#toggle-group-property"><span class="secno">2.1 </span>
-Linking Toggle States: the <span data-autolink="property" href="#toggle-group" class="property" title="toggle-group">toggle-group</span> property</a></li><li><a href="#toggle-share-property"><span class="secno">2.2 </span>
-Sharing Toggle Activations: the <span data-autolink="property" href="#toggle-share" class="property" title="toggle-share">toggle-share</span> property</a></li></ul></li><li><a href="#checked-pseudoclass"><span class="secno">3 </span>
-Selecting Elements Based on Toggle State: the <span data-autolink="maybe" href="#checked" class="css">:checked</span> and <span data-autolink="maybe" href="#checked-function" class="css">:checked()</span> pseudo-class</a><ul class="toc"><li><a href="#checked-problems"><span class="secno">3.1 </span>
-Problems with Combining <span data-autolink="maybe" href="#checked" class="css">:checked</span> and <span data-autolink="property" class="property" title="toggle-*">toggle-*</span> Properties</a></li></ul></li><li><a href="#references">
-References</a><ul class="toc"><li><a href="#normative">
-Normative References</a></li><li><a href="#informative">
-Informative References</a></li></ul></li><li><a href="#index">
-Index</a></li><li><a href="#property-index">
-Property index</a></li></ul></div>
+<h2 class="no-num no-toc no-ref" id=contents>Table of contents</h2>
+<div data-fill-with=table-of-contents><ul class=toc><li><a href=#introduction><span class=secno>1</span>
+Introduction</a><li><a href=#toggle-states-property><span class=secno>2</span>
+Creating a Toggleable Element: the <span class=property data-autolink=property href=#toggle-states title=toggle-states>toggle-states</span> and <span class=property data-autolink=property href=#toggle-initial title=toggle-initial>toggle-initial</span> property</a><ul class=toc><li><a href=#toggle-group-property><span class=secno>2.1</span>
+Linking Toggle States: the <span class=property data-autolink=property href=#toggle-group title=toggle-group>toggle-group</span> property</a><li><a href=#toggle-share-property><span class=secno>2.2</span>
+Sharing Toggle Activations: the <span class=property data-autolink=property href=#toggle-share title=toggle-share>toggle-share</span> property</a></ul><li><a href=#checked-pseudoclass><span class=secno>3</span>
+Selecting Elements Based on Toggle State: the <span class=css data-autolink=maybe href=#checked>:checked</span> and <span class=css data-autolink=maybe href=#checked-function>:checked()</span> pseudo-class</a><ul class=toc><li><a href=#checked-problems><span class=secno>3.1</span>
+Problems with Combining <span class=css data-autolink=maybe href=#checked>:checked</span> and <span class=property data-autolink=property title=toggle-*>toggle-*</span> Properties</a></ul><li><a href=#references><span class=secno></span>
+References</a><ul class=toc><li><a href=#normative><span class=secno></span>
+Normative References</a><li><a href=#informative><span class=secno></span>
+Informative References</a></ul><li><a href=#index><span class=secno></span>
+Index</a><li><a href=#property-index><span class=secno></span>
+Property index</a></ul></div>
 
 
 
-<h2 id="introduction" data-level="1"><span class="secno">1 </span>
-Introduction</h2>
+<h2 data-level=1 id=introduction><span class=secno>1 </span>
+Introduction<a class=section-link href=#introduction>§</a></h2>
 
 <p>	<em>This section is not normative.</em>
 
-</p><p>	Some user-interface languages define elements which can have "toggleable state", 
+<p>	Some user-interface languages define elements which can have "toggleable state", 
 	which can be modified by user interaction and selected using CSS Selectors.
 	For example, in HTML, the <code>&lt;input type=checkbox&gt;</code> has a "checked" state
 	which toggles between true and false when the user activates the element,
-	and which is selected by the <a data-autolink="maybe" class="css" href="#checked">:checked</a> pseudoclass.
+	and which is selected by the <a class=css data-autolink=maybe href=#checked>:checked</a> pseudoclass.
 
-	</p><div class="example">
+	<div class=example>
 		The following markup example shows how to lightly abuse HTML semantics to declaratively use toggleable state:
 
 		<pre>  &lt;ul class='ingredients'&gt;
@@ -151,7 +154,7 @@ Introduction</h2>
 <p>		In this markup, 
 		one can cross out ingredients as they're used in the recipe
 		by simply clicking on them.
-	</p></div>
+	</div>
 
 <p>	This module generalizes this ability and allows it to be applied to any element via CSS.
 	Elements can be declared to have toggleable state,
@@ -162,40 +165,40 @@ Introduction</h2>
 	or by other user interactions.
 
 
-</p><h2 id="toggle-states-property" data-level="2"><span class="secno">2 </span>
-Creating a Toggleable Element: the <a data-autolink="property" class="property" title="toggle-states" href="#toggle-states">toggle-states</a> and <a data-autolink="property" class="property" title="toggle-initial" href="#toggle-initial">toggle-initial</a> property</h2>
+<h2 data-level=2 id=toggle-states-property><span class=secno>2 </span>
+Creating a Toggleable Element: the <a class=property data-autolink=property href=#toggle-states title=toggle-states>toggle-states</a> and <a class=property data-autolink=property href=#toggle-initial title=toggle-initial>toggle-initial</a> property<a class=section-link href=#toggle-states-property>§</a></h2>
 
-<table class="propdef"><tbody><tr><th>Name:</th><td><dfn id="toggle-states">toggle-states</dfn></td></tr><tr><th>Value:</th><td>none | <a data-autolink="link" class="production"><var>&lt;integer&gt;</var></a> [cycle | sticky]?</td></tr><tr><th>Initial:</th><td>none</td></tr><tr><th>Applies to:</th><td>all elements</td></tr><tr><th>Inherited:</th><td>no</td></tr><tr><th>Percentages:</th><td>n/a</td></tr><tr><th>Media:</th><td>interactive</td></tr><tr><th>Computed value:</th><td>as specified</td></tr><tr><th>Animatable:</th><td>no</td></tr></tbody></table>
-<table class="propdef"><tbody><tr><th>Name:</th><td><dfn id="toggle-initial">toggle-initial</dfn></td></tr><tr><th>Value:</th><td><a data-autolink="link" class="production"><var>&lt;integer&gt;</var></a></td></tr><tr><th>Initial:</th><td>0</td></tr><tr><th>Applies to:</th><td>all elements</td></tr><tr><th>Inherited:</th><td>no</td></tr><tr><th>Percentages:</th><td>n/a</td></tr><tr><th>Media:</th><td>interactive</td></tr><tr><th>Computed value:</th><td>as specified</td></tr><tr><th>Animatable:</th><td>no</td></tr></tbody></table>
-<p>	The <a data-autolink="property" class="property" title="toggle-states" href="#toggle-states">toggle-states</a> property controls whether an element has toggleable state or not.
+<table class=propdef><tr><th>Name:<td><dfn data-dfn-type=property id=toggle-states>toggle-states</dfn><tr><th>Value:<td>none | <a class=production data-autolink=link><var>&lt;integer&gt;</var></a> [cycle | sticky]?<tr><th>Initial:<td>none<tr><th>Applies to:<td>all elements<tr><th>Inherited:<td>no<tr><th>Percentages:<td>n/a<tr><th>Media:<td>interactive<tr><th>Computed value:<td>as specified<tr><th>Animatable:<td>no</table>
+<table class=propdef><tr><th>Name:<td><dfn data-dfn-type=property id=toggle-initial>toggle-initial</dfn><tr><th>Value:<td><a class=production data-autolink=link><var>&lt;integer&gt;</var></a><tr><th>Initial:<td>0<tr><th>Applies to:<td>all elements<tr><th>Inherited:<td>no<tr><th>Percentages:<td>n/a<tr><th>Media:<td>interactive<tr><th>Computed value:<td>as specified<tr><th>Animatable:<td>no</table>
+<p>	The <a class=property data-autolink=property href=#toggle-states title=toggle-states>toggle-states</a> property controls whether an element has toggleable state or not.
 
-	</p><dl>
-		<dt><dfn id="toggle-states-none" title="toggle-states-none">none</dfn>
-		</dt><dd>
+	<dl>
+		<dt><dfn id=toggle-states-none title=toggle-states-none>none</dfn>
+		<dd>
 			Indicates that the element does not have toggleable state.
 
-		</dd><dt><dfn id="toggle-states-int" title="toggle-states-int"><a data-autolink="link" class="production"><var>&lt;integer&gt;</var></a> [cycle | sticky]?</dfn>
-		</dt><dd>
-			Indicates that the element is <a data-autolink="link" href="#toggleable">toggleable</a>.
-			The <a data-autolink="link" class="production"><var>&lt;integer&gt;</var></a> gives the number of states;
+		<dt><dfn id=toggle-states-int title=toggle-states-int><a class=production data-autolink=link><var>&lt;integer&gt;</var></a> [cycle | sticky]?</dfn>
+		<dd>
+			Indicates that the element is <a data-autolink=link href=#toggleable>toggleable</a>.
+			The <a class=production data-autolink=link><var>&lt;integer&gt;</var></a> gives the number of states;
 			it must be 2 or greater, or else the property is invalid.
 			The following optional keyword defines the behavior 
 			when the element is already at its last state,
 			and is toggled again:
-			<span data-autolink="maybe" class="css">cycle</span> defines that it should cycle back around to the first state,
-			while <span data-autolink="maybe" class="css">sticky</span> defines that it should stay at the last state.
-	</dd></dl>
+			<span class=css data-autolink=maybe>cycle</span> defines that it should cycle back around to the first state,
+			while <span class=css data-autolink=maybe>sticky</span> defines that it should stay at the last state.
+	</dl>
 
-<p>	If an element is <dfn id="toggleable">toggleable</dfn>,
-	it has a <dfn id="toggle-state">toggle state</dfn>,
+<p>	If an element is <dfn data-dfn-type=term id=toggleable>toggleable</dfn>,
+	it has a <dfn data-dfn-type=term id=toggle-state>toggle state</dfn>,
 	which is an integer from 0 to some maximum value,
-	as defined by <a data-autolink="property" class="property" title="toggle-states" href="#toggle-states">toggle-states</a>.
+	as defined by <a class=property data-autolink=property href=#toggle-states title=toggle-states>toggle-states</a>.
 	This state is incremented whenever the element is activated by the user,
-	using the same defininition of "activated" as the <a href="http://dev.w3.org/csswg/selectors4/#the-active-pseudo"><span data-autolink="maybe" class="css">:active</span> pseudo-class</a>,
-	and can be selected by the <a data-autolink="maybe" class="css" href="#checked">:checked</a> or <a data-autolink="maybe" class="css" href="#checked-function">:checked()</a> pseudo-classes,
+	using the same defininition of "activated" as the <a href=http://dev.w3.org/csswg/selectors4/#the-active-pseudo><span class=css data-autolink=maybe>:active</span> pseudo-class</a>,
+	and can be selected by the <a class=css data-autolink=maybe href=#checked>:checked</a> or <a class=css data-autolink=maybe href=#checked-function>:checked()</a> pseudo-classes,
 	as defined later in this specification.
 
-	</p><div class="example">
+	<div class=example>
 		Revisiting the example in the Introduction,
 		the same ingredient list can be specified in simple HTML and CSS:
 
@@ -216,41 +219,41 @@ Creating a Toggleable Element: the <a data-autolink="property" class="property" 
 </pre>
 <p>		The effect is identical to what was specified in the Introduction example,
 		except the markup is much simpler and more semantic.
-	</p></div>
+	</div>
 
-<p>	The <a data-autolink="property" class="property" title="toggle-initial" href="#toggle-initial">toggle-initial</a> property sets the initial <a data-autolink="link" href="#toggle-state">toggle state</a> of the element.
+<p>	The <a class=property data-autolink=property href=#toggle-initial title=toggle-initial>toggle-initial</a> property sets the initial <a data-autolink=link href=#toggle-state>toggle state</a> of the element.
 	Its value must be a non-negative integer,
 	or else the property is invalid.
-	If the value is equal to or greater than the number of states defined by <a data-autolink="property" class="property" title="toggle-states" href="#toggle-states">toggle-states</a>,
+	If the value is equal to or greater than the number of states defined by <a class=property data-autolink=property href=#toggle-states title=toggle-states>toggle-states</a>,
 	it computes to the greatest toggle state.
 
 
-</p><h3 id="toggle-group-property" data-level="2.1"><span class="secno">2.1 </span>
-Linking Toggle States: the <a data-autolink="property" class="property" title="toggle-group" href="#toggle-group">toggle-group</a> property</h3>
+<h3 data-level=2.1 id=toggle-group-property><span class=secno>2.1 </span>
+Linking Toggle States: the <a class=property data-autolink=property href=#toggle-group title=toggle-group>toggle-group</a> property<a class=section-link href=#toggle-group-property>§</a></h3>
 
-<table class="propdef"><tbody><tr><th>Name:</th><td><dfn id="toggle-group">toggle-group</dfn></td></tr><tr><th>Value:</th><td>none | <a data-autolink="link" class="production"><var>&lt;string&gt;</var></a></td></tr><tr><th>Initial:</th><td>none</td></tr><tr><th>Applies to:</th><td>all elements</td></tr><tr><th>Inherited:</th><td>no</td></tr><tr><th>Percentages:</th><td>n/a</td></tr><tr><th>Media:</th><td>interactive</td></tr><tr><th>Computed value:</th><td>as specified</td></tr><tr><th>Animatable:</th><td>no</td></tr></tbody></table>
-<p>	By default, each <a data-autolink="link" href="#toggleable">toggleable</a> element's <a data-autolink="link" href="#toggle-state">toggle state</a> is independent;
+<table class=propdef><tr><th>Name:<td><dfn data-dfn-type=property id=toggle-group>toggle-group</dfn><tr><th>Value:<td>none | <a class=production data-autolink=link><var>&lt;string&gt;</var></a><tr><th>Initial:<td>none<tr><th>Applies to:<td>all elements<tr><th>Inherited:<td>no<tr><th>Percentages:<td>n/a<tr><th>Media:<td>interactive<tr><th>Computed value:<td>as specified<tr><th>Animatable:<td>no</table>
+<p>	By default, each <a data-autolink=link href=#toggleable>toggleable</a> element's <a data-autolink=link href=#toggle-state>toggle state</a> is independent;
 	incrementing one has no effect an any other.
-	The <a data-autolink="property" class="property" title="toggle-group" href="#toggle-group">toggle-group</a> property allows elements to link their <a data-autolink="link" href="#toggle-state">toggle states</a> together
-	by declaring them to be part of a named <dfn id="toggle-group0">toggle group</dfn>,
-	such that only one can have a non-zero <a data-autolink="link" href="#toggle-state">toggle state</a> at a time,
+	The <a class=property data-autolink=property href=#toggle-group title=toggle-group>toggle-group</a> property allows elements to link their <a data-autolink=link href=#toggle-state>toggle states</a> together
+	by declaring them to be part of a named <dfn data-dfn-type=term id=toggle-group0>toggle group</dfn>,
+	such that only one can have a non-zero <a data-autolink=link href=#toggle-state>toggle state</a> at a time,
 	similar to HTML's <code>&lt;input type=radio&gt;</code> element.
 
-	</p><dl>
-		<dt><dfn id="toggle-group-none" title="toggle-group-none">none</dfn>
-		</dt><dd>
-			The element is not in a <a data-autolink="link" href="#toggle-group0">toggle group</a>.
-			It's <a data-autolink="link" href="#toggle-state">toggle state</a> is independent of any other elements'.
+	<dl>
+		<dt><dfn id=toggle-group-none title=toggle-group-none>none</dfn>
+		<dd>
+			The element is not in a <a data-autolink=link href=#toggle-group0>toggle group</a>.
+			It's <a data-autolink=link href=#toggle-state>toggle state</a> is independent of any other elements'.
 
-		</dd><dt><dfn id="toggle-group-string" title="toggle-group-string"><a data-autolink="link" class="production"><var>&lt;string&gt;</var></a></dfn>
-		</dt><dd>
-			The element is in the <a data-autolink="link" href="#toggle-group0">toggle group</a> named by the <a data-autolink="link" class="production"><var>&lt;string&gt;</var></a>.
-			Any time an element in the given <a data-autolink="link" href="#toggle-group0">toggle group</a> has its <a data-autolink="link" href="#toggle-state">toggle state</a> incremented,
-			the <a data-autolink="link" href="#toggle-state">toggle state</a> of every other element in the same <a data-autolink="link" href="#toggle-group0">toggle group</a> is set to 0.
-	</dd></dl>
+		<dt><dfn id=toggle-group-string title=toggle-group-string><a class=production data-autolink=link><var>&lt;string&gt;</var></a></dfn>
+		<dd>
+			The element is in the <a data-autolink=link href=#toggle-group0>toggle group</a> named by the <a class=production data-autolink=link><var>&lt;string&gt;</var></a>.
+			Any time an element in the given <a data-autolink=link href=#toggle-group0>toggle group</a> has its <a data-autolink=link href=#toggle-state>toggle state</a> incremented,
+			the <a data-autolink=link href=#toggle-state>toggle state</a> of every other element in the same <a data-autolink=link href=#toggle-group0>toggle group</a> is set to 0.
+	</dl>
 
-	<div class="example">
-		For example, <a data-autolink="property" class="property" title="toggle-group" href="#toggle-group">toggle-group</a> can be used to control a tabbed display,
+	<div class=example>
+		For example, <a class=property data-autolink=property href=#toggle-group title=toggle-group>toggle-group</a> can be used to control a tabbed display,
 		so that only one panel is displayed at a time:
 
 		<pre>  .tab {
@@ -269,78 +272,78 @@ Linking Toggle States: the <a data-autolink="property" class="property" title="t
     display: none;
   }
 </pre>
-<p>		Clicking on any tab will increment its <a data-autolink="link" href="#toggle-state">toggle state</a> from 0 to 1
-		(and the <span data-autolink="maybe" class="css">sticky</span> keyword will keep it at 1 if activated multiple times),
-		while resetting the rest of the tabs' <a data-autolink="link" href="#toggle-state">toggle states</a> to 0.
+<p>		Clicking on any tab will increment its <a data-autolink=link href=#toggle-state>toggle state</a> from 0 to 1
+		(and the <span class=css data-autolink=maybe>sticky</span> keyword will keep it at 1 if activated multiple times),
+		while resetting the rest of the tabs' <a data-autolink=link href=#toggle-state>toggle states</a> to 0.
 		The same happens to the panels,
-		using the <a data-autolink="property" class="property" title="toggle-share" href="#toggle-share">toggle-share</a> property defined in a later section.
+		using the <a class=property data-autolink=property href=#toggle-share title=toggle-share>toggle-share</a> property defined in a later section.
 		The active tab and panel are styled and shown differently than the other tabs and panels.
-	</p></div>
+	</div>
 
-	<p class="issue">
+	<p class=issue>
 		The name is global to the page.
 		Should we have a way to specify more implicit groups?
-		Maybe a <span data-autolink="maybe" class="css">parent</span> keyword,
+		Maybe a <span class=css data-autolink=maybe>parent</span> keyword,
 		or a way to scope names to a subtree?
 
 
-</p><h3 id="toggle-share-property" data-level="2.2"><span class="secno">2.2 </span>
-Sharing Toggle Activations: the <a data-autolink="property" class="property" title="toggle-share" href="#toggle-share">toggle-share</a> property</h3>
+<h3 data-level=2.2 id=toggle-share-property><span class=secno>2.2 </span>
+Sharing Toggle Activations: the <a class=property data-autolink=property href=#toggle-share title=toggle-share>toggle-share</a> property<a class=section-link href=#toggle-share-property>§</a></h3>
 
-<table class="propdef"><tbody><tr><th>Name:</th><td><dfn id="toggle-share">toggle-share</dfn></td></tr><tr><th>Value:</th><td>none | <a data-autolink="link" class="production"><var>&lt;selector&gt;</var></a></td></tr><tr><th>Initial:</th><td>none</td></tr><tr><th>Applies to:</th><td>all elements</td></tr><tr><th>Inherited:</th><td>no</td></tr><tr><th>Percentages:</th><td>n/a</td></tr><tr><th>Media:</th><td>interactive</td></tr><tr><th>Computed value:</th><td>as specified</td></tr><tr><th>Animatable:</th><td>no</td></tr></tbody></table>
-<p>	By default, activating an element only increments its own <a data-autolink="link" href="#toggle-state">toggle state</a>.
-	The <a data-autolink="property" class="property" title="toggle-share" href="#toggle-share">toggle-share</a> property allows an element to additionally increment the <a data-autolink="link" href="#toggle-state">toggle state</a> of another element.
+<table class=propdef><tr><th>Name:<td><dfn data-dfn-type=property id=toggle-share>toggle-share</dfn><tr><th>Value:<td>none | <a class=production data-autolink=link><var>&lt;selector&gt;</var></a><tr><th>Initial:<td>none<tr><th>Applies to:<td>all elements<tr><th>Inherited:<td>no<tr><th>Percentages:<td>n/a<tr><th>Media:<td>interactive<tr><th>Computed value:<td>as specified<tr><th>Animatable:<td>no</table>
+<p>	By default, activating an element only increments its own <a data-autolink=link href=#toggle-state>toggle state</a>.
+	The <a class=property data-autolink=property href=#toggle-share title=toggle-share>toggle-share</a> property allows an element to additionally increment the <a data-autolink=link href=#toggle-state>toggle state</a> of another element.
 
-	</p><dl>
-		<dt><dfn id="toggle-share-none" title="toggle-share-none">none</dfn>
-		</dt><dd>
-			Activating the element only increments its own <a data-autolink="link" href="#toggle-state">toggle state</a>
-			(assuming the element is <a data-autolink="link" href="#toggleable">toggleable</a>).
+	<dl>
+		<dt><dfn id=toggle-share-none title=toggle-share-none>none</dfn>
+		<dd>
+			Activating the element only increments its own <a data-autolink=link href=#toggle-state>toggle state</a>
+			(assuming the element is <a data-autolink=link href=#toggleable>toggleable</a>).
 
-		</dd><dt><dfn id="toggle-share-selector" title="toggle-share-selector"><a data-autolink="link" class="production"><var>&lt;selector&gt;</var></a></dfn>
-		</dt><dd>
-			Activating the element increments the <a data-autolink="link" href="#toggle-state">toggle state</a>
+		<dt><dfn id=toggle-share-selector title=toggle-share-selector><a class=production data-autolink=link><var>&lt;selector&gt;</var></a></dfn>
+		<dd>
+			Activating the element increments the <a data-autolink=link href=#toggle-state>toggle state</a>
 			of both itself and all the elements matched by the given selector
-			(assuming the elements are <a data-autolink="link" href="#toggleable">toggleable</a>).
+			(assuming the elements are <a data-autolink=link href=#toggleable>toggleable</a>).
 
-<p>			If the set of elements sharing the activation includes elements that share a <a data-autolink="link" href="#toggle-group0">toggle group</a>,
-			only the last such element (in document order) per group has its <a data-autolink="link" href="#toggle-state">toggle state</a> incremented.
-	</p></dd></dl>
+<p>			If the set of elements sharing the activation includes elements that share a <a data-autolink=link href=#toggle-group0>toggle group</a>,
+			only the last such element (in document order) per group has its <a data-autolink=link href=#toggle-state>toggle state</a> incremented.
+	</dl>
 
-	<div class="example">
-		The preceding section for <a data-autolink="property" class="property" title="toggle-group" href="#toggle-group">toggle-group</a> contained an example showing off <a data-autolink="property" class="property" title="toggle-share" href="#toggle-share">toggle-share</a>.
+	<div class=example>
+		The preceding section for <a class=property data-autolink=property href=#toggle-group title=toggle-group>toggle-group</a> contained an example showing off <a class=property data-autolink=property href=#toggle-share title=toggle-share>toggle-share</a>.
 		When the user activates a tab, 
 		the activation is shared with the associated panel.
 	</div>
 
-<p class="note">	Note: This functionality is similar in nature to HTML's <code>&lt;label&gt;</code> element,
+<p class=note>	Note: This functionality is similar in nature to HTML's <code>&lt;label&gt;</code> element,
 	but not identical.
-	<a data-autolink="property" class="property" title="toggle-share" href="#toggle-share">toggle-share</a> causes the activation to be <em>shared</em>,
+	<a class=property data-autolink=property href=#toggle-share title=toggle-share>toggle-share</a> causes the activation to be <em>shared</em>,
 	rather than transferred like <code>&lt;label&gt;</code> does.
-	Additionally, this sharing <strong>only</strong> affects the <a data-autolink="link" href="#toggle-state">toggle state</a>,
+	Additionally, this sharing <strong>only</strong> affects the <a data-autolink=link href=#toggle-state>toggle state</a>,
 	while <code>&lt;label</code> more strongly transfers the concept of "activating",
-	affecting things such as click events and the <span data-autolink="maybe" class="css">:hover</span> pseudo-class.
+	affecting things such as click events and the <span class=css data-autolink=maybe>:hover</span> pseudo-class.
 
 
-</p><h2 id="checked-pseudoclass" data-level="3"><span class="secno">3 </span>
-Selecting Elements Based on Toggle State: the <a data-autolink="maybe" class="css" href="#checked">:checked</a> and <a data-autolink="maybe" class="css" href="#checked-function">:checked()</a> pseudo-class</h2>
+<h2 data-level=3 id=checked-pseudoclass><span class=secno>3 </span>
+Selecting Elements Based on Toggle State: the <a class=css data-autolink=maybe href=#checked>:checked</a> and <a class=css data-autolink=maybe href=#checked-function>:checked()</a> pseudo-class<a class=section-link href=#checked-pseudoclass>§</a></h2>
 
-<p>	The <dfn id="checked">:checked</dfn> and <dfn id="checked-function">:checked()</dfn> pseudo-classes select elements based on their <a data-autolink="link" href="#toggle-state">toggle state</a>.
+<p>	The <dfn data-dfn-type=term id=checked>:checked</dfn> and <dfn data-dfn-type=function id=checked-function>:checked()</dfn> pseudo-classes select elements based on their <a data-autolink=link href=#toggle-state>toggle state</a>.
 
-</p><p>	The <a data-autolink="maybe" class="css" href="#checked">:checked</a> pseudo-class selects any elements whose <a data-autolink="link" href="#toggle-state">toggle state</a> is non-zero.
-	The <span data-autolink="maybe" class="css">:checked(<a data-autolink="link" class="production"><var>&lt;integer&gt;</var></a>)</span> pseudo-class selects any elements whose <a data-autolink="link" href="#toggle-state">toggle state</a> has the value given by its argument.
+<p>	The <a class=css data-autolink=maybe href=#checked>:checked</a> pseudo-class selects any elements whose <a data-autolink=link href=#toggle-state>toggle state</a> is non-zero.
+	The <span class=css data-autolink=maybe>:checked(<a class=production data-autolink=link><var>&lt;integer&gt;</var></a>)</span> pseudo-class selects any elements whose <a data-autolink=link href=#toggle-state>toggle state</a> has the value given by its argument.
 
-</p><h3 id="checked-problems" data-level="3.1"><span class="secno">3.1 </span>
-Problems with Combining <a data-autolink="maybe" class="css" href="#checked">:checked</a> and <a data-autolink="property" class="property" title="toggle-*">toggle-*</a> Properties</h3>
+<h3 data-level=3.1 id=checked-problems><span class=secno>3.1 </span>
+Problems with Combining <a class=css data-autolink=maybe href=#checked>:checked</a> and <a class=property data-autolink=property title=toggle-*>toggle-*</a> Properties<a class=section-link href=#checked-problems>§</a></h3>
 
-<p>	Naively combining <a data-autolink="maybe" class="css" href="#checked">:checked</a> and the <a data-autolink="property" class="property" title="toggle-*">toggle-*</a> properties causes circularity issues.
+<p>	Naively combining <a class=css data-autolink=maybe href=#checked>:checked</a> and the <a class=property data-autolink=property title=toggle-*>toggle-*</a> properties causes circularity issues.
 
-	</p><div class="example">
+	<div class=example>
 		For example,
 		in the following code,
-		the element starts in a state that matches <a data-autolink="maybe" class="css" href="#checked">:checked</a>,
-		but the <a data-autolink="maybe" class="css" href="#checked">:checked</a> selector makes the element no longer <a data-autolink="link" href="#toggleable">toggleable</a>,
-		so it no longer matches <a data-autolink="maybe" class="css" href="#checked">:checked</a>.
+		the element starts in a state that matches <a class=css data-autolink=maybe href=#checked>:checked</a>,
+		but the <a class=css data-autolink=maybe href=#checked>:checked</a> selector makes the element no longer <a data-autolink=link href=#toggleable>toggleable</a>,
+		so it no longer matches <a class=css data-autolink=maybe href=#checked>:checked</a>.
 
 		<pre>  #foo {
     toggle-states: 2;
@@ -352,34 +355,55 @@ Problems with Combining <a data-autolink="maybe" class="css" href="#checked">:ch
 </pre>	</div>
 
 <p>	To avoid this,
-	the <a data-autolink="property" class="property" title="toggle-states" href="#toggle-states">toggle-states</a> and <a data-autolink="property" class="property" title="toggle-initial" href="#toggle-initial">toggle-initial</a> are defined as <dfn title="selector-affecting property" id="selector-affecting-properties">selector-affecting properties</dfn>,
-	and the <a data-autolink="maybe" class="css" href="#checked">:checked</a> and <a data-autolink="maybe" class="css" href="#checked-function">:checked()</a> pseudo-classes are defined as <dfn title="property-affected selector" id="property-affected-selectors">property-affected selectors</dfn>.
-	In any style rule whose selector includes a <a data-autolink="link" href="#property-affected-selectors">property-affected selector</a>,
-	any <a data-autolink="link" href="#selector-affecting-properties">selector-affecting properties</a> are invalid.
+	the <a class=property data-autolink=property href=#toggle-states title=toggle-states>toggle-states</a> and <a class=property data-autolink=property href=#toggle-initial title=toggle-initial>toggle-initial</a> are defined as <dfn data-dfn-type=term id=selector-affecting-properties title="selector-affecting property">selector-affecting properties</dfn>,
+	and the <a class=css data-autolink=maybe href=#checked>:checked</a> and <a class=css data-autolink=maybe href=#checked-function>:checked()</a> pseudo-classes are defined as <dfn data-dfn-type=term id=property-affected-selectors title="property-affected selector">property-affected selectors</dfn>.
+	In any style rule whose selector includes a <a data-autolink=link href=#property-affected-selectors>property-affected selector</a>,
+	any <a data-autolink=link href=#selector-affecting-properties>selector-affecting properties</a> are invalid.
 
-	</p><p class="issue">
+	<p class=issue>
 		I'm not sure this is sufficient.
 		For example, you could set the property in an animation,
 		which is triggered by an affected selector.
 		Is there a better way to define this so that it's reliable?
-</p><h2 id="references" class="no-num no-ref">
-References</h2>
+<h2 class="no-num no-ref" id=references>
+References<a class=section-link href=#references>§</a></h2>
 
-<h3 id="normative" class="no-num no-ref">
-Normative References</h3>
-<div data-fill-with="normative-references"><dl></dl></div>
+<h3 class="no-num no-ref" id=normative>
+Normative References<a class=section-link href=#normative>§</a></h3>
+<div data-fill-with=normative-references><dl></dl></div>
 
-<h3 id="informative" class="no-num no-ref">
-Informative References</h3>
-<div data-fill-with="informative-references"><dl></dl></div>
+<h3 class="no-num no-ref" id=informative>
+Informative References<a class=section-link href=#informative>§</a></h3>
+<div data-fill-with=informative-references><dl></dl></div>
 
-<h2 id="index" class="no-num no-ref">
-Index</h2>
-<div data-fill-with="index"><ul class="indexlist"><li>:checked, <a href="#checked" title="section 3">3</a></li><li>:checked(), <a href="#checked-function" title="section 3">3</a></li><li>property-affected selector, <a href="#property-affected-selectors" title="section 3.1">3.1</a></li><li>selector-affecting property, <a href="#selector-affecting-properties" title="section 3.1">3.1</a></li><li>toggleable, <a href="#toggleable" title="section 2">2</a></li><li>toggle group, <a href="#toggle-group0" title="section 2.1">2.1</a></li><li>toggle-group, <a href="#toggle-group" title="section 2.1">2.1</a></li><li>toggle-group-none, <a href="#toggle-group-none" title="section 2.1">2.1</a></li><li>toggle-group-string, <a href="#toggle-group-string" title="section 2.1">2.1</a></li><li>toggle-initial, <a href="#toggle-initial" title="section 2">2</a></li><li>toggle-share, <a href="#toggle-share" title="section 2.2">2.2</a></li><li>toggle-share-none, <a href="#toggle-share-none" title="section 2.2">2.2</a></li><li>toggle-share-selector, <a href="#toggle-share-selector" title="section 2.2">2.2</a></li><li>toggle state, <a href="#toggle-state" title="section 2">2</a></li><li>toggle-states, <a href="#toggle-states" title="section 2">2</a></li><li>toggle-states-int, <a href="#toggle-states-int" title="section 2">2</a></li><li>toggle-states-none, <a href="#toggle-states-none" title="section 2">2</a></li></ul></div>
+<h2 class="no-num no-ref" id=index>
+Index<a class=section-link href=#index>§</a></h2>
+<div data-fill-with=index><ul class=indexlist>
+<li>:checked, <a href=#checked title="section 3">3</a>
+<li>:checked(), <a href=#checked-function title="section 3">3</a>
+<li>property-affected selector, <a href=#property-affected-selectors title="section 3.1">3.1</a>
+<li>selector-affecting property, <a href=#selector-affecting-properties title="section 3.1">3.1</a>
+<li>toggleable, <a href=#toggleable title="section 2">2</a>
+<li>toggle group, <a href=#toggle-group0 title="section 2.1">2.1</a>
+<li>toggle-group, <a href=#toggle-group title="section 2.1">2.1</a>
+<li>toggle-group-none, <a href=#toggle-group-none title="section 2.1">2.1</a>
+<li>toggle-group-string, <a href=#toggle-group-string title="section 2.1">2.1</a>
+<li>toggle-initial, <a href=#toggle-initial title="section 2">2</a>
+<li>toggle-share, <a href=#toggle-share title="section 2.2">2.2</a>
+<li>toggle-share-none, <a href=#toggle-share-none title="section 2.2">2.2</a>
+<li>toggle-share-selector, <a href=#toggle-share-selector title="section 2.2">2.2</a>
+<li>toggle state, <a href=#toggle-state title="section 2">2</a>
+<li>toggle-states, <a href=#toggle-states title="section 2">2</a>
+<li>toggle-states-int, <a href=#toggle-states-int title="section 2">2</a>
+<li>toggle-states-none, <a href=#toggle-states-none title="section 2">2</a>
+</ul></div>
 
-<h2 id="property-index" class="no-num no-ref">
-Property index</h2>
-<div data-fill-with="property-index"><table class="proptable"><thead><tr><th scope="col">Name</th><th scope="col">Value</th><th scope="col">Initial</th><th scope="col">Applies To</th><th scope="col">Inh.</th><th scope="col">%ages</th><th scope="col">Media</th><th scope="col">Computed value</th><th scope="col">Applies to</th><th scope="col">Animatable</th></tr><tr><th scope="row"><a data-property="">toggle-states</a></th><td>none | <a data-autolink="link" class="production"><var>&lt;integer&gt;</var></a> [cycle | sticky]?</td><td>none</td><td></td><td>no</td><td>n/a</td><td>interactive</td><td>as specified</td><td>all elements</td><td>no</td></tr><tr><th scope="row"><a data-property="">toggle-group</a></th><td>none | <a data-autolink="link" class="production"><var>&lt;string&gt;</var></a></td><td>none</td><td></td><td>no</td><td>n/a</td><td>interactive</td><td>as specified</td><td>all elements</td><td>no</td></tr><tr><th scope="row"><a data-property="">toggle-initial</a></th><td><a data-autolink="link" class="production"><var>&lt;integer&gt;</var></a></td><td>0</td><td></td><td>no</td><td>n/a</td><td>interactive</td><td>as specified</td><td>all elements</td><td>no</td></tr><tr><th scope="row"><a data-property="">toggle-share</a></th><td>none | <a data-autolink="link" class="production"><var>&lt;selector&gt;</var></a></td><td>none</td><td></td><td>no</td><td>n/a</td><td>interactive</td><td>as specified</td><td>all elements</td><td>no</td></tr></thead></table></div>
+<h2 class="no-num no-ref" id=property-index>
+Property index<a class=section-link href=#property-index>§</a></h2>
+<div data-fill-with=property-index><table class=proptable><thead><tr><th scope=col>Name<th scope=col>Value<th scope=col>Initial<th scope=col>Applies To<th scope=col>Inh.<th scope=col>%ages<th scope=col>Media<th scope=col>Computed value<th scope=col>Applies to<th scope=col>Animatable<tbody>
+<tr><th scope=row><a data-property="">toggle-states</a><td>none | <a class=production data-autolink=link><var>&lt;integer&gt;</var></a> [cycle | sticky]?<td>none<td><td>no<td>n/a<td>interactive<td>as specified<td>all elements<td>no
+<tr><th scope=row><a data-property="">toggle-group</a><td>none | <a class=production data-autolink=link><var>&lt;string&gt;</var></a><td>none<td><td>no<td>n/a<td>interactive<td>as specified<td>all elements<td>no
+<tr><th scope=row><a data-property="">toggle-initial</a><td><a class=production data-autolink=link><var>&lt;integer&gt;</var></a><td>0<td><td>no<td>n/a<td>interactive<td>as specified<td>all elements<td>no
+<tr><th scope=row><a data-property="">toggle-share</a><td>none | <a class=production data-autolink=link><var>&lt;selector&gt;</var></a><td>none<td><td>no<td>n/a<td>interactive<td>as specified<td>all elements<td>no</table></div>
 
 
-</body></html>
