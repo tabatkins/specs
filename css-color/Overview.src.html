@@ -6,19 +6,19 @@ Status: DREAM
 ED: http://tabatkins.github.io/specs/css-color/Overview.html
 Shortname: css-color
 Level: 4
-Previous Editors: Chris Lilley, W3C, chris@w3.org
-Previous Editors: L. David Baron, Mozilla Corporation, dbaron@dbaron.org
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact
+Editor: Chris Lilley, W3C, chris@w3.org
+Previous Editor: L. David Baron, Mozilla Corporation, dbaron@dbaron.org
 Abstract: This specification describes CSS <<color>> values and properties for foreground color and group opacity.
-Ignored Properties: z-index, color-rendering, text-emphasis-color, color-interpolation
-Ignored Terms: stacking context, <number>, <angle>, <integer>, <percentage>, <ident>, <hash>
+Ignored Terms: stacking context
 </pre>
 
 <style>
-table.named-color-table td {text-align:center; }
-table.named-color-table td.c { text-transform:uppercase; }
-table.named-color-table td:first-child, table.named-color-table td:first-child+td { border:1px solid black; }
-table.named-color-table th {text-align:center; background:black; color:white; }
+table.named-color-table thead th { text-align:center; background:black; color:white; }
+table.named-color-table th, table.named-color-table td { padding: 0 .25em; }
+table.named-color-table td { text-align:center; text-transform:uppercase; }
+table.named-color-table td:nth-child(-n+2) { border:1px solid black; }
+table.named-color-table td:nth-child(n+4) { background: silver; }
 .color-table { 
 	background: #808080;
 	display: block; 
@@ -109,7 +109,7 @@ The <<color>> type</h2>
 	and can take any value between those two.
 
 	While all colors share an underlying storage format,
-	CSS contains several syntaxes for <em>specifying</em> <dfn data-export>&lt;color></dfn> values.
+	CSS contains several syntaxes for <em>specifying</em> <dfn>&lt;color></dfn> values.
 	Some directly specify the RGB color,
 	such as the ''rgb()'' and ''rgba()'' functions
 	and the hex notation.
@@ -125,7 +125,7 @@ The <<color>> type</h2>
 	the <a>hex color</a> notations,
 	or as a <a>named color</a>.
 
-	Some operations work differently on <dfn data-export>achromatic</dfn> colors.
+	Some operations work differently on <dfn export>achromatic</dfn> colors.
 	An <a>achromatic</a> color is a shade of gray:
 	in the RGB colorspace,
 	a color is <a>achromatic</a> if the red, green, and blue channels are all the same value;
@@ -142,9 +142,9 @@ The RGB functional notations: ''rgb()'' and ''rgba()''</h3>
 	Its syntax is:
 
 	<pre class='prod'>
-	<dfn data-export>rgb()</dfn> = rgb( <<component>>, <<component>>, <<component>> [, <<alpha-value>> ]? )
-	<dfn data-export>&lt;component></dfn> = <<number>> | <<percentage>>
-	<dfn data-export>&lt;alpha-value></dfn> = <<number>> | <<percentage>>
+	<dfn>rgb()</dfn> = rgb( <<component>>, <<component>>, <<component>> [, <<alpha-value>> ]? )
+	<dfn>&lt;component></dfn> = <<number>> | <<percentage>>
+	<dfn>&lt;alpha-value></dfn> = <<number>> | <<percentage>>
 	</pre>
 
 	The three <<component>>s specify the red, green, and blue channels of the color, respectively.
@@ -183,16 +183,16 @@ The RGB functional notations: ''rgb()'' and ''rgba()''</h3>
 	(for the alpha channel)
 	is not optional.
 
-	<pre class='prod'><dfn data-export>rgba()</dfn> = rgba( <<component>>, <<component>>, <<component>>, <<alpha-value>>)</pre>
+	<pre class='prod'><dfn>rgba()</dfn> = rgba( <<component>>, <<component>>, <<component>>, <<alpha-value>>)</pre>
 
 <h3 id='hex-notation'>
 The RGB hexadecimal notations: ''#RRGGBB''</h3>
 
-	The CSS <dfn data-export>hex color</dfn> notation allows a color to be specified by giving the channels as hexadecimal numbers,
+	The CSS <dfn export>hex color</dfn> notation allows a color to be specified by giving the channels as hexadecimal numbers,
 	which is similar to how colors are often written directly in computer code.
 	It's also shorter than writing the same color out in ''rgb()'' notation.
 
-	The syntax of a <a>hex color</a> is a <<hash>> token whose value consists of 3, 4, 6, or 8 hexadecimal digits.
+	The syntax of a <a>hex color</a> is a <<hash-token>> token whose value consists of 3, 4, 6, or 8 hexadecimal digits.
 	In other words, a hex color is written as a hash character, "#", 
 	followed by some number of digits 0-9 or letters a-f
 	(the case of the letters doesn't matter - ''#00ff00'' is identical to ''#00FF00'').
@@ -275,8 +275,8 @@ The HSL functional notations: ''hsl()'' and ''hsla()''</h3>
 	The syntax of the ''hsl()'' function is:
 
 	<pre class='prod'>
-	<dfn data-export>hsl()</dfn> = hsl( <<hue>>, <<percentage>>, <<percentage>> [, <<alpha-value>> ]? )
-	<dfn data-export>&lt;hue></dfn> = <<number>> | <<angle>> | <<named-hue>>
+	<dfn>hsl()</dfn> = hsl( <<hue>>, <<percentage>>, <<percentage>> [, <<alpha-value>> ]? )
+	<dfn>&lt;hue></dfn> = <<number>> | <<angle>> | <<named-hue>>
 	</pre>
 
 	The first argument specifies the hue.
@@ -347,7 +347,7 @@ The HSL functional notations: ''hsl()'' and ''hsla()''</h3>
 	(for the alpha channel)
 	is not optional.
 
-	<pre class='prod'><dfn data-export>hsla()</dfn> = hsla( [ <<number>> | <<angle>> ], <<percentage>>, <<percentage>>, <<alpha-value>> )</pre>
+	<pre class='prod'><dfn>hsla()</dfn> = hsla( [ <<number>> | <<angle>> ], <<percentage>>, <<percentage>>, <<alpha-value>> )</pre>
 
 <h4 id='hsl-to-rgb'>
 Converting HSL colors to RGB colors</h4>
@@ -753,9 +753,7 @@ The HWB functional notation: ''hwb()''</h3>
 
 	The syntax of the ''hwb()'' function is:
 
-	<pre class='prod'>
-	<dfn data-export>hwb()</dfn> = hwb( <<hue>>, <<percentage>>, <<percentage>> [, <<alpha-value>> ]? )
-	</pre>
+	<pre class='prod'><dfn>hwb()</dfn> = hwb( <<hue>>, <<percentage>>, <<percentage>> [, <<alpha-value>> ]? )</pre>
 
 	The first argument specifies the hue,
 	and is interpreted identically to ''hsl()''.
@@ -1071,8 +1069,9 @@ Specifying grays: the ''gray()'' functional notation</h3>
 	''gray(A,B)'' represents the same color as ''rgb(A,A,A,B)''.
 
 	<div class='issue'>
-		Maybe gray() should, instead of being a simple expansion to ''rgb()'',
-		actually compute the gray with the specified luminance?
+		<a>gray()</a> should have a keyword arg that opts it into smarter modes.
+		"luminance", for example, instead of being a simple expansion to ''rgb()'',
+		could actually compute the gray with the specified luminance.
 		The sRGB power curve means that grays are much darker than they "should" be;
 		50% gray has a luminance of .21, for example, rather than .5.
 		Reversing luminance to color is easy for grays:
@@ -1094,7 +1093,7 @@ Specifying grays: the ''gray()'' functional notation</h3>
 Named Colors</h3>
 
 	In addition to the various numeric syntaxes for <<color>>s,
-	CSS defines a large set of <dfn id="named-color" title="named color">named colors</dfn> that can be used instead,
+	CSS defines a large set of <dfn id="named-color" title="named color" export>named colors</dfn> that can be used instead,
 	so that common colors can be written and read more easily.
 	These are written as simple <<ident>>s,
 	accepted anywhere a <<color>> is.
@@ -1112,14 +1111,317 @@ Named Colors</h3>
 	by giving equivalent numeric specifications in the other color syntaxes.
 	All of these colors are fully opaque.
 
-	<table class="named-color-table"><tr><th style="background:black">Named<th>Numeric<th>Color&nbsp;name<th>Hex&nbsp;rgb<th>Decimal<tr><td class="c" style="background:aliceblue">&nbsp;<td class="c" style="background:#f0f8ff">&nbsp;<td><dfn data-export>aliceblue</dfn><td class="c" style="background:silver">#f0f8ff<td class="c" style="background:silver">240,248,255<tr><td class="c" style="background:antiquewhite">&nbsp;<td class="c" style="background:#faebd7">&nbsp;<td><dfn data-export>antiquewhite</dfn><td class="c" style="background:silver">#faebd7<td class="c" style="background:silver">250,235,215<tr><td class="c" style="background:aqua">&nbsp;<td class="c" style="background:#00ffff">&nbsp;<td><dfn data-export>aqua</dfn><td class="c" style="background:silver">#00ffff<td class="c" style="background:silver">0,255,255<tr><td class="c" style="background:aquamarine">&nbsp;<td class="c" style="background:#7fffd4">&nbsp;<td><dfn data-export>aquamarine</dfn><td class="c" style="background:silver">#7fffd4<td class="c" style="background:silver">127,255,212<tr><td class="c" style="background:azure">&nbsp;<td class="c" style="background:#f0ffff">&nbsp;<td><dfn data-export>azure</dfn><td class="c" style="background:silver">#f0ffff<td class="c" style="background:silver">240,255,255<tr><td class="c" style="background:beige">&nbsp;<td class="c" style="background:#f5f5dc">&nbsp;<td><dfn data-export>beige</dfn><td class="c" style="background:silver">#f5f5dc<td class="c" style="background:silver">245,245,220<tr><td class="c" style="background:bisque">&nbsp;<td class="c" style="background:#ffe4c4">&nbsp;<td><dfn data-export>bisque</dfn><td class="c" style="background:silver">#ffe4c4<td class="c" style="background:silver">255,228,196<tr><td class="c" style="background:black">&nbsp;<td class="c" style="background:#000000">&nbsp;<td><dfn data-export>black</dfn><td class="c" style="background:silver">#000000<td class="c" style="background:silver">0,0,0<tr><td class="c" style="background:blanchedalmond">&nbsp;<td class="c" style="background:#ffebcd">&nbsp;<td><dfn data-export>blanchedalmond</dfn><td class="c" style="background:silver">#ffebcd<td class="c" style="background:silver">255,235,205<tr><td class="c" style="background:blue">&nbsp;<td class="c" style="background:#0000ff">&nbsp;<td><dfn data-export>blue</dfn><td class="c" style="background:silver">#0000ff<td class="c" style="background:silver">0,0,255<tr><td class="c" style="background:blueviolet">&nbsp;<td class="c" style="background:#8a2be2">&nbsp;<td><dfn data-export>blueviolet</dfn><td class="c" style="background:silver">#8a2be2<td class="c" style="background:silver">138,43,226<tr><td class="c" style="background:brown">&nbsp;<td class="c" style="background:#a52a2a">&nbsp;<td><dfn data-export>brown</dfn><td class="c" style="background:silver">#a52a2a<td class="c" style="background:silver">165,42,42<tr><td class="c" style="background:burlywood">&nbsp;<td class="c" style="background:#deb887">&nbsp;<td><dfn data-export>burlywood</dfn><td class="c" style="background:silver">#deb887<td class="c" style="background:silver">222,184,135<tr><td class="c" style="background:cadetblue">&nbsp;<td class="c" style="background:#5f9ea0">&nbsp;<td><dfn data-export>cadetblue</dfn><td class="c" style="background:silver">#5f9ea0<td class="c" style="background:silver">95,158,160<tr><td class="c" style="background:chartreuse">&nbsp;<td class="c" style="background:#7fff00">&nbsp;<td><dfn data-export>chartreuse</dfn><td class="c" style="background:silver">#7fff00<td class="c" style="background:silver">127,255,0<tr><td class="c" style="background:chocolate">&nbsp;<td class="c" style="background:#d2691e">&nbsp;<td><dfn data-export>chocolate</dfn><td class="c" style="background:silver">#d2691e<td class="c" style="background:silver">210,105,30<tr><td class="c" style="background:coral">&nbsp;<td class="c" style="background:#ff7f50">&nbsp;<td><dfn data-export>coral</dfn><td class="c" style="background:silver">#ff7f50<td class="c" style="background:silver">255,127,80<tr><td class="c" style="background:cornflowerblue">&nbsp;<td class="c" style="background:#6495ed">&nbsp;<td><dfn data-export>cornflowerblue</dfn><td class="c" style="background:silver">#6495ed<td class="c" style="background:silver">100,149,237<tr><td class="c" style="background:cornsilk">&nbsp;<td class="c" style="background:#fff8dc">&nbsp;<td><dfn data-export>cornsilk</dfn><td class="c" style="background:silver">#fff8dc<td class="c" style="background:silver">255,248,220<tr><td class="c" style="background:crimson">&nbsp;<td class="c" style="background:#dc143c">&nbsp;<td><dfn data-export>crimson</dfn><td class="c" style="background:silver">#dc143c<td class="c" style="background:silver">220,20,60<tr><td class="c" style="background:cyan">&nbsp;<td class="c" style="background:#00ffff">&nbsp;<td><dfn data-export>cyan</dfn><td class="c" style="background:silver">#00ffff<td class="c" style="background:silver">0,255,255<tr><td class="c" style="background:darkblue">&nbsp;<td class="c" style="background:#00008b">&nbsp;<td><dfn data-export>darkblue</dfn><td class="c" style="background:silver">#00008b<td class="c" style="background:silver">0,0,139<tr><td class="c" style="background:darkcyan">&nbsp;<td class="c" style="background:#008b8b">&nbsp;<td><dfn data-export>darkcyan</dfn><td class="c" style="background:silver">#008b8b<td class="c" style="background:silver">0,139,139<tr><td class="c" style="background:darkgoldenrod">&nbsp;<td class="c" style="background:#b8860b">&nbsp;<td><dfn data-export>darkgoldenrod</dfn><td class="c" style="background:silver">#b8860b<td class="c" style="background:silver">184,134,11<tr><td class="c" style="background:darkgray">&nbsp;<td class="c" style="background:#a9a9a9">&nbsp;<td><dfn data-export>darkgray</dfn><td class="c" style="background:silver">#a9a9a9<td class="c" style="background:silver">169,169,169<tr><td class="c" style="background:darkgreen">&nbsp;<td class="c" style="background:#006400">&nbsp;<td><dfn data-export>darkgreen</dfn><td class="c" style="background:silver">#006400<td class="c" style="background:silver">0,100,0<tr><td class="c" style="background:darkgrey">&nbsp;<td class="c" style="background:#a9a9a9">&nbsp;<td><dfn data-export>darkgrey</dfn><td class="c" style="background:silver">#a9a9a9<td class="c" style="background:silver">169,169,169<tr><td class="c" style="background:darkkhaki">&nbsp;<td class="c" style="background:#bdb76b">&nbsp;<td><dfn data-export>darkkhaki</dfn><td class="c" style="background:silver">#bdb76b<td class="c" style="background:silver">189,183,107<tr><td class="c" style="background:darkmagenta">&nbsp;<td class="c" style="background:#8b008b">&nbsp;<td><dfn data-export>darkmagenta</dfn><td class="c" style="background:silver">#8b008b<td class="c" style="background:silver">139,0,139<tr><td class="c" style="background:darkolivegreen">&nbsp;<td class="c" style="background:#556b2f">&nbsp;<td><dfn data-export>darkolivegreen</dfn><td class="c" style="background:silver">#556b2f<td class="c" style="background:silver">85,107,47<tr><td class="c" style="background:darkorange">&nbsp;<td class="c" style="background:#ff8c00">&nbsp;<td><dfn data-export>darkorange</dfn><td class="c" style="background:silver">#ff8c00<td class="c" style="background:silver">255,140,0<tr><td class="c" style="background:darkorchid">&nbsp;<td class="c" style="background:#9932cc">&nbsp;<td><dfn data-export>darkorchid</dfn><td class="c" style="background:silver">#9932cc<td class="c" style="background:silver">153,50,204<tr><td class="c" style="background:darkred">&nbsp;<td class="c" style="background:#8b0000">&nbsp;<td><dfn data-export>darkred</dfn><td class="c" style="background:silver">#8b0000<td class="c" style="background:silver">139,0,0<tr><td class="c" style="background:darksalmon">&nbsp;<td class="c" style="background:#e9967a">&nbsp;<td><dfn data-export>darksalmon</dfn><td class="c" style="background:silver">#e9967a<td class="c" style="background:silver">233,150,122<tr><td class="c" style="background:darkseagreen">&nbsp;<td class="c" style="background:#8fbc8f">&nbsp;<td><dfn data-export>darkseagreen</dfn><td class="c" style="background:silver">#8fbc8f<td class="c" style="background:silver">143,188,143<tr><td class="c" style="background:darkslateblue">&nbsp;<td class="c" style="background:#483d8b">&nbsp;<td><dfn data-export>darkslateblue</dfn><td class="c" style="background:silver">#483d8b<td class="c" style="background:silver">72,61,139<tr><td class="c" style="background:darkslategray">&nbsp;<td class="c" style="background:#2f4f4f">&nbsp;<td><dfn data-export>darkslategray</dfn><td class="c" style="background:silver">#2f4f4f<td class="c" style="background:silver">47,79,79<tr><td class="c" style="background:darkslategrey">&nbsp;<td class="c" style="background:#2f4f4f">&nbsp;<td><dfn data-export>darkslategrey</dfn><td class="c" style="background:silver">#2f4f4f<td class="c" style="background:silver">47,79,79<tr><td class="c" style="background:darkturquoise">&nbsp;<td class="c" style="background:#00ced1">&nbsp;<td><dfn data-export>darkturquoise</dfn><td class="c" style="background:silver">#00ced1<td class="c" style="background:silver">0,206,209<tr><td class="c" style="background:darkviolet">&nbsp;<td class="c" style="background:#9400d3">&nbsp;<td><dfn data-export>darkviolet</dfn><td class="c" style="background:silver">#9400d3<td class="c" style="background:silver">148,0,211<tr><td class="c" style="background:deeppink">&nbsp;<td class="c" style="background:#ff1493">&nbsp;<td><dfn data-export>deeppink</dfn><td class="c" style="background:silver">#ff1493<td class="c" style="background:silver">255,20,147<tr><td class="c" style="background:deepskyblue">&nbsp;<td class="c" style="background:#00bfff">&nbsp;<td><dfn data-export>deepskyblue</dfn><td class="c" style="background:silver">#00bfff<td class="c" style="background:silver">0,191,255<tr><td class="c" style="background:dimgray">&nbsp;<td class="c" style="background:#696969">&nbsp;<td><dfn data-export>dimgray</dfn><td class="c" style="background:silver">#696969<td class="c" style="background:silver">105,105,105<tr><td class="c" style="background:dimgrey">&nbsp;<td class="c" style="background:#696969">&nbsp;<td><dfn data-export>dimgrey</dfn><td class="c" style="background:silver">#696969<td class="c" style="background:silver">105,105,105<tr><td class="c" style="background:dodgerblue">&nbsp;<td class="c" style="background:#1e90ff">&nbsp;<td><dfn data-export>dodgerblue</dfn><td class="c" style="background:silver">#1e90ff<td class="c" style="background:silver">30,144,255<tr><td class="c" style="background:firebrick">&nbsp;<td class="c" style="background:#b22222">&nbsp;<td><dfn data-export>firebrick</dfn><td class="c" style="background:silver">#b22222<td class="c" style="background:silver">178,34,34<tr><td class="c" style="background:floralwhite">&nbsp;<td class="c" style="background:#fffaf0">&nbsp;<td><dfn data-export>floralwhite</dfn><td class="c" style="background:silver">#fffaf0<td class="c" style="background:silver">255,250,240<tr><td class="c" style="background:forestgreen">&nbsp;<td class="c" style="background:#228b22">&nbsp;<td><dfn data-export>forestgreen</dfn><td class="c" style="background:silver">#228b22<td class="c" style="background:silver">34,139,34<tr><td class="c" style="background:fuchsia">&nbsp;<td class="c" style="background:#ff00ff">&nbsp;<td><dfn data-export>fuchsia</dfn><td class="c" style="background:silver">#ff00ff<td class="c" style="background:silver">255,0,255<tr><td class="c" style="background:gainsboro">&nbsp;<td class="c" style="background:#dcdcdc">&nbsp;<td><dfn data-export>gainsboro</dfn><td class="c" style="background:silver">#dcdcdc<td class="c" style="background:silver">220,220,220<tr><td class="c" style="background:ghostwhite">&nbsp;<td class="c" style="background:#f8f8ff">&nbsp;<td><dfn data-export>ghostwhite</dfn><td class="c" style="background:silver">#f8f8ff<td class="c" style="background:silver">248,248,255<tr><td class="c" style="background:gold">&nbsp;<td class="c" style="background:#ffd700">&nbsp;<td><dfn data-export>gold</dfn><td class="c" style="background:silver">#ffd700<td class="c" style="background:silver">255,215,0<tr><td class="c" style="background:goldenrod">&nbsp;<td class="c" style="background:#daa520">&nbsp;<td><dfn data-export>goldenrod</dfn><td class="c" style="background:silver">#daa520<td class="c" style="background:silver">218,165,32<tr><td class="c" style="background:gray">&nbsp;<td class="c" style="background:#808080">&nbsp;<td><dfn data-export>gray</dfn><td class="c" style="background:silver">#808080<td class="c" style="background:silver">128,128,128<tr><td class="c" style="background:green">&nbsp;<td class="c" style="background:#008000">&nbsp;<td><dfn data-export>green</dfn><td class="c" style="background:silver">#008000<td class="c" style="background:silver">0,128,0<tr><td class="c" style="background:greenyellow">&nbsp;<td class="c" style="background:#adff2f">&nbsp;<td><dfn data-export>greenyellow</dfn><td class="c" style="background:silver">#adff2f<td class="c" style="background:silver">173,255,47<tr><td class="c" style="background:grey">&nbsp;<td class="c" style="background:#808080">&nbsp;<td><dfn data-export>grey</dfn><td class="c" style="background:silver">#808080<td class="c" style="background:silver">128,128,128<tr><td class="c" style="background:honeydew">&nbsp;<td class="c" style="background:#f0fff0">&nbsp;<td><dfn data-export>honeydew</dfn><td class="c" style="background:silver">#f0fff0<td class="c" style="background:silver">240,255,240<tr><td class="c" style="background:hotpink">&nbsp;<td class="c" style="background:#ff69b4">&nbsp;<td><dfn data-export>hotpink</dfn><td class="c" style="background:silver">#ff69b4<td class="c" style="background:silver">255,105,180<tr><td class="c" style="background:indianred">&nbsp;<td class="c" style="background:#cd5c5c">&nbsp;<td><dfn data-export>indianred</dfn><td class="c" style="background:silver">#cd5c5c<td class="c" style="background:silver">205,92,92<tr><td class="c" style="background:indigo">&nbsp;<td class="c" style="background:#4b0082">&nbsp;<td><dfn data-export>indigo</dfn><td class="c" style="background:silver">#4b0082<td class="c" style="background:silver">75,0,130<tr><td class="c" style="background:ivory">&nbsp;<td class="c" style="background:#fffff0">&nbsp;<td><dfn data-export>ivory</dfn><td class="c" style="background:silver">#fffff0<td class="c" style="background:silver">255,255,240<tr><td class="c" style="background:khaki">&nbsp;<td class="c" style="background:#f0e68c">&nbsp;<td><dfn data-export>khaki</dfn><td class="c" style="background:silver">#f0e68c<td class="c" style="background:silver">240,230,140<tr><td class="c" style="background:lavender">&nbsp;<td class="c" style="background:#e6e6fa">&nbsp;<td><dfn data-export>lavender</dfn><td class="c" style="background:silver">#e6e6fa<td class="c" style="background:silver">230,230,250<tr><td class="c" style="background:lavenderblush">&nbsp;<td class="c" style="background:#fff0f5">&nbsp;<td><dfn data-export>lavenderblush</dfn><td class="c" style="background:silver">#fff0f5<td class="c" style="background:silver">255,240,245<tr><td class="c" style="background:lawngreen">&nbsp;<td class="c" style="background:#7cfc00">&nbsp;<td><dfn data-export>lawngreen</dfn><td class="c" style="background:silver">#7cfc00<td class="c" style="background:silver">124,252,0<tr><td class="c" style="background:lemonchiffon">&nbsp;<td class="c" style="background:#fffacd">&nbsp;<td><dfn data-export>lemonchiffon</dfn><td class="c" style="background:silver">#fffacd<td class="c" style="background:silver">255,250,205<tr><td class="c" style="background:lightblue">&nbsp;<td class="c" style="background:#add8e6">&nbsp;<td><dfn data-export>lightblue</dfn><td class="c" style="background:silver">#add8e6<td class="c" style="background:silver">173,216,230<tr><td class="c" style="background:lightcoral">&nbsp;<td class="c" style="background:#f08080">&nbsp;<td><dfn data-export>lightcoral</dfn><td class="c" style="background:silver">#f08080<td class="c" style="background:silver">240,128,128<tr><td class="c" style="background:lightcyan">&nbsp;<td class="c" style="background:#e0ffff">&nbsp;<td><dfn data-export>lightcyan</dfn><td class="c" style="background:silver">#e0ffff<td class="c" style="background:silver">224,255,255<tr><td class="c" style="background:lightgoldenrodyellow">&nbsp;<td class="c" style="background:#fafad2">&nbsp;<td><dfn data-export>lightgoldenrodyellow</dfn><td class="c" style="background:silver">#fafad2<td class="c" style="background:silver">250,250,210<tr><td class="c" style="background:lightgray">&nbsp;<td class="c" style="background:#d3d3d3">&nbsp;<td><dfn data-export>lightgray</dfn><td class="c" style="background:silver">#d3d3d3<td class="c" style="background:silver">211,211,211<tr><td class="c" style="background:lightgreen">&nbsp;<td class="c" style="background:#90ee90">&nbsp;<td><dfn data-export>lightgreen</dfn><td class="c" style="background:silver">#90ee90<td class="c" style="background:silver">144,238,144<tr><td class="c" style="background:lightgrey">&nbsp;<td class="c" style="background:#d3d3d3">&nbsp;<td><dfn data-export>lightgrey</dfn><td class="c" style="background:silver">#d3d3d3<td class="c" style="background:silver">211,211,211<tr><td class="c" style="background:lightpink">&nbsp;<td class="c" style="background:#ffb6c1">&nbsp;<td><dfn data-export>lightpink</dfn><td class="c" style="background:silver">#ffb6c1<td class="c" style="background:silver">255,182,193<tr><td class="c" style="background:lightsalmon">&nbsp;<td class="c" style="background:#ffa07a">&nbsp;<td><dfn data-export>lightsalmon</dfn><td class="c" style="background:silver">#ffa07a<td class="c" style="background:silver">255,160,122<tr><td class="c" style="background:lightseagreen">&nbsp;<td class="c" style="background:#20b2aa">&nbsp;<td><dfn data-export>lightseagreen</dfn><td class="c" style="background:silver">#20b2aa<td class="c" style="background:silver">32,178,170<tr><td class="c" style="background:lightskyblue">&nbsp;<td class="c" style="background:#87cefa">&nbsp;<td><dfn data-export>lightskyblue</dfn><td class="c" style="background:silver">#87cefa<td class="c" style="background:silver">135,206,250<tr><td class="c" style="background:lightslategray">&nbsp;<td class="c" style="background:#778899">&nbsp;<td><dfn data-export>lightslategray</dfn><td class="c" style="background:silver">#778899<td class="c" style="background:silver">119,136,153<tr><td class="c" style="background:lightslategrey">&nbsp;<td class="c" style="background:#778899">&nbsp;<td><dfn data-export>lightslategrey</dfn><td class="c" style="background:silver">#778899<td class="c" style="background:silver">119,136,153<tr><td class="c" style="background:lightsteelblue">&nbsp;<td class="c" style="background:#b0c4de">&nbsp;<td><dfn data-export>lightsteelblue</dfn><td class="c" style="background:silver">#b0c4de<td class="c" style="background:silver">176,196,222<tr><td class="c" style="background:lightyellow">&nbsp;<td class="c" style="background:#ffffe0">&nbsp;<td><dfn data-export>lightyellow</dfn><td class="c" style="background:silver">#ffffe0<td class="c" style="background:silver">255,255,224<tr><td class="c" style="background:lime">&nbsp;<td class="c" style="background:#00ff00">&nbsp;<td><dfn data-export>lime</dfn><td class="c" style="background:silver">#00ff00<td class="c" style="background:silver">0,255,0<tr><td class="c" style="background:limegreen">&nbsp;<td class="c" style="background:#32cd32">&nbsp;<td><dfn data-export>limegreen</dfn><td class="c" style="background:silver">#32cd32<td class="c" style="background:silver">50,205,50<tr><td class="c" style="background:linen">&nbsp;<td class="c" style="background:#faf0e6">&nbsp;<td><dfn data-export>linen</dfn><td class="c" style="background:silver">#faf0e6<td class="c" style="background:silver">250,240,230<tr><td class="c" style="background:magenta">&nbsp;<td class="c" style="background:#ff00ff">&nbsp;<td><dfn data-export>magenta</dfn><td class="c" style="background:silver">#ff00ff<td class="c" style="background:silver">255,0,255<tr><td class="c" style="background:maroon">&nbsp;<td class="c" style="background:#800000">&nbsp;<td><dfn data-export>maroon</dfn><td class="c" style="background:silver">#800000<td class="c" style="background:silver">128,0,0<tr><td class="c" style="background:mediumaquamarine">&nbsp;<td class="c" style="background:#66cdaa">&nbsp;<td><dfn data-export>mediumaquamarine</dfn><td class="c" style="background:silver">#66cdaa<td class="c" style="background:silver">102,205,170<tr><td class="c" style="background:mediumblue">&nbsp;<td class="c" style="background:#0000cd">&nbsp;<td><dfn data-export>mediumblue</dfn><td class="c" style="background:silver">#0000cd<td class="c" style="background:silver">0,0,205<tr><td class="c" style="background:mediumorchid">&nbsp;<td class="c" style="background:#ba55d3">&nbsp;<td><dfn data-export>mediumorchid</dfn><td class="c" style="background:silver">#ba55d3<td class="c" style="background:silver">186,85,211<tr><td class="c" style="background:mediumpurple">&nbsp;<td class="c" style="background:#9370db">&nbsp;<td><dfn data-export>mediumpurple</dfn><td class="c" style="background:silver">#9370db<td class="c" style="background:silver">147,112,219<tr><td class="c" style="background:mediumseagreen">&nbsp;<td class="c" style="background:#3cb371">&nbsp;<td><dfn data-export>mediumseagreen</dfn><td class="c" style="background:silver">#3cb371<td class="c" style="background:silver">60,179,113<tr><td class="c" style="background:mediumslateblue">&nbsp;<td class="c" style="background:#7b68ee">&nbsp;<td><dfn data-export>mediumslateblue</dfn><td class="c" style="background:silver">#7b68ee<td class="c" style="background:silver">123,104,238<tr><td class="c" style="background:mediumspringgreen">&nbsp;<td class="c" style="background:#00fa9a">&nbsp;<td><dfn data-export>mediumspringgreen</dfn><td class="c" style="background:silver">#00fa9a<td class="c" style="background:silver">0,250,154<tr><td class="c" style="background:mediumturquoise">&nbsp;<td class="c" style="background:#48d1cc">&nbsp;<td><dfn data-export>mediumturquoise</dfn><td class="c" style="background:silver">#48d1cc<td class="c" style="background:silver">72,209,204<tr><td class="c" style="background:mediumvioletred">&nbsp;<td class="c" style="background:#c71585">&nbsp;<td><dfn data-export>mediumvioletred</dfn><td class="c" style="background:silver">#c71585<td class="c" style="background:silver">199,21,133<tr><td class="c" style="background:midnightblue">&nbsp;<td class="c" style="background:#191970">&nbsp;<td><dfn data-export>midnightblue</dfn><td class="c" style="background:silver">#191970<td class="c" style="background:silver">25,25,112<tr><td class="c" style="background:mintcream">&nbsp;<td class="c" style="background:#f5fffa">&nbsp;<td><dfn data-export>mintcream</dfn><td class="c" style="background:silver">#f5fffa<td class="c" style="background:silver">245,255,250<tr><td class="c" style="background:mistyrose">&nbsp;<td class="c" style="background:#ffe4e1">&nbsp;<td><dfn data-export>mistyrose</dfn><td class="c" style="background:silver">#ffe4e1<td class="c" style="background:silver">255,228,225<tr><td class="c" style="background:moccasin">&nbsp;<td class="c" style="background:#ffe4b5">&nbsp;<td><dfn data-export>moccasin</dfn><td class="c" style="background:silver">#ffe4b5<td class="c" style="background:silver">255,228,181<tr><td class="c" style="background:navajowhite">&nbsp;<td class="c" style="background:#ffdead">&nbsp;<td><dfn data-export>navajowhite</dfn><td class="c" style="background:silver">#ffdead<td class="c" style="background:silver">255,222,173<tr><td class="c" style="background:navy">&nbsp;<td class="c" style="background:#000080">&nbsp;<td><dfn data-export>navy</dfn><td class="c" style="background:silver">#000080<td class="c" style="background:silver">0,0,128<tr><td class="c" style="background:oldlace">&nbsp;<td class="c" style="background:#fdf5e6">&nbsp;<td><dfn data-export>oldlace</dfn><td class="c" style="background:silver">#fdf5e6<td class="c" style="background:silver">253,245,230<tr><td class="c" style="background:olive">&nbsp;<td class="c" style="background:#808000">&nbsp;<td><dfn data-export>olive</dfn><td class="c" style="background:silver">#808000<td class="c" style="background:silver">128,128,0<tr><td class="c" style="background:olivedrab">&nbsp;<td class="c" style="background:#6b8e23">&nbsp;<td><dfn data-export>olivedrab</dfn><td class="c" style="background:silver">#6b8e23<td class="c" style="background:silver">107,142,35<tr><td class="c" style="background:orange">&nbsp;<td class="c" style="background:#ffa500">&nbsp;<td><dfn data-export>orange</dfn><td class="c" style="background:silver">#ffa500<td class="c" style="background:silver">255,165,0<tr><td class="c" style="background:orangered">&nbsp;<td class="c" style="background:#ff4500">&nbsp;<td><dfn data-export>orangered</dfn><td class="c" style="background:silver">#ff4500<td class="c" style="background:silver">255,69,0<tr><td class="c" style="background:orchid">&nbsp;<td class="c" style="background:#da70d6">&nbsp;<td><dfn data-export>orchid</dfn><td class="c" style="background:silver">#da70d6<td class="c" style="background:silver">218,112,214<tr><td class="c" style="background:palegoldenrod">&nbsp;<td class="c" style="background:#eee8aa">&nbsp;<td><dfn data-export>palegoldenrod</dfn><td class="c" style="background:silver">#eee8aa<td class="c" style="background:silver">238,232,170<tr><td class="c" style="background:palegreen">&nbsp;<td class="c" style="background:#98fb98">&nbsp;<td><dfn data-export>palegreen</dfn><td class="c" style="background:silver">#98fb98<td class="c" style="background:silver">152,251,152<tr><td class="c" style="background:paleturquoise">&nbsp;<td class="c" style="background:#afeeee">&nbsp;<td><dfn data-export>paleturquoise</dfn><td class="c" style="background:silver">#afeeee<td class="c" style="background:silver">175,238,238<tr><td class="c" style="background:palevioletred">&nbsp;<td class="c" style="background:#db7093">&nbsp;<td><dfn data-export>palevioletred</dfn><td class="c" style="background:silver">#db7093<td class="c" style="background:silver">219,112,147<tr><td class="c" style="background:papayawhip">&nbsp;<td class="c" style="background:#ffefd5">&nbsp;<td><dfn data-export>papayawhip</dfn><td class="c" style="background:silver">#ffefd5<td class="c" style="background:silver">255,239,213<tr><td class="c" style="background:peachpuff">&nbsp;<td class="c" style="background:#ffdab9">&nbsp;<td><dfn data-export>peachpuff</dfn><td class="c" style="background:silver">#ffdab9<td class="c" style="background:silver">255,218,185<tr><td class="c" style="background:peru">&nbsp;<td class="c" style="background:#cd853f">&nbsp;<td><dfn data-export>peru</dfn><td class="c" style="background:silver">#cd853f<td class="c" style="background:silver">205,133,63<tr><td class="c" style="background:pink">&nbsp;<td class="c" style="background:#ffc0cb">&nbsp;<td><dfn data-export>pink</dfn><td class="c" style="background:silver">#ffc0cb<td class="c" style="background:silver">255,192,203<tr><td class="c" style="background:plum">&nbsp;<td class="c" style="background:#dda0dd">&nbsp;<td><dfn data-export>plum</dfn><td class="c" style="background:silver">#dda0dd<td class="c" style="background:silver">221,160,221<tr><td class="c" style="background:powderblue">&nbsp;<td class="c" style="background:#b0e0e6">&nbsp;<td><dfn data-export>powderblue</dfn><td class="c" style="background:silver">#b0e0e6<td class="c" style="background:silver">176,224,230<tr><td class="c" style="background:purple">&nbsp;<td class="c" style="background:#800080">&nbsp;<td><dfn data-export>purple</dfn><td class="c" style="background:silver">#800080<td class="c" style="background:silver">128,0,128<tr><td class="c" style="background:red">&nbsp;<td class="c" style="background:#ff0000">&nbsp;<td><dfn data-export>red</dfn><td class="c" style="background:silver">#ff0000<td class="c" style="background:silver">255,0,0<tr><td class="c" style="background:rosybrown">&nbsp;<td class="c" style="background:#bc8f8f">&nbsp;<td><dfn data-export>rosybrown</dfn><td class="c" style="background:silver">#bc8f8f<td class="c" style="background:silver">188,143,143<tr><td class="c" style="background:royalblue">&nbsp;<td class="c" style="background:#4169e1">&nbsp;<td><dfn data-export>royalblue</dfn><td class="c" style="background:silver">#4169e1<td class="c" style="background:silver">65,105,225<tr><td class="c" style="background:saddlebrown">&nbsp;<td class="c" style="background:#8b4513">&nbsp;<td><dfn data-export>saddlebrown</dfn><td class="c" style="background:silver">#8b4513<td class="c" style="background:silver">139,69,19<tr><td class="c" style="background:salmon">&nbsp;<td class="c" style="background:#fa8072">&nbsp;<td><dfn data-export>salmon</dfn><td class="c" style="background:silver">#fa8072<td class="c" style="background:silver">250,128,114<tr><td class="c" style="background:sandybrown">&nbsp;<td class="c" style="background:#f4a460">&nbsp;<td><dfn data-export>sandybrown</dfn><td class="c" style="background:silver">#f4a460<td class="c" style="background:silver">244,164,96<tr><td class="c" style="background:seagreen">&nbsp;<td class="c" style="background:#2e8b57">&nbsp;<td><dfn data-export>seagreen</dfn><td class="c" style="background:silver">#2e8b57<td class="c" style="background:silver">46,139,87<tr><td class="c" style="background:seashell">&nbsp;<td class="c" style="background:#fff5ee">&nbsp;<td><dfn data-export>seashell</dfn><td class="c" style="background:silver">#fff5ee<td class="c" style="background:silver">255,245,238<tr><td class="c" style="background:sienna">&nbsp;<td class="c" style="background:#a0522d">&nbsp;<td><dfn data-export>sienna</dfn><td class="c" style="background:silver">#a0522d<td class="c" style="background:silver">160,82,45<tr><td class="c" style="background:silver">&nbsp;<td class="c" style="background:#c0c0c0">&nbsp;<td><dfn data-export>silver</dfn><td class="c" style="background:silver">#c0c0c0<td class="c" style="background:silver">192,192,192<tr><td class="c" style="background:skyblue">&nbsp;<td class="c" style="background:#87ceeb">&nbsp;<td><dfn data-export>skyblue</dfn><td class="c" style="background:silver">#87ceeb<td class="c" style="background:silver">135,206,235<tr><td class="c" style="background:slateblue">&nbsp;<td class="c" style="background:#6a5acd">&nbsp;<td><dfn data-export>slateblue</dfn><td class="c" style="background:silver">#6a5acd<td class="c" style="background:silver">106,90,205<tr><td class="c" style="background:slategray">&nbsp;<td class="c" style="background:#708090">&nbsp;<td><dfn data-export>slategray</dfn><td class="c" style="background:silver">#708090<td class="c" style="background:silver">112,128,144<tr><td class="c" style="background:slategrey">&nbsp;<td class="c" style="background:#708090">&nbsp;<td><dfn data-export>slategrey</dfn><td class="c" style="background:silver">#708090<td class="c" style="background:silver">112,128,144<tr><td class="c" style="background:snow">&nbsp;<td class="c" style="background:#fffafa">&nbsp;<td><dfn data-export>snow</dfn><td class="c" style="background:silver">#fffafa<td class="c" style="background:silver">255,250,250<tr><td class="c" style="background:springgreen">&nbsp;<td class="c" style="background:#00ff7f">&nbsp;<td><dfn data-export>springgreen</dfn><td class="c" style="background:silver">#00ff7f<td class="c" style="background:silver">0,255,127<tr><td class="c" style="background:steelblue">&nbsp;<td class="c" style="background:#4682b4">&nbsp;<td><dfn data-export>steelblue</dfn><td class="c" style="background:silver">#4682b4<td class="c" style="background:silver">70,130,180<tr><td class="c" style="background:tan">&nbsp;<td class="c" style="background:#d2b48c">&nbsp;<td><dfn data-export>tan</dfn><td class="c" style="background:silver">#d2b48c<td class="c" style="background:silver">210,180,140<tr><td class="c" style="background:teal">&nbsp;<td class="c" style="background:#008080">&nbsp;<td><dfn data-export>teal</dfn><td class="c" style="background:silver">#008080<td class="c" style="background:silver">0,128,128<tr><td class="c" style="background:thistle">&nbsp;<td class="c" style="background:#d8bfd8">&nbsp;<td><dfn data-export>thistle</dfn><td class="c" style="background:silver">#d8bfd8<td class="c" style="background:silver">216,191,216<tr><td class="c" style="background:tomato">&nbsp;<td class="c" style="background:#ff6347">&nbsp;<td><dfn data-export>tomato</dfn><td class="c" style="background:silver">#ff6347<td class="c" style="background:silver">255,99,71<tr><td class="c" style="background:turquoise">&nbsp;<td class="c" style="background:#40e0d0">&nbsp;<td><dfn data-export>turquoise</dfn><td class="c" style="background:silver">#40e0d0<td class="c" style="background:silver">64,224,208<tr><td class="c" style="background:violet">&nbsp;<td class="c" style="background:#ee82ee">&nbsp;<td><dfn data-export>violet</dfn><td class="c" style="background:silver">#ee82ee<td class="c" style="background:silver">238,130,238<tr><td class="c" style="background:wheat">&nbsp;<td class="c" style="background:#f5deb3">&nbsp;<td><dfn data-export>wheat</dfn><td class="c" style="background:silver">#f5deb3<td class="c" style="background:silver">245,222,179<tr><td class="c" style="background:white">&nbsp;<td class="c" style="background:#ffffff">&nbsp;<td><dfn data-export>white</dfn><td class="c" style="background:silver">#ffffff<td class="c" style="background:silver">255,255,255<tr><td class="c" style="background:whitesmoke">&nbsp;<td class="c" style="background:#f5f5f5">&nbsp;<td><dfn data-export>whitesmoke</dfn><td class="c" style="background:silver">#f5f5f5<td class="c" style="background:silver">245,245,245<tr><td class="c" style="background:yellow">&nbsp;<td class="c" style="background:#ffff00">&nbsp;<td><dfn data-export>yellow</dfn><td class="c" style="background:silver">#ffff00<td class="c" style="background:silver">255,255,0<tr><td class="c" style="background:yellowgreen">&nbsp;<td class="c" style="background:#9acd32">&nbsp;<td><dfn data-export>yellowgreen</dfn><td class="c" style="background:silver">#9acd32<td class="c" style="background:silver">154,205,50</table>
+	<table class="named-color-table" dfn-type=value dfn-for="<color>">
+		<thead>
+			<tr>
+				<th style="background:black">Named
+				<th>Numeric
+				<th>Color&nbsp;name
+				<th>Hex&nbsp;rgb
+				<th>Decimal
+		<tbody>
+			<tr>
+				<td style="background:aliceblue">&nbsp;<td style="background:#f0f8ff">&nbsp;<th scope=row><dfn>aliceblue</dfn><td>#f0f8ff<td>240,248,255
+			<tr>
+				<td style="background:antiquewhite">&nbsp;<td style="background:#faebd7">&nbsp;<th scope=row><dfn>antiquewhite</dfn><td>#faebd7<td>250,235,215
+			<tr>
+				<td style="background:aqua">&nbsp;<td style="background:#00ffff">&nbsp;<th scope=row><dfn>aqua</dfn><td>#00ffff<td>0,255,255
+			<tr>
+				<td style="background:aquamarine">&nbsp;<td style="background:#7fffd4">&nbsp;<th scope=row><dfn>aquamarine</dfn><td>#7fffd4<td>127,255,212
+			<tr>
+				<td style="background:azure">&nbsp;<td style="background:#f0ffff">&nbsp;<th scope=row><dfn>azure</dfn><td>#f0ffff<td>240,255,255
+			<tr>
+				<td style="background:beige">&nbsp;<td style="background:#f5f5dc">&nbsp;<th scope=row><dfn>beige</dfn><td>#f5f5dc<td>245,245,220
+			<tr>
+				<td style="background:bisque">&nbsp;<td style="background:#ffe4c4">&nbsp;<th scope=row><dfn>bisque</dfn><td>#ffe4c4<td>255,228,196
+			<tr>
+				<td style="background:black">&nbsp;<td style="background:#000000">&nbsp;<th scope=row><dfn>black</dfn><td>#000000<td>0,0,0
+			<tr>
+				<td style="background:blanchedalmond">&nbsp;<td style="background:#ffebcd">&nbsp;<th scope=row><dfn>blanchedalmond</dfn><td>#ffebcd<td>255,235,205
+			<tr>
+				<td style="background:blue">&nbsp;<td style="background:#0000ff">&nbsp;<th scope=row><dfn>blue</dfn><td>#0000ff<td>0,0,255
+			<tr>
+				<td style="background:blueviolet">&nbsp;<td style="background:#8a2be2">&nbsp;<th scope=row><dfn>blueviolet</dfn><td>#8a2be2<td>138,43,226
+			<tr>
+				<td style="background:brown">&nbsp;<td style="background:#a52a2a">&nbsp;<th scope=row><dfn>brown</dfn><td>#a52a2a<td>165,42,42
+			<tr>
+				<td style="background:burlywood">&nbsp;<td style="background:#deb887">&nbsp;<th scope=row><dfn>burlywood</dfn><td>#deb887<td>222,184,135
+			<tr>
+				<td style="background:cadetblue">&nbsp;<td style="background:#5f9ea0">&nbsp;<th scope=row><dfn>cadetblue</dfn><td>#5f9ea0<td>95,158,160
+			<tr>
+				<td style="background:chartreuse">&nbsp;<td style="background:#7fff00">&nbsp;<th scope=row><dfn>chartreuse</dfn><td>#7fff00<td>127,255,0
+			<tr>
+				<td style="background:chocolate">&nbsp;<td style="background:#d2691e">&nbsp;<th scope=row><dfn>chocolate</dfn><td>#d2691e<td>210,105,30
+			<tr>
+				<td style="background:coral">&nbsp;<td style="background:#ff7f50">&nbsp;<th scope=row><dfn>coral</dfn><td>#ff7f50<td>255,127,80
+			<tr>
+				<td style="background:cornflowerblue">&nbsp;<td style="background:#6495ed">&nbsp;<th scope=row><dfn>cornflowerblue</dfn><td>#6495ed<td>100,149,237
+			<tr>
+				<td style="background:cornsilk">&nbsp;<td style="background:#fff8dc">&nbsp;<th scope=row><dfn>cornsilk</dfn><td>#fff8dc<td>255,248,220
+			<tr>
+				<td style="background:crimson">&nbsp;<td style="background:#dc143c">&nbsp;<th scope=row><dfn>crimson</dfn><td>#dc143c<td>220,20,60
+			<tr>
+				<td style="background:cyan">&nbsp;<td style="background:#00ffff">&nbsp;<th scope=row><dfn>cyan</dfn><td>#00ffff<td>0,255,255
+			<tr>
+				<td style="background:darkblue">&nbsp;<td style="background:#00008b">&nbsp;<th scope=row><dfn>darkblue</dfn><td>#00008b<td>0,0,139
+			<tr>
+				<td style="background:darkcyan">&nbsp;<td style="background:#008b8b">&nbsp;<th scope=row><dfn>darkcyan</dfn><td>#008b8b<td>0,139,139
+			<tr>
+				<td style="background:darkgoldenrod">&nbsp;<td style="background:#b8860b">&nbsp;<th scope=row><dfn>darkgoldenrod</dfn><td>#b8860b<td>184,134,11
+			<tr>
+				<td style="background:darkgray">&nbsp;<td style="background:#a9a9a9">&nbsp;<th scope=row><dfn>darkgray</dfn><td>#a9a9a9<td>169,169,169
+			<tr>
+				<td style="background:darkgreen">&nbsp;<td style="background:#006400">&nbsp;<th scope=row><dfn>darkgreen</dfn><td>#006400<td>0,100,0
+			<tr>
+				<td style="background:darkgrey">&nbsp;<td style="background:#a9a9a9">&nbsp;<th scope=row><dfn>darkgrey</dfn><td>#a9a9a9<td>169,169,169
+			<tr>
+				<td style="background:darkkhaki">&nbsp;<td style="background:#bdb76b">&nbsp;<th scope=row><dfn>darkkhaki</dfn><td>#bdb76b<td>189,183,107
+			<tr>
+				<td style="background:darkmagenta">&nbsp;<td style="background:#8b008b">&nbsp;<th scope=row><dfn>darkmagenta</dfn><td>#8b008b<td>139,0,139
+			<tr>
+				<td style="background:darkolivegreen">&nbsp;<td style="background:#556b2f">&nbsp;<th scope=row><dfn>darkolivegreen</dfn><td>#556b2f<td>85,107,47
+			<tr>
+				<td style="background:darkorange">&nbsp;<td style="background:#ff8c00">&nbsp;<th scope=row><dfn>darkorange</dfn><td>#ff8c00<td>255,140,0
+			<tr>
+				<td style="background:darkorchid">&nbsp;<td style="background:#9932cc">&nbsp;<th scope=row><dfn>darkorchid</dfn><td>#9932cc<td>153,50,204
+			<tr>
+				<td style="background:darkred">&nbsp;<td style="background:#8b0000">&nbsp;<th scope=row><dfn>darkred</dfn><td>#8b0000<td>139,0,0
+			<tr>
+				<td style="background:darksalmon">&nbsp;<td style="background:#e9967a">&nbsp;<th scope=row><dfn>darksalmon</dfn><td>#e9967a<td>233,150,122
+			<tr>
+				<td style="background:darkseagreen">&nbsp;<td style="background:#8fbc8f">&nbsp;<th scope=row><dfn>darkseagreen</dfn><td>#8fbc8f<td>143,188,143
+			<tr>
+				<td style="background:darkslateblue">&nbsp;<td style="background:#483d8b">&nbsp;<th scope=row><dfn>darkslateblue</dfn><td>#483d8b<td>72,61,139
+			<tr>
+				<td style="background:darkslategray">&nbsp;<td style="background:#2f4f4f">&nbsp;<th scope=row><dfn>darkslategray</dfn><td>#2f4f4f<td>47,79,79
+			<tr>
+				<td style="background:darkslategrey">&nbsp;<td style="background:#2f4f4f">&nbsp;<th scope=row><dfn>darkslategrey</dfn><td>#2f4f4f<td>47,79,79
+			<tr>
+				<td style="background:darkturquoise">&nbsp;<td style="background:#00ced1">&nbsp;<th scope=row><dfn>darkturquoise</dfn><td>#00ced1<td>0,206,209
+			<tr>
+				<td style="background:darkviolet">&nbsp;<td style="background:#9400d3">&nbsp;<th scope=row><dfn>darkviolet</dfn><td>#9400d3<td>148,0,211
+			<tr>
+				<td style="background:deeppink">&nbsp;<td style="background:#ff1493">&nbsp;<th scope=row><dfn>deeppink</dfn><td>#ff1493<td>255,20,147
+			<tr>
+				<td style="background:deepskyblue">&nbsp;<td style="background:#00bfff">&nbsp;<th scope=row><dfn>deepskyblue</dfn><td>#00bfff<td>0,191,255
+			<tr>
+				<td style="background:dimgray">&nbsp;<td style="background:#696969">&nbsp;<th scope=row><dfn>dimgray</dfn><td>#696969<td>105,105,105
+			<tr>
+				<td style="background:dimgrey">&nbsp;<td style="background:#696969">&nbsp;<th scope=row><dfn>dimgrey</dfn><td>#696969<td>105,105,105
+			<tr>
+				<td style="background:dodgerblue">&nbsp;<td style="background:#1e90ff">&nbsp;<th scope=row><dfn>dodgerblue</dfn><td>#1e90ff<td>30,144,255
+			<tr>
+				<td style="background:firebrick">&nbsp;<td style="background:#b22222">&nbsp;<th scope=row><dfn>firebrick</dfn><td>#b22222<td>178,34,34
+			<tr>
+				<td style="background:floralwhite">&nbsp;<td style="background:#fffaf0">&nbsp;<th scope=row><dfn>floralwhite</dfn><td>#fffaf0<td>255,250,240
+			<tr>
+				<td style="background:forestgreen">&nbsp;<td style="background:#228b22">&nbsp;<th scope=row><dfn>forestgreen</dfn><td>#228b22<td>34,139,34
+			<tr>
+				<td style="background:fuchsia">&nbsp;<td style="background:#ff00ff">&nbsp;<th scope=row><dfn>fuchsia</dfn><td>#ff00ff<td>255,0,255
+			<tr>
+				<td style="background:gainsboro">&nbsp;<td style="background:#dcdcdc">&nbsp;<th scope=row><dfn>gainsboro</dfn><td>#dcdcdc<td>220,220,220
+			<tr>
+				<td style="background:ghostwhite">&nbsp;<td style="background:#f8f8ff">&nbsp;<th scope=row><dfn>ghostwhite</dfn><td>#f8f8ff<td>248,248,255
+			<tr>
+				<td style="background:gold">&nbsp;<td style="background:#ffd700">&nbsp;<th scope=row><dfn>gold</dfn><td>#ffd700<td>255,215,0
+			<tr>
+				<td style="background:goldenrod">&nbsp;<td style="background:#daa520">&nbsp;<th scope=row><dfn>goldenrod</dfn><td>#daa520<td>218,165,32
+			<tr>
+				<td style="background:gray">&nbsp;<td style="background:#808080">&nbsp;<th scope=row><dfn>gray</dfn><td>#808080<td>128,128,128
+			<tr>
+				<td style="background:green">&nbsp;<td style="background:#008000">&nbsp;<th scope=row><dfn>green</dfn><td>#008000<td>0,128,0
+			<tr>
+				<td style="background:greenyellow">&nbsp;<td style="background:#adff2f">&nbsp;<th scope=row><dfn>greenyellow</dfn><td>#adff2f<td>173,255,47
+			<tr>
+				<td style="background:grey">&nbsp;<td style="background:#808080">&nbsp;<th scope=row><dfn>grey</dfn><td>#808080<td>128,128,128
+			<tr>
+				<td style="background:honeydew">&nbsp;<td style="background:#f0fff0">&nbsp;<th scope=row><dfn>honeydew</dfn><td>#f0fff0<td>240,255,240
+			<tr>
+				<td style="background:hotpink">&nbsp;<td style="background:#ff69b4">&nbsp;<th scope=row><dfn>hotpink</dfn><td>#ff69b4<td>255,105,180
+			<tr>
+				<td style="background:indianred">&nbsp;<td style="background:#cd5c5c">&nbsp;<th scope=row><dfn>indianred</dfn><td>#cd5c5c<td>205,92,92
+			<tr>
+				<td style="background:indigo">&nbsp;<td style="background:#4b0082">&nbsp;<th scope=row><dfn>indigo</dfn><td>#4b0082<td>75,0,130
+			<tr>
+				<td style="background:ivory">&nbsp;<td style="background:#fffff0">&nbsp;<th scope=row><dfn>ivory</dfn><td>#fffff0<td>255,255,240
+			<tr>
+				<td style="background:khaki">&nbsp;<td style="background:#f0e68c">&nbsp;<th scope=row><dfn>khaki</dfn><td>#f0e68c<td>240,230,140
+			<tr>
+				<td style="background:lavender">&nbsp;<td style="background:#e6e6fa">&nbsp;<th scope=row><dfn>lavender</dfn><td>#e6e6fa<td>230,230,250
+			<tr>
+				<td style="background:lavenderblush">&nbsp;<td style="background:#fff0f5">&nbsp;<th scope=row><dfn>lavenderblush</dfn><td>#fff0f5<td>255,240,245
+			<tr>
+				<td style="background:lawngreen">&nbsp;<td style="background:#7cfc00">&nbsp;<th scope=row><dfn>lawngreen</dfn><td>#7cfc00<td>124,252,0
+			<tr>
+				<td style="background:lemonchiffon">&nbsp;<td style="background:#fffacd">&nbsp;<th scope=row><dfn>lemonchiffon</dfn><td>#fffacd<td>255,250,205
+			<tr>
+				<td style="background:lightblue">&nbsp;<td style="background:#add8e6">&nbsp;<th scope=row><dfn>lightblue</dfn><td>#add8e6<td>173,216,230
+			<tr>
+				<td style="background:lightcoral">&nbsp;<td style="background:#f08080">&nbsp;<th scope=row><dfn>lightcoral</dfn><td>#f08080<td>240,128,128
+			<tr>
+				<td style="background:lightcyan">&nbsp;<td style="background:#e0ffff">&nbsp;<th scope=row><dfn>lightcyan</dfn><td>#e0ffff<td>224,255,255
+			<tr>
+				<td style="background:lightgoldenrodyellow">&nbsp;<td style="background:#fafad2">&nbsp;<th scope=row><dfn>lightgoldenrodyellow</dfn><td>#fafad2<td>250,250,210
+			<tr>
+				<td style="background:lightgray">&nbsp;<td style="background:#d3d3d3">&nbsp;<th scope=row><dfn>lightgray</dfn><td>#d3d3d3<td>211,211,211
+			<tr>
+				<td style="background:lightgreen">&nbsp;<td style="background:#90ee90">&nbsp;<th scope=row><dfn>lightgreen</dfn><td>#90ee90<td>144,238,144
+			<tr>
+				<td style="background:lightgrey">&nbsp;<td style="background:#d3d3d3">&nbsp;<th scope=row><dfn>lightgrey</dfn><td>#d3d3d3<td>211,211,211
+			<tr>
+				<td style="background:lightpink">&nbsp;<td style="background:#ffb6c1">&nbsp;<th scope=row><dfn>lightpink</dfn><td>#ffb6c1<td>255,182,193
+			<tr>
+				<td style="background:lightsalmon">&nbsp;<td style="background:#ffa07a">&nbsp;<th scope=row><dfn>lightsalmon</dfn><td>#ffa07a<td>255,160,122
+			<tr>
+				<td style="background:lightseagreen">&nbsp;<td style="background:#20b2aa">&nbsp;<th scope=row><dfn>lightseagreen</dfn><td>#20b2aa<td>32,178,170
+			<tr>
+				<td style="background:lightskyblue">&nbsp;<td style="background:#87cefa">&nbsp;<th scope=row><dfn>lightskyblue</dfn><td>#87cefa<td>135,206,250
+			<tr>
+				<td style="background:lightslategray">&nbsp;<td style="background:#778899">&nbsp;<th scope=row><dfn>lightslategray</dfn><td>#778899<td>119,136,153
+			<tr>
+				<td style="background:lightslategrey">&nbsp;<td style="background:#778899">&nbsp;<th scope=row><dfn>lightslategrey</dfn><td>#778899<td>119,136,153
+			<tr>
+				<td style="background:lightsteelblue">&nbsp;<td style="background:#b0c4de">&nbsp;<th scope=row><dfn>lightsteelblue</dfn><td>#b0c4de<td>176,196,222
+			<tr>
+				<td style="background:lightyellow">&nbsp;<td style="background:#ffffe0">&nbsp;<th scope=row><dfn>lightyellow</dfn><td>#ffffe0<td>255,255,224
+			<tr>
+				<td style="background:lime">&nbsp;<td style="background:#00ff00">&nbsp;<th scope=row><dfn>lime</dfn><td>#00ff00<td>0,255,0
+			<tr>
+				<td style="background:limegreen">&nbsp;<td style="background:#32cd32">&nbsp;<th scope=row><dfn>limegreen</dfn><td>#32cd32<td>50,205,50
+			<tr>
+				<td style="background:linen">&nbsp;<td style="background:#faf0e6">&nbsp;<th scope=row><dfn>linen</dfn><td>#faf0e6<td>250,240,230
+			<tr>
+				<td style="background:magenta">&nbsp;<td style="background:#ff00ff">&nbsp;<th scope=row><dfn>magenta</dfn><td>#ff00ff<td>255,0,255
+			<tr>
+				<td style="background:maroon">&nbsp;<td style="background:#800000">&nbsp;<th scope=row><dfn>maroon</dfn><td>#800000<td>128,0,0
+			<tr>
+				<td style="background:mediumaquamarine">&nbsp;<td style="background:#66cdaa">&nbsp;<th scope=row><dfn>mediumaquamarine</dfn><td>#66cdaa<td>102,205,170
+			<tr>
+				<td style="background:mediumblue">&nbsp;<td style="background:#0000cd">&nbsp;<th scope=row><dfn>mediumblue</dfn><td>#0000cd<td>0,0,205
+			<tr>
+				<td style="background:mediumorchid">&nbsp;<td style="background:#ba55d3">&nbsp;<th scope=row><dfn>mediumorchid</dfn><td>#ba55d3<td>186,85,211
+			<tr>
+				<td style="background:mediumpurple">&nbsp;<td style="background:#9370db">&nbsp;<th scope=row><dfn>mediumpurple</dfn><td>#9370db<td>147,112,219
+			<tr>
+				<td style="background:mediumseagreen">&nbsp;<td style="background:#3cb371">&nbsp;<th scope=row><dfn>mediumseagreen</dfn><td>#3cb371<td>60,179,113
+			<tr>
+				<td style="background:mediumslateblue">&nbsp;<td style="background:#7b68ee">&nbsp;<th scope=row><dfn>mediumslateblue</dfn><td>#7b68ee<td>123,104,238
+			<tr>
+				<td style="background:mediumspringgreen">&nbsp;<td style="background:#00fa9a">&nbsp;<th scope=row><dfn>mediumspringgreen</dfn><td>#00fa9a<td>0,250,154
+			<tr>
+				<td style="background:mediumturquoise">&nbsp;<td style="background:#48d1cc">&nbsp;<th scope=row><dfn>mediumturquoise</dfn><td>#48d1cc<td>72,209,204
+			<tr>
+				<td style="background:mediumvioletred">&nbsp;<td style="background:#c71585">&nbsp;<th scope=row><dfn>mediumvioletred</dfn><td>#c71585<td>199,21,133
+			<tr>
+				<td style="background:midnightblue">&nbsp;<td style="background:#191970">&nbsp;<th scope=row><dfn>midnightblue</dfn><td>#191970<td>25,25,112
+			<tr>
+				<td style="background:mintcream">&nbsp;<td style="background:#f5fffa">&nbsp;<th scope=row><dfn>mintcream</dfn><td>#f5fffa<td>245,255,250
+			<tr>
+				<td style="background:mistyrose">&nbsp;<td style="background:#ffe4e1">&nbsp;<th scope=row><dfn>mistyrose</dfn><td>#ffe4e1<td>255,228,225
+			<tr>
+				<td style="background:moccasin">&nbsp;<td style="background:#ffe4b5">&nbsp;<th scope=row><dfn>moccasin</dfn><td>#ffe4b5<td>255,228,181
+			<tr>
+				<td style="background:navajowhite">&nbsp;<td style="background:#ffdead">&nbsp;<th scope=row><dfn>navajowhite</dfn><td>#ffdead<td>255,222,173
+			<tr>
+				<td style="background:navy">&nbsp;<td style="background:#000080">&nbsp;<th scope=row><dfn>navy</dfn><td>#000080<td>0,0,128
+			<tr>
+				<td style="background:oldlace">&nbsp;<td style="background:#fdf5e6">&nbsp;<th scope=row><dfn>oldlace</dfn><td>#fdf5e6<td>253,245,230
+			<tr>
+				<td style="background:olive">&nbsp;<td style="background:#808000">&nbsp;<th scope=row><dfn>olive</dfn><td>#808000<td>128,128,0
+			<tr>
+				<td style="background:olivedrab">&nbsp;<td style="background:#6b8e23">&nbsp;<th scope=row><dfn>olivedrab</dfn><td>#6b8e23<td>107,142,35
+			<tr>
+				<td style="background:orange">&nbsp;<td style="background:#ffa500">&nbsp;<th scope=row><dfn>orange</dfn><td>#ffa500<td>255,165,0
+			<tr>
+				<td style="background:orangered">&nbsp;<td style="background:#ff4500">&nbsp;<th scope=row><dfn>orangered</dfn><td>#ff4500<td>255,69,0
+			<tr>
+				<td style="background:orchid">&nbsp;<td style="background:#da70d6">&nbsp;<th scope=row><dfn>orchid</dfn><td>#da70d6<td>218,112,214
+			<tr>
+				<td style="background:palegoldenrod">&nbsp;<td style="background:#eee8aa">&nbsp;<th scope=row><dfn>palegoldenrod</dfn><td>#eee8aa<td>238,232,170
+			<tr>
+				<td style="background:palegreen">&nbsp;<td style="background:#98fb98">&nbsp;<th scope=row><dfn>palegreen</dfn><td>#98fb98<td>152,251,152
+			<tr>
+				<td style="background:paleturquoise">&nbsp;<td style="background:#afeeee">&nbsp;<th scope=row><dfn>paleturquoise</dfn><td>#afeeee<td>175,238,238
+			<tr>
+				<td style="background:palevioletred">&nbsp;<td style="background:#db7093">&nbsp;<th scope=row><dfn>palevioletred</dfn><td>#db7093<td>219,112,147
+			<tr>
+				<td style="background:papayawhip">&nbsp;<td style="background:#ffefd5">&nbsp;<th scope=row><dfn>papayawhip</dfn><td>#ffefd5<td>255,239,213
+			<tr>
+				<td style="background:peachpuff">&nbsp;<td style="background:#ffdab9">&nbsp;<th scope=row><dfn>peachpuff</dfn><td>#ffdab9<td>255,218,185
+			<tr>
+				<td style="background:peru">&nbsp;<td style="background:#cd853f">&nbsp;<th scope=row><dfn>peru</dfn><td>#cd853f<td>205,133,63
+			<tr>
+				<td style="background:pink">&nbsp;<td style="background:#ffc0cb">&nbsp;<th scope=row><dfn>pink</dfn><td>#ffc0cb<td>255,192,203
+			<tr>
+				<td style="background:plum">&nbsp;<td style="background:#dda0dd">&nbsp;<th scope=row><dfn>plum</dfn><td>#dda0dd<td>221,160,221
+			<tr>
+				<td style="background:powderblue">&nbsp;<td style="background:#b0e0e6">&nbsp;<th scope=row><dfn>powderblue</dfn><td>#b0e0e6<td>176,224,230
+			<tr>
+				<td style="background:purple">&nbsp;<td style="background:#800080">&nbsp;<th scope=row><dfn>purple</dfn><td>#800080<td>128,0,128
+			<tr>
+				<td style="background:red">&nbsp;<td style="background:#ff0000">&nbsp;<th scope=row><dfn>red</dfn><td>#ff0000<td>255,0,0
+			<tr>
+				<td style="background:rosybrown">&nbsp;<td style="background:#bc8f8f">&nbsp;<th scope=row><dfn>rosybrown</dfn><td>#bc8f8f<td>188,143,143
+			<tr>
+				<td style="background:royalblue">&nbsp;<td style="background:#4169e1">&nbsp;<th scope=row><dfn>royalblue</dfn><td>#4169e1<td>65,105,225
+			<tr>
+				<td style="background:saddlebrown">&nbsp;<td style="background:#8b4513">&nbsp;<th scope=row><dfn>saddlebrown</dfn><td>#8b4513<td>139,69,19
+			<tr>
+				<td style="background:salmon">&nbsp;<td style="background:#fa8072">&nbsp;<th scope=row><dfn>salmon</dfn><td>#fa8072<td>250,128,114
+			<tr>
+				<td style="background:sandybrown">&nbsp;<td style="background:#f4a460">&nbsp;<th scope=row><dfn>sandybrown</dfn><td>#f4a460<td>244,164,96
+			<tr>
+				<td style="background:seagreen">&nbsp;<td style="background:#2e8b57">&nbsp;<th scope=row><dfn>seagreen</dfn><td>#2e8b57<td>46,139,87
+			<tr>
+				<td style="background:seashell">&nbsp;<td style="background:#fff5ee">&nbsp;<th scope=row><dfn>seashell</dfn><td>#fff5ee<td>255,245,238
+			<tr>
+				<td style="background:sienna">&nbsp;<td style="background:#a0522d">&nbsp;<th scope=row><dfn>sienna</dfn><td>#a0522d<td>160,82,45
+			<tr>
+				<td style="background:silver">&nbsp;<td style="background:#c0c0c0">&nbsp;<th scope=row><dfn>silver</dfn><td>#c0c0c0<td>192,192,192
+			<tr>
+				<td style="background:skyblue">&nbsp;<td style="background:#87ceeb">&nbsp;<th scope=row><dfn>skyblue</dfn><td>#87ceeb<td>135,206,235
+			<tr>
+				<td style="background:slateblue">&nbsp;<td style="background:#6a5acd">&nbsp;<th scope=row><dfn>slateblue</dfn><td>#6a5acd<td>106,90,205
+			<tr>
+				<td style="background:slategray">&nbsp;<td style="background:#708090">&nbsp;<th scope=row><dfn>slategray</dfn><td>#708090<td>112,128,144
+			<tr>
+				<td style="background:slategrey">&nbsp;<td style="background:#708090">&nbsp;<th scope=row><dfn>slategrey</dfn><td>#708090<td>112,128,144
+			<tr>
+				<td style="background:snow">&nbsp;<td style="background:#fffafa">&nbsp;<th scope=row><dfn>snow</dfn><td>#fffafa<td>255,250,250
+			<tr>
+				<td style="background:springgreen">&nbsp;<td style="background:#00ff7f">&nbsp;<th scope=row><dfn>springgreen</dfn><td>#00ff7f<td>0,255,127
+			<tr>
+				<td style="background:steelblue">&nbsp;<td style="background:#4682b4">&nbsp;<th scope=row><dfn>steelblue</dfn><td>#4682b4<td>70,130,180
+			<tr>
+				<td style="background:tan">&nbsp;<td style="background:#d2b48c">&nbsp;<th scope=row><dfn>tan</dfn><td>#d2b48c<td>210,180,140
+			<tr>
+				<td style="background:teal">&nbsp;<td style="background:#008080">&nbsp;<th scope=row><dfn>teal</dfn><td>#008080<td>0,128,128
+			<tr>
+				<td style="background:thistle">&nbsp;<td style="background:#d8bfd8">&nbsp;<th scope=row><dfn>thistle</dfn><td>#d8bfd8<td>216,191,216
+			<tr>
+				<td style="background:tomato">&nbsp;<td style="background:#ff6347">&nbsp;<th scope=row><dfn>tomato</dfn><td>#ff6347<td>255,99,71
+			<tr>
+				<td style="background:turquoise">&nbsp;<td style="background:#40e0d0">&nbsp;<th scope=row><dfn>turquoise</dfn><td>#40e0d0<td>64,224,208
+			<tr>
+				<td style="background:violet">&nbsp;<td style="background:#ee82ee">&nbsp;<th scope=row><dfn>violet</dfn><td>#ee82ee<td>238,130,238
+			<tr>
+				<td style="background:wheat">&nbsp;<td style="background:#f5deb3">&nbsp;<th scope=row><dfn>wheat</dfn><td>#f5deb3<td>245,222,179
+			<tr>
+				<td style="background:white">&nbsp;<td style="background:#ffffff">&nbsp;<th scope=row><dfn>white</dfn><td>#ffffff<td>255,255,255
+			<tr>
+				<td style="background:whitesmoke">&nbsp;<td style="background:#f5f5f5">&nbsp;<th scope=row><dfn>whitesmoke</dfn><td>#f5f5f5<td>245,245,245
+			<tr>
+				<td style="background:yellow">&nbsp;<td style="background:#ffff00">&nbsp;<th scope=row><dfn>yellow</dfn><td>#ffff00<td>255,255,0
+			<tr>
+				<td style="background:yellowgreen">&nbsp;<td style="background:#9acd32">&nbsp;<th scope=row><dfn>yellowgreen</dfn><td>#9acd32<td>154,205,50
+	</table>
 
 	Note: this list of colors and their definitions is identical to the list of <a href="http://www.w3.org/TR/SVG/types.html#ColorKeywords">named colors defined by SVG 1.1</a>.
 
 <h4 id='transparent-color'>
 The ''transparent'' keyword</h4>
 
-	The keyword <dfn data-export>''transparent''</dfn> specifies a transparent black color;
+	The keyword <dfn value for="<color>">transparent</dfn> specifies a transparent black color;
 	that is, a color with its red, green, and blue channels all set to the minimum value
 	and its alpha channel set to full transparency,
 	equivalent to ''rgba(0, 0, 0, 0)''.
@@ -1128,7 +1430,7 @@ The ''transparent'' keyword</h4>
 <h4 id='currentcolor-color'>
 The ''currentcolor'' keyword</h4>
 
-	The keyword <dfn data-export>''currentcolor''</dfn> takes its value from the value of the 'color' property on the same element.
+	The keyword <dfn value for="<color>">currentcolor</dfn> takes its value from the value of the 'color' property on the same element.
 	This happens at <strong>used-value time</strong>,
 	which means that if the value is inherited,
 	it's inherited as ''currentcolor'',
@@ -1368,7 +1670,7 @@ Modifying colors: the ''color()'' function</h2>
 		    [red( | green( | blue( | alpha( | a(] ['+' | '-']? [<<number>> | <<percentage>>] ) |
 		    [red( | green( | blue( | alpha( | a(] '*' <<percentage>> ) |
 		    rgb( ['+' | '-'] [<<number>> | <<percentage>>]{3} ) |
-		    rgb( ['+' | '-'] <<hash>> ) |
+		    rgb( ['+' | '-'] <<hash-token>> ) |
 		    rgb( '*' <<percentage>> ) |
 
 		    [hue( | h(] ['+' | '-' | '*']? <<angle>> ) |
@@ -1427,7 +1729,7 @@ Modifying colors: the ''color()'' function</h2>
 	during the evaluation of a ''color()'' function's <<color-adjuster>>s,
 	rather than storing intermediate colors as a 4-tuple of red, green, blue, and alpha,
 	as usual for CSS colors,
-	intermediate colors must be stored as a <dfn data-noexport title="hue angle is null|null">5-tuple of red, green, blue, alpha, and hue angle</dfn>,
+	intermediate colors must be stored as a <dfn noexport title="hue angle is null|null">5-tuple of red, green, blue, alpha, and hue angle</dfn>,
 	where the hue angle may be null for some colors and after some operations.
 
 	Whenever an operation interprets an <a>achromatic</a> color in HSL or HWB space,
@@ -1515,11 +1817,11 @@ RGBA Adjustment</h3>
 			the second value adjusting the green channel,
 			and the third value adjusting the blue channel.
 
-		<dt>''rgb( [&apos;+&apos; | &apos;-&apos;] <<hash>> )''
+		<dt>''rgb( [&apos;+&apos; | &apos;-&apos;] <<hash-token>> )''
 		<dd>
 			Identical to the previous clause,
 			except that the adjustments to the three channels are specified in hexadecimal format;
-			the <<hash>> is interpreted as a <a>hex color</a>,
+			the <<hash-token>> is interpreted as a <a>hex color</a>,
 			then the red, green, and blue channels of the color
 			are applied as adjustments to the <var>base color</var>.
 
@@ -1889,7 +2191,7 @@ Simple alpha compositing</h3>
 
 	When drawing, implementations must handle alpha 
 	according to the rules in <a href="http://www.w3.org/TR/2003/REC-SVG11-20030114/masking.html#SimpleAlphaBlending">Section 14.2 Simple alpha compositing</a> of [[!SVG11]]. 
-	(If the 'color-interpolation' 
+	(If the <a property spec=svg2>color-interpolation</a> 
 	or 'color-rendering' properties mentioned in that section 
 	are not implemented or do not apply, implementations must act as though they have their initial values.)
 
@@ -1929,7 +2231,7 @@ Color Management: the 'color-correction' property</h2>
 
 	The 'color-correction' property specifies the color space that colors specified in CSS 
 	and colors in <a>untagged images</a> are in.
-	An <dfn>untagged image</dfn> is an image that is not explicitly assigned a color profile,
+	An <dfn export>untagged image</dfn> is an image that is not explicitly assigned a color profile,
 	as defined by the image format.
 	It does not apply to videos, since untagged video should be presumed to be in CCIR 601.
 
@@ -1937,14 +2239,14 @@ Color Management: the 'color-correction' property</h2>
 		Really?  Shouldn't video be consistent with images?  
 		Or do implementations really do this differently?
 
-	<dl>
-		<dt><dfn id="color-correction-sRGB">''sRGB''</dfn>
+	<dl dfn-type=value dfn-for="color-correction">
+		<dt><dfn>sRGB</dfn>
 		<dd>
 			Colors specified in CSS 
 			and colors in <a>untagged images</a> 
 			are in the sRGB color space.
 
-		<dt><dfn id="color-correction-auto">''auto''</dfn>
+		<dt><dfn>auto</dfn>
 		<dd>
 			The color space for colors specified in CSS and colors in <a>untagged images</a> is not defined.  
 			However, implementations must use a single color space for such colors so that they match each other.  
@@ -1989,102 +2291,102 @@ Appendix A: Deprecated CSS System Colors</h2>
 	(for example, mapping all the "background" colors to white and "foreground" colors to black).
 	Authors must not use these keywords.
 
-	<dl>
-		<dt><dfn data-noexport>ActiveBorder</dfn>
+	<dl noexport>
+		<dt><dfn>ActiveBorder</dfn>
 		<dd>Active window border.
 
-		<dt><dfn data-noexport>ActiveCaption</dfn>
+		<dt><dfn>ActiveCaption</dfn>
 		<dd>Active window caption.
 
-		<dt><dfn data-noexport>AppWorkspace</dfn>
+		<dt><dfn>AppWorkspace</dfn>
 		<dd>Background color of multiple document interface.
 
-		<dt><dfn data-noexport>Background</dfn>
+		<dt><dfn>Background</dfn>
 		<dd>Desktop background.
 
-		<dt><dfn data-noexport>ButtonFace</dfn>
+		<dt><dfn>ButtonFace</dfn>
 		<dd>The face background color for 3-D elements that appear 3-D due to
 		one layer of surrounding border.
 
-		<dt><dfn data-noexport>ButtonHighlight</dfn>
+		<dt><dfn>ButtonHighlight</dfn>
 		<dd>The color of the border facing the light source for 3-D elements
 		that appear 3-D due to one layer of surrounding border.
 
-		<dt><dfn data-noexport>ButtonShadow</dfn>
+		<dt><dfn>ButtonShadow</dfn>
 		<dd>The color of the border away from the light source for 3-D elements
 		that appear 3-D due to one layer of surrounding border.
 
-		<dt><dfn data-noexport>ButtonText</dfn>
+		<dt><dfn>ButtonText</dfn>
 		<dd>Text on push buttons.
 
-		<dt><dfn data-noexport>CaptionText</dfn>
+		<dt><dfn>CaptionText</dfn>
 		<dd>Text in caption, size box, and scrollbar arrow box.
 
-		<dt><dfn data-noexport>GrayText</dfn>
+		<dt><dfn>GrayText</dfn>
 		<dd>Grayed (disabled) text. This color is set to #000 if
 		the current display driver does not support a solid gray color.
 
-		<dt><dfn data-noexport>Highlight</dfn>
+		<dt><dfn>Highlight</dfn>
 		<dd>Item(s) selected in a control.
 
-		<dt><dfn data-noexport>HighlightText</dfn>
+		<dt><dfn>HighlightText</dfn>
 		<dd>Text of item(s) selected in a control.
 
-		<dt><dfn data-noexport>InactiveBorder</dfn>
+		<dt><dfn>InactiveBorder</dfn>
 		<dd>Inactive window border.
 
-		<dt><dfn data-noexport>InactiveCaption</dfn>
+		<dt><dfn>InactiveCaption</dfn>
 		<dd>Inactive window caption.
 
-		<dt><dfn data-noexport>InactiveCaptionText</dfn>
+		<dt><dfn>InactiveCaptionText</dfn>
 		<dd>Color of text in an inactive caption.
 
-		<dt><dfn data-noexport>InfoBackground</dfn>
+		<dt><dfn>InfoBackground</dfn>
 		<dd>Background color for tooltip controls.
 
-		<dt><dfn data-noexport>InfoText</dfn>
+		<dt><dfn>InfoText</dfn>
 		<dd>Text color for tooltip controls.
 
-		<dt><dfn data-noexport>Menu</dfn>
+		<dt><dfn>Menu</dfn>
 		<dd>Menu background.
 
-		<dt><dfn data-noexport>MenuText</dfn>
+		<dt><dfn>MenuText</dfn>
 		<dd>Text in menus.
 
-		<dt><dfn data-noexport>Scrollbar</dfn>
+		<dt><dfn>Scrollbar</dfn>
 		<dd>Scroll bar gray area.
 
-		<dt><dfn data-noexport>ThreeDDarkShadow</dfn>
+		<dt><dfn>ThreeDDarkShadow</dfn>
 		<dd>The color of the darker (generally outer) of the two borders away
 		from the light source for 3-D elements that appear 3-D due to two
 		concentric layers of surrounding border.
 
-		<dt><dfn data-noexport>ThreeDFace</dfn>
+		<dt><dfn>ThreeDFace</dfn>
 		<dd>The face background color for 3-D elements that appear 3-D due to
 		two concentric layers of surrounding border.
 
-		<dt><dfn data-noexport>ThreeDHighlight</dfn>
+		<dt><dfn>ThreeDHighlight</dfn>
 		<dd>The color of the lighter (generally outer) of the two borders facing
 		the light source for 3-D elements that appear 3-D due to two
 		concentric layers of surrounding border.
 
-		<dt><dfn data-noexport>ThreeDLightShadow</dfn>
+		<dt><dfn>ThreeDLightShadow</dfn>
 		<dd>The color of the darker (generally inner) of the two borders facing
 		the light source for 3-D elements that appear 3-D due to two
 		concentric layers of surrounding border.
 
-		<dt><dfn data-noexport>ThreeDShadow</dfn>
+		<dt><dfn>ThreeDShadow</dfn>
 		<dd>The color of the lighter (generally inner) of the two borders away
 		from the light source for 3-D elements that appear 3-D due to two
 		concentric layers of surrounding border.
 
-		<dt><dfn data-noexport>Window</dfn>
+		<dt><dfn>Window</dfn>
 		<dd>Window background.
 
-		<dt><dfn data-noexport>WindowFrame</dfn>
+		<dt><dfn>WindowFrame</dfn>
 		<dd>Window frame.
 
-		<dt><dfn data-noexport>WindowText</dfn>
+		<dt><dfn>WindowText</dfn>
 		<dd>Text in windows.
 	</dl>
 

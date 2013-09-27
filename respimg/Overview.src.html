@@ -1,0 +1,518 @@
+<h1>Proposal for RespImg Syntax</h1>
+
+<pre class='metadata'>
+Group: personal
+Status: UD
+ED: http://tabatkins.github.io/specs/respimg/Overview.html
+Shortname: respimg
+Level: 1
+Editor: Tab Atkins, Google, http://xanthir.com/contact/
+Abstract: This document describes a proposed syntax for "responsive images", which allows a user agent to choose an appropriate version of an image from several candidates.
+Ignored Terms: <media-query>
+</pre>
+
+<h2 id='intro'>
+Introduction</h2>
+
+	The Responsive Images community has been trying for some time to come up with a syntax for specifying responsive images
+	that satisfies multiple use-cases.
+	Their most popular attempt so far,
+	the <code>&lt;picture></code> element,
+	only hits 2 of the 3 major use-cases,
+	and has certain aspects that implementors seem to be rather unhappy with.
+
+	This document defines a new attempt at the problem,
+	sketched out in collaboration between me and John Mellor,
+	which solves all three of the major use-cases,
+	while avoiding implementor concerns,
+	and hopefully being very easily usable.
+
+<h2 id='problem'>
+The Problem Statement</h2>
+
+	To make things somewhat clearer,
+	I'll outline here the three use-cases that the responsive images community has been attempting to address.
+
+	<ol>
+		<li>
+			<dfn title="resolution">Resolution-based discrimination</dfn> - providing the same image in multiple resolutions,
+			so that high-res devices can get the prettiest picture,
+			while low-res or low-bandwidth devices can avoid wasting time and bandwidth with overly-large files.
+
+		<li>
+			<dfn title="art-direction">Art-direction discrimination</dfn> - as the screen size changes,
+			so might your page's design.
+			A large, detailed image might be appropriate for the desktop design,
+			but just scaling it down for a small phone's screen results in a tiny, cluttered image.
+			Instead, you may want to provide alternate images,
+			cropped differently to better fit the small screen
+			and still show the most important parts of the image at an appropriate size.
+
+		<li>
+			<dfn title="viewport">Viewport-based discrimination</dfn> - related to both of the previous, but distinct from either,
+			viewport-based discrimination is about serving the same image at different sizes based on the viewport size.
+			For example, a 1000px wide image might be appropriate as a 1x image
+			when used to fill the background of the page,
+			but it's far too large to use for the same purpose on a 320px wide screen.
+			On a screen that small, it's more like a 2x or 3x image.
+
+			In other words, the same image might be applicable to multiple viewport sizes,
+			but at different effective resolutions.
+	</ol>
+
+	In addition, there's a strong requirement that the solution be friendly to the browser's preloader,
+	which scans the document for urls to start downloading quickly,
+	as the connection delay is a huge factor in the feeling of "slow" sites on mobile devices,
+	and so starting the connection as early as possible is a big win in perceived performance.
+	This limits what kind of information you can rely on,
+	as the preloader only has access to a small amount of data from the page.
+
+<h2 id='syntax'>
+The Syntax Proposal</h2>
+
+	Add a set of attributes to <code>&lt;img></code>,
+	named <code>src1</code>, <code>src2</code>, etc.
+	Collectively,
+	these are the <dfn export title="srcN | srcN attribute">srcN attributes</dfn>
+
+	When loading an image,
+	these attributes are consulted first,
+	in numerical order.
+	If none of them are valid or match,
+	then the plain <code>src</code> attribute is used to load the image.
+
+	Note: It's possible to integrate <code>srcset</code> into this if necessary,
+	but it would be nice to avoid doing that.
+	This completely replaces the <code>srcset</code> funtionality.
+
+	The grammar for the attributes is:
+
+	<pre>
+		<dfn>&lt;srcn-attribute></dfn> = <<media-query>>? [ <<x-based-urls>> | <<viewport-urls>> ]
+		<dfn>&lt;x-based-urls></dfn> = [ <<url>> <<resolution>>? ]#
+
+		<dfn>&lt;viewport-urls></dfn> = <<size-viewport-list>> ; <<size-based-urls>>
+		<dfn>&lt;size-viewport-list></dfn> = <<image-size>> [ <<viewport-size>> <<image-size>> ]*
+		<dfn>&lt;image-size></dfn> = <<integer>> | <<percentage>>
+		<dfn>&lt;viewport-size></dfn> = <<length>>
+		<dfn>&lt;size-based-urls></dfn> = [ <<url>> <<integer>> ]#
+	</pre>
+
+	The above grammar must be interpreted per the grammar definition in [[!CSS3VAL]].
+	For the purposes of the above grammar,
+	the <<url>> production is simply any sequence of non-<a spec=css-syntax>whitespace</a> characters
+	that does not end in a comma or semicolon.
+	All other terminal productions are defined as per CSS.
+
+	The terms and use of this grammar are explained further in the following sections.
+
+	Note: Any explanations of how the attributes and their values are processed that appear in this section are <em>non-normative</em>.
+	The normative definition of the processing model is in the "Processing" section.
+
+<h3 id='media-queries'>
+Art Direction</h3>
+
+	To solve the basic <a>art-direction</a> use-case,
+	the <a>srcN attributes</a> allow a media query to be provided at the beginning of their value.
+
+	<p class='issue'>
+		I want just the second clause of the <code>media_query</code> grammar in Media Queries 4,
+		where you have "(foo:bar) and (baz:qux)" and that's it.
+		I should go fix the grammar section there to expose this more cleanly.
+
+	Each valid <a>srcN attribute</a> is checked in numerical order,
+	and the first one to have a matching media query
+	(or no media query at all)
+	is chosen as the source of candidate urls for this <code>&lt;img></code>.
+
+	<div class='example'>
+		The following three crops of the same image can be used on various screen sizes,
+		where different designs call for different image shapes and sizes:
+
+		<figure>
+			<img src="images/difimages.jpg" alt="Three crops of the same image. The first shows President Obama talking to a soldier in hospital scrubs. The second is zoomed out, showing more soldiers standing around them.  The third is zoomed out even further, showing even more soldiers and more of the hospital room.">
+		</figure>
+
+		These could be referenced like:
+
+		<pre>
+			&lt;img src1="(max-width: 400px) pic-small.jpg"
+			     src2="(max-width: 1000px) pic-medium.jpg"
+			     src3="pic-large.jpg"
+			     alt="Obama talking to a soldier in hospital scrubs.">
+		</pre>
+	</div>
+
+	Note: This feature is intended to be used with <em>distinct</em> images.
+	Look at the "Viewport" subsection about choosing among multiple copies of the <em>same</em> image
+	based on viewport size.
+
+<h3 id='resolution'>
+Resolution</h3>
+
+	To solve the <a>resolution</a> use-case,
+	the <a>srcN attributes</a> allow multiple urls to be provided,
+	each with an indicator of their resolution
+	(the ratio of image pixels to CSS pixels).
+
+	Instead of a single url,
+	simply provide a comma-separated list of urls/resolution pairs,
+	where each pair is a url, followed by whitespace, followed by a CSS <<resolution>> value.
+	A url provided without a <<resolution>> is assumed to be at ''1x'' resolution.
+
+	<p class='issue'>
+		Assume that I've already edited Images 4 appropriately so that ''x'' is a valid resolution unit,
+		equivalent to ''dppx''.
+
+	<div class='example'>
+		For example, the following code provides the same image at three different resolutions:
+		one at "normal size",
+		where each image pixel maps to one CSS pixel;
+		one "high-res",
+		which is double the size but meant to be displayed with two image pixels for every one CSS pixel;
+		and one "low-res",
+		which is half the size,
+		intended for low-bandwidth situations.
+
+		<pre>
+			&lt;img src1="pic.png, picHigh.png 2x, picLow.png .5x">
+		</pre>
+	</div>
+
+	The choice of which image to load is left to the user agent,
+	based on its knowledge of the screen's pixel density,
+	the device's bandwidth,
+	and whatever other factors it deems relevant to the decision.
+
+<h3 id='viewport'>
+Viewports</h3>
+
+	A final, more complex consideration is that an image at a given size
+	may be appropriate as a "normal" image at one device size,
+	but could be reappropriated as a "high-res" image at a smaller device size.
+
+	For example,
+	an image intended to be screen-filling may be ''1000px'' wide on a desktop screen,
+	but only ''300px'' wide on a phone screen.
+	As such, the version of the image that's 1000 image pixels wide is a ''1x'' version on desktop,
+	but a ''3.33x'' version or so on the phone.
+
+	This reuse of image assets can be accomplished using just the media queries and resolution specifiers defined in the previous section,
+	but only with a lot of duplication of urls,
+	which makes writing the image frustrating
+	and maintenance error-prone.
+	Instead, there is a variant grammar that can be used to handle this case
+	which cleanly eliminates any duplication.
+
+	Rather than a list of urls and resolution specifies,
+	you first specify a list of viewport breakpoints along a spectrum,
+	and what size the image will be between each of these breakpoints.
+	You then specify your list of urls paired with the images' <em>sizes</em>,
+	rather than their resolution.
+	The user agent uses the target size to transform these into effective resolution factors,
+	and then chooses which one to download as normal.
+
+	<div class='example'>
+		For example, say your site had three basic layouts,
+		at breakpoints of ''30em'' and ''50em''.
+		In the first layout, your image has a size of 100px;
+		in the second layout, it has a size of 400px;
+		in the third layout, it's approximately half the viewport wide.
+		The following diagram illustrates this:
+
+		<figure>
+			<svg width=800 height=200>
+				<style>
+				text { font-family: sans-serif; }
+				</style>
+				<g id="line" transform="translate(0, 60)">
+					<text x=0 y=10 style="font-size: 30px">0</text>
+					<line x1=30 y1=0 x2=700 y2=0 stroke-width=4 stroke=black></line>
+					<g transform="translate(250, 0)">
+						<line x1=0 y1=-10 x2=0 y2=10 stroke-width=4 stroke=black></line>
+						<text x=0 y=-20 style="font-size: 20px" text-anchor=middle>30em</text>
+						<text x=0 y=-45 style="font-size: 20px" text-anchor=middle>Breakpoint 1</text>
+					</g>
+					<g transform="translate(500, 0)">
+						<line x1=0 y1=-10 x2=0 y2=10 stroke-width=4 stroke=black></line>
+						<text x=0 y=-20 style="font-size: 20px" text-anchor=middle>50em</text>
+						<text x=0 y=-45 style="font-size: 20px" text-anchor=middle>Breakpoint 2</text>
+					</g>
+					<circle cx=715 cy=0 r=3></circle>
+					<circle cx=730 cy=0 r=3></circle>
+					<circle cx=745 cy=0 r=3></circle>
+					<text x=770 y=10 style="font-size: 30px">∞</text>
+				</g>
+				<g transform="translate(90, 80)">
+					<rect width=100 height=80 fill="#ddd" stroke-width=2 stroke="gray"></rect>
+					<rect x=65 y=25 width=30 height=30 fill=blue></rect>
+					<circle cx=40 cy=20 r=15 fill=green></circle>
+					<polygon points="5 40, 40 75, 5 75" fill=red></polygon>
+					<text x=50 y=100 text-anchor=middle style="font-size: 16px">100px wide</text>
+				</g>
+				<g transform="translate(325, 80)">
+					<rect width=100 height=80 fill="#ddd" stroke-width=2 stroke="gray"></rect>
+					<rect x=65 y=25 width=30 height=30 fill=blue></rect>
+					<circle cx=40 cy=20 r=15 fill=green></circle>
+					<polygon points="5 40, 40 75, 5 75" fill=red></polygon>
+					<text x=50 y=100 text-anchor=middle style="font-size: 16px">400px wide</text>
+				</g>
+				<g transform="translate(575, 80)">
+					<rect width=100 height=80 fill="#ddd" stroke-width=2 stroke="gray"></rect>
+					<rect x=65 y=25 width=30 height=30 fill=blue></rect>
+					<circle cx=40 cy=20 r=15 fill=green></circle>
+					<polygon points="5 40, 40 75, 5 75" fill=red></polygon>
+					<text x=50 y=100 text-anchor=middle style="font-size: 16px">50% of the viewport width wide</text>
+				</g>
+			</svg>
+			<figcaption>Illustration of three image sizes at different layouts, separated by breakpoints.</figcaption>
+		</figure>
+
+		Assuming that the same image is supposed to be used at all of these layouts
+		(that is, you aren't doing <a>art-direction</a> cropping to optimize the display of the image for a given size),
+		then all of these cases can be addressed by a handful of images at various sizes,
+		and the following code:
+
+		<pre class="lang-markup">
+			&lt;img src1="100 30em 400 70em 50%;
+			           pic50.png 50, pic100.png 100, pic200.png 200,
+			           pic400.png 400, pic800.png 800, pic1600.png 1600,
+			           pic3200.png 3200">
+		</pre>
+
+		These seven images cover a wide range of possibilities:
+
+		<ul>
+			<li>
+				At the low end,
+				when the image will be 100px wide,
+				the first few sources have an effective resolution of .5x, 1x, and 2x.
+				The rest of the sources are probably far too high-resolution to matter.
+
+			<li>
+				In the medium case,
+				when the image will be 400px wide,
+				the first few images are too low-resolution to likely matter,
+				but the "pic200.png" image is a .5x image,
+				and several past that are all reasonable 1x, 2x, or 4x sized images.
+
+			<li>
+				In the final layout,
+				where the likely minimum image size is 560px,
+				but it may be much larger on huge screens,
+				any of the images from the middle to the end may be appropriate.
+		</ul>
+
+		Doing the same thing using just media queries and resolutions is much more verbose:
+
+		<pre class="lang-markup">
+			&lt;img src1="(max-width: 30em) pic50.png .5x, pic100.png 1x, pic200.png 2x, pic400.png 4x"
+			     src2="(max-width: 70em) pic200.png .5x, pic400.png 1x, pic800.png 2x, pic1600.png 4x"
+			     src3="pic400.png .5x, pic800.png 1x, pic1600.png 2x, pic3200.png 4x">
+		</pre>
+
+		And it's not even as correct - in the final case, the above code assumes an 800px wide image for brevity;
+		if the actual image is closer to the minimum or much higher than 800,
+		those ratios will be wrong
+		and might cause the browser to download the wrong image.
+	</div>
+
+	<div class="example">
+		For a simpler example,
+		assume that a particular image will be approximately 100% of the viewport width at all sizes,
+		such as a header image.
+		It is extremely simple to write an attribute value that will cause the browser to choose the correct image
+		across a wide variety of window sizes:
+
+		<pre class="lang-markup">
+			&lt;img src1="100%; pic1.png 160, pic2.png 320, pic3.png 640,
+			                 pic4.png 1280, pic5.png 2560">
+		</pre>
+
+		With this one declaration,
+		a high-res phone 320px wide can correctly choose to download <code>pic3.png</code> (an effective 2x resolution),
+		while a large desktop screen with 96dpi will correctly choose to download <code>pic4.png</code> (approximately a 1x resolution).
+		Anything at higher, lower, or in-between sizes and resolutions will also be appropriately catered for,
+		without the author having to explicitly figure out reasonable breakpoints
+		and categorize each image appropriately for each.
+	</div>
+
+<h2 id='model'>
+Processing Model</h2>
+
+	This section describes the processing model for images.
+
+	As each <code>&lt;img></code> element is encountered on the page,
+	run the following steps for it:
+
+	<ol>
+		<li>
+			Let <var>candidates</var> be the result of <a>obtaining the image candidates</a> from the element.
+
+		<li>
+			If <var>candidates</var> is empty,
+			abort this algorithm.
+			<p class='issue'>
+				Is this the right place to say "fire a load error" or whatever?
+
+		<li>
+			<p class='issue'>
+				Update the image data, choose the right candidate, etc, etc, hook up to the right terms in HTML.
+				The actual choice is UA-specific.
+	</ol>
+
+<h3 id="obtain-candidates">
+Obtaining the Image Candidates</h3>
+
+	This section describes how to <dfn title="obtain the image candidates|obtaining the image candidates">obtain the image candidates</dfn>
+	from an HTML <code>&lt;img></code> element.
+
+	The input to this algorithm is an HTML <code>&lt;img></code> element.
+	The output of this algorithm is a (possibly empty) list of <dfn title="image candidate">image candidates</dfn>,
+	where each candidate is a pair composed of a url and a resolution.
+
+	<ol>
+		<li>
+			Let <var>candidate attributes</var> be the list of attributes on the element who satisfy the following conditions:
+
+			<ul>
+				<li>The attribute name is at least 4 characters long.
+
+				<li>The first three characters of the attribute name are an <a spec=css-syntax>ASCII case-insensitive</a> match for "src".
+
+				<li>The fourth character of the attribute name is a non-zero <a spec=css-syntax>digit</a> (1-9).
+
+				<li>The remaining characters of the attribute name are <a spec=css-syntax>digits</a> (0-9).
+
+				<li>The attribute value matches the <<srcn-attribute>> production.
+			</ul>
+
+		<li>
+			If <var>candidate attributes</var> is empty,
+			return the result of <a>obtaining a candidate from src</a> from the element
+			and abort this algorithm.
+
+		<li>
+			For each <var>candidate attribute</var>,
+			let its <var>index</var> be the result of removing the first three characters from the attribute name,
+			and interpreting the remaining characters as a base-10 number.
+
+		<li>
+			Sort the <var>candidate attributes</var> by their <var>index</var> in ascending order.
+
+		<li>
+			For each <var>candidate attribute</var>:
+
+			<ol>
+				<li>
+					If the attribute's value contains a media query,
+					evaluate that query.
+					If it returns true,
+					let <var>winning value</var> be the value of this attribute following the media query
+					and abort this sub-algorithm.
+					Otherwise, if it returns false,
+					abort this sub-algorithm.
+
+				<li>
+					Otherwise, let <var>winning value</var> be this attribute's value
+					and abort this sub-algorithm.
+			</ol>
+
+		<li>
+			If there is no <var>winning value</var>,
+			return the result of <a>obtaining a candidate from src</a> from the element
+			and abort this algorithm.
+
+		<li>
+			Let <var>image candidates</var> be an initially empty list.
+
+		<li>
+			If the <var>winning value</var> conforms to the <<x-based-urls>> production,
+			then for each set of values between commas:
+
+			<ol>
+				<li>
+					Let <var>candidate</var> be an <a>image candidate</a> with its url being the <<url>> from the current set of values.
+
+				<li>
+					If the current set of values contains a <<resolution>>,
+					let <var>candidate's</var> resolution be that resolution.
+
+				<li>
+					Otherwise, let <var>candidate's</var> resolution be ''1x''.
+
+				<li>
+					Append <var>candidate</var> to <var>image candidates</var>.
+			</ol>
+
+			Return <var>image candidates</var>,
+			and abort this algorithm.
+
+		<li>
+			Otherwise,
+			the <var>winning value</var> conforms to the <<viewport-urls>> production.
+
+		<li>
+			Let <var>viewport data</var> be the portion of <var>winning value</var> that conforms to the <<size-viewport-list>> production.
+			Let <var>unprocessed candidates</var> be the portion of the <var>winning value</var> that conforms to the <<size-based-urls>> production.
+
+		<li>
+			Divide <var>viewport data</var> into adjacent pairs of values,
+			and a final lone value.
+
+			For each pair of values in <var>viewport data</var>:
+
+			<ol>
+				<li>
+					Let <var>candidate viewport width</var> be the result of intepreting the second value as a <<length>>,
+					using the same rules as a <<length>> in a ''max-width'' media feature.
+
+				<li>
+					If the viewport's width is less than or equal to <var>candidate viewport width</var>,
+					then:
+
+					<ul>
+						<li>
+							If the first value is a <<number>>,
+							let <var>winning image width</var> be a length equal to that number of pixels.
+
+						<li>
+							Otherwise, the first value is a <<percentage>>.
+							Let <var>winning image width</var> be a length equal to the given percentage of the viewport's width.
+					</ul>
+
+					Abort this sub-algorithm.
+			</ol>
+
+		<li>
+			For each set of values between commas of <var>unprocessed candidates</var>:
+
+			<ol>
+				<li>
+					Let <var>candidate</var> be an <a>image candidate</a> with its url being the <<url>> from the current set of values.
+
+				<li>
+					Let <var>candidate's</var> resolution be the result of dividing the <<integer>> from the current set of values
+					by the <var>winning image width</var>, as an ''x'' unit.
+
+				<li>
+					Append <var>candidate</var> to <var>image candidates</var>.
+			</ol>
+
+			Return <var>image candidates</var>.
+	</ol>
+
+	To <dfn title="obtain a candidate from src|obtaining a candidate from src">obtain a candidate from src</dfn> from an element,
+	follow these steps:
+
+	<ol>
+		<li>
+			If the element has a <code>src</code> attribute,
+			return a list consisting of a single <a>image candidate</a>,
+			where that candidate's url is the value of the <code>src</code> attribute
+			and its resolution is ''1x''.
+
+		<li>
+			Otherwise,
+			return an empty list.
+	</ol>
