@@ -524,3 +524,12 @@ Obtaining the Image Candidates</h3>
 			Otherwise,
 			return an empty list.
 	</ol>
+
+	<p class='issue'>
+		In the event that this proposal "wins",
+		but browsers have already shipped "basic" <code>srcset</code>
+		(just support for resolution discrimination)
+		and uptake is high enough that they can't take it back,
+		then we can easily integrate <code>srcset</code> into this fallback behavior.
+		In other words, <code>srcset</code> doesn't hurt this proposal
+		(though it would be ideal if it didn't exist alongside).
