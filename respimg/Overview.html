@@ -325,6 +325,24 @@ Viewports</span><a class=self-link href=#viewport></a></h3>
 	and then chooses which one to download as normal.
 
 	<div class=example>
+		For a simple example,
+		assume that a particular image will be approximately 100% of the viewport width at all sizes,
+		such as a header image.
+		It is extremely simple to write an attribute value that will cause the browser to choose the correct image
+		across a wide variety of window sizes:
+
+		<pre class=lang-markup>  &lt;img src1="100%; pic1.png 160, pic2.png 320, pic3.png 640,
+                   pic4.png 1280, pic5.png 2560"&gt;
+</pre>
+<p>		With this one declaration,
+		a high-res phone 320px wide can correctly choose to download <code>pic3.png</code> (an effective 2x resolution),
+		while a large desktop screen with 96dpi will correctly choose to download <code>pic4.png</code> (approximately a 1x resolution).
+		Anything at higher, lower, or in-between sizes and resolutions will also be appropriately catered for,
+		without the author having to explicitly figure out reasonable breakpoints
+		and categorize each image appropriately for each.
+	</div>
+
+	<div class=example>
 		For example, say your site had three basic layouts,
 		at breakpoints of <span class=css data-link-type=maybe title=30em>30em</span> and <span class=css data-link-type=maybe title=50em>50em</span>.
 		In the first layout, your image has a size of 100px;
@@ -423,24 +441,6 @@ Viewports</span><a class=self-link href=#viewport></a></h3>
 		if the actual image is closer to the minimum or much higher than 800,
 		those ratios will be wrong
 		and might cause the browser to download the wrong image.
-	</div>
-
-	<div class=example>
-		For a simpler example,
-		assume that a particular image will be approximately 100% of the viewport width at all sizes,
-		such as a header image.
-		It is extremely simple to write an attribute value that will cause the browser to choose the correct image
-		across a wide variety of window sizes:
-
-		<pre class=lang-markup>  &lt;img src1="100%; pic1.png 160, pic2.png 320, pic3.png 640,
-                   pic4.png 1280, pic5.png 2560"&gt;
-</pre>
-<p>		With this one declaration,
-		a high-res phone 320px wide can correctly choose to download <code>pic3.png</code> (an effective 2x resolution),
-		while a large desktop screen with 96dpi will correctly choose to download <code>pic4.png</code> (approximately a 1x resolution).
-		Anything at higher, lower, or in-between sizes and resolutions will also be appropriately catered for,
-		without the author having to explicitly figure out reasonable breakpoints
-		and categorize each image appropriately for each.
 	</div>
 
 <h2 class="heading settled heading" data-level=4 id=model><span class=secno>4 </span><span class=content>
