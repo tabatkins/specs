@@ -7,3 +7,4 @@ Live copies of the specs:
 
 * [CSS Color Level 4](http://tabatkins.github.io/specs/css-color/Overview.html)
 * [CSS Toggle States Level 1](http://tabatkins.github.io/specs/css-toggle-states/Overview.html)
+* [Responsive Images Proposal](http://tabatkins.github.io/specs/respimg/Overview.html)

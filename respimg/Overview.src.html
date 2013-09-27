@@ -135,12 +135,20 @@ Art Direction</h3>
 
 		These could be referenced like:
 
-		<pre>
+		<pre class="lang-markup">
 			&lt;img src1="(max-width: 400px) pic-small.jpg"
 			     src2="(max-width: 1000px) pic-medium.jpg"
-			     src3="pic-large.jpg"
+			     src="pic-large.jpg"
 			     alt="Obama talking to a soldier in hospital scrubs.">
 		</pre>
+
+		Note: Putting the final url into a <code>src</code> attribute like that isn't required;
+		in fact, if using any of the more advanced pieces of this feature,
+		like multiple resolutions,
+		it would <em>have</em> to be in a <a>srcN attribute</a>
+		(using <code>src3</code> would be most appropriate here).
+		Still, having a final fallback in <code>src</code> is a good idea,
+		as it means that down-level browsers will still be able to correctly download the image.
 	</div>
 
 	Note: This feature is intended to be used with <em>distinct</em> images.
@@ -174,7 +182,7 @@ Resolution</h3>
 		which is half the size,
 		intended for low-bandwidth situations.
 
-		<pre>
+		<pre class="lang-markup">
 			&lt;img src1="pic.png, picHigh.png 2x, picLow.png .5x">
 		</pre>
 	</div>
@@ -516,3 +524,12 @@ Obtaining the Image Candidates</h3>
 			Otherwise,
 			return an empty list.
 	</ol>
+
+	<p class='issue'>
+		In the event that this proposal "wins",
+		but browsers have already shipped "basic" <code>srcset</code>
+		(just support for resolution discrimination)
+		and uptake is high enough that they can't take it back,
+		then we can easily integrate <code>srcset</code> into this fallback behavior.
+		In other words, <code>srcset</code> doesn't hurt this proposal
+		(though it would be ideal if it didn't exist alongside).

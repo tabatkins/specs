@@ -243,11 +243,19 @@ Art Direction</span><a class=self-link href=#media-queries></a></h3>
 
 <p>		These could be referenced like:
 
-		<pre>  &lt;img src1="(max-width: 400px) pic-small.jpg"
+		<pre class=lang-markup>  &lt;img src1="(max-width: 400px) pic-small.jpg"
        src2="(max-width: 1000px) pic-medium.jpg"
-       src3="pic-large.jpg"
+       src="pic-large.jpg"
        alt="Obama talking to a soldier in hospital scrubs."&gt;
-</pre>	</div>
+</pre>
+<p class=note>		Note: Putting the final url into a <code>src</code> attribute like that isn’t required;
+		in fact, if using any of the more advanced pieces of this feature,
+		like multiple resolutions,
+		it would <em>have</em> to be in a <a data-link-type=dfn href=#srcn--srcn-attribute title="srcn attribute">srcN attribute</a>
+		(using <code>src3</code> would be most appropriate here).
+		Still, having a final fallback in <code>src</code> is a good idea,
+		as it means that down-level browsers will still be able to correctly download the image.
+	</div>
 
 <p class=note>	Note: This feature is intended to be used with <em>distinct</em> images.
 	Look at the "Viewport" subsection about choosing among multiple copies of the <em>same</em> image
@@ -280,7 +288,7 @@ Resolution</span><a class=self-link href=#resolution></a></h3>
 		which is half the size,
 		intended for low-bandwidth situations.
 
-		<pre>  &lt;img src1="pic.png, picHigh.png 2x, picLow.png .5x"&gt;
+		<pre class=lang-markup>  &lt;img src1="pic.png, picHigh.png 2x, picLow.png .5x"&gt;
 </pre>	</div>
 
 <p>	The choice of which image to load is left to the user agent,
@@ -614,6 +622,15 @@ Obtaining the Image Candidates</span><a class=self-link href=#obtain-candidates>
 			Otherwise,
 			return an empty list.
 	</ol>
+
+	<p class=issue id=issue-04b28ba9><a class=self-link href=#issue-04b28ba9></a>
+		In the event that this proposal "wins",
+		but browsers have already shipped "basic" <code>srcset</code>
+		(just support for resolution discrimination)
+		and uptake is high enough that they can’t take it back,
+		then we can easily integrate <code>srcset</code> into this fallback behavior.
+		In other words, <code>srcset</code> doesn’t hurt this proposal
+		(though it would be ideal if it didn’t exist alongside).
 <h2 class="no-num no-ref heading settled heading" id=references><span class=content>
 References</span><a class=self-link href=#references></a></h2>
 
@@ -667,4 +684,12 @@ Property index</span><a class=self-link href=#property-index></a></h2>
 		<a href=#issue-fc5e642a> ↵ </a><p class=issue>
 				Update the image data, choose the right candidate, etc, etc, hook up to the right terms in HTML.
 				The actual choice is UA-specific.
-	<a href=#issue-e3021f25> ↵ </a></div>
+	<a href=#issue-e3021f25> ↵ </a><p class=issue>
+		In the event that this proposal "wins",
+		but browsers have already shipped "basic" <code>srcset</code>
+		(just support for resolution discrimination)
+		and uptake is high enough that they can’t take it back,
+		then we can easily integrate <code>srcset</code> into this fallback behavior.
+		In other words, <code>srcset</code> doesn’t hurt this proposal
+		(though it would be ideal if it didn’t exist alongside).
+<a href=#issue-04b28ba9> ↵ </a></div>
