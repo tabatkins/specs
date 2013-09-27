@@ -245,9 +245,17 @@ Art Direction</span><a class=self-link href=#media-queries></a></h3>
 
 		<pre class=lang-markup>  &lt;img src1="(max-width: 400px) pic-small.jpg"
        src2="(max-width: 1000px) pic-medium.jpg"
-       src3="pic-large.jpg"
+       src="pic-large.jpg"
        alt="Obama talking to a soldier in hospital scrubs."&gt;
-</pre>	</div>
+</pre>
+<p class=note>		Note: Putting the final url into a <code>src</code> attribute like that isn’t required;
+		in fact, if using any of the more advanced pieces of this feature,
+		like multiple resolutions,
+		it would <em>have</em> to be in a <a data-link-type=dfn href=#srcn--srcn-attribute title="srcn attribute">srcN attribute</a>
+		(using <code>src3</code> would be most appropriate here).
+		Still, having a final fallback in <code>src</code> is a good idea,
+		as it means that down-level browsers will still be able to correctly download the image.
+	</div>
 
 <p class=note>	Note: This feature is intended to be used with <em>distinct</em> images.
 	Look at the "Viewport" subsection about choosing among multiple copies of the <em>same</em> image
