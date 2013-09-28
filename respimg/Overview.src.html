@@ -73,9 +73,9 @@ The Problem Statement</h2>
 The Syntax Proposal</h2>
 
 	Add a set of attributes to <code>&lt;img></code>,
-	named <code>src1</code>, <code>src2</code>, etc.
+	named <code>src-1</code>, <code>src-2</code>, etc.
 	Collectively,
-	these are the <dfn export title="srcN | srcN attribute">srcN attributes</dfn>
+	these are the <dfn export title="src-N | src-N attribute">src-N attributes</dfn>
 
 	When loading an image,
 	these attributes are consulted first,
@@ -90,7 +90,7 @@ The Syntax Proposal</h2>
 	The grammar for the attributes is:
 
 	<pre>
-		<dfn>&lt;srcn-attribute></dfn> = <<media-query>>? [ <<x-based-urls>> | <<viewport-urls>> ]
+		<dfn>&lt;src-n-attribute></dfn> = <<media-query>>? [ <<x-based-urls>> | <<viewport-urls>> ]
 		<dfn>&lt;x-based-urls></dfn> = [ <<url>> <<resolution>>? ]#
 
 		<dfn>&lt;viewport-urls></dfn> = <<size-viewport-list>> ; <<size-based-urls>>
@@ -115,14 +115,14 @@ The Syntax Proposal</h2>
 Art Direction</h3>
 
 	To solve the basic <a>art-direction</a> use-case,
-	the <a>srcN attributes</a> allow a media query to be provided at the beginning of their value.
+	the <a>src-N attributes</a> allow a media query to be provided at the beginning of their value.
 
 	<p class='issue'>
 		I want just the second clause of the <code>media_query</code> grammar in Media Queries 4,
 		where you have "(foo:bar) and (baz:qux)" and that's it.
 		I should go fix the grammar section there to expose this more cleanly.
 
-	Each valid <a>srcN attribute</a> is checked in numerical order,
+	Each valid <a>src-N attribute</a> is checked in numerical order,
 	and the first one to have a matching media query
 	(or no media query at all)
 	is chosen as the source of candidate urls for this <code>&lt;img></code>.
@@ -138,8 +138,8 @@ Art Direction</h3>
 		These could be referenced like:
 
 		<pre class="lang-markup">
-			&lt;img src1="(max-width: 400px) pic-small.jpg"
-			     src2="(max-width: 1000px) pic-medium.jpg"
+			&lt;img src-1="(max-width: 400px) pic-small.jpg"
+			     src-2="(max-width: 1000px) pic-medium.jpg"
 			     src="pic-large.jpg"
 			     alt="Obama talking to a soldier in hospital scrubs.">
 		</pre>
@@ -147,8 +147,8 @@ Art Direction</h3>
 		Note: Putting the final url into a <code>src</code> attribute like that isn't required;
 		in fact, if using any of the more advanced pieces of this feature,
 		like multiple resolutions,
-		it would <em>have</em> to be in a <a>srcN attribute</a>
-		(using <code>src3</code> would be most appropriate here).
+		it would <em>have</em> to be in a <a>src-N attribute</a>
+		(using <code>src-3</code> would be most appropriate here).
 		Still, having a final fallback in <code>src</code> is a good idea,
 		as it means that down-level browsers will still be able to correctly download the image.
 	</div>
@@ -161,7 +161,7 @@ Art Direction</h3>
 Resolution</h3>
 
 	To solve the <a>resolution</a> use-case,
-	the <a>srcN attributes</a> allow multiple urls to be provided,
+	the <a>src-N attributes</a> allow multiple urls to be provided,
 	each with an indicator of their resolution
 	(the ratio of image pixels to CSS pixels).
 
@@ -185,7 +185,7 @@ Resolution</h3>
 		intended for low-bandwidth situations.
 
 		<pre class="lang-markup">
-			&lt;img src1="pic.png, picHigh.png 2x, picLow.png .5x">
+			&lt;img src-1="pic.png, picHigh.png 2x, picLow.png .5x">
 		</pre>
 	</div>
 
@@ -230,7 +230,7 @@ Viewports</h3>
 		across a wide variety of window sizes:
 
 		<pre class="lang-markup">
-			&lt;img src1="100%; pic1.png 160, pic2.png 320, pic3.png 640,
+			&lt;img src-1="100%; pic1.png 160, pic2.png 320, pic3.png 640,
 			                 pic4.png 1280, pic5.png 2560">
 		</pre>
 
@@ -244,7 +244,7 @@ Viewports</h3>
 
 	<div class='example'>
 		For example, say your site had three basic layouts,
-		at breakpoints of ''30em'' and ''50em''.
+		at breakpoints of ''30em'' and ''70em''.
 		In the first layout, your image has a size of 100px;
 		in the second layout, it has a size of 400px;
 		in the third layout, it's approximately half the viewport wide.
@@ -304,7 +304,7 @@ Viewports</h3>
 		and the following code:
 
 		<pre class="lang-markup">
-			&lt;img src1="100 30em 400 70em 50%;
+			&lt;img src-1="100 30em 400 70em 50%;
 			           pic50.png 50, pic100.png 100, pic200.png 200,
 			           pic400.png 400, pic800.png 800, pic1600.png 1600,
 			           pic3200.png 3200">
@@ -336,9 +336,9 @@ Viewports</h3>
 		Doing the same thing using just media queries and resolutions is much more verbose:
 
 		<pre class="lang-markup">
-			&lt;img src1="(max-width: 30em) pic50.png .5x, pic100.png 1x, pic200.png 2x, pic400.png 4x"
-			     src2="(max-width: 70em) pic200.png .5x, pic400.png 1x, pic800.png 2x, pic1600.png 4x"
-			     src3="pic400.png .5x, pic800.png 1x, pic1600.png 2x, pic3200.png 4x">
+			&lt;img src-1="(max-width: 30em) pic50.png .5x, pic100.png 1x, pic200.png 2x, pic400.png 4x"
+			     src-2="(max-width: 70em) pic200.png .5x, pic400.png 1x, pic800.png 2x, pic1600.png 4x"
+			     src-3="pic400.png .5x, pic800.png 1x, pic1600.png 2x, pic3200.png 4x">
 		</pre>
 
 		And it's not even as correct - in the final case, the above code assumes an 800px wide image for brevity;
@@ -386,15 +386,15 @@ Obtaining the Image Candidates</h3>
 			Let <var>candidate attributes</var> be the list of attributes on the element who satisfy the following conditions:
 
 			<ul>
-				<li>The attribute name is at least 4 characters long.
+				<li>The attribute name is at least 5 characters long.
 
-				<li>The first three characters of the attribute name are an <a spec=css-syntax>ASCII case-insensitive</a> match for "src".
+				<li>The first four characters of the attribute name are an <a spec=css-syntax>ASCII case-insensitive</a> match for "src-".
 
-				<li>The fourth character of the attribute name is a non-zero <a spec=css-syntax>digit</a> (1-9).
+				<li>The fifth character of the attribute name is a non-zero <a spec=css-syntax>digit</a> (1-9).
 
 				<li>The remaining characters of the attribute name are <a spec=css-syntax>digits</a> (0-9).
 
-				<li>The attribute value matches the <<srcn-attribute>> production.
+				<li>The attribute value matches the <<src-n-attribute>> production.
 			</ul>
 
 		<li>
@@ -404,7 +404,7 @@ Obtaining the Image Candidates</h3>
 
 		<li>
 			For each <var>candidate attribute</var>,
-			let its <var>index</var> be the result of removing the first three characters from the attribute name,
+			let its <var>index</var> be the result of removing the first four characters from the attribute name,
 			and interpreting the remaining characters as a base-10 number.
 
 		<li>
