@@ -194,6 +194,12 @@ Resolution</h3>
 	the device's bandwidth,
 	and whatever other factors it deems relevant to the decision.
 
+	The intrinsic size of the chosen image is equal to the actual number of image pixels in each dimension,
+	divided by the chosen resolution multiplier,
+	in CSS px units.
+	For example, if "pic1.png 2x" is chosen, and is 100 pixels wide,
+	its intrinsic size is ''50px''.
+
 <h3 id='viewport'>
 Viewports</h3>
 
@@ -221,6 +227,10 @@ Viewports</h3>
 	rather than their resolution.
 	The user agent uses the target size to transform these into effective resolution factors,
 	and then chooses which one to download as normal.
+
+	The intrinsic width of the image is equal to the image size chosen from the provided list.
+	If the image has an intrinsic ratio, the intrinsic height of the image is its intrinsic width multiplied by the ratio.
+	Otherwise, it has no intrinsic height.
 
 	<div class="example">
 		For a simple example,
