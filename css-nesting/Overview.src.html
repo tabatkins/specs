@@ -1,0 +1,275 @@
+<h1>CSS Nesting Module Level 3</h1>
+<pre class='metadata'>
+Status: ED
+Shortname: css-nesting
+Group: personal
+Level: 1
+ED: http://tabatkins.github.io/specs/css-nesting/Overview.html
+Editor: Tab Atkins, Google, http://xanthir.com/contact/
+Abstract: This module introduces the ability to nest one style rule inside another, with the selector of the child rule relative to the selector of the parent rule.  This increase the modularity and maintainability of CSS stylesheets.
+</pre>
+
+<h2 id="intro">
+Introduction</h2>
+
+	<em>This section is not normative.</em>
+
+	This module describes support for nesting a style rule within another style rule,
+	allowing the inner rule's selector to reference the elements matched by the outer rule.
+	This feature allows related styles to be aggregated into a single structure within the CSS document,
+	improving readability and maintainability.
+
+<h3 id="placement">
+Module Interactions</h3>
+
+	This module introduces new parser rules that extend the [[!CSS21]] parser model.
+	This module introduces selectors that extend the [[SELECTORS4]] module.
+
+<h3 id="values">
+Values</h3>
+
+	This specification does not define any new properties or values.
+
+<h3 id="motivation">
+Motivation</h3>
+
+	CSS Rules for even moderately complicated web pages include lots of duplication for the purpose of styling related content.
+	For example, here is a portion of the CSS markup for one version of the [[CSS3COLOR]] module:
+
+	<div class='example'>
+		<pre>
+			table.colortable td {
+				text-align:center;
+			}
+			table.colortable td.c {
+				text-transform:uppercase;
+			}
+			table.colortable td:first-child, table.colortable td:first-child+td {
+				border:1px solid black;
+			}
+			table.colortable th {
+				text-align:center;
+				background:black;
+				color:white;
+			}
+		</pre>
+	</div>
+
+	Nesting allow the grouping of related style rules, like this:
+
+	<div class='example'>
+		<pre>
+			table.colortable {{
+				td { 
+					text-align:center;
+					{&.c { text-transform:uppercase }}
+					{&:first-child, &:first-child + td { border:1px solid black }}
+				}
+				th {
+					text-align:center;
+					background:black;
+					color:white;
+				}
+			}}
+		</pre>
+	</div>
+
+	Besides removing duplication, the grouping of related rules improves the readability and maintainability of the resulting CSS.
+
+<h2 id="the-nested-block">
+The Nesting Block</h2>
+
+	Style rules cannot be nested <em>directly</em> inside of style rules,
+	as selectors are ambiguous with properties on a syntax level.
+	Instead, the <dfn export>nesting block</dfn>,
+	which is simply a pair of "{}" characters surrounding the nested rules,
+	is used.
+	The <a>nesting block</a> separates the nested rules from surrounding properties
+	so that they can be parsed unambiguously.
+
+	A <a>nesting block</a> is valid inside of style rules and <code>style</code> attributes,
+	at the same level as declarations.
+
+	The selectors of style rules inside a <a>nesting block</a> are relative to the results of the selector of the parent rule.
+	Effectively, nesting is equivalent to appending the parent and child selectors with a descendant selector,
+	handling selector lists appropriately.
+
+	<div class='example'>
+		The following example using Nesting:
+
+		<pre>
+			div, p {{
+				.keyword, .constant {color: red;}
+			}}
+		</pre>
+
+		...produces the same results as the following CSS:
+
+		<pre>
+			div .keyword, div .constant, p .keyword, p .constant {
+				color:red;
+			}
+		</pre>
+	</div>
+
+	Multiple <a>nesting blocks</a> can be embedded within a style rule,
+	and can be embedded arbitrarily deeply.
+	<a>Nesting blocks</a> and properties can both appear in a single declaration block, and in any order.
+
+	<div class='example'>
+		The following example using Nesting:
+
+		<pre>
+			div, p {
+				font-size: 10px;
+				{.keyword {color: green;}}
+				{.constant {
+					color: red;
+					background-color: green;
+					{&:hover::after { content: " [" attr(value) "]";}}
+				}}
+			}
+		</pre>
+
+		...produces the same results as the following CSS:
+
+		<pre>
+			div, p {font-size: 10px;}
+			div .keyword, p .keyword {color: green;}
+			div .constant, p .constant {color: red; background-color: green;}
+			div .constant:hover::after, p .constant:hover::after {content: " [" attr(value) "]";}
+		</pre>
+	</div>
+
+	<p class='note'>
+		Note: Though it's unlikely that stylesheets authored with Nesting will be useful in legacy user agents,
+		as the nested sections will be ignored by the error-handling rules,
+		authors can minimize the damage caused by error-recovery by always putting properties before nested rules.
+		In the preceding example,
+		the 'font-size' declaration would be honored by legacy user-agents,
+		even while the rest of the rule is ignored.
+
+
+<h2 id="nesting-selector">
+The &amp; Selector</h2>
+
+	The selectors inside of a <a>nesting block</a> are implicitly relative to the results of the parent rule's selector,
+	effectively joined with the parent's selector by a descendant combinator.
+
+	This isn't always what is intended.
+	One might wish to simply specialize the element selected by the parent,
+	applying some properties to every <code>div</code>
+	but additional rules just to <code>div</code> with a particular <code>class</code>;
+	one might wish to select the sibling of an element;
+	one might wish to specialize the already-selected elements by filtering them based on ancestors.
+
+	All of these and more can be accomplished by explicitly indicating in the nested selector where the elements matched by the parent rule's selector should go.
+	To this end, the & selector, or <dfn export>nesting selector</dfn>, is introduced.
+
+	Within a <a>nesting block</a>, the & selector matches the elements matched by the parent rule's selector.
+	Outside of a <a>nesting block</a>, the & selector matches nothing.
+
+	<p class='issue'>
+		Introducing the ''&'' character will cause issues with CSS embedded directly in XML, as it's the first character used in CSS syntax that either requires escaping or using CDATA.  Do we need to change this?
+
+	<div class='example'>
+		The following example using Nesting:
+
+		<pre>
+			div {{
+				.keyword {color: red;}
+				&:hover {background-color: rgb(200, 255, 255);}
+				section > & {border: 2px solid gray;}
+			}}
+		</pre>
+
+		...produces the same results as the following CSS:
+
+		<pre>
+			div .keyword {color:red;}
+			div:hover {background-color: rgb(200, 255, 255);}
+			section > div {border: 2px solid gray;}
+		</pre>
+	</div>
+
+	Note: The <a>nesting selector</a> does not change any of the usual rules about compound selectors,
+	such as the requirement that type selectors come first.
+	For example, “<code>&div</code>” is invalid;
+	one must instead write “<code>div&</code>”
+
+
+
+
+<h2 id="Grammar">
+Grammar modifications</h2>
+
+	This specification alters the CSS Core Grammar and the Selectors grammar.
+
+	<p class='issue'>
+		If this spec is accepted,
+		I'll just modify Syntax directly to accommodate Nesting.
+
+	<p class='issue'>
+		None of this chapter is correct now that I'm using <a>nesting blocks</a> as the disambiguator.
+
+<h3 id="css-2-grammar">
+Core CSS Grammar</h3>
+
+	The following modifications are required to the [[!CSS21]] grammar as defined in Section 4.1.1.
+
+	The ruleset rule is changed to:
+
+	<pre>ruleset : selectors_group? ruleset-body</pre>
+
+	The following rules are added:
+
+	<pre>
+ruleset-body           : '{' S* ruleitem? [ ';' S* ruleitem? ]* '}' S*
+ruleitem               : declaration | nested-ruleset
+nested-ruleset         : nested-selectors-group ruleset-body</pre>
+
+<h3 id="selectors4-grammar">
+Selectors 4 Grammar</h3>
+
+	The following modifications are required to the [[!SELECTORS4]] grammar as defined in Section 16.1.
+
+	The following rules are added:
+
+	<pre>
+nested-selectors-group   : nested-selector [ COMMA S* nested-selector ]
+nested-selector          : nested-compound-selector [ combinator compound-selector ]*
+nested-compound-selector : NEST [ HASH | class | attrib | pseudo | negation ]*</pre>
+
+<h3 id="selectors4-lexical-scanner">
+Selectors 4 Lexical Scanner</h3>
+
+	The following modifications are required to the [[!SELECTORS4]] lexical scanner as defined in Section 16.2.
+
+	Immediately below:
+
+	<pre>"-->"            return CDC;</pre>
+
+	the following rule is inserted:
+
+	<pre>"&"              return NEST;</pre>
+
+<h2 id="cssom">
+CSS Object Model Modifications</h2>
+
+	The following attribute is required to be added to the CSSStyleRule object defined in Section 6.4.3 of [[!CSSOM]]:
+
+	<pre class='idl'>
+		partial interface CSSStyleRule {
+			readonly attribute DOMString expandedSelectorText;
+			readonly attribute CSSRuleList cssRules;
+		};
+	</pre>
+
+	The <code>cssRules</code> attribute must return a <code>CSSRuleList</code> object for the list of CSS rules specified within the style rule.
+
+	The <code>expandedSelectorText</code> attribute must return a <code>DOMString</code> object containing the result of replacing the ''&amp;'' selector in the <code>selectorText</code> attribute with the <code>expandedSelectorText</code> attribute from the parent rule.  If the rule has no parent rule, the <code>expandedSelectorText</code> attribute must return a <code>DOMString</code> object containing the same text as the <code>selectorText</code> attribute.
+
+	<p class='issue'>
+		The OM here is meant to reflect the OM for ''@media'' rules.
+		In particular, the lack of a link from a rule to its parent matches rules nested in ''@media''.
+		Should we add a <code>parentRule</code> property to both of these?
