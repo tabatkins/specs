@@ -66,20 +66,22 @@ dt { font-weight: bold }
 	background: transparent;
 }
 	</style>
+<script defer src=https://test.csswg.org/harness/annotate.js#CSS-MASKING_DEV type=text/javascript></script>
+
 </head>
 <body class="h-entry lang-css">
 <div class=head>
 	<p data-fill-with=logo></p>
 	<h1 class="p-name no-ref" id=title>CSS Nesting Module Level 3</h1>
 	<h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Editor’s Draft,
-		<span class=dt-updated><span class=value-title title=20131008>8 October 2013</span></span></span></h2>
+		<span class=dt-updated><span class=value-title title=20131010>10 October 2013</span></span></span></h2>
 	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://tabatkins.github.io/specs/css-nesting/Overview.html>http://tabatkins.github.io/specs/css-nesting/Overview.html</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/css-nesting/Overview.html>http://tabatkins.github.io/specs/css-nesting/Overview.html</a><dt>Test Suite:<dd>None Yet<dt>Editors:
 <dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins</a> (<span class="p-org org">Google</span>)</dl></div>
 	<div data-fill-with=warning></div>
 	<p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 8 October 2013, 
+In addition, as of 10 October 2013, 
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -118,7 +120,7 @@ Index</a><li><a href=#property-index><span class=secno></span>
 Property index</a><li><a href=#issues-index><span class=secno></span>Issues Index</a></ul></div>
 
 
-<h2 class="heading settled heading" data-level=1 id=intro><span class=secno>1 </span><span class=content>
+	<h2 class="heading settled heading" data-level=1 id=intro><span class=secno>1 </span><span class=content>
 Introduction</span><a class=self-link href=#intro></a></h2>
 
 <p>	<em>This section is not normative.</em>
@@ -166,7 +168,7 @@ Motivation</span><a class=self-link href=#motivation></a></h3>
 
 	<div class=example>
 		<pre>  table.colortable {{
-    td { 
+    td {
       text-align:center;
       {&amp;.c { text-transform:uppercase }}
       {&amp;:first-child, &amp;:first-child + td { border:1px solid black }}
