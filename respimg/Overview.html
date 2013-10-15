@@ -72,19 +72,18 @@ dt { font-weight: bold }
 	<p data-fill-with=logo></p>
 	<h1 class="p-name no-ref" id=title>Proposal for RespImg Syntax</h1>
 	<h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Unofficial Proposal Draft,
-		<span class=dt-updated><span class=value-title title=20130930>30 September 2013</span></span></span></h2>
-	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2013/UD-respimg-1-20130930/>http://www.w3.org/TR/2013/UD-respimg-1-20130930/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
-<dt>Feedback:</dt>
-    <dd><a href="mailto:public-respimg@w3.org?subject=%5Brespimg%5D%20feedback">public-respimg@w3.org</a>
-        with subject line
-        “<kbd>[respimg] <var>… message topic …</var></kbd>”
-        (<a href=http://lists.w3.org/Archives/Public/public-respimg/ rel=discussion>archives</a>)<dt>Test Suite:<dd>None Yet<dt>Editors:
+		<span class=dt-updated><span class=value-title title=20131015>15 October 2013</span></span></span></h2>
+	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2013/UD-respimg-1-20131015/>http://www.w3.org/TR/2013/UD-respimg-1-20131015/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
+    <dt>Feedback:</dt>
+        <dd><a href="mailto:public-respimg@w3.org?subject=%5Brespimg%5D%20feedback">public-respimg@w3.org</a>
+            with subject line
+            “<kbd>[respimg] <var>… message topic …</var></kbd>”(<a href=http://lists.w3.org/Archives/Public/public-respimg/ rel=discussion>archives</a>)<dt>Test Suite:<dd>None Yet<dt>Editors:
 <dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins</a> (<span class="p-org org">Google</span>)</dl></div>
 	<div data-fill-with=warning></div>
 	<p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 30 September 2013, 
+In addition, as of 15 October 2013, 
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -201,8 +200,8 @@ The Syntax Proposal</span><a class=self-link href=#syntax></a></h2>
   <dfn class=css-code data-dfn-type=type data-export="" id=typedef-x-based-urls>&lt;x-based-urls&gt;<a class=self-link href=#typedef-x-based-urls></a></dfn> = [ <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#url-value title="<url>">&lt;url&gt;</a> <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#resolution-value title="<resolution>">&lt;resolution&gt;</a>? ]#
 
   <dfn class=css-code data-dfn-type=type data-export="" id=typedef-viewport-urls>&lt;viewport-urls&gt;<a class=self-link href=#typedef-viewport-urls></a></dfn> = <a class="production css-code" data-link-type=type href=#typedef-size-viewport-list title="<size-viewport-list>">&lt;size-viewport-list&gt;</a> ; <a class="production css-code" data-link-type=type href=#typedef-size-based-urls title="<size-based-urls>">&lt;size-based-urls&gt;</a>
-  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-size-viewport-list>&lt;size-viewport-list&gt;<a class=self-link href=#typedef-size-viewport-list></a></dfn> = <a class="production css-code" data-link-type=type href=#typedef-image-size title="<image-size>">&lt;image-size&gt;</a> [ <a class="production css-code" data-link-type=type href=#typedef-viewport-size title="<viewport-size>">&lt;viewport-size&gt;</a> <a class="production css-code" data-link-type=type href=#typedef-image-size title="<image-size>">&lt;image-size&gt;</a> ]*
-  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-image-size>&lt;image-size&gt;<a class=self-link href=#typedef-image-size></a></dfn> = <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-syntax-3/#typedef-integer title="<integer>">&lt;integer&gt;</a> | <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#percentage-value title="<percentage>">&lt;percentage&gt;</a>
+  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-size-viewport-list>&lt;size-viewport-list&gt;<a class=self-link href=#typedef-size-viewport-list></a></dfn> = <a class="production css-code" data-link-type=type href=#typedef-image-size title="<image-size>">&lt;image-size&gt;</a> [ ( <a class="production css-code" data-link-type=type href=#typedef-viewport-size title="<viewport-size>">&lt;viewport-size&gt;</a> ) <a class="production css-code" data-link-type=type href=#typedef-image-size title="<image-size>">&lt;image-size&gt;</a> ]*
+  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-image-size>&lt;image-size&gt;<a class=self-link href=#typedef-image-size></a></dfn> = <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a> | <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#percentage-value title="<percentage>">&lt;percentage&gt;</a>
   <dfn class=css-code data-dfn-type=type data-export="" id=typedef-viewport-size>&lt;viewport-size&gt;<a class=self-link href=#typedef-viewport-size></a></dfn> = <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a>
   <dfn class=css-code data-dfn-type=type data-export="" id=typedef-size-based-urls>&lt;size-based-urls&gt;<a class=self-link href=#typedef-size-based-urls></a></dfn> = [ <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#url-value title="<url>">&lt;url&gt;</a> <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-syntax-3/#typedef-integer title="<integer>">&lt;integer&gt;</a> ]#
 </pre>
@@ -296,6 +295,12 @@ Resolution</span><a class=self-link href=#resolution></a></h3>
 	the device’s bandwidth,
 	and whatever other factors it deems relevant to the decision.
 
+<p>	The intrinsic size of the chosen image is equal to the actual number of image pixels in each dimension,
+	divided by the chosen resolution multiplier,
+	in CSS px units.
+	For example, if "pic1.png 2x" is chosen, and is 100 pixels wide,
+	its intrinsic size is <span class=css data-link-type=maybe title=50px>50px</span>.
+
 <h3 class="heading settled heading" data-level=3.3 id=viewport><span class=secno>3.3 </span><span class=content>
 Viewports</span><a class=self-link href=#viewport></a></h3>
 
@@ -323,6 +328,10 @@ Viewports</span><a class=self-link href=#viewport></a></h3>
 	rather than their resolution.
 	The user agent uses the target size to transform these into effective resolution factors,
 	and then chooses which one to download as normal.
+
+<p>	The intrinsic width of the image is equal to the image size chosen from the provided list.
+	If the image has an intrinsic ratio, the intrinsic height of the image is its intrinsic width multiplied by the ratio.
+	Otherwise, it has no intrinsic height.
 
 	<div class=example>
 		For a simple example,
@@ -403,7 +412,7 @@ Viewports</span><a class=self-link href=#viewport></a></h3>
 		then all of these cases can be addressed by a handful of images at various sizes,
 		and the following code:
 
-		<pre class=lang-markup>  &lt;img src-1="100 30em 400 70em 50%;
+		<pre class=lang-markup>  &lt;img src-1="100px (30em) 400px (70em) 50%;
              pic50.png 50, pic100.png 100, pic200.png 200,
              pic400.png 400, pic800.png 800, pic1600.png 1600,
              pic3200.png 3200"&gt;

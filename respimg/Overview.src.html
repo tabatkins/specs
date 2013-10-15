@@ -94,8 +94,8 @@ The Syntax Proposal</h2>
 		<dfn>&lt;x-based-urls></dfn> = [ <<url>> <<resolution>>? ]#
 
 		<dfn>&lt;viewport-urls></dfn> = <<size-viewport-list>> ; <<size-based-urls>>
-		<dfn>&lt;size-viewport-list></dfn> = <<image-size>> [ <<viewport-size>> <<image-size>> ]*
-		<dfn>&lt;image-size></dfn> = <<integer>> | <<percentage>>
+		<dfn>&lt;size-viewport-list></dfn> = <<image-size>> [ ( <<viewport-size>> ) <<image-size>> ]*
+		<dfn>&lt;image-size></dfn> = <<length>> | <<percentage>>
 		<dfn>&lt;viewport-size></dfn> = <<length>>
 		<dfn>&lt;size-based-urls></dfn> = [ <<url>> <<integer>> ]#
 	</pre>
@@ -314,7 +314,7 @@ Viewports</h3>
 		and the following code:
 
 		<pre class="lang-markup">
-			&lt;img src-1="100 30em 400 70em 50%;
+			&lt;img src-1="100px (30em) 400px (70em) 50%;
 			           pic50.png 50, pic100.png 100, pic200.png 200,
 			           pic400.png 400, pic800.png 800, pic1600.png 1600,
 			           pic3200.png 3200">
