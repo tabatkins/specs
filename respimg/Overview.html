@@ -72,19 +72,18 @@ dt { font-weight: bold }
 	<p data-fill-with=logo></p>
 	<h1 class="p-name no-ref" id=title>Proposal for RespImg Syntax</h1>
 	<h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Unofficial Proposal Draft,
-		<span class=dt-updated><span class=value-title title=20130927>27 September 2013</span></span></span></h2>
-	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2013/UD-respimg-1-20130927/>http://www.w3.org/TR/2013/UD-respimg-1-20130927/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
-<dt>Feedback:</dt>
-    <dd><a href="mailto:public-respimg@w3.org?subject=%5Brespimg%5D%20feedback">public-respimg@w3.org</a>
-        with subject line
-        “<kbd>[respimg] <var>… message topic …</var></kbd>”
-        (<a href=http://lists.w3.org/Archives/Public/public-respimg/ rel=discussion>archives</a>)<dt>Test Suite:<dd>None Yet<dt>Editors:
+		<span class=dt-updated><span class=value-title title=20131015>15 October 2013</span></span></span></h2>
+	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2013/UD-respimg-1-20131015/>http://www.w3.org/TR/2013/UD-respimg-1-20131015/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
+    <dt>Feedback:</dt>
+        <dd><a href="mailto:public-respimg@w3.org?subject=%5Brespimg%5D%20feedback">public-respimg@w3.org</a>
+            with subject line
+            “<kbd>[respimg] <var>… message topic …</var></kbd>”(<a href=http://lists.w3.org/Archives/Public/public-respimg/ rel=discussion>archives</a>)<dt>Test Suite:<dd>None Yet<dt>Editors:
 <dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins</a> (<span class="p-org org">Google</span>)</dl></div>
 	<div data-fill-with=warning></div>
 	<p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 27 September 2013, 
+In addition, as of 15 October 2013, 
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -181,9 +180,9 @@ The Problem Statement</span><a class=self-link href=#problem></a></h2>
 The Syntax Proposal</span><a class=self-link href=#syntax></a></h2>
 
 <p>	Add a set of attributes to <code>&lt;img&gt;</code>,
-	named <code>src1</code>, <code>src2</code>, etc.
+	named <code>src-1</code>, <code>src-2</code>, etc.
 	Collectively,
-	these are the <dfn data-dfn-type=dfn data-export="" id=srcn--srcn-attribute title="srcN | srcN attribute">srcN attributes<a class=self-link href=#srcn--srcn-attribute></a></dfn>
+	these are the <dfn data-dfn-type=dfn data-export="" id=src-n--src-n-attribute title="src-N | src-N attribute">src-N attributes<a class=self-link href=#src-n--src-n-attribute></a></dfn>
 
 <p>	When loading an image,
 	these attributes are consulted first,
@@ -197,12 +196,12 @@ The Syntax Proposal</span><a class=self-link href=#syntax></a></h2>
 
 <p>	The grammar for the attributes is:
 
-	<pre>  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-srcn-attribute>&lt;srcn-attribute&gt;<a class=self-link href=#typedef-srcn-attribute></a></dfn> = <a class="production css-code" data-link-type=type title="<media-query>">&lt;media-query&gt;</a>? [ <a class="production css-code" data-link-type=type href=#typedef-x-based-urls title="<x-based-urls>">&lt;x-based-urls&gt;</a> | <a class="production css-code" data-link-type=type href=#typedef-viewport-urls title="<viewport-urls>">&lt;viewport-urls&gt;</a> ]
+	<pre>  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-src-n-attribute>&lt;src-n-attribute&gt;<a class=self-link href=#typedef-src-n-attribute></a></dfn> = <a class="production css-code" data-link-type=type title="<media-query>">&lt;media-query&gt;</a>? [ <a class="production css-code" data-link-type=type href=#typedef-x-based-urls title="<x-based-urls>">&lt;x-based-urls&gt;</a> | <a class="production css-code" data-link-type=type href=#typedef-viewport-urls title="<viewport-urls>">&lt;viewport-urls&gt;</a> ]
   <dfn class=css-code data-dfn-type=type data-export="" id=typedef-x-based-urls>&lt;x-based-urls&gt;<a class=self-link href=#typedef-x-based-urls></a></dfn> = [ <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#url-value title="<url>">&lt;url&gt;</a> <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#resolution-value title="<resolution>">&lt;resolution&gt;</a>? ]#
 
   <dfn class=css-code data-dfn-type=type data-export="" id=typedef-viewport-urls>&lt;viewport-urls&gt;<a class=self-link href=#typedef-viewport-urls></a></dfn> = <a class="production css-code" data-link-type=type href=#typedef-size-viewport-list title="<size-viewport-list>">&lt;size-viewport-list&gt;</a> ; <a class="production css-code" data-link-type=type href=#typedef-size-based-urls title="<size-based-urls>">&lt;size-based-urls&gt;</a>
-  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-size-viewport-list>&lt;size-viewport-list&gt;<a class=self-link href=#typedef-size-viewport-list></a></dfn> = <a class="production css-code" data-link-type=type href=#typedef-image-size title="<image-size>">&lt;image-size&gt;</a> [ <a class="production css-code" data-link-type=type href=#typedef-viewport-size title="<viewport-size>">&lt;viewport-size&gt;</a> <a class="production css-code" data-link-type=type href=#typedef-image-size title="<image-size>">&lt;image-size&gt;</a> ]*
-  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-image-size>&lt;image-size&gt;<a class=self-link href=#typedef-image-size></a></dfn> = <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-syntax-3/#typedef-integer title="<integer>">&lt;integer&gt;</a> | <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#percentage-value title="<percentage>">&lt;percentage&gt;</a>
+  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-size-viewport-list>&lt;size-viewport-list&gt;<a class=self-link href=#typedef-size-viewport-list></a></dfn> = <a class="production css-code" data-link-type=type href=#typedef-image-size title="<image-size>">&lt;image-size&gt;</a> [ ( <a class="production css-code" data-link-type=type href=#typedef-viewport-size title="<viewport-size>">&lt;viewport-size&gt;</a> ) <a class="production css-code" data-link-type=type href=#typedef-image-size title="<image-size>">&lt;image-size&gt;</a> ]*
+  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-image-size>&lt;image-size&gt;<a class=self-link href=#typedef-image-size></a></dfn> = <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a> | <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#percentage-value title="<percentage>">&lt;percentage&gt;</a>
   <dfn class=css-code data-dfn-type=type data-export="" id=typedef-viewport-size>&lt;viewport-size&gt;<a class=self-link href=#typedef-viewport-size></a></dfn> = <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a>
   <dfn class=css-code data-dfn-type=type data-export="" id=typedef-size-based-urls>&lt;size-based-urls&gt;<a class=self-link href=#typedef-size-based-urls></a></dfn> = [ <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#url-value title="<url>">&lt;url&gt;</a> <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-syntax-3/#typedef-integer title="<integer>">&lt;integer&gt;</a> ]#
 </pre>
@@ -221,14 +220,14 @@ The Syntax Proposal</span><a class=self-link href=#syntax></a></h2>
 Art Direction</span><a class=self-link href=#media-queries></a></h3>
 
 <p>	To solve the basic <a data-link-type=dfn href=#art-direction title=art-direction>art-direction</a> use-case,
-	the <a data-link-type=dfn href=#srcn--srcn-attribute title="srcn attributes">srcN attributes</a> allow a media query to be provided at the beginning of their value.
+	the <a data-link-type=dfn href=#src-n--src-n-attribute title="src-n attributes">src-N attributes</a> allow a media query to be provided at the beginning of their value.
 
 	<p class=issue id=issue-06cc56d0><a class=self-link href=#issue-06cc56d0></a>
 		I want just the second clause of the <code>media_query</code> grammar in Media Queries 4,
 		where you have "(foo:bar) and (baz:qux)" and that’s it.
 		I should go fix the grammar section there to expose this more cleanly.
 
-<p>	Each valid <a data-link-type=dfn href=#srcn--srcn-attribute title="srcn attribute">srcN attribute</a> is checked in numerical order,
+<p>	Each valid <a data-link-type=dfn href=#src-n--src-n-attribute title="src-n attribute">src-N attribute</a> is checked in numerical order,
 	and the first one to have a matching media query
 	(or no media query at all)
 	is chosen as the source of candidate urls for this <code>&lt;img&gt;</code>.
@@ -243,16 +242,16 @@ Art Direction</span><a class=self-link href=#media-queries></a></h3>
 
 <p>		These could be referenced like:
 
-		<pre class=lang-markup>  &lt;img src1="(max-width: 400px) pic-small.jpg"
-       src2="(max-width: 1000px) pic-medium.jpg"
+		<pre class=lang-markup>  &lt;img src-1="(max-width: 400px) pic-small.jpg"
+       src-2="(max-width: 1000px) pic-medium.jpg"
        src="pic-large.jpg"
        alt="Obama talking to a soldier in hospital scrubs."&gt;
 </pre>
 <p class=note>		Note: Putting the final url into a <code>src</code> attribute like that isn’t required;
 		in fact, if using any of the more advanced pieces of this feature,
 		like multiple resolutions,
-		it would <em>have</em> to be in a <a data-link-type=dfn href=#srcn--srcn-attribute title="srcn attribute">srcN attribute</a>
-		(using <code>src3</code> would be most appropriate here).
+		it would <em>have</em> to be in a <a data-link-type=dfn href=#src-n--src-n-attribute title="src-n attribute">src-N attribute</a>
+		(using <code>src-3</code> would be most appropriate here).
 		Still, having a final fallback in <code>src</code> is a good idea,
 		as it means that down-level browsers will still be able to correctly download the image.
 	</div>
@@ -265,7 +264,7 @@ Art Direction</span><a class=self-link href=#media-queries></a></h3>
 Resolution</span><a class=self-link href=#resolution></a></h3>
 
 <p>	To solve the <a data-link-type=dfn href=#resolution0 title=resolution>resolution</a> use-case,
-	the <a data-link-type=dfn href=#srcn--srcn-attribute title="srcn attributes">srcN attributes</a> allow multiple urls to be provided,
+	the <a data-link-type=dfn href=#src-n--src-n-attribute title="src-n attributes">src-N attributes</a> allow multiple urls to be provided,
 	each with an indicator of their resolution
 	(the ratio of image pixels to CSS pixels).
 
@@ -288,13 +287,19 @@ Resolution</span><a class=self-link href=#resolution></a></h3>
 		which is half the size,
 		intended for low-bandwidth situations.
 
-		<pre class=lang-markup>  &lt;img src1="pic.png, picHigh.png 2x, picLow.png .5x"&gt;
+		<pre class=lang-markup>  &lt;img src-1="pic.png, picHigh.png 2x, picLow.png .5x"&gt;
 </pre>	</div>
 
 <p>	The choice of which image to load is left to the user agent,
 	based on its knowledge of the screen’s pixel density,
 	the device’s bandwidth,
 	and whatever other factors it deems relevant to the decision.
+
+<p>	The intrinsic size of the chosen image is equal to the actual number of image pixels in each dimension,
+	divided by the chosen resolution multiplier,
+	in CSS px units.
+	For example, if "pic1.png 2x" is chosen, and is 100 pixels wide,
+	its intrinsic size is <span class=css data-link-type=maybe title=50px>50px</span>.
 
 <h3 class="heading settled heading" data-level=3.3 id=viewport><span class=secno>3.3 </span><span class=content>
 Viewports</span><a class=self-link href=#viewport></a></h3>
@@ -324,6 +329,10 @@ Viewports</span><a class=self-link href=#viewport></a></h3>
 	The user agent uses the target size to transform these into effective resolution factors,
 	and then chooses which one to download as normal.
 
+<p>	The intrinsic width of the image is equal to the image size chosen from the provided list.
+	If the image has an intrinsic ratio, the intrinsic height of the image is its intrinsic width multiplied by the ratio.
+	Otherwise, it has no intrinsic height.
+
 	<div class=example>
 		For a simple example,
 		assume that a particular image will be approximately 100% of the viewport width at all sizes,
@@ -331,7 +340,7 @@ Viewports</span><a class=self-link href=#viewport></a></h3>
 		It is extremely simple to write an attribute value that will cause the browser to choose the correct image
 		across a wide variety of window sizes:
 
-		<pre class=lang-markup>  &lt;img src1="100%; pic1.png 160, pic2.png 320, pic3.png 640,
+		<pre class=lang-markup>  &lt;img src-1="100%; pic1.png 160, pic2.png 320, pic3.png 640,
                    pic4.png 1280, pic5.png 2560"&gt;
 </pre>
 <p>		With this one declaration,
@@ -344,7 +353,7 @@ Viewports</span><a class=self-link href=#viewport></a></h3>
 
 	<div class=example>
 		For example, say your site had three basic layouts,
-		at breakpoints of <span class=css data-link-type=maybe title=30em>30em</span> and <span class=css data-link-type=maybe title=50em>50em</span>.
+		at breakpoints of <span class=css data-link-type=maybe title=30em>30em</span> and <span class=css data-link-type=maybe title=70em>70em</span>.
 		In the first layout, your image has a size of 100px;
 		in the second layout, it has a size of 400px;
 		in the third layout, it’s approximately half the viewport wide.
@@ -403,7 +412,7 @@ Viewports</span><a class=self-link href=#viewport></a></h3>
 		then all of these cases can be addressed by a handful of images at various sizes,
 		and the following code:
 
-		<pre class=lang-markup>  &lt;img src1="100 30em 400 70em 50%;
+		<pre class=lang-markup>  &lt;img src-1="100px (30em) 400px (70em) 50%;
              pic50.png 50, pic100.png 100, pic200.png 200,
              pic400.png 400, pic800.png 800, pic1600.png 1600,
              pic3200.png 3200"&gt;
@@ -433,9 +442,9 @@ Viewports</span><a class=self-link href=#viewport></a></h3>
 
 <p>		Doing the same thing using just media queries and resolutions is much more verbose:
 
-		<pre class=lang-markup>  &lt;img src1="(max-width: 30em) pic50.png .5x, pic100.png 1x, pic200.png 2x, pic400.png 4x"
-       src2="(max-width: 70em) pic200.png .5x, pic400.png 1x, pic800.png 2x, pic1600.png 4x"
-       src3="pic400.png .5x, pic800.png 1x, pic1600.png 2x, pic3200.png 4x"&gt;
+		<pre class=lang-markup>  &lt;img src-1="(max-width: 30em) pic50.png .5x, pic100.png 1x, pic200.png 2x, pic400.png 4x"
+       src-2="(max-width: 70em) pic200.png .5x, pic400.png 1x, pic800.png 2x, pic1600.png 4x"
+       src-3="pic400.png .5x, pic800.png 1x, pic1600.png 2x, pic3200.png 4x"&gt;
 </pre>
 <p>		And it’s not even as correct - in the final case, the above code assumes an 800px wide image for brevity;
 		if the actual image is closer to the minimum or much higher than 800,
@@ -482,15 +491,15 @@ Obtaining the Image Candidates</span><a class=self-link href=#obtain-candidates>
 			Let <var>candidate attributes</var> be the list of attributes on the element who satisfy the following conditions:
 
 <p>			<ul>
-				<li>The attribute name is at least 4 characters long.
+				<li>The attribute name is at least 5 characters long.
 
-				<li>The first three characters of the attribute name are an <a data-link-spec=css-syntax data-link-type=dfn href=http://dev.w3.org/csswg/css-syntax-3/#ascii-case-insensitive title="ascii case-insensitive">ASCII case-insensitive</a> match for "src".
+				<li>The first four characters of the attribute name are an <a data-link-spec=css-syntax data-link-type=dfn href=http://dev.w3.org/csswg/css-syntax-3/#ascii-case-insensitive title="ascii case-insensitive">ASCII case-insensitive</a> match for "src-".
 
-				<li>The fourth character of the attribute name is a non-zero <a data-link-spec=css-syntax data-link-type=dfn href=http://dev.w3.org/csswg/css-syntax-3/#digit title=digit>digit</a> (1-9).
+				<li>The fifth character of the attribute name is a non-zero <a data-link-spec=css-syntax data-link-type=dfn href=http://dev.w3.org/csswg/css-syntax-3/#digit title=digit>digit</a> (1-9).
 
 				<li>The remaining characters of the attribute name are <a data-link-spec=css-syntax data-link-type=dfn href=http://dev.w3.org/csswg/css-syntax-3/#digit title=digits>digits</a> (0-9).
 
-				<li>The attribute value matches the <a class="production css-code" data-link-type=type href=#typedef-srcn-attribute title="<srcn-attribute>">&lt;srcn-attribute&gt;</a> production.
+				<li>The attribute value matches the <a class="production css-code" data-link-type=type href=#typedef-src-n-attribute title="<src-n-attribute>">&lt;src-n-attribute&gt;</a> production.
 			</ul>
 
 		<li>
@@ -500,7 +509,7 @@ Obtaining the Image Candidates</span><a class=self-link href=#obtain-candidates>
 
 		<li>
 			For each <var>candidate attribute</var>,
-			let its <var>index</var> be the result of removing the first three characters from the attribute name,
+			let its <var>index</var> be the result of removing the first four characters from the attribute name,
 			and interpreting the remaining characters as a base-10 number.
 
 		<li>
@@ -655,9 +664,9 @@ Index</span><a class=self-link href=#index></a></h2>
 <li>resolution, <a href=#resolution0 title="section 2">2</a>
 <li>&lt;size-based-urls&gt;, <a href=#typedef-size-based-urls title="section 3">3</a>
 <li>&lt;size-viewport-list&gt;, <a href=#typedef-size-viewport-list title="section 3">3</a>
-<li>srcN, <a href=#srcn--srcn-attribute title="section 3">3</a>
-<li>srcN attribute, <a href=#srcn--srcn-attribute title="section 3">3</a>
-<li>&lt;srcn-attribute&gt;, <a href=#typedef-srcn-attribute title="section 3">3</a>
+<li>src-N, <a href=#src-n--src-n-attribute title="section 3">3</a>
+<li>src-N attribute, <a href=#src-n--src-n-attribute title="section 3">3</a>
+<li>&lt;src-n-attribute&gt;, <a href=#typedef-src-n-attribute title="section 3">3</a>
 <li>viewport, <a href=#viewport0 title="section 2">2</a>
 <li>&lt;viewport-size&gt;, <a href=#typedef-viewport-size title="section 3">3</a>
 <li>&lt;viewport-urls&gt;, <a href=#typedef-viewport-urls title="section 3">3</a>

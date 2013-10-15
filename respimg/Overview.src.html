@@ -94,8 +94,8 @@ The Syntax Proposal</h2>
 		<dfn>&lt;x-based-urls></dfn> = [ <<url>> <<resolution>>? ]#
 
 		<dfn>&lt;viewport-urls></dfn> = <<size-viewport-list>> ; <<size-based-urls>>
-		<dfn>&lt;size-viewport-list></dfn> = <<image-size>> [ <<viewport-size>> <<image-size>> ]*
-		<dfn>&lt;image-size></dfn> = <<integer>> | <<percentage>>
+		<dfn>&lt;size-viewport-list></dfn> = <<image-size>> [ ( <<viewport-size>> ) <<image-size>> ]*
+		<dfn>&lt;image-size></dfn> = <<length>> | <<percentage>>
 		<dfn>&lt;viewport-size></dfn> = <<length>>
 		<dfn>&lt;size-based-urls></dfn> = [ <<url>> <<integer>> ]#
 	</pre>
@@ -194,6 +194,12 @@ Resolution</h3>
 	the device's bandwidth,
 	and whatever other factors it deems relevant to the decision.
 
+	The intrinsic size of the chosen image is equal to the actual number of image pixels in each dimension,
+	divided by the chosen resolution multiplier,
+	in CSS px units.
+	For example, if "pic1.png 2x" is chosen, and is 100 pixels wide,
+	its intrinsic size is ''50px''.
+
 <h3 id='viewport'>
 Viewports</h3>
 
@@ -221,6 +227,10 @@ Viewports</h3>
 	rather than their resolution.
 	The user agent uses the target size to transform these into effective resolution factors,
 	and then chooses which one to download as normal.
+
+	The intrinsic width of the image is equal to the image size chosen from the provided list.
+	If the image has an intrinsic ratio, the intrinsic height of the image is its intrinsic width multiplied by the ratio.
+	Otherwise, it has no intrinsic height.
 
 	<div class="example">
 		For a simple example,
@@ -304,7 +314,7 @@ Viewports</h3>
 		and the following code:
 
 		<pre class="lang-markup">
-			&lt;img src-1="100 30em 400 70em 50%;
+			&lt;img src-1="100px (30em) 400px (70em) 50%;
 			           pic50.png 50, pic100.png 100, pic200.png 200,
 			           pic400.png 400, pic800.png 800, pic1600.png 1600,
 			           pic3200.png 3200">
@@ -475,10 +485,10 @@ Obtaining the Image Candidates</h3>
 			<ol>
 				<li>
 					Let <var>candidate viewport width</var> be the result of intepreting the second value as a <<length>>,
-					using the same rules as a <<length>> in a ''max-width'' media feature.
+					using the same rules as a <<length>> in a ''min-width'' media feature.
 
 				<li>
-					If the viewport's width is less than or equal to <var>candidate viewport width</var>,
+					If the viewport's width is less than <var>candidate viewport width</var>,
 					then:
 
 					<ul>
