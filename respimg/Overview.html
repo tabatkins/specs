@@ -72,8 +72,8 @@ dt { font-weight: bold }
 	<p data-fill-with=logo></p>
 	<h1 class="p-name no-ref" id=title>Proposal for RespImg Syntax</h1>
 	<h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Unofficial Proposal Draft,
-		<span class=dt-updated><span class=value-title title=20131015>15 October 2013</span></span></span></h2>
-	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2013/UD-respimg-1-20131015/>http://www.w3.org/TR/2013/UD-respimg-1-20131015/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
+		<span class=dt-updated><span class=value-title title=20131017>17 October 2013</span></span></span></h2>
+	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2013/UD-respimg-1-20131017/>http://www.w3.org/TR/2013/UD-respimg-1-20131017/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
     <dt>Feedback:</dt>
         <dd><a href="mailto:public-respimg@w3.org?subject=%5Brespimg%5D%20feedback">public-respimg@w3.org</a>
             with subject line
@@ -83,7 +83,7 @@ dt { font-weight: bold }
 	<p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 15 October 2013, 
+In addition, as of 17 October 2013, 
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -109,7 +109,7 @@ The Problem Statement</a><li><a href=#syntax><span class=secno>3</span>
 The Syntax Proposal</a><ul class=toc><li><a href=#media-queries><span class=secno>3.1</span>
 Art Direction</a><li><a href=#resolution><span class=secno>3.2</span>
 Resolution</a><li><a href=#viewport><span class=secno>3.3</span>
-Viewports</a></ul><li><a href=#model><span class=secno>4</span>
+Variable-Sized Images</a></ul><li><a href=#model><span class=secno>4</span>
 Processing Model</a><ul class=toc><li><a href=#obtain-candidates><span class=secno>4.1</span>
 Obtaining the Image Candidates</a></ul><li><a href=#references><span class=secno></span>
 References</a><ul class=toc><li><a href=#normative><span class=secno></span>
@@ -158,15 +158,19 @@ The Problem Statement</span><a class=self-link href=#problem></a></h2>
 			and still show the most important parts of the image at an appropriate size.
 
 		<li>
-			<dfn data-dfn-type=dfn data-noexport="" id=viewport0 title=viewport>Viewport-based discrimination<a class=self-link href=#viewport0></a></dfn> - related to both of the previous, but distinct from either,
-			viewport-based discrimination is about serving the same image at different sizes based on the viewport size.
+			<dfn data-dfn-type=dfn data-noexport="" id=viewport0 title=viewport>Variable-size resolution discrimination<a class=self-link href=#viewport0></a></dfn> -
+			sometimes the image you’re serving is variable-sized:
+			either based on the size of the viewport
+			or just different sizes at different breakpoints.
+			A combination of the solutions to the above two problems <em>can</em> address this,
+			but very verbosely -
+			you have to do math to figure out breakpoints
+			(not intrinsically related to your site’s breakpoints)
+			and repeat urls multiple times.
 			For example, a 1000px wide image might be appropriate as a 1x image
-			when used to fill the background of the page,
+			when used to fill the background of the page on a desktop screen,
 			but it’s far too large to use for the same purpose on a 320px wide screen.
 			On a screen that small, it’s more like a 2x or 3x image.
-
-<p>			In other words, the same image might be applicable to multiple viewport sizes,
-			but at different effective resolutions.
 	</ol>
 
 <p>	In addition, there’s a strong requirement that the solution be friendly to the browser’s preloader,
@@ -302,11 +306,14 @@ Resolution</span><a class=self-link href=#resolution></a></h3>
 	its intrinsic size is <span class=css data-link-type=maybe title=50px>50px</span>.
 
 <h3 class="heading settled heading" data-level=3.3 id=viewport><span class=secno>3.3 </span><span class=content>
-Viewports</span><a class=self-link href=#viewport></a></h3>
+Variable-Sized Images</span><a class=self-link href=#viewport></a></h3>
 
-<p>	A final, more complex consideration is that an image at a given size
-	may be appropriate as a "normal" image at one device size,
-	but could be reappropriated as a "high-res" image at a smaller device size.
+<p>	A final, more complex consideration is that an image may not have a single given size:
+	it may be sized as a fraction of the viewport
+	(for example, a page-filling image),
+	or you may simply deliver the same image at different sizes in each of your site’s breakpoints.
+	When this occurs, a single image file may serve as various densities,
+	depending on the size it’s meant to be rendered at.
 
 <p>	For example,
 	an image intended to be screen-filling may be <span class=css data-link-type=maybe title=1000px>1000px</span> wide on a desktop screen,
@@ -318,15 +325,15 @@ Viewports</span><a class=self-link href=#viewport></a></h3>
 	but only with a lot of duplication of urls,
 	which makes writing the image frustrating
 	and maintenance error-prone.
-	Instead, there is a variant grammar that can be used to handle this case
-	which cleanly eliminates any duplication.
+	Instead, there is a <strong>shortcut</strong> grammar
+	which expresses the image urls in a slightly different way,
+	handling this case without any duplication.
 
-<p>	Rather than a list of urls and resolution specifies,
-	you first specify a list of viewport breakpoints along a spectrum,
-	and what size the image will be between each of these breakpoints.
-	You then specify your list of urls paired with the images' <em>sizes</em>,
+<p>	Rather than a list of urls and resolution specifiers,
+	you first specify a list of alternating image sizes and viewport breakpoints.
+	You then specify your list of urls paired with the images' <em>actual sizes</em>,
 	rather than their resolution.
-	The user agent uses the target size to transform these into effective resolution factors,
+	The user agent uses the target image size to transform these into effective resolution factors,
 	and then chooses which one to download as normal.
 
 <p>	The intrinsic width of the image is equal to the image size chosen from the provided list.
