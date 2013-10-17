@@ -51,15 +51,19 @@ The Problem Statement</h2>
 			and still show the most important parts of the image at an appropriate size.
 
 		<li>
-			<dfn title="viewport">Viewport-based discrimination</dfn> - related to both of the previous, but distinct from either,
-			viewport-based discrimination is about serving the same image at different sizes based on the viewport size.
+			<dfn title="viewport">Variable-size resolution discrimination</dfn> -
+			sometimes the image you're serving is variable-sized:
+			either based on the size of the viewport
+			or just different sizes at different breakpoints.
+			A combination of the solutions to the above two problems <em>can</em> address this,
+			but very verbosely -
+			you have to do math to figure out breakpoints
+			(not intrinsically related to your site's breakpoints)
+			and repeat urls multiple times.
 			For example, a 1000px wide image might be appropriate as a 1x image
-			when used to fill the background of the page,
+			when used to fill the background of the page on a desktop screen,
 			but it's far too large to use for the same purpose on a 320px wide screen.
 			On a screen that small, it's more like a 2x or 3x image.
-
-			In other words, the same image might be applicable to multiple viewport sizes,
-			but at different effective resolutions.
 	</ol>
 
 	In addition, there's a strong requirement that the solution be friendly to the browser's preloader,
@@ -201,11 +205,14 @@ Resolution</h3>
 	its intrinsic size is ''50px''.
 
 <h3 id='viewport'>
-Viewports</h3>
+Variable-Sized Images</h3>
 
-	A final, more complex consideration is that an image at a given size
-	may be appropriate as a "normal" image at one device size,
-	but could be reappropriated as a "high-res" image at a smaller device size.
+	A final, more complex consideration is that an image may not have a single given size:
+	it may be sized as a fraction of the viewport
+	(for example, a page-filling image),
+	or you may simply deliver the same image at different sizes in each of your site's breakpoints.
+	When this occurs, a single image file may serve as various densities,
+	depending on the size it's meant to be rendered at.
 
 	For example,
 	an image intended to be screen-filling may be ''1000px'' wide on a desktop screen,
@@ -217,15 +224,15 @@ Viewports</h3>
 	but only with a lot of duplication of urls,
 	which makes writing the image frustrating
 	and maintenance error-prone.
-	Instead, there is a variant grammar that can be used to handle this case
-	which cleanly eliminates any duplication.
+	Instead, there is a <strong>shortcut</strong> grammar
+	which expresses the image urls in a slightly different way,
+	handling this case without any duplication.
 
-	Rather than a list of urls and resolution specifies,
-	you first specify a list of viewport breakpoints along a spectrum,
-	and what size the image will be between each of these breakpoints.
-	You then specify your list of urls paired with the images' <em>sizes</em>,
+	Rather than a list of urls and resolution specifiers,
+	you first specify a list of alternating image sizes and viewport breakpoints.
+	You then specify your list of urls paired with the images' <em>actual sizes</em>,
 	rather than their resolution.
-	The user agent uses the target size to transform these into effective resolution factors,
+	The user agent uses the target image size to transform these into effective resolution factors,
 	and then chooses which one to download as normal.
 
 	The intrinsic width of the image is equal to the image size chosen from the provided list.
