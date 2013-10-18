@@ -72,8 +72,8 @@ dt { font-weight: bold }
 	<p data-fill-with=logo></p>
 	<h1 class="p-name no-ref" id=title>Proposal for RespImg Syntax</h1>
 	<h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Unofficial Proposal Draft,
-		<span class=dt-updated><span class=value-title title=20131017>17 October 2013</span></span></span></h2>
-	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2013/UD-respimg-1-20131017/>http://www.w3.org/TR/2013/UD-respimg-1-20131017/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
+		<span class=dt-updated><span class=value-title title=20131018>18 October 2013</span></span></span></h2>
+	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2013/UD-respimg-1-20131018/>http://www.w3.org/TR/2013/UD-respimg-1-20131018/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
     <dt>Feedback:</dt>
         <dd><a href="mailto:public-respimg@w3.org?subject=%5Brespimg%5D%20feedback">public-respimg@w3.org</a>
             with subject line
@@ -83,7 +83,7 @@ dt { font-weight: bold }
 	<p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 17 October 2013, 
+In addition, as of 18 October 2013, 
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -308,44 +308,71 @@ Resolution</span><a class=self-link href=#resolution></a></h3>
 <h3 class="heading settled heading" data-level=3.3 id=viewport><span class=secno>3.3 </span><span class=content>
 Variable-Sized Images</span><a class=self-link href=#viewport></a></h3>
 
-<p>	A final, more complex consideration is that an image may not have a single given size:
-	it may be sized as a fraction of the viewport
-	(for example, a page-filling image),
-	or you may simply deliver the same image at different sizes in each of your site’s breakpoints.
-	When this occurs, a single image file may serve as various densities,
-	depending on the size it’s meant to be rendered at.
+<p>	The previous section on resolution discrimination had a hidden assumption which may not always be true:
+	that the image being presented is meant to be a single, static size.
+	That is, regardless of the size of the screen, the image will always be, say, 400px wide.
 
-<p>	For example,
-	an image intended to be screen-filling may be <span class=css data-link-type=maybe title=1000px>1000px</span> wide on a desktop screen,
-	but only <span class=css data-link-type=maybe title=300px>300px</span> wide on a phone screen.
-	As such, the version of the image that’s 1000 image pixels wide is a <span class=css data-link-type=maybe title=1x>1x</span> version on desktop,
-	but a <span class=css data-link-type=maybe title=3.33x>3.33x</span> version or so on the phone.
+<p>	This assumption is not always true.
+	There are two major reasons why this may be so:
 
-<p>	This reuse of image assets can be accomplished using just the media queries and resolution specifiers defined in the previous section,
-	but only with a lot of duplication of urls,
-	which makes writing the image frustrating
-	and maintenance error-prone.
-	Instead, there is a <strong>shortcut</strong> grammar
-	which expresses the image urls in a slightly different way,
-	handling this case without any duplication.
+<p>	<ul>
+		<li>
+			The image’s size may be specified as a percentage of the viewport’s width.
+			For example, it may be screen-filling (100%),
+			or it may fill a column in a two-column layout (50%).
 
-<p>	Rather than a list of urls and resolution specifiers,
-	you first specify a list of alternating image sizes and viewport breakpoints.
-	You then specify your list of urls paired with the images' <em>actual sizes</em>,
-	rather than their resolution.
-	The user agent uses the target image size to transform these into effective resolution factors,
-	and then chooses which one to download as normal.
+		<li>
+			The image’s size may vary with your page’s breakpoints,
+			as it gets placed in different layouts.
+			For example,
+			you may have a single-column layout on small screens,
+			having the image fill that column (100%),
+			but switch to a grid with fixed-size items in it on larger screens (400px).
+	</ul>
 
-<p>	The intrinsic width of the image is equal to the image size chosen from the provided list.
-	If the image has an intrinsic ratio, the intrinsic height of the image is its intrinsic width multiplied by the ratio.
-	Otherwise, it has no intrinsic height.
+<p>	Either of these issues can be addressed with Media Queries,
+	but it gets complicated when resolution discrimination is mixed in -
+	if you’re displaying the same image at a variety of sizes,
+	a particular image file may be appropriate as a <span class=css data-link-type=maybe title=1x>1x</span> image on large screens,
+	but would also serve perfectly well as a <span class=css data-link-type=maybe title=2x>2x</span> image on smaller screens.
+	Dealing with this requires you to repeat urls multiple times,
+	and can require some non-trivial math.
+	(See <a href=#bad-example-multisize>the next example</a> for a simple demonstration of the code bloat.)
+	Further, the code so produced is not actually forward-compatible, either -
+	it’ll act badly when even higher-density screens arrive,
+	unless you further bloat the syntax by pre-emptively writing out higher-density versions.
+
+<p>	To avoid these issues,
+	this specification defines a <strong>shortcut syntax</strong>
+	to address the case of a variable-sized image.
+
+<p>	For the first case,
+	of an image that is sized as a fraction of the viewport,
+	simply provide the target <code>&lt;img&gt;</code> size as a percentage,
+	followed by a semicolon,
+	followed by a comma-separated list of image urls
+	<em>and the widths of the images in image pixels</em>.
+	Using this information, the browser can determine how wide the <code>&lt;img&gt;</code> will end up being,
+	and convert the image widths into <em>effective densities</em>.
 
 	<div class=example>
-		For a simple example,
-		assume that a particular image will be approximately 100% of the viewport width at all sizes,
-		such as a header image.
-		It is extremely simple to write an attribute value that will cause the browser to choose the correct image
-		across a wide variety of window sizes:
+		For example, say you have an image in two sizes, one 400 pixels wide and one 800 pixels wide.
+		If you specified <code class=lang-markup>&lt;img src-1="100%; url1 400, url2 800"&gt;</code>,
+		and the viewport’s width was 320px,
+		this is equivalent to specifying <code class=lang-markup>&lt;img src-1="url1 1.25x, url2 2.5x"&gt;</code>.
+
+<p>		On the other hand, if the viewport’s width was 800px,
+		it would be equivalent to specifying <code class=lang-markup>&lt;img src-1="url1 .5x, url2 1x"&gt;</code>.
+
+<p>		Regardless of the viewport’s size,
+		the browser will understand which url is appropriate to download
+		without you having to do any of the math yourself.
+	</div>
+
+	<div class=example>
+		Here’s a more complete example,
+		with image sizes spanning the full range of appropriate values
+		for screens from small phones to large desktop monitors. 
 
 		<pre class=lang-markup>  &lt;img src-1="100%; pic1.png 160, pic2.png 320, pic3.png 640,
                    pic4.png 1280, pic5.png 2560"&gt;
@@ -356,62 +383,50 @@ Variable-Sized Images</span><a class=self-link href=#viewport></a></h3>
 		Anything at higher, lower, or in-between sizes and resolutions will also be appropriately catered for,
 		without the author having to explicitly figure out reasonable breakpoints
 		and categorize each image appropriately for each.
+
+<p>		Using just Media Queries,
+		the markup would instead look something like:
+
+		<pre class=lang-markup id=bad-example-multisize>  &lt;img src-1="(max-width: 400px) pic1.png .5x, pic2.png 1x, pic3.png 2x"
+       src-2="(max-width: 800px) pic2.png .5x, pic3.png 1x, pic4.png 2x"
+       src-3="(max-width: 1600px) pic3.png .5x, pic4.png 1x, pic5.png 2x"
+       src-4="pic4.png .5x, pic5.png 1x"&gt;
+</pre>
+<p>		This example is obviouslly substantially more verbose,
+		and also less powerful.
+		For example, when screens reach 3x or 4x density,
+		those devices will still be stuck downloading 2x resources,
+		even though a 3x or 4x version exists for most screen sizes,
+		unless the author comes back and updates every <code>&lt;img&gt;</code> element in their page.
+
+<p>		Further, the breakpoints chosen above were simply guessed at,
+		and are likely not optimal.
+		Doing the math to find the optimal breakpoints isn’t hard, but is definitely non-trivial.
 	</div>
 
+<p>	For the second case, when the size of the image varies based on breakpoints in your layout,
+	the syntax is slightly more complicated.
+	The first and second parts are still separated by a semicolon,
+	and the second part is still a list of urls and image sizes.
+
+<p>	The syntax of the first part, though, is slightly expanded.
+	Rather than being simply an image size,
+	it’s an alternating list of image sizes and viewport breakpoints,
+	with the breakpoints in parentheses to help separate them visually.
+	The breakpoints must be in ascending order,
+	as the image size is chosen by finding which two breakpoints the viewport’s size sits between,
+	and selecting the image size between those two.
+
 	<div class=example>
-		For example, say your site had three basic layouts,
-		at breakpoints of <span class=css data-link-type=maybe title=30em>30em</span> and <span class=css data-link-type=maybe title=70em>70em</span>.
-		In the first layout, your image has a size of 100px;
-		in the second layout, it has a size of 400px;
-		in the third layout, it’s approximately half the viewport wide.
-		The following diagram illustrates this:
+		For example, say your site had three basic layouts:
 
 		<figure>
-			<svg height=200 width=800>
-				<style>
-				text { font-family: sans-serif; }
-				</style>
-				<g id=line transform="translate(0, 60)">
-					<text style="font-size: 30px" x=0 y=10>0</text>
-					<line stroke=black stroke-width=4 x1=30 x2=700 y1=0 y2=0></line>
-					<g transform="translate(250, 0)">
-						<line stroke=black stroke-width=4 x1=0 x2=0 y1=-10 y2=10></line>
-						<text style="font-size: 20px" text-anchor=middle x=0 y=-20>30em</text>
-						<text style="font-size: 20px" text-anchor=middle x=0 y=-45>Breakpoint 1</text>
-					</g>
-					<g transform="translate(500, 0)">
-						<line stroke=black stroke-width=4 x1=0 x2=0 y1=-10 y2=10></line>
-						<text style="font-size: 20px" text-anchor=middle x=0 y=-20>70em</text>
-						<text style="font-size: 20px" text-anchor=middle x=0 y=-45>Breakpoint 2</text>
-					</g>
-					<circle cx=715 cy=0 r=3></circle>
-					<circle cx=730 cy=0 r=3></circle>
-					<circle cx=745 cy=0 r=3></circle>
-					<text style="font-size: 30px" x=770 y=10>∞</text>
-				</g>
-				<g transform="translate(90, 80)">
-					<rect fill=#ddd height=80 stroke=gray stroke-width=2 width=100></rect>
-					<rect fill=blue height=30 width=30 x=65 y=25></rect>
-					<circle cx=40 cy=20 fill=green r=15></circle>
-					<polygon fill=red points="5 40, 40 75, 5 75"></polygon>
-					<text style="font-size: 16px" text-anchor=middle x=50 y=100>100px wide</text>
-				</g>
-				<g transform="translate(325, 80)">
-					<rect fill=#ddd height=80 stroke=gray stroke-width=2 width=100></rect>
-					<rect fill=blue height=30 width=30 x=65 y=25></rect>
-					<circle cx=40 cy=20 fill=green r=15></circle>
-					<polygon fill=red points="5 40, 40 75, 5 75"></polygon>
-					<text style="font-size: 16px" text-anchor=middle x=50 y=100>400px wide</text>
-				</g>
-				<g transform="translate(575, 80)">
-					<rect fill=#ddd height=80 stroke=gray stroke-width=2 width=100></rect>
-					<rect fill=blue height=30 width=30 x=65 y=25></rect>
-					<circle cx=40 cy=20 fill=green r=15></circle>
-					<polygon fill=red points="5 40, 40 75, 5 75"></polygon>
-					<text style="font-size: 16px" text-anchor=middle x=50 y=100>50% of the viewport width wide</text>
-				</g>
-			</svg>
-			<figcaption>Illustration of three image sizes at different layouts, separated by breakpoints.</figcaption>
+			<img src=images/viewport_selection_mob_first.jpg>
+			<figcaption>
+				Single-column (100%) on small screens,
+				two-column (50%) on medium screens,
+				and three-column (approximately 33%) on large screens.
+			</figcaption>
 		</figure>
 
 <p>		Assuming that the same image is supposed to be used at all of these layouts
@@ -419,45 +434,46 @@ Variable-Sized Images</span><a class=self-link href=#viewport></a></h3>
 		then all of these cases can be addressed by a handful of images at various sizes,
 		and the following code:
 
-		<pre class=lang-markup>  &lt;img src-1="100px (30em) 400px (70em) 50%;
-             pic50.png 50, pic100.png 100, pic200.png 200,
-             pic400.png 400, pic800.png 800, pic1600.png 1600,
-             pic3200.png 3200"&gt;
+		<pre class=lang-markup>  &lt;img src-1="100% (30em) 50% (50em) calc(33% - 100px);
+             pic100.png 100, pic200.png 200, pic400.png 400,
+             pic800.png 800, pic1600.png 1600, pic3200.png 3200"&gt;
 </pre>
-<p>		These seven images cover a wide range of possibilities:
+<p>		The first part of this attribute sets up the layout breakpoints at <span class=css data-link-type=maybe title=30em>30em</span> and <span class=css data-link-type=maybe title=50em>50em</span>,
+		and declares the image sizes between and around these breakpoints to be <span class=css data-link-type=maybe title=100%>100%</span>, <span class=css data-link-type=maybe title=50%>50%</span>, or <span class=css data-link-type=maybe title="calc(33% - 100px)">calc(33% - 100px)</span>.
 
-<p>		<ul>
-			<li>
-				At the low end,
-				when the image will be 100px wide,
-				the first few sources have an effective resolution of .5x, 1x, and 2x.
-				The rest of the sources are probably far too high-resolution to matter.
+<p>		The six images automatically cover every reasonable possibility.
+		For small screens (phone size, or even smaller, like watches),
+		anything from the 100 pixel wide image to the 800 pixel wide image may be downloaded,
+		depending on screen size and density.
+		For medium and large screens,
+		anything from the 400 pixel wide image and up may be chosen.
+		The author doesn’t have to do any math or complex figuring,
+		just provide the image in enough sizes to cover everything they believe reasonable.
 
-			<li>
-				In the medium case,
-				when the image will be 400px wide,
-				the first few images are too low-resolution to likely matter,
-				but the "pic200.png" image is a .5x image,
-				and several past that are all reasonable 1x, 2x, or 4x sized images.
-
-			<li>
-				In the final layout,
-				where the likely minimum image size is 560px,
-				but it may be much larger on huge screens,
-				any of the images from the middle to the end may be appropriate.
-		</ul>
-
-<p>		Doing the same thing using just media queries and resolutions is much more verbose:
-
-		<pre class=lang-markup>  &lt;img src-1="(max-width: 30em) pic50.png .5x, pic100.png 1x, pic200.png 2x, pic400.png 4x"
-       src-2="(max-width: 70em) pic200.png .5x, pic400.png 1x, pic800.png 2x, pic1600.png 4x"
-       src-3="pic400.png .5x, pic800.png 1x, pic1600.png 2x, pic3200.png 4x"&gt;
-</pre>
-<p>		And it’s not even as correct - in the final case, the above code assumes an 800px wide image for brevity;
-		if the actual image is closer to the minimum or much higher than 800,
-		those ratios will be wrong
-		and might cause the browser to download the wrong image.
+<p>		Again, doing the same thing just with Media Queries is much more verbose.
 	</div>
+
+<p class=note>	Note: Notice that the full set of CSS <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a> values are actually available for image sizes,
+	including things like <a class=css data-link-type=maybe href=http://dev.w3.org/csswg/css-values-3/#calc title=calc()>calc()</a>.
+	Using this, you can get as close to the precise size that the <code>&lt;img&gt;</code> element will be as you wish,
+	though just getting “close enough” as I did in these examples is more than sufficient in most cases.
+	Similarly, viewport sizes can be specified with the full set of <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a> values,
+	which are interpreted in the same way that they would be in a Media Query like <span class=css data-link-type=maybe title=min-width>min-width</span>.
+	For example, <span class=css data-link-type=maybe title=em>em</span> units are interpreted relative to the user’s default font size, etc.
+
+<p class=note>	Note: Also, all of the examples given here size the various images as powers of 2,
+	doubling in size as they get larger.
+	This is merely for convenience, as it’s easy to downsample an image by powers of 2,
+	but is not a limitation -
+	feel free to provide images at any size you desire.
+	This will become more important in time,
+	as 3x screens come into use
+	and you wish to give them a well-targeted image to download,
+	rather than having to decide between the 2x and 4x versions.
+
+<p>	The intrinsic width of the image is equal to the image size chosen from the provided list.
+	If the image has an intrinsic ratio, the intrinsic height of the image is its intrinsic width multiplied by the ratio.
+	Otherwise, it has no intrinsic height.
 
 <h2 class="heading settled heading" data-level=4 id=model><span class=secno>4 </span><span class=content>
 Processing Model</span><a class=self-link href=#model></a></h2>
