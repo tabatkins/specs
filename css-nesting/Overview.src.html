@@ -94,6 +94,28 @@ The Nesting Block</h2>
 	Effectively, nesting is equivalent to appending the parent and child selectors with a descendant selector,
 	handling selector lists appropriately.
 
+	<details class='why'>
+		<summary>Why is the nesting block needed?</summary>
+
+		The idea of nesting came from CSS preprocessors,
+		but none of them need something like a nesting block in order to nest.
+		Generally, they let you mix properties and selectors without reservation.
+		So why do we need the nesting block here?
+
+		In general, selectors and properties are grammatically ambiguous with each other.
+		For example, <code>foo:hover bar baz qux...</code> looks like both a selector,
+		and a "foo" property with <code>hover bar baz qux</code> as its value.
+		In some cases, you can't tell the difference between the two until you hit a semicolon or curly brace,
+		which may be an arbitrary number of tokens away.
+
+		Preprocessors are okay with needing arbitrary lookahead to parse CSS.
+		Browsers aren't - they want fast, parallizable parsing,
+		and that means fixed, small amounts of lookahead.
+
+		The nesting block lets the browser immediately tell that it's not looking at a property,
+		so it can switch into a selector-parsing mode right away.
+	</details>
+
 	<div class='example'>
 		The following example using Nesting:
 
