@@ -66,22 +66,20 @@ dt { font-weight: bold }
 	background: transparent;
 }
 	</style>
-<script defer src=https://test.csswg.org/harness/annotate.js#CSS-MASKING_DEV type=text/javascript></script>
-
 </head>
 <body class="h-entry lang-css">
 <div class=head>
 	<p data-fill-with=logo></p>
 	<h1 class="p-name no-ref" id=title>CSS Nesting Module Level 3</h1>
 	<h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Editor’s Draft,
-		<span class=dt-updated><span class=value-title title=20131010>10 October 2013</span></span></span></h2>
+		<span class=dt-updated><span class=value-title title=20131021>21 October 2013</span></span></span></h2>
 	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://tabatkins.github.io/specs/css-nesting/Overview.html>http://tabatkins.github.io/specs/css-nesting/Overview.html</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/css-nesting/Overview.html>http://tabatkins.github.io/specs/css-nesting/Overview.html</a><dt>Test Suite:<dd>None Yet<dt>Editors:
 <dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins</a> (<span class="p-org org">Google</span>)</dl></div>
 	<div data-fill-with=warning></div>
 	<p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 10 October 2013, 
+In addition, as of 21 October 2013, 
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -120,7 +118,7 @@ Index</a><li><a href=#property-index><span class=secno></span>
 Property index</a><li><a href=#issues-index><span class=secno></span>Issues Index</a></ul></div>
 
 
-	<h2 class="heading settled heading" data-level=1 id=intro><span class=secno>1 </span><span class=content>
+<h2 class="heading settled heading" data-level=1 id=intro><span class=secno>1 </span><span class=content>
 Introduction</span><a class=self-link href=#intro></a></h2>
 
 <p>	<em>This section is not normative.</em>
@@ -200,6 +198,28 @@ The Nesting Block</span><a class=self-link href=#the-nested-block></a></h2>
 <p>	The selectors of style rules inside a <a data-link-type=dfn href=#nesting-block title="nesting block">nesting block</a> are relative to the results of the selector of the parent rule.
 	Effectively, nesting is equivalent to appending the parent and child selectors with a descendant selector,
 	handling selector lists appropriately.
+
+	</p><details class=why>
+		<summary>Why is the nesting block needed?</summary>
+
+<p>		The idea of nesting came from CSS preprocessors,
+		but none of them need something like a nesting block in order to nest.
+		Generally, they let you mix properties and selectors without reservation.
+		So why do we need the nesting block here?
+
+<p>		In general, selectors and properties are grammatically ambiguous with each other.
+		For example, <code>foo:hover bar baz qux...</code> looks like both a selector,
+		and a "foo" property with <code>hover bar baz qux</code> as its value.
+		In some cases, you can’t tell the difference between the two until you hit a semicolon or curly brace,
+		which may be an arbitrary number of tokens away.
+
+<p>		Preprocessors are okay with needing arbitrary lookahead to parse CSS.
+		Browsers aren’t - they want fast, parallizable parsing,
+		and that means fixed, small amounts of lookahead.
+
+<p>		The nesting block lets the browser immediately tell that it’s not looking at a property,
+		so it can switch into a selector-parsing mode right away.
+	</details>
 
 	<div class=example>
 		The following example using Nesting:
@@ -346,9 +366,9 @@ CSS Object Model Modifications</span><a class=self-link href=#cssom></a></h2>
 
 <p>	The following attribute is required to be added to the CSSStyleRule object defined in Section 6.4.3 of <a data-biblio-type=normative data-link-type=biblio href=#cssom title=cssom>[CSSOM]</a>:
 
-	<pre class=idl>partial interface <a class=idl-code data-link-type=interface href=http://dev.w3.org/csswg/cssom-1/#cssstylerule title=cssstylerule>CSSStyleRule</a> {
-    readonly attribute DOMString <dfn class=idl-code data-dfn-for=CSSStyleRule data-dfn-type=attribute data-export="" id=dom-cssstylerule-expandedselectortext title=expandedSelectorText>expandedSelectorText<a class=self-link href=#dom-cssstylerule-expandedselectortext></a></dfn>;
-    readonly attribute <a data-link-type=idl href=http://dev.w3.org/csswg/cssom-1/#cssrulelist title=cssrulelist>CSSRuleList</a> <dfn class=idl-code data-dfn-for=CSSStyleRule data-dfn-type=attribute data-export="" id=dom-cssstylerule-cssrules title=cssRules>cssRules<a class=self-link href=#dom-cssstylerule-cssrules></a></dfn>;
+	<pre class=idl>partial interface <a class=idl-code data-global-name="" data-link-type=interface href=http://dev.w3.org/csswg/cssom-1/#cssstylerule title=cssstylerule>CSSStyleRule</a> {
+    readonly attribute DOMString <dfn class=idl-code data-dfn-for=CSSStyleRule data-dfn-type=attribute data-export="" data-global-name="CSSStyleRule<interface>/expandedselectortext<attribute>" id=dom-cssstylerule-expandedselectortext title=expandedSelectorText>expandedSelectorText<a class=self-link href=#dom-cssstylerule-expandedselectortext></a></dfn>;
+    readonly attribute <a data-link-type=idl href=http://dev.w3.org/csswg/cssom-1/#cssrulelist title=cssrulelist>CSSRuleList</a> <dfn class=idl-code data-dfn-for=CSSStyleRule data-dfn-type=attribute data-export="" data-global-name="CSSStyleRule<interface>/cssrules<attribute>" id=dom-cssstylerule-cssrules title=cssRules>cssRules<a class=self-link href=#dom-cssstylerule-cssrules></a></dfn>;
   };
 </pre>
 <p>	The <code>cssRules</code> attribute must return a <code>CSSRuleList</code> object for the list of CSS rules specified within the style rule.

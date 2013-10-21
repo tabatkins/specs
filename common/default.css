@@ -40,12 +40,12 @@ h4 { margin-top: 4em; }
 
 h2 + h3, h3 + h4, h4 + h5, h5 + h6 { margin-top: 1.2em }
 
-p, div.note, div.issue {
+p, div.note, div.issue, details.why {
 	margin-top: 1em;
 	margin-bottom: 1em;
 }
 
-dd > p:first-child, li > p:first-child, .note > p:first-child, .issue > p:first-child {
+dd > p:first-child, li > p:first-child, .note > p:first-child, .issue > p:first-child, .why > summary + p {
 	margin-top: 0
 }
 
@@ -149,7 +149,7 @@ code.xml { color: #600 }	/* inline XML */
 dfn { font-weight: bolder; }
 a > i { font-style: normal; } /* Instance of term */
 
-.issue, .note, div.example, pre.example {
+.issue, .note, div.example, pre.example, details.why {
 	padding: .5em;
 	/* padding: .5rem; /* proposed unit in css3-values */
 	border-left-width: .5em;
@@ -190,6 +190,19 @@ div.example, pre.example {
 div.example:before, pre.example:before { 
 	color: #B9AB2D; 
 	font-family: sans-serif;
+}
+
+details.why {
+	border-color: #52E052;
+	background: #E9FBE9;
+}
+
+details.why > summary {
+	font-style: italic;
+}
+
+details.why[open] > summary {
+	border-bottom: 1px silver solid;
 }
 
 /* ToC not indented, but font style shows hierarchy */
