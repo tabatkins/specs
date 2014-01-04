@@ -1,6 +1,5 @@
 <h1>CSS Aliases</h1>
 <pre class='metadata'>
-Group: CSSWG
 Shortname: css-aliases
 Level: 1
 Status: ED
@@ -22,7 +21,8 @@ Introduction</h2>
 	and also affects maintenance,
 	as the author has to keep each repetition in sync when making any changes.
 
-	This specification defines aliasing methods for several CSS features,
+	This specification defines aliasing methods for several CSS features--
+	media queries and selectors--
 	so that a long or repeatedly-used value can be given a short, memorable name instead.
 	This makes stylesheets easier to read,
 	and allows authors to maintain only a single copy of the value,
@@ -36,11 +36,11 @@ Custom Media Queries</h2>
 
 	A <dfn>custom media query</dfn> is defined with the ''@custom-media'' rule:
 
-	<pre class='prod'><dfn>@custom-media</dfn> = @custom-media <<custom-media-name>> <<media-query>> ;</pre>
+	<pre class='prod'><dfn>@custom-media</dfn> = @custom-media <<custom-name>> <<media-query>> ;</pre>
 
-	Where <dfn>&lt;custom-media-name></dfn> is a <<custom-ident>> with at least one <code>_</code> (underscore, U+005F LOW LINE) in it.
+	Where <dfn>&lt;custom-name></dfn> is a <<custom-ident>> with at least one <code>_</code> (underscore, U+005F LOW LINE) in it.
 
-	This defines that the <a>custom media query</a> named by the <<custom-media-name>> represents the given <<media-query>>.
+	This defines that the <a>custom media query</a> named by the <<custom-name>> represents the given <<media-query>>.
 
 	Note: It's recommended that the name either starts with the underscore,
 	following the somewhat similar notation in JavaScript, Python, and other computer languages,
@@ -49,7 +49,7 @@ Custom Media Queries</h2>
 	Either of these methods makes the underscore fairly visually obvious in its use,
 	preventing accidental confusion with CSS-defined <a>media queries</a>.
 
-	The <<custom-media-name>> can then be used in a <a>media feature</a>.
+	The <<custom-name>> can then be used in a <a>media feature</a>.
 	It <strong>must</strong> be used in a <a>boolean context</a>;
 	using them in a normal or <a>range context</a> is a syntax error.
 	The <a>custom media query</a> evaluates to true if the <<media-query>> it represents evaluates to true,
@@ -71,3 +71,75 @@ Custom Media Queries</h2>
 			/* etc */
 		</pre>
 	</div>
+
+<h3 id='script-custom-mq'>
+Script-based Custom Media Queries</h3>
+
+	<div class='issue'>
+		Define a map of names to values for JS.
+		Values can be either a MediaQueryList object or a boolean,
+		in which case it's treated identically to the above,
+		or can be a number or a string,
+		in which case it's treated like a normal MQ,
+		and can use the normal or range context syntax.
+		Like:
+
+		<pre>
+			&lt;script>
+			CSS.customMedia.set('_foo', 5);
+			&lt;/script>
+			&lt;style>
+			@media (_foo: 5) { ... }
+			@media (_foo < 10) { ... }
+			&lt;/style>
+		</pre>
+	</div>
+
+
+<h3 id='custom-mq-cssom'>
+CSSOM</h3>
+
+	<p class='issue'>
+		Fill in.
+
+<h2 id='custom-selectors'>
+Custom Selectors</h2>
+
+	A <dfn>custom selector</dfn> is defined with the ''@custom-selector'' rule:
+
+	<pre class='prod'><dfn>@custom-selector</dfn> = @custom-selector <<custom-name>> <<selector>> ;</pre>
+
+	This defines a <a>custom selector</a> which is written as a <a>pseudo-class</a> with the given <<custom-name>>,
+	and represents a '':matches()'' selector using the provided <<selector>> as its argument.
+
+	Similar to <a>custom media queries</a>,
+	the name of a <a>custom selector</a> must contain an underscore character.
+
+	<div class='example'>
+		For example, if an author wanted to easily refer to all heading elements in their HTML document,
+		they could create an alias:
+
+		<pre>
+			@custom-selector _heading h1, h2, h3, h4, h5, h6;
+
+			:_heading { /* styles for all headings */ }
+			:_heading + p { /* more styles */ }
+			/* etc */
+		</pre>
+	</div>
+
+<h3 id='script-custom-selectors'>
+Script-based Custom Selectors</h3>
+
+	<div class='issue'>
+		This one's more complicated than MQs.
+		Brian Kardell came up with a good proposal for evaluating selectors as JS functions that return a boolean,
+		which had decent performance characteristics by specifying the qualities of the element it was based on
+		(which determined when it would be called).
+	</div>
+
+<h3 id='custom-selectors-cssom'>
+CSSOM</h3>
+
+	<p class='issue'>
+		Fill in.
