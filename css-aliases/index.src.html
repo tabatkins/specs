@@ -6,5 +6,68 @@ Level: 1
 Status: ED
 ED: http://tabatkins.github.io/specs/css-aliases/
 Editor: Tab Atkins, Google, http://xanthir.com/contact/
+Abstract: This specification defines methods of defining “aliases” for long or commonly-used values in several CSS features, reducing repetition in the stylesheet.
 </pre>
 
+<h2 id='intro'>
+Introduction</h2>
+
+	When authoring CSS,
+	one often encounters significant repetition in certain features.
+	For example, a given media query might be repeated in several places,
+	or a selector meant to apply to all heading elements
+	requires specifying '':matches(h1, h2, h3, h4, h5, h6)'' in every location that uses it.
+
+	This repetition makes stylesheets more verbose and difficult to read,
+	and also affects maintenance,
+	as the author has to keep each repetition in sync when making any changes.
+
+	This specification defines aliasing methods for several CSS features,
+	so that a long or repeatedly-used value can be given a short, memorable name instead.
+	This makes stylesheets easier to read,
+	and allows authors to maintain only a single copy of the value,
+	so changes are automatically propagated to each use.
+
+	Note: The features in this specification are thematically similar to <a>custom properties</a> and <a>variables</a>,
+	but use a different, simpler definition and use syntax.
+
+<h2 id='custom-mq'>
+Custom Media Queries</h2>
+
+	A <dfn>custom media query</dfn> is defined with the ''@custom-media'' rule:
+
+	<pre class='prod'><dfn>@custom-media</dfn> = @custom-media <<custom-media-name>> <<media-query>> ;</pre>
+
+	Where <dfn>&lt;custom-media-name></dfn> is a <<custom-ident>> with at least one <code>_</code> (underscore, U+005F LOW LINE) in it.
+
+	This defines that the <a>custom media query</a> named by the <<custom-media-name>> represents the given <<media-query>>.
+
+	Note: It's recommended that the name either starts with the underscore,
+	following the somewhat similar notation in JavaScript, Python, and other computer languages,
+	or that the underscore is used as a separator between a simple "namespace" and the actual name of the <a>custom media query</a>,
+	such as ''jq_small-screen''.
+	Either of these methods makes the underscore fairly visually obvious in its use,
+	preventing accidental confusion with CSS-defined <a>media queries</a>.
+
+	The <<custom-media-name>> can then be used in a <a>media feature</a>.
+	It <strong>must</strong> be used in a <a>boolean context</a>;
+	using them in a normal or <a>range context</a> is a syntax error.
+	The <a>custom media query</a> evaluates to true if the <<media-query>> it represents evaluates to true,
+	and false otherwise.
+
+	<div class='example'>
+		For example, if a responsive site uses a particular breakpoint in several places,
+		it can alias that with a reasonable name:
+
+		<pre>
+			@custom-media _narrow-window (max-width: 30em);
+
+			@media (_narrow-window) {
+				/* narrow window styles */
+			}
+			@media (_narrow-window) and (script) {
+				/* special styles for when script is allowed */
+			}
+			/* etc */
+		</pre>
+	</div>
