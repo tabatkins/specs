@@ -120,7 +120,7 @@ Custom Selectors</h2>
 		they could create an alias:
 
 		<pre>
-			@custom-selector _heading h1, h2, h3, h4, h5, h6;
+			@custom-selector :_heading h1, h2, h3, h4, h5, h6;
 
 			:_heading { /* styles for all headings */ }
 			:_heading + p { /* more styles */ }
@@ -136,6 +136,29 @@ Script-based Custom Selectors</h3>
 		Brian Kardell came up with a good proposal for evaluating selectors as JS functions that return a boolean,
 		which had decent performance characteristics by specifying the qualities of the element it was based on
 		(which determined when it would be called).
+
+		<pre>
+		&lt;script>
+		CSS.customSelector.set("_foo",
+			                   {"filter": function(el){...},
+			                   	"matches": "a",
+			                    "examines": "[href]"});
+		&lt;/script>
+		</pre>
+
+		"matches" is an optional selector specifying what subset of elements the custom selector is valid for.
+		The selector is automatically false for elements that don't match.
+
+		"examines" is a list of simple selectors specifying what sort of updates the selector should be called for.
+		In this example, any changes to the <code>href</code> attribute would cause the function to be called.
+		What elements are the "examines" selectors applied to?
+		We probably need a way to manually trigger re-evaluation, too.
+		Is this just sugar over mutation listeners + manual re-evaluation?
+
+		Maybe let the pseudo-class also accept an argument,
+		and pass it (as a serialized string) as a second argument to the matching function.
+		'':_foo'' would pass <code>null</code>,
+		while '':_foo()'' would pass <code>""</code>.
 	</div>
 
 <h3 id='custom-selectors-cssom'>
