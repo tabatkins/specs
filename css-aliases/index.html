@@ -537,14 +537,14 @@ span.issue, span.note {
   <p data-fill-with=logo></p>
   <h1 class="p-name no-ref" id=title>CSS Aliases</h1>
   <h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Editor’s Draft,
-    <span class=dt-updated><span class=value-title title=20140104>4 January 2014</span></span></span></h2>
+    <span class=dt-updated><span class=value-title title=20140108>8 January 2014</span></span></span></h2>
   <div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://tabatkins.github.io/specs/css-aliases/>http://tabatkins.github.io/specs/css-aliases/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/css-aliases/>http://tabatkins.github.io/specs/css-aliases/</a><dt>Test Suite:<dd>None Yet<dt>Editors:
 <dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins</a> (<span class="p-org org">Google</span>)</dl></div>
   <div data-fill-with=warning></div>
   <p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 4 January 2014,
+In addition, as of 8 January 2014,
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -594,7 +594,7 @@ Introduction</span><a class=self-link href=#intro></a></h2>
 	and allows authors to maintain only a single copy of the value,
 	so changes are automatically propagated to each use.
 
-<p class=note>	Note: The features in this specification are thematically similar to <a data-link-type=dfn title="custom properties">custom properties</a> and <a data-link-type=dfn title=variables>variables</a>,
+<p class=note>	Note: The features in this specification are thematically similar to <a data-link-type=dfn href=http://dev.w3.org/csswg/css-variables-1/#custom-property title="custom properties">custom properties</a> and <a data-link-type=dfn href=http://dev.w3.org/csswg/css-variables-1/#variable title=variables>variables</a>,
 	but use a different, simpler definition and use syntax.
 
 <h2 class="heading settled heading" data-level=2 id=custom-mq><span class=secno>2 </span><span class=content>
@@ -679,7 +679,7 @@ Custom Selectors</span><a class=self-link href=#custom-selectors></a></h2>
 		For example, if an author wanted to easily refer to all heading elements in their HTML document,
 		they could create an alias:
 
-		<pre>  @custom-selector _heading h1, h2, h3, h4, h5, h6;
+		<pre>  @custom-selector :_heading h1, h2, h3, h4, h5, h6;
 
   :_heading { /* styles for all headings */ }
   :_heading + p { /* more styles */ }
@@ -689,11 +689,32 @@ Custom Selectors</span><a class=self-link href=#custom-selectors></a></h2>
 <h3 class="heading settled heading" data-level=3.1 id=script-custom-selectors><span class=secno>3.1 </span><span class=content>
 Script-based Custom Selectors</span><a class=self-link href=#script-custom-selectors></a></h3>
 
-	<div class=issue id=issue-13b839d3><a class=self-link href=#issue-13b839d3></a>
+	<div class=issue id=issue-78a6f549><a class=self-link href=#issue-78a6f549></a>
 		This one’s more complicated than MQs.
 		Brian Kardell came up with a good proposal for evaluating selectors as JS functions that return a boolean,
 		which had decent performance characteristics by specifying the qualities of the element it was based on
 		(which determined when it would be called).
+
+		<pre>&lt;script&gt;
+CSS.customSelector.set("_foo",
+                     {"filter": function(el){...},
+                       "matches": "a",
+                      "examines": "[href]"});
+&lt;/script&gt;
+</pre>
+<p>		"matches" is an optional selector specifying what subset of elements the custom selector is valid for.
+		The selector is automatically false for elements that don’t match.
+
+<p>		"examines" is a list of simple selectors specifying what sort of updates the selector should be called for.
+		In this example, any changes to the <code>href</code> attribute would cause the function to be called.
+		What elements are the "examines" selectors applied to?
+		We probably need a way to manually trigger re-evaluation, too.
+		Is this just sugar over mutation listeners + manual re-evaluation?
+
+<p>		Maybe let the pseudo-class also accept an argument,
+		and pass it (as a serialized string) as a second argument to the matching function.
+		<span class=css data-link-type=maybe title=:_foo>:_foo</span> would pass <code>null</code>,
+		while <span class=css data-link-type=maybe title=:_foo()>:_foo()</span> would pass <code>""</code>.
 	</div>
 
 <h3 class="heading settled heading" data-level=3.2 id=custom-selectors-cssom><span class=secno>3.2 </span><span class=content>
@@ -786,7 +807,28 @@ Property index</span><a class=self-link href=#property-index></a></h2>
 		Brian Kardell came up with a good proposal for evaluating selectors as JS functions that return a boolean,
 		which had decent performance characteristics by specifying the qualities of the element it was based on
 		(which determined when it would be called).
-	<a href=#issue-13b839d3> ↵ </a></div>
+
+		<pre>&lt;script&gt;
+CSS.customSelector.set("_foo",
+                     {"filter": function(el){...},
+                       "matches": "a",
+                      "examines": "[href]"});
+&lt;/script&gt;
+</pre>
+<p>		"matches" is an optional selector specifying what subset of elements the custom selector is valid for.
+		The selector is automatically false for elements that don’t match.
+
+<p>		"examines" is a list of simple selectors specifying what sort of updates the selector should be called for.
+		In this example, any changes to the <code>href</code> attribute would cause the function to be called.
+		What elements are the "examines" selectors applied to?
+		We probably need a way to manually trigger re-evaluation, too.
+		Is this just sugar over mutation listeners + manual re-evaluation?
+
+<p>		Maybe let the pseudo-class also accept an argument,
+		and pass it (as a serialized string) as a second argument to the matching function.
+		<span class=css data-link-type=maybe title=:_foo>:_foo</span> would pass <code>null</code>,
+		while <span class=css data-link-type=maybe title=:_foo()>:_foo()</span> would pass <code>""</code>.
+	</p><a href=#issue-78a6f549> ↵ </a></div>
 
 <div class=issue>
 		Fill in.
