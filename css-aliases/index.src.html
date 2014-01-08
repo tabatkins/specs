@@ -140,23 +140,27 @@ Script-based Custom Selectors</h3>
 		<pre>
 		&lt;script>
 		CSS.customSelector.set("_foo",
-			                   {"filter": function(el){...},
-			                   	"matches": "a",
-			                    "examines": "[href]"});
+			                   {"predicate": function(el){...},
+			                   	"matches": "a"});
 		&lt;/script>
 		</pre>
 
 		"matches" is an optional selector specifying what subset of elements the custom selector is valid for.
-		The selector is automatically false for elements that don't match.
+		The selector is automatically false for elements that don't match,
+		and the predicate isn't called.
 
-		"examines" is a list of simple selectors specifying what sort of updates the selector should be called for.
-		In this example, any changes to the <code>href</code> attribute would cause the function to be called.
-		What elements are the "examines" selectors applied to?
-		We probably need a way to manually trigger re-evaluation, too.
-		Is this just sugar over mutation listeners + manual re-evaluation?
+		By default, the predicate is called whenever there's a mutation in an element that matches the "matches" selector,
+		or one of its descendants.
+
+		You should be able to suppress the auto-calling,
+		and be able to trigger the predicate to run manually.
+		That way you can use mutation listeners manually to only call the predicate when necessary.
+
+		We should probably offer some sugar for filtering the list of mutations that trigger the predicate to be called.
+		Maybe just a list of attributes that you'll be caring about?  And/or tagnames?
 
 		Maybe let the pseudo-class also accept an argument,
-		and pass it (as a serialized string) as a second argument to the matching function.
+		and pass it (as a serialized string) as a second argument to the predicate.
 		'':_foo'' would pass <code>null</code>,
 		while '':_foo()'' would pass <code>""</code>.
 	</div>

@@ -689,7 +689,7 @@ Custom Selectors</span><a class=self-link href=#custom-selectors></a></h2>
 <h3 class="heading settled heading" data-level=3.1 id=script-custom-selectors><span class=secno>3.1 </span><span class=content>
 Script-based Custom Selectors</span><a class=self-link href=#script-custom-selectors></a></h3>
 
-	<div class=issue id=issue-78a6f549><a class=self-link href=#issue-78a6f549></a>
+	<div class=issue id=issue-92c93e68><a class=self-link href=#issue-92c93e68></a>
 		This one’s more complicated than MQs.
 		Brian Kardell came up with a good proposal for evaluating selectors as JS functions that return a boolean,
 		which had decent performance characteristics by specifying the qualities of the element it was based on
@@ -697,22 +697,26 @@ Script-based Custom Selectors</span><a class=self-link href=#script-custom-selec
 
 		<pre>&lt;script&gt;
 CSS.customSelector.set("_foo",
-                     {"filter": function(el){...},
-                       "matches": "a",
-                      "examines": "[href]"});
+                     {"predicate": function(el){...},
+                       "matches": "a"});
 &lt;/script&gt;
 </pre>
 <p>		"matches" is an optional selector specifying what subset of elements the custom selector is valid for.
-		The selector is automatically false for elements that don’t match.
+		The selector is automatically false for elements that don’t match,
+		and the predicate isn’t called.
 
-<p>		"examines" is a list of simple selectors specifying what sort of updates the selector should be called for.
-		In this example, any changes to the <code>href</code> attribute would cause the function to be called.
-		What elements are the "examines" selectors applied to?
-		We probably need a way to manually trigger re-evaluation, too.
-		Is this just sugar over mutation listeners + manual re-evaluation?
+<p>		By default, the predicate is called whenever there’s a mutation in an element that matches the "matches" selector,
+		or one of its descendants.
+
+<p>		You should be able to suppress the auto-calling,
+		and be able to trigger the predicate to run manually.
+		That way you can use mutation listeners manually to only call the predicate when necessary.
+
+<p>		We should probably offer some sugar for filtering the list of mutations that trigger the predicate to be called.
+		Maybe just a list of attributes that you’ll be caring about?  And/or tagnames?
 
 <p>		Maybe let the pseudo-class also accept an argument,
-		and pass it (as a serialized string) as a second argument to the matching function.
+		and pass it (as a serialized string) as a second argument to the predicate.
 		<span class=css data-link-type=maybe title=:_foo>:_foo</span> would pass <code>null</code>,
 		while <span class=css data-link-type=maybe title=:_foo()>:_foo()</span> would pass <code>""</code>.
 	</div>
@@ -810,25 +814,29 @@ Property index</span><a class=self-link href=#property-index></a></h2>
 
 		<pre>&lt;script&gt;
 CSS.customSelector.set("_foo",
-                     {"filter": function(el){...},
-                       "matches": "a",
-                      "examines": "[href]"});
+                     {"predicate": function(el){...},
+                       "matches": "a"});
 &lt;/script&gt;
 </pre>
 <p>		"matches" is an optional selector specifying what subset of elements the custom selector is valid for.
-		The selector is automatically false for elements that don’t match.
+		The selector is automatically false for elements that don’t match,
+		and the predicate isn’t called.
 
-<p>		"examines" is a list of simple selectors specifying what sort of updates the selector should be called for.
-		In this example, any changes to the <code>href</code> attribute would cause the function to be called.
-		What elements are the "examines" selectors applied to?
-		We probably need a way to manually trigger re-evaluation, too.
-		Is this just sugar over mutation listeners + manual re-evaluation?
+<p>		By default, the predicate is called whenever there’s a mutation in an element that matches the "matches" selector,
+		or one of its descendants.
+
+<p>		You should be able to suppress the auto-calling,
+		and be able to trigger the predicate to run manually.
+		That way you can use mutation listeners manually to only call the predicate when necessary.
+
+<p>		We should probably offer some sugar for filtering the list of mutations that trigger the predicate to be called.
+		Maybe just a list of attributes that you’ll be caring about?  And/or tagnames?
 
 <p>		Maybe let the pseudo-class also accept an argument,
-		and pass it (as a serialized string) as a second argument to the matching function.
+		and pass it (as a serialized string) as a second argument to the predicate.
 		<span class=css data-link-type=maybe title=:_foo>:_foo</span> would pass <code>null</code>,
 		while <span class=css data-link-type=maybe title=:_foo()>:_foo()</span> would pass <code>""</code>.
-	</p><a href=#issue-78a6f549> ↵ </a></div>
+	</p><a href=#issue-92c93e68> ↵ </a></div>
 
 <div class=issue>
 		Fill in.
