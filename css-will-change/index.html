@@ -541,14 +541,14 @@ span.issue, span.note {
   <p data-fill-with=logo></p>
   <h1 class="p-name no-ref" id=title>CSS Will Change Module Level 1</h1>
   <h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Editor’s Draft,
-    <span class=dt-updated><span class=value-title title=20140117>17 January 2014</span></span></span></h2>
+    <span class=dt-updated><span class=value-title title=20140118>18 January 2014</span></span></span></h2>
   <div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://tabatkins.github.io/specs/css-will-change/>http://tabatkins.github.io/specs/css-will-change/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/css-will-change/>http://tabatkins.github.io/specs/css-will-change/</a><dt>Test Suite:<dd>None Yet<dt>Editors:
 <dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins Jr.</a> (<span class="p-org org">Google Inc.</span>)</dl></div>
   <div data-fill-with=warning></div>
   <p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 17 January 2014,
+In addition, as of 18 January 2014,
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -629,14 +629,16 @@ Hinting at Future Behavior: the <a class=property data-link-type=propdesc href=#
 		<dd>
 			Indicates that the author expects to animate or change the property with the given name on the element in the near future.
 
+<p>			The <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#identifier-value title="<custom-ident>">&lt;custom-ident&gt;</a> production used here excludes the keywords <span class=css data-link-type=maybe title=none>none</span>, <span class=css data-link-type=maybe title=all>all</span>, <a class=css data-link-type=maybe href=#valuedef-auto title=auto>auto</a>, <a class=css data-link-type=maybe href=#valuedef-scroll-position title=scroll-position>scroll-position</a>, and <a class=css data-link-type=maybe href=#valuedef-contents title=contents>contents</a>,
+			in addition to the keywords normally excluded from <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#identifier-value title="<custom-ident>">&lt;custom-ident&gt;</a>.
+
 <p class=note>			Note: Note that most properties will have no effect when specified,
 			as the user agent doesn’t perform any special optimizations for changes in most properties.
 			It is still <em>safe</em> to specify them, though;
 			it’ll simply have no effect.
 	</dl>
 
-<p>	If a property is specified as a <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#identifier-value title="<custom-ident>">&lt;custom-ident&gt;</a>,
-	and any non-initial value of that property creates a stacking context on the element,
+<p>	If any non-initial value of a property would create a stacking context on the element,
 	specifying that property in <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> must create a stacking context on the element.
 
 <p>	If a non-initial value of a property would cause rendering differences on the element
