@@ -72,14 +72,14 @@ dt { font-weight: bold }
 	<p data-fill-with=logo></p>
 	<h1 class="p-name no-ref" id=title>CSS Nesting Module Level 3</h1>
 	<h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Editor’s Draft,
-		<span class=dt-updated><span class=value-title title=20131021>21 October 2013</span></span></span></h2>
-	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://tabatkins.github.io/specs/css-nesting/Overview.html>http://tabatkins.github.io/specs/css-nesting/Overview.html</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/css-nesting/Overview.html>http://tabatkins.github.io/specs/css-nesting/Overview.html</a><dt>Test Suite:<dd>None Yet<dt>Editors:
+		<span class=dt-updated><span class=value-title title=20140124>24 January 2014</span></span></span></h2>
+	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://tabatkins.github.io/specs/css-nesting/>http://tabatkins.github.io/specs/css-nesting/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/css-nesting/>http://tabatkins.github.io/specs/css-nesting/</a><dt>Test Suite:<dd>None Yet<dt>Editors:
 <dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins</a> (<span class="p-org org">Google</span>)</dl></div>
 	<div data-fill-with=warning></div>
 	<p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 21 October 2013, 
+In addition, as of 24 January 2014, 
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -288,7 +288,7 @@ The &amp; Selector</span><a class=self-link href=#nesting-selector></a></h2>
 <p>	Within a <a data-link-type=dfn href=#nesting-block title="nesting block">nesting block</a>, the &amp; selector matches the elements matched by the parent rule’s selector.
 	Outside of a <a data-link-type=dfn href=#nesting-block title="nesting block">nesting block</a>, the &amp; selector matches nothing.
 
-	<p class=issue id=issue-90e090ad><a class=self-link href=#issue-90e090ad></a>
+	<p class=issue id=issue-504e1146><a class=self-link href=#issue-504e1146></a>
 		Introducing the <span class=css data-link-type=maybe title=&amp;>&amp;</span> character will cause issues with CSS embedded directly in XML, as it’s the first character used in CSS syntax that either requires escaping or using CDATA.  Do we need to change this?
 
 	<div class=example>
@@ -320,64 +320,45 @@ Grammar modifications</span><a class=self-link href=#Grammar></a></h2>
 
 <p>	This specification alters the CSS Core Grammar and the Selectors grammar.
 
-	<p class=issue id=issue-cb7191be><a class=self-link href=#issue-cb7191be></a>
+	<p class=issue id=issue-c0b72acf><a class=self-link href=#issue-c0b72acf></a>
 		If this spec is accepted,
 		I’ll just modify Syntax directly to accommodate Nesting.
 
-	<p class=issue id=issue-8f1dbe33><a class=self-link href=#issue-8f1dbe33></a>
+	<p class=issue id=issue-b328b3aa><a class=self-link href=#issue-b328b3aa></a>
 		None of this chapter is correct now that I’m using <a data-link-type=dfn href=#nesting-block title="nesting blocks">nesting blocks</a> as the disambiguator.
 
 <h3 class="heading settled heading" data-level=4.1 id=css-2-grammar><span class=secno>4.1 </span><span class=content>
 Core CSS Grammar</span><a class=self-link href=#css-2-grammar></a></h3>
 
-<p>	The following modifications are required to the <a data-biblio-type=normative data-link-type=biblio href=#css21 title=css21>[CSS21]</a> grammar as defined in Section 4.1.1.
+<p>	...
 
-<p>	The ruleset rule is changed to:
-
-<pre>ruleset : selectors_group? ruleset-body</pre>
-<p>	The following rules are added:
-
-	<pre>ruleset-body           : '{' S* ruleitem? [ ';' S* ruleitem? ]* '}' S*
-ruleitem               : declaration | nested-ruleset
-nested-ruleset         : nested-selectors-group ruleset-body</pre>
 <h3 class="heading settled heading" data-level=4.2 id=selectors4-grammar><span class=secno>4.2 </span><span class=content>
 Selectors 4 Grammar</span><a class=self-link href=#selectors4-grammar></a></h3>
 
-<p>	The following modifications are required to the <a data-biblio-type=normative data-link-type=biblio href=#selectors4 title=selectors4>[SELECTORS4]</a> grammar as defined in Section 16.1.
+<p>	...
 
-<p>	The following rules are added:
-
-	<pre>nested-selectors-group   : nested-selector [ COMMA S* nested-selector ]
-nested-selector          : nested-compound-selector [ combinator compound-selector ]*
-nested-compound-selector : NEST [ HASH | class | attrib | pseudo | negation ]*</pre>
 <h3 class="heading settled heading" data-level=4.3 id=selectors4-lexical-scanner><span class=secno>4.3 </span><span class=content>
 Selectors 4 Lexical Scanner</span><a class=self-link href=#selectors4-lexical-scanner></a></h3>
 
-<p>	The following modifications are required to the <a data-biblio-type=normative data-link-type=biblio href=#selectors4 title=selectors4>[SELECTORS4]</a> lexical scanner as defined in Section 16.2.
+<p>	...
 
-<p>	Immediately below:
-
-<pre>"--&gt;"            return CDC;</pre>
-<p>	the following rule is inserted:
-
-<pre>"&amp;"              return NEST;</pre>
 <h2 class="heading settled heading" data-level=5 id=cssom><span class=secno>5 </span><span class=content>
 CSS Object Model Modifications</span><a class=self-link href=#cssom></a></h2>
 
 <p>	The following attribute is required to be added to the CSSStyleRule object defined in Section 6.4.3 of <a data-biblio-type=normative data-link-type=biblio href=#cssom title=cssom>[CSSOM]</a>:
 
 	<pre class=idl>partial interface <a class=idl-code data-global-name="" data-link-type=interface href=http://dev.w3.org/csswg/cssom-1/#cssstylerule title=cssstylerule>CSSStyleRule</a> {
-    readonly attribute DOMString <dfn class=idl-code data-dfn-for=CSSStyleRule data-dfn-type=attribute data-export="" data-global-name="CSSStyleRule<interface>/expandedselectortext<attribute>" id=dom-cssstylerule-expandedselectortext title=expandedSelectorText>expandedSelectorText<a class=self-link href=#dom-cssstylerule-expandedselectortext></a></dfn>;
-    readonly attribute <a data-link-type=idl href=http://dev.w3.org/csswg/cssom-1/#cssrulelist title=cssrulelist>CSSRuleList</a> <dfn class=idl-code data-dfn-for=CSSStyleRule data-dfn-type=attribute data-export="" data-global-name="CSSStyleRule<interface>/cssrules<attribute>" id=dom-cssstylerule-cssrules title=cssRules>cssRules<a class=self-link href=#dom-cssstylerule-cssrules></a></dfn>;
+    readonly attribute DOMString <dfn class=idl-code data-dfn-for=CSSStyleRule data-dfn-type=attribute data-export="" data-global-name="CSSStyleRule<interface>/expandedselectortext<attribute>" id=dom-cssstylerule-expandedselectortext>expandedSelectorText<a class=self-link href=#dom-cssstylerule-expandedselectortext></a></dfn>;
+    readonly attribute <a data-link-type=idl href=http://dev.w3.org/csswg/cssom-1/#cssrulelist title=cssrulelist>CSSRuleList</a> <dfn class=idl-code data-dfn-for=CSSStyleRule data-dfn-type=attribute data-export="" data-global-name="CSSStyleRule<interface>/cssrules<attribute>" id=dom-cssstylerule-cssrules>cssRules<a class=self-link href=#dom-cssstylerule-cssrules></a></dfn>;
   };
 </pre>
 <p>	The <code>cssRules</code> attribute must return a <code>CSSRuleList</code> object for the list of CSS rules specified within the style rule.
 
 <p>	The <code>expandedSelectorText</code> attribute must return a <code>DOMString</code> object containing the result of replacing the <span class=css data-link-type=maybe title=&amp;>&amp;</span> selector in the <code>selectorText</code> attribute with the <code>expandedSelectorText</code> attribute from the parent rule.  If the rule has no parent rule, the <code>expandedSelectorText</code> attribute must return a <code>DOMString</code> object containing the same text as the <code>selectorText</code> attribute.
 
-	<p class=issue id=issue-acd4a446><a class=self-link href=#issue-acd4a446></a>
-		The OM here is meant to reflect the OM for <span class=css data-link-type=maybe title=@media>@media</span> rules.
-		In particular, the lack of a link from a rule to its parent matches rules nested in <span class=css data-link-type=maybe title=@media>@media</span>.
+	<p class=issue id=issue-2313fa52><a class=self-link href=#issue-2313fa52></a>
+		The OM here is meant to reflect the OM for <a class=css data-link-type=maybe href=http://dev.w3.org/csswg/css-conditional-3/#at-ruledef-media title=@media>@media</a> rules.
+		In particular, the lack of a link from a rule to its parent matches rules nested in <a class=css data-link-type=maybe href=http://dev.w3.org/csswg/css-conditional-3/#at-ruledef-media title=@media>@media</a>.
 		Should we add a <code>parentRule</code> property to both of these?
 
 <h2 class="no-num no-ref heading settled heading" id=references><span class=content>
@@ -385,11 +366,11 @@ References</span><a class=self-link href=#references></a></h2>
 
 <h3 class="no-num no-ref heading settled heading" id=normative><span class=content>
 Normative References</span><a class=self-link href=#normative></a></h3>
-<div data-fill-with=normative-references><dl><dt id=css21 title=CSS21><a class=self-link href=#css21></a>[CSS21]<dd>Bert Bos; et al. <a href=http://www.w3.org/TR/2011/REC-CSS2-20110607>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href=http://www.w3.org/TR/2011/REC-CSS2-20110607>http://www.w3.org/TR/2011/REC-CSS2-20110607</a><dt id=cssom title=CSSOM><a class=self-link href=#cssom></a>[CSSOM]<dd>Anne van Kesteren. <a href=http://www.w3.org/TR/2011/WD-cssom-20110712/>CSSOM</a>. 12 July 2011. W3C Working Draft. (Work in progress.) URL: <a href=http://www.w3.org/TR/2011/WD-cssom-20110712/>http://www.w3.org/TR/2011/WD-cssom-20110712/</a><dt id=selectors4 title=SELECTORS4><a class=self-link href=#selectors4></a>[SELECTORS4]<dd>Elika J. Etemad; Tab Atkins Jr.. <a href=http://www.w3.org/TR/2013/WD-selectors4-20130502/>Selectors Level 4</a>. 2 May 2013. W3C Working Draft. (Work in progress.) URL: <a href=http://www.w3.org/TR/2013/WD-selectors4-20130502/>http://www.w3.org/TR/2013/WD-selectors4-20130502/</a></dl></div>
+<div data-fill-with=normative-references><dl><dt id=css21 title=CSS21><a class=self-link href=#css21></a>[CSS21]<dd>Bert Bos; et al. <a href=http://www.w3.org/TR/2011/REC-CSS2-20110607>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. W3C Recommendation. URL: <a href=http://www.w3.org/TR/2011/REC-CSS2-20110607>http://www.w3.org/TR/2011/REC-CSS2-20110607</a><dt id=cssom title=CSSOM><a class=self-link href=#cssom></a>[CSSOM]<dd>Anne van Kesteren. <a href=http://www.w3.org/TR/2011/WD-cssom-20110712/>CSSOM</a>. 12 July 2011. W3C Working Draft. (Work in progress.) URL: <a href=http://www.w3.org/TR/2011/WD-cssom-20110712/>http://www.w3.org/TR/2011/WD-cssom-20110712/</a></dl></div>
 
 <h3 class="no-num no-ref heading settled heading" id=informative><span class=content>
 Informative References</span><a class=self-link href=#informative></a></h3>
-<div data-fill-with=informative-references><dl><dt id=css3color title=CSS3COLOR><a class=self-link href=#css3color></a>[CSS3COLOR]<dd>Tantek Çelik; Chris Lilley; L. David Baron. <a href=http://www.w3.org/TR/2011/REC-css3-color-20110607>CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href=http://www.w3.org/TR/2011/REC-css3-color-20110607>http://www.w3.org/TR/2011/REC-css3-color-20110607</a></dl></div>
+<div data-fill-with=informative-references><dl><dt id=css3color title=CSS3COLOR><a class=self-link href=#css3color></a>[CSS3COLOR]<dd>Tantek Çelik; Chris Lilley; L. David Baron. <a href=http://www.w3.org/TR/2011/REC-css3-color-20110607>CSS Color Module Level 3</a>. 7 June 2011. W3C Recommendation. URL: <a href=http://www.w3.org/TR/2011/REC-css3-color-20110607>http://www.w3.org/TR/2011/REC-css3-color-20110607</a><dt id=selectors4 title=SELECTORS4><a class=self-link href=#selectors4></a>[SELECTORS4]<dd>Elika J. Etemad; Tab Atkins Jr.. <a href=http://www.w3.org/TR/2013/WD-selectors4-20130502/>Selectors Level 4</a>. 2 May 2013. W3C Working Draft. (Work in progress.) URL: <a href=http://www.w3.org/TR/2013/WD-selectors4-20130502/>http://www.w3.org/TR/2013/WD-selectors4-20130502/</a></dl></div>
 
 <h2 class="no-num no-ref heading settled heading" id=index><span class=content>
 Index</span><a class=self-link href=#index></a></h2>
@@ -405,19 +386,19 @@ Property index</span><a class=self-link href=#property-index></a></h2>
 <div data-fill-with=property-index><p>No properties defined.</div>
 
 
-<h2 class="no-num heading settled" id=issues-index><span class=content>Issues Index</span><a class=self-link href=#issues-index></a></h2><div style="counter-reset: issue"><p class=issue>
+<h2 class="no-num heading settled" id=issues-index><span class=content>Issues Index</span><a class=self-link href=#issues-index></a></h2><div style="counter-reset: issue"><div class=issue>
 		Introducing the <span class=css data-link-type=maybe title=&amp;>&amp;</span> character will cause issues with CSS embedded directly in XML, as it’s the first character used in CSS syntax that either requires escaping or using CDATA.  Do we need to change this?
 
-	<a href=#issue-90e090ad> ↵ </a><p class=issue>
+	<a href=#issue-504e1146> ↵ </a></div><div class=issue>
 		If this spec is accepted,
 		I’ll just modify Syntax directly to accommodate Nesting.
 
-	<a href=#issue-cb7191be> ↵ </a><p class=issue>
+	<a href=#issue-c0b72acf> ↵ </a></div><div class=issue>
 		None of this chapter is correct now that I’m using <a data-link-type=dfn href=#nesting-block title="nesting blocks">nesting blocks</a> as the disambiguator.
 
-<a href=#issue-8f1dbe33> ↵ </a><p class=issue>
-		The OM here is meant to reflect the OM for <span class=css data-link-type=maybe title=@media>@media</span> rules.
-		In particular, the lack of a link from a rule to its parent matches rules nested in <span class=css data-link-type=maybe title=@media>@media</span>.
+<a href=#issue-b328b3aa> ↵ </a></div><div class=issue>
+		The OM here is meant to reflect the OM for <a class=css data-link-type=maybe href=http://dev.w3.org/csswg/css-conditional-3/#at-ruledef-media title=@media>@media</a> rules.
+		In particular, the lack of a link from a rule to its parent matches rules nested in <a class=css data-link-type=maybe href=http://dev.w3.org/csswg/css-conditional-3/#at-ruledef-media title=@media>@media</a>.
 		Should we add a <code>parentRule</code> property to both of these?
 
-<a href=#issue-acd4a446> ↵ </a></div>
+<a href=#issue-2313fa52> ↵ </a></div></div>
