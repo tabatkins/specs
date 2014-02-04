@@ -86,7 +86,7 @@ Hinting at Future Behavior: the 'will-change' property</h2>
 			specifying that property in 'will-change' must create a stacking context on the element.
 
 			If any non-initial value of a property would cause the element to generate a containing block for fixed-position elements,
-			specifying that property in 'will-change' must cause the element to generate a cotnaining block for fixed-position elements.
+			specifying that property in 'will-change' must cause the element to generate a containing block for fixed-position elements.
 
 			If a non-initial value of a property would cause rendering differences on the element
 			(such as using a different anti-aliasing strategy for text),
@@ -102,7 +102,7 @@ Hinting at Future Behavior: the 'will-change' property</h2>
 	</div>
 
 	The 'will-change' property has no <em>direct</em> effect on the element it is specified on,
-	beyond the creation of stacking contexts as specified above.
+	beyond the creation of stacking contexts and containing blocks as specified above.
 	It is solely a rendering hint to the user agent,
 	allowing it set up potentially-expensive optimizations for certain types of changes
 	before the changes actually start occurring.
