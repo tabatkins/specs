@@ -7,6 +7,7 @@ Status: ED
 ED: http://tabatkins.github.io/specs/css-will-change/
 Abstract: This document defines the 'will-change' property, which allows an author to inform the UA ahead of time of what kinds of changes they are likely to make to an element.  This allows the UA to optimize how they handle the element ahead of time, performing potentially-expensive work preparing for an animation before the animation actually begins.
 Editor: Tab Atkins Jr., Google Inc., http://xanthir.com/contact/
+Link Defaults: css-transforms-1 (property) transform
 </pre>
 
 <h2 id='intro'>
@@ -81,9 +82,11 @@ Hinting at Future Behavior: the 'will-change' property</h2>
 			It is still <em>safe</em> to specify them, though;
 			it'll simply have no effect.
 
-			If any non-initial value of a property would create a stacking context on the element
-			(in general, or just for fixed-positioned descendants),
+			If any non-initial value of a property would create a stacking context on the element,
 			specifying that property in 'will-change' must create a stacking context on the element.
+
+			If any non-initial value of a property would cause the element to generate a containing block for fixed-position elements,
+			specifying that property in 'will-change' must cause the element to generate a cotnaining block for fixed-position elements.
 
 			If a non-initial value of a property would cause rendering differences on the element
 			(such as using a different anti-aliasing strategy for text),

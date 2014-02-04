@@ -592,7 +592,7 @@ Introduction</span><a class=self-link href=#intro></a></h2>
 		and often provides significant speed benefits.
 
 <p>		However, setting up the element in a fresh layer is a relatively expensive operation,
-		which can delay the start of a <a class=property data-link-type=propdesc href=http://www.w3.org/TR/css3-2d-transforms/#propdef-transform title=transform>transform</a> animation by a noticeable fraction of a second.
+		which can delay the start of a <a class=property data-link-type=propdesc href=http://dev.w3.org/csswg/css-transforms-1/#propdef-transform title=transform>transform</a> animation by a noticeable fraction of a second.
 	</div>
 
 <p>	The <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> property defined in this specification allows an author to declare ahead-of-time what properties are likely to change in the future,
@@ -637,9 +637,11 @@ Hinting at Future Behavior: the <a class=property data-link-type=propdesc href=#
 			It is still <em>safe</em> to specify them, though;
 			it’ll simply have no effect.
 
-<p>			If any non-initial value of a property would create a stacking context on the element
-			(in general, or just for fixed-positioned descendants),
+<p>			If any non-initial value of a property would create a stacking context on the element,
 			specifying that property in <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> must create a stacking context on the element.
+
+<p>			If any non-initial value of a property would cause the element to generate a containing block for fixed-position elements,
+			specifying that property in <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> must cause the element to generate a cotnaining block for fixed-position elements.
 
 <p>			If a non-initial value of a property would cause rendering differences on the element
 			(such as using a different anti-aliasing strategy for text),
