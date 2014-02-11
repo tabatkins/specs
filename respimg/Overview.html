@@ -72,18 +72,25 @@ dt { font-weight: bold }
 	<p data-fill-with=logo></p>
 	<h1 class="p-name no-ref" id=title>Proposal for RespImg Syntax</h1>
 	<h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Unofficial Proposal Draft,
-		<span class=dt-updated><span class=value-title title=20131018>18 October 2013</span></span></span></h2>
-	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2013/UD-respimg-1-20131018/>http://www.w3.org/TR/2013/UD-respimg-1-20131018/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
+		<span class=dt-updated><span class=value-title title=20140211>11 February 2014</span></span></span></h2>
+	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2014/UD-respimg-1-20140211/>http://www.w3.org/TR/2014/UD-respimg-1-20140211/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
     <dt>Feedback:</dt>
         <dd><a href="mailto:public-respimg@w3.org?subject=%5Brespimg%5D%20feedback">public-respimg@w3.org</a>
             with subject line
             “<kbd>[respimg] <var>… message topic …</var></kbd>”(<a href=http://lists.w3.org/Archives/Public/public-respimg/ rel=discussion>archives</a>)<dt>Test Suite:<dd>None Yet<dt>Editors:
 <dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins</a> (<span class="p-org org">Google</span>)</dl></div>
-	<div data-fill-with=warning></div>
+	<div data-fill-with=warning><details class=annoying-warning open>
+	<summary>This Document Is Obsolete and Has Been Replaced</summary>
+	<p>
+		This specification is obsolete and has been replaced by the document at <a href=http://picture.responsiveimages.org/>http://picture.responsiveimages.org/</a>.
+		Do not attempt to implement this specification.
+		Do not refer to this specification except as a historical artifact.
+</details>
+</div>
 	<p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright 
 and related or neighboring rights to this work. 
-In addition, as of 18 October 2013, 
+In addition, as of 11 February 2014, 
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -108,7 +115,7 @@ Introduction</a><li><a href=#problem><span class=secno>2</span>
 The Problem Statement</a><li><a href=#syntax><span class=secno>3</span>
 The Syntax Proposal</a><ul class=toc><li><a href=#media-queries><span class=secno>3.1</span>
 Art Direction</a><li><a href=#resolution><span class=secno>3.2</span>
-Resolution</a><li><a href=#viewport><span class=secno>3.3</span>
+Resolution</a><li><a href=#variable-size><span class=secno>3.3</span>
 Variable-Sized Images</a></ul><li><a href=#model><span class=secno>4</span>
 Processing Model</a><ul class=toc><li><a href=#obtain-candidates><span class=secno>4.1</span>
 Obtaining the Image Candidates</a></ul><li><a href=#references><span class=secno></span>
@@ -158,7 +165,7 @@ The Problem Statement</span><a class=self-link href=#problem></a></h2>
 			and still show the most important parts of the image at an appropriate size.
 
 		<li>
-			<dfn data-dfn-type=dfn data-noexport="" id=viewport0 title=viewport>Variable-size resolution discrimination<a class=self-link href=#viewport0></a></dfn> -
+			<dfn data-dfn-type=dfn data-noexport="" id=viewport title=viewport>Variable-size resolution discrimination<a class=self-link href=#viewport></a></dfn> -
 			sometimes the image you’re serving is variable-sized:
 			either based on the size of the viewport
 			or just different sizes at different breakpoints.
@@ -186,7 +193,7 @@ The Syntax Proposal</span><a class=self-link href=#syntax></a></h2>
 <p>	Add a set of attributes to <code>&lt;img&gt;</code>,
 	named <code>src-1</code>, <code>src-2</code>, etc.
 	Collectively,
-	these are the <dfn data-dfn-type=dfn data-export="" id=src-n--src-n-attribute title="src-N | src-N attribute">src-N attributes<a class=self-link href=#src-n--src-n-attribute></a></dfn>
+	these are the <dfn data-dfn-type=dfn data-export="" id=src-n- title="src-N | src-N attribute">src-N attributes<a class=self-link href=#src-n-></a></dfn>
 
 <p>	When loading an image,
 	these attributes are consulted first,
@@ -200,7 +207,7 @@ The Syntax Proposal</span><a class=self-link href=#syntax></a></h2>
 
 <p>	The grammar for the attributes is:
 
-	<pre>  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-src-n-attribute>&lt;src-n-attribute&gt;<a class=self-link href=#typedef-src-n-attribute></a></dfn> = <a class="production css-code" data-link-type=type title="<media-query>">&lt;media-query&gt;</a>? [ <a class="production css-code" data-link-type=type href=#typedef-x-based-urls title="<x-based-urls>">&lt;x-based-urls&gt;</a> | <a class="production css-code" data-link-type=type href=#typedef-viewport-urls title="<viewport-urls>">&lt;viewport-urls&gt;</a> ]
+	<pre>  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-src-n-attribute>&lt;src-n-attribute&gt;<a class=self-link href=#typedef-src-n-attribute></a></dfn> = <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/mediaqueries-4/#typedef-media-query title="<media-query>">&lt;media-query&gt;</a>? [ <a class="production css-code" data-link-type=type href=#typedef-x-based-urls title="<x-based-urls>">&lt;x-based-urls&gt;</a> | <a class="production css-code" data-link-type=type href=#typedef-viewport-urls title="<viewport-urls>">&lt;viewport-urls&gt;</a> ]
   <dfn class=css-code data-dfn-type=type data-export="" id=typedef-x-based-urls>&lt;x-based-urls&gt;<a class=self-link href=#typedef-x-based-urls></a></dfn> = [ <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#url-value title="<url>">&lt;url&gt;</a> <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#resolution-value title="<resolution>">&lt;resolution&gt;</a>? ]#
 
   <dfn class=css-code data-dfn-type=type data-export="" id=typedef-viewport-urls>&lt;viewport-urls&gt;<a class=self-link href=#typedef-viewport-urls></a></dfn> = <a class="production css-code" data-link-type=type href=#typedef-size-viewport-list title="<size-viewport-list>">&lt;size-viewport-list&gt;</a> ; <a class="production css-code" data-link-type=type href=#typedef-size-based-urls title="<size-based-urls>">&lt;size-based-urls&gt;</a>
@@ -224,14 +231,14 @@ The Syntax Proposal</span><a class=self-link href=#syntax></a></h2>
 Art Direction</span><a class=self-link href=#media-queries></a></h3>
 
 <p>	To solve the basic <a data-link-type=dfn href=#art-direction title=art-direction>art-direction</a> use-case,
-	the <a data-link-type=dfn href=#src-n--src-n-attribute title="src-n attributes">src-N attributes</a> allow a media query to be provided at the beginning of their value.
+	the <a data-link-type=dfn href=#src-n- title="src-n attributes">src-N attributes</a> allow a media query to be provided at the beginning of their value.
 
-	<p class=issue id=issue-06cc56d0><a class=self-link href=#issue-06cc56d0></a>
+	<p class=issue id=issue-c4f912a2><a class=self-link href=#issue-c4f912a2></a>
 		I want just the second clause of the <code>media_query</code> grammar in Media Queries 4,
 		where you have "(foo:bar) and (baz:qux)" and that’s it.
 		I should go fix the grammar section there to expose this more cleanly.
 
-<p>	Each valid <a data-link-type=dfn href=#src-n--src-n-attribute title="src-n attribute">src-N attribute</a> is checked in numerical order,
+<p>	Each valid <a data-link-type=dfn href=#src-n- title="src-n attribute">src-N attribute</a> is checked in numerical order,
 	and the first one to have a matching media query
 	(or no media query at all)
 	is chosen as the source of candidate urls for this <code>&lt;img&gt;</code>.
@@ -254,7 +261,7 @@ Art Direction</span><a class=self-link href=#media-queries></a></h3>
 <p class=note>		Note: Putting the final url into a <code>src</code> attribute like that isn’t required;
 		in fact, if using any of the more advanced pieces of this feature,
 		like multiple resolutions,
-		it would <em>have</em> to be in a <a data-link-type=dfn href=#src-n--src-n-attribute title="src-n attribute">src-N attribute</a>
+		it would <em>have</em> to be in a <a data-link-type=dfn href=#src-n- title="src-n attribute">src-N attribute</a>
 		(using <code>src-3</code> would be most appropriate here).
 		Still, having a final fallback in <code>src</code> is a good idea,
 		as it means that down-level browsers will still be able to correctly download the image.
@@ -268,7 +275,7 @@ Art Direction</span><a class=self-link href=#media-queries></a></h3>
 Resolution</span><a class=self-link href=#resolution></a></h3>
 
 <p>	To solve the <a data-link-type=dfn href=#resolution0 title=resolution>resolution</a> use-case,
-	the <a data-link-type=dfn href=#src-n--src-n-attribute title="src-n attributes">src-N attributes</a> allow multiple urls to be provided,
+	the <a data-link-type=dfn href=#src-n- title="src-n attributes">src-N attributes</a> allow multiple urls to be provided,
 	each with an indicator of their resolution
 	(the ratio of image pixels to CSS pixels).
 
@@ -277,7 +284,7 @@ Resolution</span><a class=self-link href=#resolution></a></h3>
 	where each pair is a url, followed by whitespace, followed by a CSS <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#resolution-value title="<resolution>">&lt;resolution&gt;</a> value.
 	A url provided without a <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#resolution-value title="<resolution>">&lt;resolution&gt;</a> is assumed to be at <span class=css data-link-type=maybe title=1x>1x</span> resolution.
 
-	<p class=issue id=issue-8c2c662b><a class=self-link href=#issue-8c2c662b></a>
+	<p class=issue id=issue-507e8b4c><a class=self-link href=#issue-507e8b4c></a>
 		Assume that I’ve already edited Images 4 appropriately so that <span class=css data-link-type=maybe title=x>x</span> is a valid resolution unit,
 		equivalent to <span class=css data-link-type=maybe title=dppx>dppx</span>.
 
@@ -305,8 +312,8 @@ Resolution</span><a class=self-link href=#resolution></a></h3>
 	For example, if "pic1.png 2x" is chosen, and is 100 pixels wide,
 	its intrinsic size is <span class=css data-link-type=maybe title=50px>50px</span>.
 
-<h3 class="heading settled heading" data-level=3.3 id=viewport><span class=secno>3.3 </span><span class=content>
-Variable-Sized Images</span><a class=self-link href=#viewport></a></h3>
+<h3 class="heading settled heading" data-level=3.3 id=variable-size><span class=secno>3.3 </span><span class=content>
+Variable-Sized Images</span><a class=self-link href=#variable-size></a></h3>
 
 <p>	The previous section on resolution discrimination had a hidden assumption which may not always be true:
 	that the image being presented is meant to be a single, static size.
@@ -372,7 +379,7 @@ Variable-Sized Images</span><a class=self-link href=#viewport></a></h3>
 	<div class=example>
 		Here’s a more complete example,
 		with image sizes spanning the full range of appropriate values
-		for screens from small phones to large desktop monitors. 
+		for screens from small phones to large desktop monitors.
 
 		<pre class=lang-markup>  &lt;img src-1="100%; pic1.png 160, pic2.png 320, pic3.png 640,
                    pic4.png 1280, pic5.png 2560"&gt;
@@ -485,16 +492,16 @@ Processing Model</span><a class=self-link href=#model></a></h2>
 
 	<ol>
 		<li>
-			Let <var>candidates</var> be the result of <a data-link-type=dfn href=#obtain-the-image-candidatesobtaining-the-image-candidates title="obtaining the image candidates">obtaining the image candidates</a> from the element.
+			Let <var>candidates</var> be the result of <a data-link-type=dfn href=#obtain-the-image-candidates title="obtaining the image candidates">obtaining the image candidates</a> from the element.
 
 		<li>
 			If <var>candidates</var> is empty,
 			abort this algorithm.
-			<p class=issue id=issue-fc5e642a><a class=self-link href=#issue-fc5e642a></a>
+			<p class=issue id=issue-1b127cd1><a class=self-link href=#issue-1b127cd1></a>
 				Is this the right place to say "fire a load error" or whatever?
 
 		<li>
-			<p class=issue id=issue-e3021f25><a class=self-link href=#issue-e3021f25></a>
+			<p class=issue id=issue-0530be2c><a class=self-link href=#issue-0530be2c></a>
 				Update the image data, choose the right candidate, etc, etc, hook up to the right terms in HTML.
 				The actual choice is UA-specific.
 	</ol>
@@ -502,7 +509,7 @@ Processing Model</span><a class=self-link href=#model></a></h2>
 <h3 class="heading settled heading" data-level=4.1 id=obtain-candidates><span class=secno>4.1 </span><span class=content>
 Obtaining the Image Candidates</span><a class=self-link href=#obtain-candidates></a></h3>
 
-<p>	This section describes how to <dfn data-dfn-type=dfn data-noexport="" id=obtain-the-image-candidatesobtaining-the-image-candidates title="obtain the image candidates|obtaining the image candidates">obtain the image candidates<a class=self-link href=#obtain-the-image-candidatesobtaining-the-image-candidates></a></dfn>
+<p>	This section describes how to <dfn data-dfn-type=dfn data-noexport="" id=obtain-the-image-candidates title="obtain the image candidates|obtaining the image candidates">obtain the image candidates<a class=self-link href=#obtain-the-image-candidates></a></dfn>
 	from an HTML <code>&lt;img&gt;</code> element.
 
 <p>	The input to this algorithm is an HTML <code>&lt;img&gt;</code> element.
@@ -527,7 +534,7 @@ Obtaining the Image Candidates</span><a class=self-link href=#obtain-candidates>
 
 		<li>
 			If <var>candidate attributes</var> is empty,
-			return the result of <a data-link-type=dfn href=#obtain-a-candidate-from-srcobtaining-a-candidate-from-src title="obtaining a candidate from src">obtaining a candidate from src</a> from the element
+			return the result of <a data-link-type=dfn href=#obtain-a-candidate-from-src title="obtaining a candidate from src">obtaining a candidate from src</a> from the element
 			and abort this algorithm.
 
 		<li>
@@ -558,7 +565,7 @@ Obtaining the Image Candidates</span><a class=self-link href=#obtain-candidates>
 
 		<li>
 			If there is no <var>winning value</var>,
-			return the result of <a data-link-type=dfn href=#obtain-a-candidate-from-srcobtaining-a-candidate-from-src title="obtaining a candidate from src">obtaining a candidate from src</a> from the element
+			return the result of <a data-link-type=dfn href=#obtain-a-candidate-from-src title="obtaining a candidate from src">obtaining a candidate from src</a> from the element
 			and abort this algorithm.
 
 		<li>
@@ -640,7 +647,7 @@ Obtaining the Image Candidates</span><a class=self-link href=#obtain-candidates>
 <p>			Return <var>image candidates</var>.
 	</ol>
 
-<p>	To <dfn data-dfn-type=dfn data-noexport="" id=obtain-a-candidate-from-srcobtaining-a-candidate-from-src title="obtain a candidate from src|obtaining a candidate from src">obtain a candidate from src<a class=self-link href=#obtain-a-candidate-from-srcobtaining-a-candidate-from-src></a></dfn> from an element,
+<p>	To <dfn data-dfn-type=dfn data-noexport="" id=obtain-a-candidate-from-src title="obtain a candidate from src|obtaining a candidate from src">obtain a candidate from src<a class=self-link href=#obtain-a-candidate-from-src></a></dfn> from an element,
 	follow these steps:
 
 	<ol>
@@ -655,7 +662,7 @@ Obtaining the Image Candidates</span><a class=self-link href=#obtain-candidates>
 			return an empty list.
 	</ol>
 
-	<p class=issue id=issue-04b28ba9><a class=self-link href=#issue-04b28ba9></a>
+	<p class=issue id=issue-0b8de5e0><a class=self-link href=#issue-0b8de5e0></a>
 		In the event that this proposal "wins",
 		but browsers have already shipped "basic" <code>srcset</code>
 		(just support for resolution discrimination)
@@ -663,6 +670,7 @@ Obtaining the Image Candidates</span><a class=self-link href=#obtain-candidates>
 		then we can easily integrate <code>srcset</code> into this fallback behavior.
 		In other words, <code>srcset</code> doesn’t hurt this proposal
 		(though it would be ideal if it didn’t exist alongside).
+
 <h2 class="no-num no-ref heading settled heading" id=references><span class=content>
 References</span><a class=self-link href=#references></a></h2>
 
@@ -680,17 +688,17 @@ Index</span><a class=self-link href=#index></a></h2>
 <li>art-direction, <a href=#art-direction title="section 2">2</a>
 <li>image candidate, <a href=#image-candidate title="section 4.1">4.1</a>
 <li>&lt;image-size&gt;, <a href=#typedef-image-size title="section 3">3</a>
-<li>obtain a candidate from src, <a href=#obtain-a-candidate-from-srcobtaining-a-candidate-from-src title="section 4.1">4.1</a>
-<li>obtaining a candidate from src, <a href=#obtain-a-candidate-from-srcobtaining-a-candidate-from-src title="section 4.1">4.1</a>
-<li>obtaining the image candidates, <a href=#obtain-the-image-candidatesobtaining-the-image-candidates title="section 4.1">4.1</a>
-<li>obtain the image candidates, <a href=#obtain-the-image-candidatesobtaining-the-image-candidates title="section 4.1">4.1</a>
+<li>obtain a candidate from src, <a href=#obtain-a-candidate-from-src title="section 4.1">4.1</a>
+<li>obtaining a candidate from src, <a href=#obtain-a-candidate-from-src title="section 4.1">4.1</a>
+<li>obtaining the image candidates, <a href=#obtain-the-image-candidates title="section 4.1">4.1</a>
+<li>obtain the image candidates, <a href=#obtain-the-image-candidates title="section 4.1">4.1</a>
 <li>resolution, <a href=#resolution0 title="section 2">2</a>
 <li>&lt;size-based-urls&gt;, <a href=#typedef-size-based-urls title="section 3">3</a>
 <li>&lt;size-viewport-list&gt;, <a href=#typedef-size-viewport-list title="section 3">3</a>
-<li>src-N, <a href=#src-n--src-n-attribute title="section 3">3</a>
-<li>src-N attribute, <a href=#src-n--src-n-attribute title="section 3">3</a>
+<li>src-N, <a href=#src-n- title="section 3">3</a>
+<li>src-N attribute, <a href=#src-n- title="section 3">3</a>
 <li>&lt;src-n-attribute&gt;, <a href=#typedef-src-n-attribute title="section 3">3</a>
-<li>viewport, <a href=#viewport0 title="section 2">2</a>
+<li>viewport, <a href=#viewport title="section 2">2</a>
 <li>&lt;viewport-size&gt;, <a href=#typedef-viewport-size title="section 3">3</a>
 <li>&lt;viewport-urls&gt;, <a href=#typedef-viewport-urls title="section 3">3</a>
 <li>&lt;x-based-urls&gt;, <a href=#typedef-x-based-urls title="section 3">3</a>
@@ -701,22 +709,22 @@ Property index</span><a class=self-link href=#property-index></a></h2>
 <div data-fill-with=property-index><p>No properties defined.</div>
 
 
-<h2 class="no-num heading settled" id=issues-index><span class=content>Issues Index</span><a class=self-link href=#issues-index></a></h2><div style="counter-reset: issue"><p class=issue>
+<h2 class="no-num heading settled" id=issues-index><span class=content>Issues Index</span><a class=self-link href=#issues-index></a></h2><div style="counter-reset: issue"><div class=issue>
 		I want just the second clause of the <code>media_query</code> grammar in Media Queries 4,
 		where you have "(foo:bar) and (baz:qux)" and that’s it.
 		I should go fix the grammar section there to expose this more cleanly.
 
-<a href=#issue-06cc56d0> ↵ </a><p class=issue>
+<a href=#issue-c4f912a2> ↵ </a></div><div class=issue>
 		Assume that I’ve already edited Images 4 appropriately so that <span class=css data-link-type=maybe title=x>x</span> is a valid resolution unit,
 		equivalent to <span class=css data-link-type=maybe title=dppx>dppx</span>.
 
-	<a href=#issue-8c2c662b> ↵ </a><p class=issue>
+	<a href=#issue-507e8b4c> ↵ </a></div><div class=issue>
 				Is this the right place to say "fire a load error" or whatever?
 
-		<a href=#issue-fc5e642a> ↵ </a><p class=issue>
+		<a href=#issue-1b127cd1> ↵ </a></div><div class=issue>
 				Update the image data, choose the right candidate, etc, etc, hook up to the right terms in HTML.
 				The actual choice is UA-specific.
-	<a href=#issue-e3021f25> ↵ </a><p class=issue>
+	<a href=#issue-0530be2c> ↵ </a></div><div class=issue>
 		In the event that this proposal "wins",
 		but browsers have already shipped "basic" <code>srcset</code>
 		(just support for resolution discrimination)
@@ -724,4 +732,5 @@ Property index</span><a class=self-link href=#property-index></a></h2>
 		then we can easily integrate <code>srcset</code> into this fallback behavior.
 		In other words, <code>srcset</code> doesn’t hurt this proposal
 		(though it would be ideal if it didn’t exist alongside).
-<a href=#issue-04b28ba9> ↵ </a></div>
+
+<a href=#issue-0b8de5e0> ↵ </a></div></div>
