@@ -1,11 +1,11 @@
-<h1>CSS Aliases</h1>
+<h1>CSS Extensions</h1>
 <pre class='metadata'>
-Shortname: css-aliases
+Shortname: css-extensions
 Level: 1
 Status: ED
 ED: http://tabatkins.github.io/specs/css-aliases/
 Editor: Tab Atkins, Google, http://xanthir.com/contact/
-Abstract: This specification defines methods of defining “aliases” for long or commonly-used values in several CSS features, reducing repetition in the stylesheet.
+Abstract: This specification defines methods for authors to extend and enhance various CSS features.
 </pre>
 
 <h2 id='intro'>
@@ -21,109 +21,44 @@ Introduction</h2>
 	and also affects maintenance,
 	as the author has to keep each repetition in sync when making any changes.
 
-	This specification defines aliasing methods for several CSS features--
-	media queries and selectors--
-	so that a long or repeatedly-used value can be given a short, memorable name instead.
+	This specification defines methods for extending several CSS features
+	so that a long or repeatedly-used value can be given a short, memorable name instead,
+	or a feature can be given a more complex definition controlled by a scripting language.
 	This makes stylesheets easier to read,
-	and allows authors to maintain only a single copy of the value,
-	so changes are automatically propagated to each use.
+	and more powerful in general,
+	as authors can extend the feature-set of CSS themselves
+	rather than waiting for standards bodies to define new features for them.
 
-	Note: The features in this specification are thematically similar to <a>custom properties</a> and <a>variables</a>,
-	but use a different, simpler definition and use syntax.
+<h2 id='extension-name'>
+Extension Names</h2>
 
-<h2 id='custom-mq'>
-Custom Media Queries</h2>
-
-	A <dfn>custom media query</dfn> is defined with the ''@custom-media'' rule:
-
-	<pre class='prod'><dfn>@custom-media</dfn> = @custom-media <<custom-name>> <<media-query>> ;</pre>
-
-	Where <dfn>&lt;custom-name></dfn> is a <<custom-ident>> with at least one <code>_</code> (underscore, U+005F LOW LINE) in it.
-
-	This defines that the <a>custom media query</a> named by the <<custom-name>> represents the given <<media-query>>.
-
-	Note: It's recommended that the name either starts with the underscore,
-	following the somewhat similar notation in JavaScript, Python, and other computer languages,
-	or that the underscore is used as a separator between a simple "namespace" and the actual name of the <a>custom media query</a>,
-	such as ''jq_small-screen''.
-	Either of these methods makes the underscore fairly visually obvious in its use,
-	preventing accidental confusion with CSS-defined <a>media queries</a>.
-
-	The <<custom-name>> can then be used in a <a>media feature</a>.
-	It <strong>must</strong> be used in a <a>boolean context</a>;
-	using them in a normal or <a>range context</a> is a syntax error.
-	The <a>custom media query</a> evaluates to true if the <<media-query>> it represents evaluates to true,
-	and false otherwise.
-
-	<div class='example'>
-		For example, if a responsive site uses a particular breakpoint in several places,
-		it can alias that with a reasonable name:
-
-		<pre>
-			@custom-media _narrow-window (max-width: 30em);
-
-			@media (_narrow-window) {
-				/* narrow window styles */
-			}
-			@media (_narrow-window) and (script) {
-				/* special styles for when script is allowed */
-			}
-			/* etc */
-		</pre>
-	</div>
-
-<h3 id='script-custom-mq'>
-Script-based Custom Media Queries</h3>
-
-	<div class='issue'>
-		Define a map of names to values for JS.
-		Values can be either a MediaQueryList object or a boolean,
-		in which case it's treated identically to the above,
-		or can be a number or a string,
-		in which case it's treated like a normal MQ,
-		and can use the normal or range context syntax.
-		Like:
-
-		<pre>
-			&lt;script>
-			CSS.customMedia.set('_foo', 5);
-			&lt;/script>
-			&lt;style>
-			@media (_foo: 5) { ... }
-			@media (_foo < 10) { ... }
-			&lt;/style>
-		</pre>
-	</div>
-
-
-<h3 id='custom-mq-cssom'>
-CSSOM</h3>
-
-	<p class='issue'>
-		Fill in.
+	All extensions defined in this specification use a common syntax for defining their ”names”:
+	the <<extension-name>> production.
+	An <dfn>&lt;extension-name></dfn> is any <a>identifier</a> that starts with two dashes (U+002D HYPHEN-MINUS),
+	like ''--foo'', or even exotic names like ''--'' or ''------''.
+	The CSS language will never use identifiers of this form for any language-defined purpose,
+	so it's safe to use them for author-defined purposes
+	without ever having to worry about colliding with CSS-defined names.
 
 <h2 id='custom-selectors'>
 Custom Selectors</h2>
 
 	A <dfn>custom selector</dfn> is defined with the ''@custom-selector'' rule:
 
-	<pre class='prod'><dfn>@custom-selector</dfn> = @custom-selector <<custom-name>> <<selector>> ;</pre>
+	<pre class='prod'><dfn>@custom-selector</dfn> = @custom-selector <<extension-name>> <<selector>> ;</pre>
 
-	This defines a <a>custom selector</a> which is written as a <a spec=selectors>pseudo-class</a> with the given <<custom-name>>,
+	This defines a <a>custom selector</a> which is written as a <a spec=selectors>pseudo-class</a> with the given <<extension-name>>,
 	and represents a '':matches()'' selector using the provided <<selector>> as its argument.
-
-	Similar to <a>custom media queries</a>,
-	the name of a <a>custom selector</a> must contain an underscore character.
 
 	<div class='example'>
 		For example, if an author wanted to easily refer to all heading elements in their HTML document,
 		they could create an alias:
 
 		<pre>
-			@custom-selector :_heading h1, h2, h3, h4, h5, h6;
+			@custom-selector :--heading h1, h2, h3, h4, h5, h6;
 
-			:_heading { /* styles for all headings */ }
-			:_heading + p { /* more styles */ }
+			:--heading { /* styles for all headings */ }
+			:--heading + p { /* more styles */ }
 			/* etc */
 		</pre>
 	</div>

@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang=en><head>
   <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
-  <title>CSS Aliases</title>
+  <title>CSS Extensions</title>
   <style>
 @media print {
   html { margin: 0 !important; }
@@ -541,16 +541,16 @@ span.issue, span.note {
 <body class=h-entry>
 <div class=head>
   <p data-fill-with=logo></p>
-  <h1 class="p-name no-ref" id=title>CSS Aliases</h1>
+  <h1 class="p-name no-ref" id=title>CSS Extensions</h1>
   <h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Editor’s Draft,
-    <span class=dt-updated><span class=value-title title=20140325>25 March 2014</span></span></span></h2>
+    <span class=dt-updated><span class=value-title title=20140411>11 April 2014</span></span></span></h2>
   <div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://tabatkins.github.io/specs/css-aliases/>http://tabatkins.github.io/specs/css-aliases/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/css-aliases/>http://tabatkins.github.io/specs/css-aliases/</a><dt>Test Suite:<dd>None Yet<dt>Editors:
 <dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins</a> (<span class="p-org org">Google</span>)</dl></div>
   <div data-fill-with=warning></div>
   <p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 25 March 2014,
+In addition, as of 11 April 2014,
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -560,17 +560,14 @@ Parts of this work may be from another specification document.  If so, those par
 </div>
 
 <h2 class="no-num no-toc no-ref heading settled heading" id=abstract><span class=content>Abstract</span></h2>
-<p class=p-summary data-fill-with=abstract>This specification defines methods of defining “aliases” for long or commonly-used values in several CSS features, reducing repetition in the stylesheet.
+<p class=p-summary data-fill-with=abstract>This specification defines methods for authors to extend and enhance various CSS features.
 </p>
 <div data-fill-with=at-risk></div>
 
 <h2 class="no-num no-toc no-ref heading settled heading" id=contents><span class=content>Table of Contents</span></h2>
 <div data-fill-with=table-of-contents><ul class=toc>
 	<li><a href=#intro><span class=secno>1</span> Introduction</a>
-	<li><a href=#custom-mq><span class=secno>2</span> Custom Media Queries</a>
-		<ul class=toc>
-		<li><a href=#script-custom-mq><span class=secno>2.1</span> Script-based Custom Media Queries</a>
-		<li><a href=#custom-mq-cssom><span class=secno>2.2</span> CSSOM</a></ul>
+	<li><a href=#extension-name><span class=secno>2</span> Extension Names</a>
 	<li><a href=#custom-selectors><span class=secno>3</span> Custom Selectors</a>
 		<ul class=toc>
 		<li><a href=#script-custom-selectors><span class=secno>3.1</span> Script-based Custom Selectors</a>
@@ -602,100 +599,42 @@ Introduction</span><a class=self-link href=#intro></a></h2>
 	and also affects maintenance,
 	as the author has to keep each repetition in sync when making any changes.
 
-<p>	This specification defines aliasing methods for several CSS features—<wbr>media queries and selectors—<wbr>so that a long or repeatedly-used value can be given a short, memorable name instead.
+<p>	This specification defines methods for extending several CSS features
+	so that a long or repeatedly-used value can be given a short, memorable name instead,
+	or a feature can be given a more complex definition controlled by a scripting language.
 	This makes stylesheets easier to read,
-	and allows authors to maintain only a single copy of the value,
-	so changes are automatically propagated to each use.
+	and more powerful in general,
+	as authors can extend the feature-set of CSS themselves
+	rather than waiting for standards bodies to define new features for them.
 
-<p class=note>	Note: The features in this specification are thematically similar to <a data-link-type=dfn href=http://dev.w3.org/csswg/css-variables-1/#custom-property title="custom properties">custom properties</a> and <a data-link-type=dfn href=http://dev.w3.org/csswg/css-variables-1/#variable title=variables>variables</a>,
-	but use a different, simpler definition and use syntax.
+<h2 class="heading settled heading" data-level=2 id=extension-name><span class=secno>2 </span><span class=content>
+Extension Names</span><a class=self-link href=#extension-name></a></h2>
 
-<h2 class="heading settled heading" data-level=2 id=custom-mq><span class=secno>2 </span><span class=content>
-Custom Media Queries</span><a class=self-link href=#custom-mq></a></h2>
-
-<p>	A <dfn data-dfn-type=dfn data-noexport="" id=custom-media-query>custom media query<a class=self-link href=#custom-media-query></a></dfn> is defined with the <a class=css data-link-type=maybe href=#at-ruledef-custom-media title=@custom-media>@custom-media</a> rule:
-
-<pre class=prod><dfn class=css-code data-dfn-type=at-rule data-export="" id=at-ruledef-custom-media>@custom-media<a class=self-link href=#at-ruledef-custom-media></a></dfn> = @custom-media <a class="production css-code" data-link-type=type href=#typedef-custom-name title="<custom-name>">&lt;custom-name&gt;</a> <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/mediaqueries-4/#typedef-media-query title="<media-query>">&lt;media-query&gt;</a> ;</pre>
-<p>	Where <dfn class=css-code data-dfn-type=type data-export="" id=typedef-custom-name>&lt;custom-name&gt;<a class=self-link href=#typedef-custom-name></a></dfn> is a <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#identifier-value title="<custom-ident>">&lt;custom-ident&gt;</a> with at least one <code>_</code> (underscore, U+005F LOW LINE) in it.
-
-<p>	This defines that the <a data-link-type=dfn href=#custom-media-query title="custom media query">custom media query</a> named by the <a class="production css-code" data-link-type=type href=#typedef-custom-name title="<custom-name>">&lt;custom-name&gt;</a> represents the given <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/mediaqueries-4/#typedef-media-query title="<media-query>">&lt;media-query&gt;</a>.
-
-<p class=note>	Note: It’s recommended that the name either starts with the underscore,
-	following the somewhat similar notation in JavaScript, Python, and other computer languages,
-	or that the underscore is used as a separator between a simple "namespace" and the actual name of the <a data-link-type=dfn href=#custom-media-query title="custom media query">custom media query</a>,
-	such as <span class=css data-link-type=maybe title=jq_small-screen>jq_small-screen</span>.
-	Either of these methods makes the underscore fairly visually obvious in its use,
-	preventing accidental confusion with CSS-defined <a data-link-type=dfn href=http://dev.w3.org/csswg/mediaqueries-4/#media-query title="media queries">media queries</a>.
-
-<p>	The <a class="production css-code" data-link-type=type href=#typedef-custom-name title="<custom-name>">&lt;custom-name&gt;</a> can then be used in a <a data-link-type=dfn href=http://dev.w3.org/csswg/mediaqueries-4/#media-feature title="media feature">media feature</a>.
-	It <strong>must</strong> be used in a <a data-link-type=dfn href=http://dev.w3.org/csswg/mediaqueries-4/#boolean-context title="boolean context">boolean context</a>;
-	using them in a normal or <a data-link-type=dfn href=http://dev.w3.org/csswg/mediaqueries-4/#range-context title="range context">range context</a> is a syntax error.
-	The <a data-link-type=dfn href=#custom-media-query title="custom media query">custom media query</a> evaluates to true if the <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/mediaqueries-4/#typedef-media-query title="<media-query>">&lt;media-query&gt;</a> it represents evaluates to true,
-	and false otherwise.
-
-	<div class=example>
-		For example, if a responsive site uses a particular breakpoint in several places,
-		it can alias that with a reasonable name:
-
-		<pre>  @custom-media _narrow-window (max-width: 30em);
-
-  @media (_narrow-window) {
-    /* narrow window styles */
-  }
-  @media (_narrow-window) and (script) {
-    /* special styles for when script is allowed */
-  }
-  /* etc */
-</pre>	</div>
-
-<h3 class="heading settled heading" data-level=2.1 id=script-custom-mq><span class=secno>2.1 </span><span class=content>
-Script-based Custom Media Queries</span><a class=self-link href=#script-custom-mq></a></h3>
-
-	<div class=issue id=issue-4ba1268c><a class=self-link href=#issue-4ba1268c></a>
-		Define a map of names to values for JS.
-		Values can be either a MediaQueryList object or a boolean,
-		in which case it’s treated identically to the above,
-		or can be a number or a string,
-		in which case it’s treated like a normal MQ,
-		and can use the normal or range context syntax.
-		Like:
-
-		<pre>  &lt;script&gt;
-  CSS.customMedia.set('_foo', 5);
-  &lt;/script&gt;
-  &lt;style&gt;
-  @media (_foo: 5) { ... }
-  @media (_foo &lt; 10) { ... }
-  &lt;/style&gt;
-</pre>	</div>
-
-
-<h3 class="heading settled heading" data-level=2.2 id=custom-mq-cssom><span class=secno>2.2 </span><span class=content>
-CSSOM</span><a class=self-link href=#custom-mq-cssom></a></h3>
-
-	<p class=issue id=issue-cb6e966f0><a class=self-link href=#issue-cb6e966f0></a>
-		Fill in.
+<p>	All extensions defined in this specification use a common syntax for defining their ”names”:
+	the <a class="production css-code" data-link-type=type href=#typedef-extension-name title="<extension-name>">&lt;extension-name&gt;</a> production.
+	An <dfn class=css-code data-dfn-type=type data-export="" id=typedef-extension-name>&lt;extension-name&gt;<a class=self-link href=#typedef-extension-name></a></dfn> is any <a data-link-type=dfn href=http://dev.w3.org/csswg/css-syntax-3/#identifier title=identifier>identifier</a> that starts with two dashes (U+002D HYPHEN-MINUS),
+	like <span class=css data-link-type=maybe title=--foo>--foo</span>, or even exotic names like <span class=css data-link-type=maybe title=-->--</span> or <span class=css data-link-type=maybe title=------>------</span>.
+	The CSS language will never use identifiers of this form for any language-defined purpose,
+	so it’s safe to use them for author-defined purposes
+	without ever having to worry about colliding with CSS-defined names.
 
 <h2 class="heading settled heading" data-level=3 id=custom-selectors><span class=secno>3 </span><span class=content>
 Custom Selectors</span><a class=self-link href=#custom-selectors></a></h2>
 
 <p>	A <dfn data-dfn-type=dfn data-noexport="" id=custom-selector>custom selector<a class=self-link href=#custom-selector></a></dfn> is defined with the <a class=css data-link-type=maybe href=#at-ruledef-custom-selector title=@custom-selector>@custom-selector</a> rule:
 
-<pre class=prod><dfn class=css-code data-dfn-type=at-rule data-export="" id=at-ruledef-custom-selector>@custom-selector<a class=self-link href=#at-ruledef-custom-selector></a></dfn> = @custom-selector <a class="production css-code" data-link-type=type href=#typedef-custom-name title="<custom-name>">&lt;custom-name&gt;</a> <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/selectors-4/#ltselector title="<selector>">&lt;selector&gt;</a> ;</pre>
-<p>	This defines a <a data-link-type=dfn href=#custom-selector title="custom selector">custom selector</a> which is written as a <a data-link-spec=selectors data-link-type=dfn href=http://dev.w3.org/csswg/selectors-4/#pseudo-class title=pseudo-class>pseudo-class</a> with the given <a class="production css-code" data-link-type=type href=#typedef-custom-name title="<custom-name>">&lt;custom-name&gt;</a>,
-	and represents a <a class=css data-link-type=maybe href=http://dev.w3.org/csswg/selectors-4/#matches-pseudo title=:matches()>:matches()</a> selector using the provided <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/selectors-4/#ltselector title="<selector>">&lt;selector&gt;</a> as its argument.
-
-<p>	Similar to <a data-link-type=dfn href=#custom-media-query title="custom media queries">custom media queries</a>,
-	the name of a <a data-link-type=dfn href=#custom-selector title="custom selector">custom selector</a> must contain an underscore character.
+<pre class=prod><dfn class=css-code data-dfn-type=at-rule data-export="" id=at-ruledef-custom-selector>@custom-selector<a class=self-link href=#at-ruledef-custom-selector></a></dfn> = @custom-selector <a class="production css-code" data-link-type=type href=#typedef-extension-name title="<extension-name>">&lt;extension-name&gt;</a> <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/selectors-4/#typedef-selector title="<selector>">&lt;selector&gt;</a> ;</pre>
+<p>	This defines a <a data-link-type=dfn href=#custom-selector title="custom selector">custom selector</a> which is written as a <a data-link-spec=selectors data-link-type=dfn href=http://dev.w3.org/csswg/selectors-4/#pseudo-class title=pseudo-class>pseudo-class</a> with the given <a class="production css-code" data-link-type=type href=#typedef-extension-name title="<extension-name>">&lt;extension-name&gt;</a>,
+	and represents a <a class=css data-link-type=maybe href=http://dev.w3.org/csswg/selectors-4/#matches-pseudo title=:matches()>:matches()</a> selector using the provided <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/selectors-4/#typedef-selector title="<selector>">&lt;selector&gt;</a> as its argument.
 
 	<div class=example>
 		For example, if an author wanted to easily refer to all heading elements in their HTML document,
 		they could create an alias:
 
-		<pre>  @custom-selector :_heading h1, h2, h3, h4, h5, h6;
+		<pre>  @custom-selector :--heading h1, h2, h3, h4, h5, h6;
 
-  :_heading { /* styles for all headings */ }
-  :_heading + p { /* more styles */ }
+  :--heading { /* styles for all headings */ }
+  :--heading + p { /* more styles */ }
   /* etc */
 </pre>	</div>
 
@@ -917,11 +856,9 @@ Informative References</span><a class=self-link href=#informative></a></h3>
 <h2 class="no-num no-ref heading settled heading" id=index><span class=content>
 Index</span><a class=self-link href=#index></a></h2>
 <div data-fill-with=index><ul class=indexlist>
-<li>@custom-media, <a href=#at-ruledef-custom-media title="section 2">2</a>
-<li>custom media query, <a href=#custom-media-query title="section 2">2</a>
-<li>&lt;custom-name&gt;, <a href=#typedef-custom-name title="section 2">2</a>
 <li>@custom-selector, <a href=#at-ruledef-custom-selector title="section 3">3</a>
 <li>custom selector, <a href=#custom-selector title="section 3">3</a>
+<li>&lt;extension-name&gt;, <a href=#typedef-extension-name title="section 2">2</a>
 </ul></div>
 
 <h2 class="no-num no-ref heading settled heading" id=property-index><span class=content>
@@ -931,28 +868,6 @@ Property index</span><a class=self-link href=#property-index></a></h2>
 
 
 <h2 class="no-num heading settled" id=issues-index><span class=content>Issues Index</span><a class=self-link href=#issues-index></a></h2><div style="counter-reset: issue"><div class=issue>
-		Define a map of names to values for JS.
-		Values can be either a MediaQueryList object or a boolean,
-		in which case it’s treated identically to the above,
-		or can be a number or a string,
-		in which case it’s treated like a normal MQ,
-		and can use the normal or range context syntax.
-		Like:
-
-		<pre>  &lt;script&gt;
-  CSS.customMedia.set('_foo', 5);
-  &lt;/script&gt;
-  &lt;style&gt;
-  @media (_foo: 5) { ... }
-  @media (_foo &lt; 10) { ... }
-  &lt;/style&gt;
-</pre>	<a href=#issue-4ba1268c> ↵ </a></div>
-
-
-<div class=issue>
-		Fill in.
-
-<a href=#issue-cb6e966f0> ↵ </a></div><div class=issue>
 		This one’s more complicated than MQs.
 		Brian Kardell came up with a good proposal for evaluating selectors as JS functions that return a boolean,
 		which had decent performance characteristics by specifying the qualities of the element it was based on
