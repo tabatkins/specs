@@ -157,7 +157,9 @@ img, a.logo { border-style: none; }
 [data-link-type="selector"]::after,
 [data-link-type="maybe"]::after {content: "”";}
 [data-link-type].production::before,
-[data-link-type].production::after { content: ""; }
+[data-link-type].production::after,
+.prod [data-link-type]::before,
+.prod [data-link-type]::after { content: ""; }
 /* Element-type link styling */
 [data-link-type=element] { font-family: monospace; }
 [data-link-type=element]::before { content: "<" }
@@ -541,14 +543,21 @@ span.issue, span.note {
   <p data-fill-with=logo></p>
   <h1 class="p-name no-ref" id=title>CSS Will Change Module Level 1</h1>
   <h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Editor’s Draft,
-    <span class=dt-updated><span class=value-title title=20140204>4 February 2014</span></span></span></h2>
+    <span class=dt-updated><span class=value-title title=20140505>5 May 2014</span></span></span></h2>
   <div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://tabatkins.github.io/specs/css-will-change/>http://tabatkins.github.io/specs/css-will-change/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/css-will-change/>http://tabatkins.github.io/specs/css-will-change/</a><dt>Test Suite:<dd>None Yet<dt>Editors:
 <dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins Jr.</a> (<span class="p-org org">Google Inc.</span>)</dl></div>
-  <div data-fill-with=warning></div>
+  <div data-fill-with=warning><details class=annoying-warning open>
+	<summary>This Document Is Obsolete and Has Been Replaced</summary>
+	<p>
+		This specification is obsolete and has been replaced by the document at <a href=http://dev.w3.org/csswg/css-will-change/>http://dev.w3.org/csswg/css-will-change/</a>.
+		Do not attempt to implement this specification.
+		Do not refer to this specification except as a historical artifact.
+</details>
+</div>
   <p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 4 February 2014,
+In addition, as of 5 May 2014,
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -562,16 +571,17 @@ Parts of this work may be from another specification document.  If so, those par
 </p>
 <div data-fill-with=at-risk></div>
 
-<h2 class="no-num no-toc no-ref heading settled heading" id=contents><span class=content>Table of contents</span></h2>
-<div data-fill-with=table-of-contents><ul class=toc><li><a href=#intro><span class=secno>1</span>
-Introduction</a><li><a href=#will-change><span class=secno>2</span>
-Hinting at Future Behavior: the <span class=property data-link-type=propdesc title=will-change>will-change</span> property</a><li><a href=#conformance><span class=secno></span>
-Conformance</a><li><a href=#references><span class=secno></span>
-References</a><ul class=toc><li><a href=#normative><span class=secno></span>
-Normative References</a><li><a href=#informative><span class=secno></span>
-Informative References</a></ul><li><a href=#index><span class=secno></span>
-Index</a><li><a href=#property-index><span class=secno></span>
-Property index</a></ul></div>
+<h2 class="no-num no-toc no-ref heading settled heading" id=contents><span class=content>Table of Contents</span></h2>
+<div data-fill-with=table-of-contents><ul class=toc>
+	<li><a href=#intro><span class=secno>1</span> Introduction</a>
+	<li><a href=#will-change><span class=secno>2</span> Hinting at Future Behavior: the <span class=property data-link-type=propdesc title=will-change>will-change</span> property</a>
+	<li><a href=#conformance><span class=secno></span> Conformance</a>
+	<li><a href=#references><span class=secno></span> References</a>
+		<ul class=toc>
+		<li><a href=#normative><span class=secno></span> Normative References</a>
+		<li><a href=#informative><span class=secno></span> Informative References</a></ul>
+	<li><a href=#index><span class=secno></span> Index</a>
+	<li><a href=#property-index><span class=secno></span> Property index</a></ul></div>
 
 
 
@@ -579,7 +589,7 @@ Property index</a></ul></div>
 <h2 class="heading settled heading" data-level=1 id=intro><span class=secno>1 </span><span class=content>
 Introduction</span><a class=self-link href=#intro></a></h2>
 
-<p>	Modern CSS renderers perform a number of complex optimizations in order to render webpages quickly and efficiently.
+<p>Modern CSS renderers perform a number of complex optimizations in order to render webpages quickly and efficiently.
 	Unfortunately, employing these optimizations often has a non-trivial start-up cost,
 	which can have a negative impact on the responsiveness of a page.
 
@@ -591,11 +601,11 @@ Introduction</span><a class=self-link href=#intro></a></h2>
 		if the element’s transform is the only thing that changes between frames,
 		and often provides significant speed benefits.
 
-<p>		However, setting up the element in a fresh layer is a relatively expensive operation,
+<p>However, setting up the element in a fresh layer is a relatively expensive operation,
 		which can delay the start of a <a class=property data-link-type=propdesc href=http://dev.w3.org/csswg/css-transforms-1/#propdef-transform title=transform>transform</a> animation by a noticeable fraction of a second.
 	</div>
 
-<p>	The <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> property defined in this specification allows an author to declare ahead-of-time what properties are likely to change in the future,
+<p>The <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> property defined in this specification allows an author to declare ahead-of-time what properties are likely to change in the future,
 	so the UA can set up the appropriate optimizations some time before they’re needed.
 	This way, when the actual change happens,
 	the page updates in a snappy manner.
@@ -603,14 +613,14 @@ Introduction</span><a class=self-link href=#intro></a></h2>
 <h2 class="heading settled heading" data-level=2 id=will-change><span class=secno>2 </span><span class=content>
 Hinting at Future Behavior: the <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> property</span><a class=self-link href=#will-change></a></h2>
 
-<table class="definition propdef"><tr><th>Name:<td><dfn class=css-code data-dfn-type=property data-export="" id=propdef-will-change>will-change<a class=self-link href=#propdef-will-change></a></dfn><tr><th>Value:<td>auto | <a class="production css-code" data-link-type=type href=#typedef-animateable-feature title="<animateable-feature>">&lt;animateable-feature&gt;</a>#<tr><th>Initial:<td>auto<tr><th>Applies to:<td>all elements<tr><th>Inherited:<td>no<tr><th>Media:<td>all<tr><th>Computed value:<td>specified value<tr><th>Percentages:<td>n/a</table>
+<table class="definition propdef"><tr><th>Name:<td><dfn class=css-code data-dfn-type=property data-export="" id=propdef-will-change>will-change<a class=self-link href=#propdef-will-change></a></dfn><tr><th>Value:<td class=prod>auto | <a class="production css-code" data-link-type=type href=#typedef-animateable-feature title="<animateable-feature>">&lt;animateable-feature&gt;</a>#<tr><th>Initial:<td>auto<tr><th>Applies to:<td>all elements<tr><th>Inherited:<td>no<tr><th>Media:<td>all<tr><th>Computed value:<td>specified value<tr><th>Percentages:<td>n/a</table>
 <pre class=prod><dfn class=css-code data-dfn-type=type data-export="" id=typedef-animateable-feature>&lt;animateable-feature&gt;<a class=self-link href=#typedef-animateable-feature></a></dfn> = scroll-position | contents | <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#identifier-value title="<custom-ident>">&lt;custom-ident&gt;</a></pre>
-<p>	The <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> property provides a rendering hint to the user agent,
+<p>The <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> property provides a rendering hint to the user agent,
 	stating what kinds of changes the author expects to perform on the element.
 	This allows the user agent to perform ahead-of-time any optimizations necessary for rendering those changes smoothly,
 	avoiding “jank” when the author does begin changing or animating that feature.
 
-<p>	Values have the following meanings:
+<p>Values have the following meanings:
 
 	<dl data-dfn-for=will-change data-dfn-type=value>
 		<dt><dfn class=css-code data-dfn-for=will-change data-dfn-type=value data-export="" id=valuedef-auto>auto<a class=self-link href=#valuedef-auto></a></dfn>
@@ -629,21 +639,21 @@ Hinting at Future Behavior: the <a class=property data-link-type=propdesc href=#
 		<dd>
 			Indicates that the author expects to animate or change the property with the given name on the element in the near future.
 
-<p>			The <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#identifier-value title="<custom-ident>">&lt;custom-ident&gt;</a> production used here excludes the keywords <span class=css data-link-type=maybe title=will-change>will-change</span>, <span class=css data-link-type=maybe title=none>none</span>, <span class=css data-link-type=maybe title=all>all</span>, <a class=css data-link-type=maybe href=#valuedef-auto title=auto>auto</a>, <a class=css data-link-type=maybe href=#valuedef-scroll-position title=scroll-position>scroll-position</a>, and <a class=css data-link-type=maybe href=#valuedef-contents title=contents>contents</a>,
+<p>The <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#identifier-value title="<custom-ident>">&lt;custom-ident&gt;</a> production used here excludes the keywords <span class=css data-link-type=maybe title=will-change>will-change</span>, <span class=css data-link-type=maybe title=none>none</span>, <span class=css data-link-type=maybe title=all>all</span>, <a class=css data-link-type=maybe href=#valuedef-auto title=auto>auto</a>, <a class=css data-link-type=maybe href=#valuedef-scroll-position title=scroll-position>scroll-position</a>, and <a class=css data-link-type=maybe href=#valuedef-contents title=contents>contents</a>,
 			in addition to the keywords normally excluded from <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#identifier-value title="<custom-ident>">&lt;custom-ident&gt;</a>.
 
-<p class=note>			Note: Note that most properties will have no effect when specified,
+<p class=note>Note: Note that most properties will have no effect when specified,
 			as the user agent doesn’t perform any special optimizations for changes in most properties.
 			It is still <em>safe</em> to specify them, though;
 			it’ll simply have no effect.
 
-<p>			If any non-initial value of a property would create a stacking context on the element,
+<p>If any non-initial value of a property would create a stacking context on the element,
 			specifying that property in <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> must create a stacking context on the element.
 
-<p>			If any non-initial value of a property would cause the element to generate a containing block for fixed-position elements,
+<p>If any non-initial value of a property would cause the element to generate a containing block for fixed-position elements,
 			specifying that property in <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> must cause the element to generate a containing block for fixed-position elements.
 
-<p>			If a non-initial value of a property would cause rendering differences on the element
+<p>If a non-initial value of a property would cause rendering differences on the element
 			(such as using a different anti-aliasing strategy for text),
 			the user agent should use that alternate rendering when the property is specified in <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a>,
 			to avoid sudden rendering differences when the property is eventually changed.
@@ -656,7 +666,7 @@ Hinting at Future Behavior: the <a class=property data-link-type=propdesc href=#
 		even if <a class=property data-link-type=propdesc href=http://dev.w3.org/csswg/css-color-3/#opacity title=opacity>opacity</a> is <em>currently</em> still equal to <span class=css data-link-type=maybe title=1>1</span>.
 	</div>
 
-<p>	The <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> property has no <em>direct</em> effect on the element it is specified on,
+<p>The <a class=property data-link-type=propdesc href=#propdef-will-change title=will-change>will-change</a> property has no <em>direct</em> effect on the element it is specified on,
 	beyond the creation of stacking contexts and containing blocks as specified above.
 	It is solely a rendering hint to the user agent,
 	allowing it set up potentially-expensive optimizations for certain types of changes
@@ -717,7 +727,7 @@ Index</span><a class=self-link href=#index></a></h2>
 <h2 class="no-num no-ref heading settled heading" id=property-index><span class=content>
 Property index</span><a class=self-link href=#property-index></a></h2>
 <div data-fill-with=property-index><table class="proptable data"><thead><tr><th scope=col>Name<th scope=col>Value<th scope=col>Initial<th scope=col>Applies to<th scope=col>Inh.<th scope=col>%ages<th scope=col>Media<th scope=col>Computed value<tbody>
-<tr><th scope=row><a data-property="">will-change</a><td>auto | &lt;animateable-feature&gt;#<td>auto<td>all elements<td>no<td>n/a<td>all<td>specified value</table></div>
+<tr><th scope=row><a class=css-code data-link-type=property href=#propdef-will-change title=will-change>will-change</a><td>auto | &lt;animateable-feature&gt;#<td>auto<td>all elements<td>no<td>n/a<td>all<td>specified value</table></div>
 
 
 
