@@ -1,0 +1,22 @@
+<pre class='metadata'>
+Title: CSS Sticky Scrollbars
+Shortname: css-sticky-scrollbars
+Level: 1
+Status: DREAM
+ED: http://tabatkins.github.io/css-sticky-scrollbars/
+Editor: Tab Atkins, Google, http://xanthir.com/contact
+Abstract: Scrollbars that "stick" to an edge!
+</pre>
+
+<h2 id='overflow-anchor'>
+Sticking the Scrollbar to an Edge: the 'overflow-anchor' property</h2>
+
+	<pre class='propdef'>
+	Name: overflow-anchor
+	Value: none | [ [ block-start | block-end ] <length>? || [ inline-start | inline-end ] <length>? ]
+	Initial: block-start inline-start
+	Applies to: scrollable elements
+	Inherited: no
+	Media: visual
+	Computed value: specified value, with <<length>>s made absolute
+	</pre>
