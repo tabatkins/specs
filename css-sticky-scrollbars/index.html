@@ -56,7 +56,7 @@ h2 + h3, h3 + h4, h4 + h5, h5 + h6 { margin-top: 1.2em; }
 p.copyright { font-size: small; }
 p.copyright small { font-size: small; }
 
-pre { margin: 1em 0 1em 2em; }
+pre { margin: 1em 0 1em 2em; overflow: auto; }
 pre, code, .idl-code {
   font-size: .9em;
   font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
@@ -544,8 +544,8 @@ span.issue, span.note {
 <div class=head>
   <p data-fill-with=logo></p>
   <h1 class="p-name no-ref" id=title>CSS Sticky Scrollbars</h1>
-  <h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>A Collection of Interesting Ideas,
-    <span class=dt-updated><span class=value-title title=20140718>18 July 2014</span></span></span></h2>
+  <h2 class="no-num no-toc no-ref heading settled" id=subtitle><span class=content>A Collection of Interesting Ideas,
+    <span class=dt-updated><span class=value-title title=20140812>12 August 2014</span></span></span></h2>
   <div data-fill-with=spec-metadata><dl>
 	<dt>This version:
 	<dd><a class=u-url href=http://tabatkins.github.io/css-sticky-scrollbars/>http://tabatkins.github.io/css-sticky-scrollbars/</a>
@@ -557,7 +557,7 @@ span.issue, span.note {
   <p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=https://i.creativecommons.org/p/zero/1.0/80x15.png></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 18 July 2014,
+In addition, as of 12 August 2014,
 the editors have made this specification available under the
 <a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -566,31 +566,115 @@ Parts of this work may be from another specification document.  If so, those par
   <hr title="Separator for header">
 </div>
 
-<h2 class="no-num no-toc no-ref heading settled heading" id=abstract><span class=content>Abstract</span></h2>
+<h2 class="no-num no-toc no-ref heading settled" id=abstract><span class=content>Abstract</span></h2>
 <div class=p-summary data-fill-with=abstract><p>Scrollbars that "stick" to an edge!</p>
 
 </div>
 <div data-fill-with=at-risk></div>
 
-<h2 class="no-num no-toc no-ref heading settled heading" id=contents><span class=content>Table of Contents</span></h2>
+<h2 class="no-num no-toc no-ref heading settled" id=contents><span class=content>Table of Contents</span></h2>
 <div data-fill-with=table-of-contents><ul class=toc>
-	<li><a href=#overflow-anchor><span class=secno>1</span>  Sticking the Scrollbar to an Edge: the <span class=property data-link-type=propdesc title=overflow-anchor>overflow-anchor</span> property</a>
+	<li><a href=#intro><span class=secno>1</span>  Introduction</a>
+	<li><a href=#overflow-anchor><span class=secno>2</span>  Sticking the Scrollbar to an Edge: the <span class=property data-link-type=propdesc title=overflow-anchor>overflow-anchor</span> property</a>
 	<li><a href=#conformance><span class=secno></span>  Conformance</a>
 	<li><a href=#references><span class=secno></span>  References</a>
 		<ul class=toc>
 		<li><a href=#normative><span class=secno></span>  Normative References</a>
 		<li><a href=#informative><span class=secno></span>  Informative References</a></ul>
 	<li><a href=#index><span class=secno></span>  Index</a>
-	<li><a href=#property-index><span class=secno></span>  Property index</a></ul></div>
+	<li><a href=#property-index><span class=secno></span>  Property index</a>
+	<li><a href=#issues-index><span class=secno></span> Issues Index</a></ul></div>
 
 
+<h2 class="heading settled" data-level=1 id=intro><span class=secno>1 </span><span class=content>
+Introduction</span><a class=self-link href=#intro></a></h2>
 
-<h2 class="heading settled heading" data-level=1 id=overflow-anchor><span class=secno>1 </span><span class=content>
+<p>The "scroll position" of an element—<wbr>the current point you’ve scrolled to in a scrollable element—<wbr>is measured as a length from the start edges of the scroll area.
+	It stays static when the size of the scrollable area changes.</p>
+
+<p>In most cases, this is fine,
+	but some user interfaces, like chat rooms,
+	add new content to the bottom of an element,
+	and you want to always be looking at the newest content;
+	a static length measured from the top of the element doesn’t work well with this.</p>
+
+<p>Scripting can be used to address this problem,
+	but it’s easy to accidentally produce a buggy or hostile behavior,
+	such as scrolling <em>almost</em> to the bottom but not quite all the way,
+	or constantly adjusting the scroll position when you’re looking further back in the chat logs
+	and don’t care about new content at the moment.</p>
+
+<p>This module introduces properties to tweak scrolling behavior
+	to handle these kinds of cases correctly and automatically.</p>
+
+<h2 class="heading settled" data-level=2 id=overflow-anchor><span class=secno>2 </span><span class=content>
 Sticking the Scrollbar to an Edge: the <a class=property data-link-type=propdesc href=#propdef-overflow-anchor title=overflow-anchor>overflow-anchor</a> property</span><a class=self-link href=#overflow-anchor></a></h2>
 
-<table class="definition propdef"><tr><th>Name:<td><dfn class=css-code data-dfn-type=property data-export="" id=propdef-overflow-anchor>overflow-anchor<a class=self-link href=#propdef-overflow-anchor></a></dfn><tr><th>Value:<td class=prod>none <a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#comb-one title=|>|</a> [ [ block-start <a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#comb-one title=|>|</a> block-end ] <length><a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#mult-opt title=?>?</a> <a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#comb-any title=||>||</a> [ inline-start <a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#comb-one title=|>|</a> inline-end ] <length><a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#mult-opt title=?>?</a> ]</length></length><tr><th>Initial:<td>block-start inline-start<tr><th>Applies to:<td>scrollable elements<tr><th>Inherited:<td>no<tr><th>Media:<td>visual<tr><th>Computed value:<td>specified value, with <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a>s made absolute</table>
+<table class="definition propdef"><tr><th>Name:<td><dfn class=css data-dfn-type=property data-export="" id=propdef-overflow-anchor>overflow-anchor<a class=self-link href=#propdef-overflow-anchor></a></dfn><tr><th>Value:<td class=prod>none <a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#comb-one title=|>|</a> [ [ block-start <a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#comb-one title=|>|</a> block-end ] <a class="production css" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a><a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#mult-opt title=?>?</a> <a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#comb-any title=||>||</a> [ inline-start <a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#comb-one title=|>|</a> inline-end ] <a class="production css" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a><a class=prod-punc data-link-type=grammar href=http://dev.w3.org/csswg/css-values-3/#mult-opt title=?>?</a> ] ]<tr><th>Initial:<td>none<tr><th>Applies to:<td>scrollable elements<tr><th>Inherited:<td>no<tr><th>Media:<td>visual<tr><th>Computed value:<td>specified value, with <a class="production css" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a>s made absolute</table>
 
-<h2 class="no-ref no-num heading settled heading" id=conformance><span class=content>
+<p>The <a class=property data-link-type=propdesc href=#propdef-overflow-anchor title=overflow-anchor>overflow-anchor</a> property allows certain edges of a scrollable area to be designated as "anchors".
+	If the visible area of a scrollable element is within a certain distance of one of the "anchor edges",
+	then when the size of the scrollable area changes
+	(such as from adding new content,
+		or adjusting the size of content elsewhere in the element),
+	the scroll position is adjusted to maintain the same distance from the "anchor edge".</p>
+
+	<dl data-dfn-for=overflow-anchor data-dfn-type=value>
+		<dt><dfn class=css data-dfn-for=overflow-anchor data-dfn-type=value data-export="" id=valuedef-overflow-anchor-none>none<a class=self-link href=#valuedef-overflow-anchor-none></a></dfn>
+		<dd>
+			No special behavior;
+			the element acts as normal.
+
+		<dt><dfn class=css data-dfn-for=overflow-anchor data-dfn-type=value data-export="" id=valuedef-overflow-anchor--block-start>[ block-start | block-end ] <a class="production css" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a>? || [ inline-start | inline-end ] <a class="production css" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a>? ]<a class=self-link href=#valuedef-overflow-anchor--block-start></a></dfn>
+		<dd>
+			Indicates that the edges denoted by the keywords are <a data-link-type=dfn href=#scroll-anchor-edges title="scroll-anchor edges">scroll-anchor edges</a>.
+
+<p>If a <a class="production css" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a> is provided,
+			it gives the <a data-link-type=dfn href=#scroll-anchoring-distance title="scroll-anchoring distance">scroll-anchoring distance</a> for that edge.
+			if omitted,
+			the <a data-link-type=dfn href=#scroll-anchoring-distance title="scroll-anchoring distance">scroll-anchoring distance</a> for the edge is a UA-defined length.</p>
+
+<p class=note>Note: It is recommended that UAs default to a distance of <span class=css>2em</span>.</p>
+	</dl>
+
+<p class=issue id=issue-2f9e9ca8><a class=self-link href=#issue-2f9e9ca8></a>Do we really need the block-start and inline-start values?
+	It seems like their behavior is sufficiently handled by omitting them,
+	or using <a class=css data-link-type=maybe href=#valuedef-overflow-anchor-none title=none>none</a>.</p>
+
+<p>Some of the edges of a scrollable element’s scrollable area can be <dfn data-dfn-type=dfn data-export="" id=scroll-anchor-edges>scroll-anchor edges<a class=self-link href=#scroll-anchor-edges></a></dfn>.
+	Each <a data-link-type=dfn href=#scroll-anchor-edges title="scroll-anchor edge">scroll-anchor edge</a> has a <dfn data-dfn-type=dfn data-noexport="" id=scroll-anchoring-distance>scroll-anchoring distance<a class=self-link href=#scroll-anchoring-distance></a></dfn>,
+	which specifies how far away from the <a data-link-type=dfn href=#scroll-anchor-edges title="scroll-anchor edge">scroll-anchor edge</a> the anchoring effect extends.</p>
+
+<p>While an element’s visible area is scrolled to within the <a data-link-type=dfn href=#scroll-anchoring-distance title="scroll-anchoring distance">scroll-anchoring distance</a> of a <a data-link-type=dfn href=#scroll-anchor-edges title="scroll-anchor edge">scroll-anchor edge</a>,
+	it is <dfn data-dfn-type=dfn data-noexport="" id=scroll-anchored>scroll-anchored<a class=self-link href=#scroll-anchored></a></dfn> to that edge.
+	Whenever the size of the scrollable area changes,
+	if an element is <a data-link-type=dfn href=#scroll-anchored title=scroll-anchored>scroll-anchored</a> to any <a data-link-type=dfn href=#scroll-anchor-edges title="scroll-anchor edges">scroll-anchor edges</a>,
+	it must adjust its scroll position to maintain the same distance from that edge
+	as it had before the scrollable area changed size.</p>
+
+<p class=issue id=issue-f50ec6de><a class=self-link href=#issue-f50ec6de></a>Obviously this shouldn’t play with the scroll position *while* you’re scrolling.
+	We don’t have a notion of "while the user is scrolling" currently.
+	How do I talk about this?</p>
+
+	<div class=example>
+		For example, if you’re designing a chatroom,
+		new content is added to the end of the chat log.
+
+		<pre>.chat-log {
+  overflow-anchor: block-end;
+}
+</pre>
+
+<p>The above CSS will make it so that,
+		if a user scrolls to the bottom of the chat log,
+		the log will "auto-scroll" to reveal new messages as they come in.
+		However, if the user is scrolled to somewhere in the middle of the chat log
+		to review old messages,
+		nothing special will happen when new messages come in,
+		enabling them to read in peace.</p>
+	</div>
+
+<h2 class="no-ref no-num heading settled" id=conformance><span class=content>
 Conformance</span><a class=self-link href=#conformance></a></h2>
 
     <p>
@@ -620,30 +704,40 @@ Conformance</span><a class=self-link href=#conformance></a></h2>
     <p class=note>
         Note, this is an informative note.
 
-<h2 class="no-num no-ref heading settled heading" id=references><span class=content>
+<h2 class="no-num no-ref heading settled" id=references><span class=content>
 References</span><a class=self-link href=#references></a></h2>
 
-<h3 class="no-num no-ref heading settled heading" id=normative><span class=content>
+<h3 class="no-num no-ref heading settled" id=normative><span class=content>
 Normative References</span><a class=self-link href=#normative></a></h3>
 <div data-fill-with=normative-references><dl>
 <dt id=biblio-rfc2119 title=RFC2119><a class=self-link href=#biblio-rfc2119></a>[RFC2119]<dd>S. Bradner. <a href=http://www.ietf.org/rfc/rfc2119.txt>Key words for use in RFCs to Indicate Requirement Levels</a>. URL: <a href=http://www.ietf.org/rfc/rfc2119.txt>http://www.ietf.org/rfc/rfc2119.txt</a></dd>
 </dl></div>
 
-<h3 class="no-num no-ref heading settled heading" id=informative><span class=content>
+<h3 class="no-num no-ref heading settled" id=informative><span class=content>
 Informative References</span><a class=self-link href=#informative></a></h3>
 <div data-fill-with=informative-references><dl>
 </dl></div>
 
-<h2 class="no-num no-ref heading settled heading" id=index><span class=content>
+<h2 class="no-num no-ref heading settled" id=index><span class=content>
 Index</span><a class=self-link href=#index></a></h2>
 <div data-fill-with=index><ul class=indexlist>
-<li>overflow-anchor, <a href=#propdef-overflow-anchor title="section 1">1</a>
+<li>[ block-start | block-end ] &lt;length&gt;? || [ inline-start | inline-end ] &lt;length&gt;? ], <a href=#valuedef-overflow-anchor--block-start title="section 2">2</a>
+<li>none, <a href=#valuedef-overflow-anchor-none title="section 2">2</a>
+<li>overflow-anchor, <a href=#propdef-overflow-anchor title="section 2">2</a>
+<li>scroll-anchored, <a href=#scroll-anchored title="section 2">2</a>
+<li>scroll-anchor edges, <a href=#scroll-anchor-edges title="section 2">2</a>
+<li>scroll-anchoring distance, <a href=#scroll-anchoring-distance title="section 2">2</a>
 </ul></div>
 
-<h2 class="no-num no-ref heading settled heading" id=property-index><span class=content>
+<h2 class="no-num no-ref heading settled" id=property-index><span class=content>
 Property index</span><a class=self-link href=#property-index></a></h2>
 <div data-fill-with=property-index><table class="proptable data"><thead><tr><th scope=col>Name<th scope=col>Value<th scope=col>Initial<th scope=col>Applies to<th scope=col>Inh.<th scope=col>%ages<th scope=col>Media<th scope=col>Computed value<tbody>
-<tr><th scope=row><a class=css-code data-link-type=property href=#propdef-overflow-anchor title=overflow-anchor>overflow-anchor</a><td>none | [ [ block-start | block-end ] ? || [ inline-start | inline-end ] ? ]<td>block-start inline-start<td>scrollable elements<td>no<td><td>visual<td>specified value, with &lt;length&gt;s made absolute</table></div>
+<tr><th scope=row><a class=css data-link-type=property href=#propdef-overflow-anchor title=overflow-anchor>overflow-anchor</a><td>none | [ [ block-start | block-end ] &lt;length&gt;? || [ inline-start | inline-end ] &lt;length&gt;? ] ]<td>none<td>scrollable elements<td>no<td><td>visual<td>specified value, with &lt;length&gt;s made absolute</table></div>
 
 
 
+<h2 class="no-num heading settled" id=issues-index><span class=content>Issues Index</span><a class=self-link href=#issues-index></a></h2><div style="counter-reset: issue"><div class=issue>Do we really need the block-start and inline-start values?
+	It seems like their behavior is sufficiently handled by omitting them,
+	or using <a class=css data-link-type=maybe href=#valuedef-overflow-anchor-none title=none>none</a>.<a href=#issue-2f9e9ca8> ↵ </a></div><div class=issue>Obviously this shouldn’t play with the scroll position *while* you’re scrolling.
+	We don’t have a notion of "while the user is scrolling" currently.
+	How do I talk about this?<a href=#issue-f50ec6de> ↵ </a></div></div>
