@@ -1,0 +1,193 @@
+<pre class='metadata'>
+Title: CSS Selector Inheritance
+Abstract: This module defines the ''@extend'' rule, which allows element to act as if they matched other selectors.
+Editor: Tab Atkins, Google, http://xanthir.com
+ED: tabatkins.github.io/specs/css-extend-rule/
+Status: DREAM
+Shortname: extend-rule
+Level: 1
+</pre>
+
+Introduction {#intro}
+=====================
+
+Sometimes, when designing a page,
+an author might create some styles for a given type of element,
+such as "error" messages.
+Later, they might realize they need to create a "subclass" of the first type,
+such as a "serious error" message,
+which is styled the same way as "error",
+but with a few tweaks to make it more distinctive.
+Currently, CSS does not have a good way to handle this.
+
+If the author has control over the HTML,
+they can declare that every element with a class of "serious-error"
+must also have a class of "error".
+This, however, is error-prone--
+it's easy to forget to add the "error" class to an element,
+causing confusing styling issues,
+and any scripting that creates or manipulates error elements
+has to know to maintain the states properly
+(for example, any time they remove the "error" class,
+	they have to remember to check for and remove "serious-error" as well).
+
+Alternately, this can be handled in the CSS--
+every time a style rule contains a ''.error'' selector,
+the selector can be duplicated with ''.serious-error'' replacing it.
+This, too, is error-prone:
+it's easy for typos or inattention to cause the duplicated selectors to drift apart,
+and it's easy, when adding new ''.error'' rules,
+to forget to duplicate the selector.
+
+The ''@extend'' rule, defined in this specification,
+fixes this common issue.
+It allows an author to declare that certain elements,
+such as everything matching ''.serious-error'',
+must <em>act as if</em> they had the necessary features to match another selector,
+such as ''.error''.
+
+<div class='example'>
+	For example, the following code declares that ''.serious-error'' elements should act as if they were ''.error'' elements as well:
+
+	<pre class='lang-css'>
+	.error {
+		color: red;
+		border: thick dotted red;
+	}
+
+	.serious-error {
+		@extend .error;
+		font-weight: bold;
+	}
+	</pre>
+
+	Now an element like <code>&lt;div class=serious-error></code> will had red text and border,
+	just like elements with <code>class=error</code>,
+	but will also use bold text.
+</div>
+
+This allows authors to write simple HTML,
+applying either <code>class=error</code> or <code>class=serious-error</code> to elements as appropriate,
+and write simple CSS,
+creating style rules that just mention ''.error'' or ''.serious-error'',
+secure in the knowledge that the former rules will also apply to serious errors.
+
+The ''@extend'' Rule {#extend-rule}
+===================================
+
+The <dfn>@extend</dfn> rule declares
+that a matched element must act as if it had the necessary qualities to match another specified selector.
+Its syntax is:
+
+<pre class='prod'>@extend <compound-selector>;</pre>
+
+The ''@extend'' rule is only allowed inside of style rules.
+In any other context, an ''@extend'' rule is invalid.
+An ''@extend'' rule modifies the way that selector matching works
+for the elements matched by the style rule the ''@extend'' selector is inside of,
+known as the <dfn>extended elements</dfn> for that rule.
+
+The argument to ''@extend'' is the <dfn>extension selector</dfn>.
+The rule's <a>extended elements</a> must,
+for the purpose of determining if selectors match them,
+act as if they had the necessary <a>features</a>/state/etc to match the <a>extension selector</a>,
+in addition to their pre-existing <a>features</a>/state/etc.
+
+<div class='example'>
+	For example, in the following code:
+
+	<pre class='lang-css'>
+	.serious-error {
+		@extend .error;
+	}
+	</pre>
+
+	All elements matching the ''.serious-error'' selector
+	must act as if they also had an "error" class
+	for the purpose of matching selectors,
+	regardless of what their actual set of classes is.
+</div>
+
+Issue: Should this only affect selectors in CSS,
+or should it affect all APIs using selectors?
+Dunno which is saner for browsers;
+probably all selector-based APIs.
+Do other query APIs, like {{getElementsByTagName()}},
+rely on the same machinery?
+If so, should we generalize this to allow host languages to declare arbitrary querying APIs to be "selector-ish"?
+
+The ''@extend'' rule only affects the <a>extended elements</a>
+as long as the rule it's inside of matches them.
+
+<div class='example'>
+	For example, if the rule containing ''@extend'' is in an ''@media'' block:
+
+	<pre class='lang-css'>
+	.error {
+		color: red;
+	}
+
+	@media (width > 600px) {
+		.serious-error {
+			@extend .error;
+			font-weight: bold;
+		}
+
+		.error {
+			width: 100%;
+		}
+	}
+	</pre>
+
+	Then the ''.serious-error'' elements only act as if they have an <code>error</code> class
+	when the page's width is greater than ''600px''.
+</div>
+
+''@extend'' Chaining {#extend-chaining}
+---------------------------------------
+
+Multiple ''@extend'' rules can be "chained",
+with one rule adding certain qualities to an element,
+which cause another style rule containing an ''@extend'' to match.
+
+Note: This falls out of the definition automatically.
+It is called out separately for clarity,
+not because it's a separate feature that needs to be specifically defined.
+
+<div class='example'>
+	For example,
+	the following code using ''@extend'':
+
+	<pre class='lang-css'>
+	.error {
+		color: red;
+	}
+
+	.serious-error {
+		@extend .error;
+		font-weight: bold;
+	}
+
+	.super-serious-error {
+		@extend .serious-error;
+		animation: flashing 1s infinite;
+	}
+	</pre>
+
+	is equivalent to the following code without ''@extend'':
+
+	<pre class='lang-css'>
+	.error, .serious-error, .super-serious-error {
+		color: red;
+	}
+
+	.serious-error, .super-serious-error {
+		font-weight: bold;
+	}
+
+	.super-serious-error {
+		animation: flashing 1s infinite;
+	}
+	</pre>
+</div>
+
