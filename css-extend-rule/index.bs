@@ -298,3 +298,7 @@ This ensures that no element will ever directly match the styles using one,
 even by accident,
 and it can't be accidentally reused for an element directly.
 
+<a>Placeholder selectors</a> have the same specificity as <a>class selectors</a>.
+
+Issue: Or should they have slightly less, so concrete classes can reliably override?
+This would mean putting a fourth number into the specificity 3-tuple.
