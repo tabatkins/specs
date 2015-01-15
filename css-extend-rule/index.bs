@@ -1,11 +1,18 @@
 <pre class='metadata'>
-Title: CSS Selector Inheritance
-Abstract: This module defines the ''@extend'' rule, which allows element to act as if they matched other selectors.
+Title: CSS Extend Rule
+Abstract: This module defines the ''@extend'' rule, which allows elements to act as if they matched other selectors.
+	This makes it easier to "subclass" styling in a page,
+	when some new type of element should act like an existing element,
+	but with tweaks.
 Editor: Tab Atkins, Google, http://xanthir.com
 ED: tabatkins.github.io/specs/css-extend-rule/
 Status: DREAM
 Shortname: extend-rule
 Level: 1
+</pre>
+
+<pre class='link-defaults'>
+spec: selectors-4; type: selector; text: :active
 </pre>
 
 Introduction {#intro}

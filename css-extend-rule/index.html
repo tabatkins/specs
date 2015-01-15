@@ -5,7 +5,7 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     
   
-    <title>CSS Selector Inheritance</title>
+    <title>CSS Extend Rule</title>
     
   
     <style>
@@ -172,7 +172,7 @@ img, a.logo { border-style: none; }
 .prod [data-link-type]::after { content: ""; }
 /* Element-type link styling */
 [data-link-type=element] { font-family: monospace; }
-[data-link-type=element]::before { content: "&lt;" }
+[data-link-type=element]::before { content: "<" }
 [data-link-type=element]::after { content: ">" }
 /* Self-links */
 a.self-link {
@@ -382,7 +382,7 @@ pre.idl :link, pre.idl :visited {
 }
 
 
-/* Switch/case &lt;dl>s */
+/* Switch/case <dl>s */
 
 dl.switch {
  padding-left: 2em;
@@ -552,7 +552,7 @@ span.issue, span.note {
     <script>self = (typeof window !== 'undefined')
 	? window   // if in browser
 	: (
-		(typeof WorkerGlobalScope !== 'undefined' &amp;&amp; self instanceof WorkerGlobalScope)
+		(typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope)
 		? self // if in worker
 		: {}   // if in node js
 	);
@@ -576,7 +576,7 @@ var _ = self.Prism = {
 			} else if (_.util.type(tokens) === 'Array') {
 				return tokens.map(_.util.encode);
 			} else {
-				return tokens.replace(/&amp;/g, '&amp;amp;').replace(/&lt;/g, '&amp;lt;').replace(/\u00a0/g, ' ');
+				return tokens.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
 			}
 		},
 
@@ -674,7 +674,7 @@ var _ = self.Prism = {
 
 		var elements = document.querySelectorAll('pre[class*="language-"], [class*="language-"] pre, pre[class*="lang-"], [class*="lang-"] pre');
 		for (var i=0, element; element = elements[i++];) {
-			if (element.firstElementChild &amp;&amp; element.firstElementChild.tagName.toLowerCase() == "code") {
+			if (element.firstElementChild && element.firstElementChild.tagName.toLowerCase() == "code") {
 				// Already handled by the previous loop
 				continue;
 			}
@@ -690,7 +690,7 @@ var _ = self.Prism = {
 		// Find language
 		var language, grammar, parent = element;
 
-		while (parent &amp;&amp; !lang.test(parent.className)) {
+		while (parent && !lang.test(parent.className)) {
 			parent = parent.parentNode;
 		}
 
@@ -728,7 +728,7 @@ var _ = self.Prism = {
 
 		_.hooks.run('before-highlight', env);
 
-		if (async &amp;&amp; self.Worker) {
+		if (async && self.Worker) {
 			var worker = new Worker(_.filename);
 
 			worker.onmessage = function(evt) {
@@ -738,7 +738,7 @@ var _ = self.Prism = {
 
 				env.element.innerHTML = env.highlightedCode;
 
-				callback &amp;&amp; callback.call(env.element);
+				callback && callback.call(env.element);
 				_.hooks.run('after-highlight', env);
 			};
 
@@ -754,7 +754,7 @@ var _ = self.Prism = {
 
 			env.element.innerHTML = env.highlightedCode;
 
-			callback &amp;&amp; callback.call(element);
+			callback && callback.call(element);
 
 			_.hooks.run('after-highlight', env);
 		}
@@ -788,7 +788,7 @@ var _ = self.Prism = {
 			var patterns = grammar[token];
 			patterns = (_.util.type(patterns) === "Array") ? patterns : [patterns];
 
-			for (var j = 0; j &lt; patterns.length; ++j) {
+			for (var j = 0; j < patterns.length; ++j) {
 				var pattern = patterns[j],
 					inside = pattern.inside,
 					lookbehind = !!pattern.lookbehind,
@@ -797,7 +797,7 @@ var _ = self.Prism = {
 
 				pattern = pattern.pattern || pattern;
 
-				for (var i=0; i&lt;strarr.length; i++) { // Don’t cache length as it changes during the loop
+				for (var i=0; i<strarr.length; i++) { // Don’t cache length as it changes during the loop
 
 					var str = strarr[i];
 
@@ -918,7 +918,7 @@ Token.stringify = function(o, language, parent) {
 		attributes += name + '="' + (env.attributes[name] || '') + '"';
 	}
 
-	return '&lt;' + env.tag + ' class="' + env.classes.join(' ') + '" ' + attributes + '>' + env.content + '&lt;/' + env.tag + '>';
+	return '<' + env.tag + ' class="' + env.classes.join(' ') + '" ' + attributes + '>' + env.content + '</' + env.tag + '>';
 
 };
 
@@ -948,7 +948,7 @@ script = script[script.length - 1];
 if (script) {
 	_.filename = script.src;
 
-	if (document.addEventListener &amp;&amp; !script.hasAttribute('data-manual')) {
+	if (document.addEventListener && !script.hasAttribute('data-manual')) {
 		document.addEventListener('DOMContentLoaded', _.highlightAll);
 	}
 }
@@ -957,7 +957,7 @@ return self.Prism;
 
 })();
 
-if (typeof module !== 'undefined' &amp;&amp; module.exports) {
+if (typeof module !== 'undefined' && module.exports) {
 	module.exports = Prism;
 }
 ;
@@ -981,10 +981,10 @@ Prism.languages.css = {
 if (Prism.languages.markup) {
 	Prism.languages.insertBefore('markup', 'tag', {
 		'style': {
-			pattern: /&lt;style[\w\W]*?>[\w\W]*?&lt;\/style>/ig,
+			pattern: /<style[\w\W]*?>[\w\W]*?<\/style>/ig,
 			inside: {
 				'tag': {
-					pattern: /&lt;style[\w\W]*?>|&lt;\/style>/ig,
+					pattern: /<style[\w\W]*?>|<\/style>/ig,
 					inside: Prism.languages.markup.tag.inside
 				},
 				rest: Prism.languages.css
@@ -1008,7 +1008,7 @@ Prism.languages.insertBefore('css', 'ignore', {
 	'number': /[\d%\.]+/g
 });;
 </script>
-    <style>/* http://prismjs.com/download.html?themes=prism&amp;languages=clike */
+    <style>/* http://prismjs.com/download.html?themes=prism&languages=clike */
 /**
  * prism.js default theme for JavaScript, CSS and HTML
  * Based on dabblet (http://dabblet.com)
@@ -1150,7 +1150,7 @@ pre[class*="language-"] {
   
       <p data-fill-with="logo"></p>
   
-      <h1 class="p-name no-ref" id="title">CSS Selector Inheritance</h1>
+      <h1 class="p-name no-ref" id="title">CSS Extend Rule</h1>
   
       <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas,
     <time class="dt-updated" datetime="2015-01-15">15 January 2015</time></span></h2>
@@ -1187,7 +1187,11 @@ Parts of this work may be from another specification document.  If so, those par
     <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
 
     <div class="p-summary" data-fill-with="abstract">
-      <p>This module defines the <a class="css" data-link-type="maybe" href="#at-ruledef-extend">@extend</a> rule, which allows element to act as if they matched other selectors.</p>
+      <p>This module defines the <a class="css" data-link-type="maybe" href="#at-ruledef-extend">@extend</a> rule, which allows elements to act as if they matched other selectors.
+
+This makes it easier to "subclass" styling in a page,
+when some new type of element should act like an existing element,
+but with tweaks.</p>
 
 </div>
 
@@ -1204,6 +1208,7 @@ Parts of this work may be from another specification document.  If so, those par
             <li><a href="#extend-chaining"><span class="secno">2.1</span> <span class="content"><span class="css" data-link-type="maybe" title="@extend">@extend</span> Chaining</span></a></li>
           </ul>
         </li>
+        <li><a href="#placeholder"><span class="secno">3</span> <span class="content">The Placeholder Selector <span class="css">%foo</span></span></a></li>
         <li><a href="#conformance"><span class="secno"></span> <span class="content">
 Conformance</span></a></li>
         <li><a href="#references"><span class="secno"></span> <span class="content">References</span></a>
@@ -1216,6 +1221,8 @@ Conformance</span></a></li>
       </ul></div>
 
     <main>
+
+
 
 
 
@@ -1372,6 +1379,35 @@ as long as the rule it’s inside of matches them.</p>
 </div>
 
 
+      <div class="example">
+	Note that the <a data-link-type="dfn" href="#extension-selector">extension selector</a> can specify more than classes.
+	For example, in the following code:
+
+	
+        <pre class="lang-css">.my-button {
+  @extend button;
+}
+</pre>
+
+
+        <p>Any elements with <code>class=my-button</code> receive the same styling as actual <a data-link-type="element" href="https://html.spec.whatwg.org/#the-button-element">button</a> elements,
+	as if they had a tagname of <span class="css">button</span> in addition to their normal tagname.</p>
+
+
+        <p>Similarly, in the following code:</p>
+
+	
+        <pre class="lang-css">.perma-pressed-button {
+  @extend .button:active;
+}
+</pre>
+
+
+        <p>Any <span class="css">.perma-pressed</span> elements are styled as if they were <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/selectors-4/#active-pseudo">:active</a>,
+	so that any styling applied to "pressed" buttons via <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/selectors-4/#active-pseudo">:active</a> rules applies to them as well.</p>
+</div>
+
+
       <h3 class="heading settled" data-level="2.1" id="extend-chaining"><span class="secno">2.1. </span><span class="content"><a class="css" data-link-type="maybe" href="#at-ruledef-extend">@extend</a> Chaining</span><a class="self-link" href="#extend-chaining"></a></h3>
 
 
@@ -1422,6 +1458,86 @@ not because it’s a separate feature that needs to be specifically defined.</p>
 }
 </pre>
 </div>
+
+
+
+      <h2 class="heading settled" data-level="3" id="placeholder"><span class="secno">3. </span><span class="content">The Placeholder Selector <span class="css">%foo</span></span><a class="self-link" href="#placeholder"></a></h2>
+
+
+      <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-extend">@extend</a> rule originates in CSS preprocessors, such as SASS.
+Experience with those tools shows that it’s often useful to define generic, "functional" sets of styles
+that don’t apply to any elements directly,
+then use <a class="css" data-link-type="maybe" href="#at-ruledef-extend">@extend</a> to give that behavior to <em>semantic</em> classnames
+which are more meaningful within their project.</p>
+
+
+      <div class="example">
+	For example, the "media block" is a common functional sort of styling,
+	originating from OOCSS,
+	that describes a box with a picture on one side and text on the other.
+	It might be used like the following:
+
+	
+        <pre class="lang-css">.media-block {
+  overflow: auto;
+}
+.media-block > img {
+  float: left;
+}
+...
+
+.image-post {
+  @extend .media-block;
+  ... /* additional styles to tweak the display */
+}
+</pre>
+</div>
+
+
+      <p>However, this also carries the possibility of confusion.
+In the above example, <span class="css">.media-block</span> is just used to give a name to the pattern,
+so that other rules can <a class="css" data-link-type="maybe" href="#at-ruledef-extend">@extend</a> it.
+It’s not meant to be used in a document--
+there shouldn’t be any elements with <code>class=media-block</code>--
+but this isn’t obvious from the code.
+It’s easy for later maintainers of the file to accidentally use <span class="css">.media-block</span> directly on an element,
+and modify it for their own uses
+(after all, if they search the codebase, they’ll find no elements on the page using it!),
+perhaps accidentally breaking elements using it in <a class="css" data-link-type="maybe" href="#at-ruledef-extend">@extend</a>.</p>
+
+
+      <p>To avoid situations like this,
+and make it more clear that one is developing a "generic"/"functional"/"structural" set of styles,
+the <dfn data-dfn-type="dfn" data-noexport="" id="placeholder-selector">placeholder selector<a class="self-link" href="#placeholder-selector"></a></dfn> can be used.
+Its syntax is similar to a <a data-link-type="dfn" href="http://dev.w3.org/csswg/selectors-4/#class-selector">class selector</a>,
+but is prefixed by a <span class="css">%</span> (U+0025 PERCENT SIGN)
+rather than a period.</p>
+
+
+      <div class="example">
+	The previous example could be more clearly written using a <a data-link-type="dfn" href="#placeholder-selector">placeholder selector</a>:
+
+	
+        <pre class="lang-css">%media-block {
+  overflow: auto;
+}
+%media-block > img {
+  float: left;
+}
+...
+
+.image-post {
+  @extend %media-block;
+}
+</pre>
+</div>
+
+
+      <p>Host languages must not provide any way for an element to match a <a data-link-type="dfn" href="#placeholder-selector">placeholder selector</a>;
+the only way for an element to match one is by using an <a class="css" data-link-type="maybe" href="#at-ruledef-extend">@extend</a> rule.
+This ensures that no element will ever directly match the styles using one,
+even by accident,
+and it can’t be accidentally reused for an element directly.</p>
 
 
 </main>
@@ -1476,6 +1592,7 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
       <li>@extend, <a href="#at-ruledef-extend" title="section 2">2</a></li>
       <li>extended elements, <a href="#extended-elements" title="section 2">2</a></li>
       <li>extension selector, <a href="#extension-selector" title="section 2">2</a></li>
+      <li>placeholder selector, <a href="#placeholder-selector" title="section 3">3</a></li>
     </ul>
     <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
     <div style="counter-reset:issue">
