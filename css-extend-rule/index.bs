@@ -216,3 +216,77 @@ not because it's a separate feature that needs to be specifically defined.
 	</pre>
 </div>
 
+
+The Placeholder Selector ''%foo'' {#placeholder}
+================================================
+
+The ''@extend'' rule originates in CSS preprocessors, such as SASS.
+Experience with those tools shows that it's often useful to define generic, "functional" sets of styles
+that don't apply to any elements directly,
+then use ''@extend'' to give that behavior to <em>semantic</em> classnames
+which are more meaningful within their project.
+
+<div class='example'>
+	For example, the "media block" is a common functional sort of styling,
+	originating from OOCSS,
+	that describes a box with a picture on one side and text on the other.
+	It might be used like the following:
+
+	<pre class='lang-css'>
+	.media-block {
+		overflow: auto;
+	}
+	.media-block > img {
+		float: left;
+	}
+	...
+
+	.image-post {
+		@extend .media-block;
+		... /* additional styles to tweak the display */
+	}
+	</pre>
+</div>
+
+However, this also carries the possibility of confusion.
+In the above example, ''.media-block'' is just used to give a name to the pattern,
+so that other rules can ''@extend'' it.
+It's not meant to be used in a document--
+there shouldn't be any elements with <code>class=media-block</code>--
+but this isn't obvious from the code.
+It's easy for later maintainers of the file to accidentally use ''.media-block'' directly on an element,
+and modify it for their own uses
+(after all, if they search the codebase, they'll find no elements on the page using it!),
+perhaps accidentally breaking elements using it in ''@extend''.
+
+To avoid situations like this,
+and make it more clear that one is developing a "generic"/"functional"/"structural" set of styles,
+the <dfn>placeholder selector</dfn> can be used.
+Its syntax is similar to a <a>class selector</a>,
+but is prefixed by a ''%'' (U+0025 PERCENT SIGN)
+rather than a period.
+
+<div class='example'>
+	The previous example could be more clearly written using a <a>placeholder selector</a>:
+
+	<pre class='lang-css'>
+	%media-block {
+		overflow: auto;
+	}
+	%media-block > img {
+		float: left;
+	}
+	...
+
+	.image-post {
+		@extend %media-block;
+	}
+	</pre>
+</div>
+
+Host languages must not provide any way for an element to match a <a>placeholder selector</a>;
+the only way for an element to match one is by using an ''@extend'' rule.
+This ensures that no element will ever directly match the styles using one,
+even by accident,
+and it can't be accidentally reused for an element directly.
+
