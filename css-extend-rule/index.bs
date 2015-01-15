@@ -9,6 +9,7 @@ ED: tabatkins.github.io/specs/css-extend-rule/
 Status: DREAM
 Shortname: extend-rule
 Level: 1
+Ignored Terms: getelementsbytagname()
 </pre>
 
 <pre class='link-defaults'>
@@ -86,7 +87,7 @@ The <dfn>@extend</dfn> rule declares
 that a matched element must act as if it had the necessary qualities to match another specified selector.
 Its syntax is:
 
-<pre class='prod'>@extend <compound-selector>;</pre>
+<pre class='prod'>@extend <<compound-selector>>;</pre>
 
 The ''@extend'' rule is only allowed inside of style rules.
 In any other context, an ''@extend'' rule is invalid.
