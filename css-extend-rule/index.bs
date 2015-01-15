@@ -143,6 +143,31 @@ as long as the rule it's inside of matches them.
 	when the page's width is greater than ''600px''.
 </div>
 
+<div class='example'>
+	Note that the <a>extension selector</a> can specify more than classes.
+	For example, in the following code:
+
+	<pre class='lang-css'>
+	.my-button {
+		@extend button;
+	}
+	</pre>
+
+	Any elements with <code>class=my-button</code> receive the same styling as actual <a element>button</a> elements,
+	as if they had a tagname of <css>button</css> in addition to their normal tagname.
+
+	Similarly, in the following code:
+
+	<pre class='lang-css'>
+	.perma-pressed-button {
+		@extend .button:active;
+	}
+	</pre>
+
+	Any ''.perma-pressed'' elements are styled as if they were '':active'',
+	so that any styling applied to "pressed" buttons via '':active'' rules applies to them as well.
+</div>
+
 ''@extend'' Chaining {#extend-chaining}
 ---------------------------------------
 
