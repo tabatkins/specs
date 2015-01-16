@@ -336,3 +336,13 @@ and it can't be accidentally reused for an element directly.
 
 Issue: Or should they have slightly less, so concrete classes can reliably override?
 This would mean putting a fourth number into the specificity 3-tuple.
+
+Acknowledgements {#acks}
+========================
+
+The editor would like to thank the following people:
+
+* <a href="https://twitter.com/stubbornella">Nicole Sullivan</a> for <a href="http://www.stubbornella.org/content/2009/11/09/css-wish-list/">first coming up with the idea for @extend</a>.
+* <a href="https://twitter.com/chriseppstein">Chris Eppstein</a> and <a href="https://twitter.com/nex3">Natalie Weizenbaum</a>
+	for <a href="http://chriseppstein.github.io/blog/2009/10/12/css-class-inheritance/">developing and programming</a> the modern incarnation of ''@extend'' in Sass.
+* The Sass community, for using ''@extend'' so extensively that its lack in CSS couldn't be ignored.
