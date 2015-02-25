@@ -1,0 +1,67 @@
+<pre class=metadata>
+Title: Constructable Stylesheet Objects
+Shortname: construct-stylesheets
+Level: 1
+Status: DREAM
+ED: http://tabatkins.github.io/specs/construct-stylesheets/
+Editor: Tab Atkins Jr., Google, http://xanthir.com/contact/
+Abstract: This draft defines additions to CSSOM to make StyleSheet objects directly constructable, along with methods and APIs to make it easier to deal with stylesheets in the context of custom elements and similar.  It also defines constructors for CSSRule objects.
+</pre>
+
+Adding Stylesheets In Script {#adding-stylesheets}
+=================================
+
+<pre class='idl'>
+[Constructor(DOMString text, CSSStyleSheetInit? options)]
+partial interface CSSStyleSheet {
+};
+
+dictionary CSSStyleSheetInit {
+	(MediaList or DOMString) media = "";
+	DOMString title = "";
+	boolean alternate = false;
+	boolean disabled = false;
+};
+
+interface TreeScope {
+	void addStyleSheet(CSSStyleSheet sheet);
+};
+Document implements TreeScope;
+</pre>
+
+<dl>
+	<dt><dfn constructor for=CSSStyleSheet lt="CSSStyleSheet(text)|CSSStyleSheet(text, options)">CSSStyleSheet(text, options)</dfn>
+	<dd>
+		When called, execute these steps:
+
+		1. Construct a new {{CSSStyleSheet}} object <var>sheet</var>,
+			with location set to <code>null</code>,
+			no parent CSS style sheet,
+			no owner node,
+			no owner CSS rule,
+			and a title set to the {{CSSStyleSheetInit/title}} attribute of <var>options</var>.
+			Set <var>sheet’s</var> origin-clean flag.
+		2. If the {{CSSStyleSheetInit/media}} attribute of <var>options</var> is a string,
+			<a>create a MediaList object</a> from the string
+			and assign it as <var>sheet’s</var> media.
+			Otherwise, assign the value of the attribute as <var>sheet’s</var> media.
+		3. If the {{CSSStyleSheetInit/alternate}} attribute of <var>options</var> is true,
+			set <var>sheet’s</var> alternate flag.
+		4. If the {{CSSStyleSheetInit/disabled}} attribute of <var>options</var> is true,
+			set <var>sheet’s</var> disabled flag.
+		5. <a spec=css-syntax-3>Parse a stylesheet</a> from <var>text</var>.
+			If it returned a list of rules,
+			and assign the list as <var>sheet’s</var> CSS rules;
+			otherwise,
+			set <var>sheet’s</var> CSS rules to an empty list.
+		6. Return <var>sheet</var>.
+
+	<dt><dfn method for=TreeScope>addStyleSheet(sheet)</dfn>
+	<dd>
+		When called, <a>add a CSS style sheet</a> to the {{TreeScope}} this method was called on.
+
+		Style sheets added to to the document by this method
+		are placed at the end of the {{TreeScope}}’s <a>document CSS style sheets</a>,
+		after all stylesheets that come from the document's markup,
+		in addition order.
+</dl>
