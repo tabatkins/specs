@@ -6,6 +6,11 @@ Status: DREAM
 ED: http://tabatkins.github.io/specs/construct-stylesheets/
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact/
 Abstract: This draft defines additions to CSSOM to make StyleSheet objects directly constructable, along with methods and APIs to make it easier to deal with stylesheets in the context of custom elements and similar.  It also defines constructors for CSSRule objects.
+Ignored Terms: ShadowRoot, create a medialist object, add a css style sheet, document css style sheets
+</pre>
+
+<pre class='link-defaults'>
+spec:dom-core-ls; type:interface; text:Document
 </pre>
 
 Adding Stylesheets In Script {#adding-stylesheets}
@@ -27,6 +32,7 @@ interface TreeScope {
 	void addStyleSheet(CSSStyleSheet sheet);
 };
 Document implements TreeScope;
+ShadowRoot implements TreeScope;
 </pre>
 
 <dl>
@@ -65,3 +71,33 @@ Document implements TreeScope;
 		after all stylesheets that come from the document's markup,
 		in addition order.
 </dl>
+
+Applying Styles At All Levels {#styles-at-all-levels}
+===================
+
+<div class='issue'>
+	One of the major "misuses" of the ''/deep/'' combinator
+	is to apply "default styles" to a component wherever it lives in the tree,
+	no matter how deeply nested it is inside of components.
+	This is similar to the job of the user-agent style sheet,
+	but it's supplied by the page author,
+	because it's for custom elements.
+
+	Unfortunately, this is extremely slow,
+	and there's not a whole lot that can be done about that--
+	''/deep/'' combinators are slow by their nature.
+	Note, though, that the UA and user stylesheets automatically apply in all shadows;
+	it's only the author stylesheet that is limited to the context it's created in.
+
+	One possible solution here is to add another origin,
+	the "author default" origin,
+	which sits between "user" and "author",
+	and applies in all shadow roots automatically.
+	We can add a list for these stylesheets,
+	akin to <code class='lang-javascript'>document.styleSheets</code>,
+	and allow you to insert constructed stylesheets into it.
+
+	Maybe it only applies to the context you're in and descendant contexts?
+	Need to investigate;
+	probably bad to let a component apply automatic styles to the outer page via this mechanism.
+</div>
