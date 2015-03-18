@@ -29,7 +29,7 @@ dictionary CSSStyleSheetInit {
 };
 
 interface TreeScope {
-	void addStyleSheet(CSSStyleSheet sheet);
+	attribute StyleSheetList moreStyleSheets;
 };
 Document implements TreeScope;
 ShadowRoot implements TreeScope;
@@ -62,32 +62,43 @@ ShadowRoot implements TreeScope;
 			set <var>sheet’s</var> CSS rules to an empty list.
 		6. Return <var>sheet</var>.
 
-	<dt><dfn method for=TreeScope>addStyleSheet(sheet)</dfn>
+	<dt><dfn attribute for=TreeScope>moreStyleSheets</dfn>
 	<dd>
-		When called, <a>add a CSS style sheet</a> to the {{TreeScope}} this method was called on.
+		Style sheets assigned to this attribute are part of the <a>document CSS style sheets</a>.
+		They are ordered after the stylesheets in {{Document/styleSheets}}.
 
-		Style sheets added to to the document by this method
-		are placed at the end of the {{TreeScope}}’s <a>document CSS style sheets</a>,
-		after all stylesheets that come from the document's markup,
-		in addition order.
+		Issue: Better name.
+
+		Issue: Or do we want to include manually-added sheets in <code>document.styleSheets</code>,
+		similar to how <code>document.fonts</code> mixes OM-created and manually-created fonts?
+		Big difference is that ordering matters here,
+		which makes dealing with the invariants much more annoying.
+		(What happens if you manually add a sheet between two &lt;link> sheets,
+		then insert another &lt;link> in the document between them?
+		Does it go before or after your manually-added one?
+		Or do we just make it illegal to manually add a sheet before an automatic sheet?)
 </dl>
 
-Applying Styles At All Levels {#styles-at-all-levels}
+Applying Styles In All Contexts {#styles-in-all-contexts}
 ===================
 
 <div class='issue'>
-	One of the major "misuses" of the ''/deep/'' combinator
+	One of the major "misuses" of the ''>>>'' combinator
 	is to apply "default styles" to a component wherever it lives in the tree,
 	no matter how deeply nested it is inside of components.
-	This is similar to the job of the user-agent style sheet,
-	but it's supplied by the page author,
-	because it's for custom elements.
+	The use-case for this is to provide the equivalent of the user-agent stylesheet,
+	but for custom elements
+	(thus, the styles by necessity must come from the author).
 
 	Unfortunately, this is extremely slow,
 	and there's not a whole lot that can be done about that--
-	''/deep/'' combinators are slow by their nature.
+	''>>>'' combinators are slow by their nature.
 	Note, though, that the UA and user stylesheets automatically apply in all shadows;
 	it's only the author stylesheet that is limited to the context it's created in.
+
+	(At this point, one might point out that this is already handled by just setting up styles during element construction.
+	This doesn't help for cases where a component is purposely authored to be styled by the end-user;
+	forcing <em>users</em> of components to go muck around in their components' source code is a non-starter.)
 
 	One possible solution here is to add another origin,
 	the "author default" origin,
@@ -96,6 +107,7 @@ Applying Styles At All Levels {#styles-at-all-levels}
 	We can add a list for these stylesheets,
 	akin to <code class='lang-javascript'>document.styleSheets</code>,
 	and allow you to insert constructed stylesheets into it.
+	Or maybe add an <code>.origin</code> attribute to CSSStyleSheet, defaulting to "author"?
 
 	Maybe it only applies to the context you're in and descendant contexts?
 	Need to investigate;

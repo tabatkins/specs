@@ -1168,7 +1168,7 @@ pre[class*="language-"] {
    <h1 class="p-name no-ref" id="title">Constructable Stylesheet Objects</h1>
   
    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas,
-    <time class="dt-updated" datetime="2015-03-13">13 March 2015</time></span></h2>
+    <time class="dt-updated" datetime="2015-03-18">18 March 2015</time></span></h2>
   
    <div data-fill-with="spec-metadata">
     <dl>
@@ -1186,7 +1186,7 @@ pre[class*="language-"] {
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 13 March 2015,
+In addition, as of 18 March 2015,
 the editors have made this specification available under the
 <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -1212,7 +1212,7 @@ Parts of this work may be from another specification document.  If so, those par
   <div data-fill-with="table-of-contents" role="navigation">
    <ul class="toc" role="directory">
     <li><a href="#adding-stylesheets"><span class="secno">1</span> <span class="content">Adding Stylesheets In Script</span></a>
-    <li><a href="#styles-at-all-levels"><span class="secno">2</span> <span class="content">Applying Styles At All Levels</span></a>
+    <li><a href="#styles-in-all-contexts"><span class="secno">2</span> <span class="content">Applying Styles In All Contexts</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content">
 Conformance</span></a>
     <li><a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -1249,7 +1249,7 @@ dictionary <dfn class="idl-code" data-dfn-type="dictionary" data-export="" data-
 };
 
 interface <dfn class="idl-code" data-dfn-type="interface" data-export="" data-global-name="" id="treescope">TreeScope<a class="self-link" href="#treescope"></a></dfn> {
-  void <dfn class="idl-code" data-dfn-for="TreeScope" data-dfn-type="method" data-export="" data-global-name="TreeScope<interface>/addStyleSheet(sheet)<method>" data-lt="addStyleSheet(sheet)" id="dom-treescope-addstylesheetsheet">addStyleSheet<a class="self-link" href="#dom-treescope-addstylesheetsheet"></a></dfn>(<a data-link-type="idl-name" href="http://dev.w3.org/csswg/cssom-1/#cssstylesheet">CSSStyleSheet</a> <dfn class="idl-code" data-dfn-for="TreeScope/addStyleSheet" data-dfn-type="argument" data-export="" data-global-name="TreeScope/addStyleSheet/sheet<argument>" id="dom-treescope-addstylesheet-sheet">sheet<a class="self-link" href="#dom-treescope-addstylesheet-sheet"></a></dfn>);
+  attribute <a data-link-type="idl-name" href="http://dev.w3.org/csswg/cssom-1/#stylesheetlist">StyleSheetList</a> <a class="idl-code" data-global-name="TreeScope<interface>/moreStyleSheets<attribute>" data-link-type="attribute" data-type="StyleSheetList " href="#dom-treescope-morestylesheets">moreStyleSheets</a>;
 };
 <a data-link-type="idl-name" href="http://dom.spec.whatwg.org/#document">Document</a> implements <a data-link-type="idl-name" href="#treescope">TreeScope</a>;
 <a data-link-type="idl-name">ShadowRoot</a> implements <a data-link-type="idl-name" href="#treescope">TreeScope</a>;
@@ -1306,36 +1306,50 @@ set <var>sheet’s</var> CSS rules to an empty list.</p>
 </ol>
      
 	
-    <dt><dfn class="idl-code" data-dfn-for="TreeScope" data-dfn-type="method" data-export="" data-lt="addStyleSheet()" id="dom-treescope-addstylesheet">addStyleSheet(sheet)<a class="self-link" href="#dom-treescope-addstylesheet"></a></dfn>
-	
+    <dt><dfn class="idl-code" data-dfn-for="TreeScope" data-dfn-type="attribute" data-export="" id="dom-treescope-morestylesheets">moreStyleSheets<a class="self-link" href="#dom-treescope-morestylesheets"></a></dfn>
+	, <span> of type <a data-link-type="idl-name" href="http://dev.w3.org/csswg/cssom-1/#stylesheetlist">StyleSheetList</a></span>
     <dd>
-		When called, <a data-link-type="dfn">add a CSS style sheet</a> to the <code class="idl"><a data-link-type="idl" href="#treescope">TreeScope</a></code> this method was called on.
+		Style sheets assigned to this attribute are part of the <a data-link-type="dfn">document CSS style sheets</a>.
+		They are ordered after the stylesheets in <code class="idl"><a data-link-type="idl" href="http://dev.w3.org/csswg/cssom-1/#dom-document-stylesheets">styleSheets</a></code>.
 
 
-     <p>Style sheets added to to the document by this method
-		are placed at the end of the <code class="idl"><a data-link-type="idl" href="#treescope">TreeScope</a></code>’s <a data-link-type="dfn">document CSS style sheets</a>,
-		after all stylesheets that come from the document’s markup,
-		in addition order.</p>
+     <p class="issue" id="issue-bc8d9825"><a class="self-link" href="#issue-bc8d9825"></a>Better name.</p>
+     
+
+
+     <p class="issue" id="issue-2b780a58"><a class="self-link" href="#issue-2b780a58"></a>Or do we want to include manually-added sheets in <code>document.styleSheets</code>,
+		similar to how <code>document.fonts</code> mixes OM-created and manually-created fonts?
+		Big difference is that ordering matters here,
+		which makes dealing with the invariants much more annoying.
+		(What happens if you manually add a sheet between two &lt;link> sheets,
+		then insert another &lt;link> in the document between them?
+		Does it go before or after your manually-added one?
+		Or do we just make it illegal to manually add a sheet before an automatic sheet?)</p>
      
 </dl>
 
 
-   <h2 class="heading settled" data-level="2" id="styles-at-all-levels"><span class="secno">2. </span><span class="content">Applying Styles At All Levels</span><a class="self-link" href="#styles-at-all-levels"></a></h2>
+   <h2 class="heading settled" data-level="2" id="styles-in-all-contexts"><span class="secno">2. </span><span class="content">Applying Styles In All Contexts</span><a class="self-link" href="#styles-in-all-contexts"></a></h2>
 
 
-   <div class="issue" id="issue-643f5c66"><a class="self-link" href="#issue-643f5c66"></a>
-	One of the major "misuses" of the <span class="css">deep/</span> combinator
+   <div class="issue" id="issue-2d9baa67"><a class="self-link" href="#issue-2d9baa67"></a>
+	One of the major "misuses" of the <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-scoping-1/#selectordef-shadow-piercing-descendant-combinator">>>></a> combinator
 	is to apply "default styles" to a component wherever it lives in the tree,
 	no matter how deeply nested it is inside of components.
-	This is similar to the job of the user-agent style sheet,
-	but it’s supplied by the page author,
-	because it’s for custom elements.
+	The use-case for this is to provide the equivalent of the user-agent stylesheet,
+	but for custom elements
+	(thus, the styles by necessity must come from the author).
 
 
     <p>Unfortunately, this is extremely slow,
-	and there’s not a whole lot that can be done about that—<wbr><span class="css">deep/</span> combinators are slow by their nature.
+	and there’s not a whole lot that can be done about that—<wbr><a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-scoping-1/#selectordef-shadow-piercing-descendant-combinator">>>></a> combinators are slow by their nature.
 	Note, though, that the UA and user stylesheets automatically apply in all shadows;
 	it’s only the author stylesheet that is limited to the context it’s created in.</p>
+
+
+    <p>(At this point, one might point out that this is already handled by just setting up styles during element construction.
+	This doesn’t help for cases where a component is purposely authored to be styled by the end-user;
+	forcing <em>users</em> of components to go muck around in their components' source code is a non-starter.)</p>
 
 
     <p>One possible solution here is to add another origin,
@@ -1344,7 +1358,8 @@ set <var>sheet’s</var> CSS rules to an empty list.</p>
 	and applies in all shadow roots automatically.
 	We can add a list for these stylesheets,
 	akin to <code class="lang-javascript">document.styleSheets</code>,
-	and allow you to insert constructed stylesheets into it.</p>
+	and allow you to insert constructed stylesheets into it.
+	Or maybe add an <code>.origin</code> attribute to CSSStyleSheet, defaulting to "author"?</p>
 
 
     <p>Maybe it only applies to the context you’re in and descendant contexts?
@@ -1396,22 +1411,24 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
   <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="indexlist">
-   <li>addStyleSheet(), <a href="#dom-treescope-addstylesheet">1</a>
-   <li>addStyleSheet(sheet), <a href="#dom-treescope-addstylesheetsheet">1</a>
    <li>alternate, <a href="#dom-cssstylesheetinit-alternate">1</a>
    <li>CSSStyleSheetInit, <a href="#dictdef-cssstylesheetinit">1</a>
    <li>CSSStyleSheet(text), <a href="#dom-cssstylesheet-cssstylesheettext">1</a>
    <li>CSSStyleSheet(text, options), <a href="#dom-cssstylesheet-cssstylesheettext">1</a>
    <li>disabled, <a href="#dom-cssstylesheetinit-disabled">1</a>
    <li>media, <a href="#dom-cssstylesheetinit-media">1</a>
+   <li>moreStyleSheets, <a href="#dom-treescope-morestylesheets">1</a>
    <li>options, <a href="#dom-cssstylesheet-cssstylesheettext-options-options">1</a>
-   <li>sheet, <a href="#dom-treescope-addstylesheet-sheet">1</a>
    <li>text, <a href="#dom-cssstylesheet-cssstylesheettext-options-text">1</a>
    <li>title, <a href="#dom-cssstylesheetinit-title">1</a>
    <li>TreeScope, <a href="#treescope">1</a>
   </ul>
   <h3 class="no-num heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="indexlist">
+   <li><a data-link-type="biblio" href="#biblio-css-scoping-1">[css-scoping-1]</a> defines the following terms:
+    <ul>
+     <li><a href="http://dev.w3.org/csswg/css-scoping-1/#selectordef-shadow-piercing-descendant-combinator">>>></a>
+    </ul>
    <li><a data-link-type="biblio" href="#biblio-css-syntax-3">[css-syntax-3]</a> defines the following terms:
     <ul>
      <li><a href="http://dev.w3.org/csswg/css-syntax-3/#parse-a-stylesheet">parse a stylesheet</a>
@@ -1420,6 +1437,8 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
     <ul>
      <li><a href="http://dev.w3.org/csswg/cssom-1/#cssstylesheet">CSSStyleSheet</a>
      <li><a href="http://dev.w3.org/csswg/cssom-1/#medialist">MediaList</a>
+     <li><a href="http://dev.w3.org/csswg/cssom-1/#stylesheetlist">StyleSheetList</a>
+     <li><a href="http://dev.w3.org/csswg/cssom-1/#dom-document-stylesheets">styleSheets</a>
     </ul>
    <li><a data-link-type="biblio" href="#biblio-dom-core-ls">[dom-core-ls]</a> defines the following terms:
     <ul>
@@ -1429,6 +1448,8 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
   <h2 class="no-num heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-css-scoping-1"><a class="self-link" href="#biblio-css-scoping-1"></a>[CSS-SCOPING-1]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="http://www.w3.org/TR/css-scoping-1/">CSS Scoping Module Level 1</a>. 3 April 2014. WD. URL: <a href="http://www.w3.org/TR/css-scoping-1/">http://www.w3.org/TR/css-scoping-1/</a>
    <dt id="biblio-css-syntax-3"><a class="self-link" href="#biblio-css-syntax-3"></a>[CSS-SYNTAX-3]
    <dd>Tab Atkins Jr.; Simon Sapin. <a href="http://www.w3.org/TR/css-syntax-3/">CSS Syntax Module Level 3</a>. 20 February 2014. CR. URL: <a href="http://www.w3.org/TR/css-syntax-3/">http://www.w3.org/TR/css-syntax-3/</a>
    <dt id="biblio-cssom-1"><a class="self-link" href="#biblio-cssom-1"></a>[CSSOM-1]
@@ -1451,7 +1472,7 @@ dictionary <a data-global-name="" href="#dictdef-cssstylesheetinit">CSSStyleShee
 };
 
 interface <a data-global-name="" href="#treescope">TreeScope</a> {
-  void <a data-global-name="TreeScope<interface>/addStyleSheet(sheet)<method>" href="#dom-treescope-addstylesheetsheet">addStyleSheet</a>(<a data-link-type="idl-name" href="http://dev.w3.org/csswg/cssom-1/#cssstylesheet">CSSStyleSheet</a> <a data-global-name="TreeScope/addStyleSheet/sheet<argument>" href="#dom-treescope-addstylesheet-sheet">sheet</a>);
+  attribute <a data-link-type="idl-name" href="http://dev.w3.org/csswg/cssom-1/#stylesheetlist">StyleSheetList</a> <a class="idl-code" data-global-name="TreeScope<interface>/moreStyleSheets<attribute>" data-link-type="attribute" data-type="StyleSheetList " href="#dom-treescope-morestylesheets">moreStyleSheets</a>;
 };
 <a data-link-type="idl-name" href="http://dom.spec.whatwg.org/#document">Document</a> implements <a data-link-type="idl-name" href="#treescope">TreeScope</a>;
 <a data-link-type="idl-name">ShadowRoot</a> implements <a data-link-type="idl-name" href="#treescope">TreeScope</a>;
@@ -1459,19 +1480,34 @@ interface <a data-global-name="" href="#treescope">TreeScope</a> {
 </pre>
   <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
+   <div class="issue">Better name.<a href="#issue-bc8d9825"> ↵ </a></div>
+   <div class="issue">Or do we want to include manually-added sheets in <code>document.styleSheets</code>,
+		similar to how <code>document.fonts</code> mixes OM-created and manually-created fonts?
+		Big difference is that ordering matters here,
+		which makes dealing with the invariants much more annoying.
+		(What happens if you manually add a sheet between two &lt;link> sheets,
+		then insert another &lt;link> in the document between them?
+		Does it go before or after your manually-added one?
+		Or do we just make it illegal to manually add a sheet before an automatic sheet?)<a href="#issue-2b780a58"> ↵ </a></div>
    <div class="issue">
-	One of the major "misuses" of the <span class="css">deep/</span> combinator
+	One of the major "misuses" of the <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-scoping-1/#selectordef-shadow-piercing-descendant-combinator">>>></a> combinator
 	is to apply "default styles" to a component wherever it lives in the tree,
 	no matter how deeply nested it is inside of components.
-	This is similar to the job of the user-agent style sheet,
-	but it’s supplied by the page author,
-	because it’s for custom elements.
+	The use-case for this is to provide the equivalent of the user-agent stylesheet,
+	but for custom elements
+	(thus, the styles by necessity must come from the author).
 
 
     <p>Unfortunately, this is extremely slow,
-	and there’s not a whole lot that can be done about that—<wbr><span class="css">deep/</span> combinators are slow by their nature.
+	and there’s not a whole lot that can be done about that—<wbr><a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-scoping-1/#selectordef-shadow-piercing-descendant-combinator">>>></a> combinators are slow by their nature.
 	Note, though, that the UA and user stylesheets automatically apply in all shadows;
 	it’s only the author stylesheet that is limited to the context it’s created in.</p>
+    
+
+
+    <p>(At this point, one might point out that this is already handled by just setting up styles during element construction.
+	This doesn’t help for cases where a component is purposely authored to be styled by the end-user;
+	forcing <em>users</em> of components to go muck around in their components' source code is a non-starter.)</p>
     
 
 
@@ -1481,7 +1517,8 @@ interface <a data-global-name="" href="#treescope">TreeScope</a> {
 	and applies in all shadow roots automatically.
 	We can add a list for these stylesheets,
 	akin to <code class="lang-javascript">document.styleSheets</code>,
-	and allow you to insert constructed stylesheets into it.</p>
+	and allow you to insert constructed stylesheets into it.
+	Or maybe add an <code>.origin</code> attribute to CSSStyleSheet, defaulting to "author"?</p>
     
 
 
@@ -1489,7 +1526,7 @@ interface <a data-global-name="" href="#treescope">TreeScope</a> {
 	Need to investigate;
 	probably bad to let a component apply automatic styles to the outer page via this mechanism.</p>
     
-<a href="#issue-643f5c66"> ↵ </a>
+<a href="#issue-2d9baa67"> ↵ </a>
    </div>
   </div></body>
 </html>
