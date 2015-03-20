@@ -217,7 +217,7 @@ while a font face is being blocked from rendering.
 
 
 Controlling Font Rendering Per Element: the 'font-rendering!!property' property {#font-rendering-prop}
---------------------------------
+===============================
 
 The text rendering strategy can sometimes vary based on the content displayed on the page,
 rather than based on the font face used.
