@@ -1,0 +1,287 @@
+<pre class='metadata'>
+Title: CSS Font Rendering Controls Module Level 1
+Status: UD
+Shortname: css-font-rendering
+Level: 1
+Editor: Tab Atkins, Google, http://xanthir.com
+Editor: Kenji Baheux, Google
+Abstract: This spec introduces a new ''@font-face'' descriptor and a corresponding property for controlling how a downloadable font renders before it is fully loaded.  It's intended that this spec be merged into the Fonts spec, likely Fonts Level 4.
+ED: https://tabatkins.github.io/specs/css-font-rendering/
+</pre>
+
+Introduction {#intro}
+=====================
+
+When using downloadable webfonts via ''@font-face'',
+the user agent needs to know what to do while the font is actively loading.
+Most web browsers have adopted some form of timeout:
+
+<table class='data'>
+	<thead>
+		<tr>
+			<th>Browser
+			<th>Timeout
+			<th>Fallback
+			<th>Swap
+	<tbody>
+		<tr>
+			<th>Chrome 35+
+			<td>3 seconds
+			<td>yes
+			<td>yes
+		<tr>
+			<th>Opera
+			<td>3 seconds
+			<td>yes
+			<td>yes
+		<tr>
+			<th>Firefox
+			<td>3 seconds
+			<td>yes
+			<td>yes
+		<tr>
+			<th>Internet Explorer
+			<td>0 seconds
+			<td>yes
+			<td>yes
+		<tr>
+			<th>Safari
+			<td>no timeout
+			<td>n/a
+			<td>n/a
+</table>
+
+* Chrome and Firefox have a 3 second timeout after which the text is shown with the fallback font.
+	Eventually, a swap occurs:
+	the text is re-rendered with the intended font once it becomes available.
+* Internet Explorer has a 0 second timeout which results in immediate text rendering:
+	if the requested font is not yet available,
+	fallback is used,
+	and text is rerendered later once the requested font becomes available.
+* Safari has no timeout behavior
+	(or at least nothing beyond a baseline network timeout)
+
+While these default behaviors are reasonable,
+they're unfortunately inconsistent across browsers.
+Worse, no single approach is sufficient to cover the range of use-cases
+required by modern user-experience&ndash; and performance&ndash;conscious applications.
+
+The Font Loading API [[CSS-FONT-LOADING-3]] allows a developer to override some of the above behaviors,
+but that requires scripting,
+a non-trivial amount of effort,
+and ultimately doesn't provide sufficient hooks to cover <em>all</em> reasonable cases.
+Additionally,
+the developer needs to either inline the loading script into their page
+or load an external library,
+introducing additional network latency before the fonts can be loaded
+and delaying text rendering.
+
+Design/performance-conscious web developers have a good sense for the relative importance of a given web font for the intended user experience.
+This specification provides them the ability to control font timeout and rendering behavior.
+Specifically, it lets developers:
+
+* Define the font rendering strategy when text is ready to be painted: block, or paint with fallback.
+* Define the font rendering behavior once the desired font is available: rerender text with the new font, or leave it with the fallback.
+* Define custom timeout values for each font.
+* Define custom render and timeout strategies per element.
+
+
+Controlling Font Rendering Per Font-Face: the ''@font-face/font-rendering'' descriptor {#font-rendering-desc}
+===========================
+
+The '@font-face/font-rendering' descriptor for ''@font-face'' determines whether and when a given downloaded font is used,
+based on whether and when the font is downloaded and ready for use.
+
+<pre class='descdef'>
+Name: font-rendering
+Value: auto | optional | swap | block | [ [ block <<duration>> ]? [ swap <<duration>> ]? ]!
+Initial: auto
+For: @font-face
+</pre>
+
+Where <<duration>> is:
+
+<pre class='prod'><dfn>&lt;duration></dfn> = <<time>> | infinite</pre>
+
+The <<time>> in <<duration>> must be non-negative.
+
+<dl dfn-type="value" dfn-for="@font-face/font-rendering">
+	<dt><dfn>auto</dfn>
+	<dd>
+		The font rendering strategy is user-agent-defined.
+
+		Note: Many browsers have a default strategy similar to specifying ''block 3s swap infinite''.
+
+	<dt><dfn>optional</dfn>
+	<dd>
+		This keyword must act similarly to ''block 0s swap 0s''.
+		However, user agents may use slightly different duration values,
+		or more sophisticated behaviors that can't be expressed in the '@font-face/font-rendering' syntax.
+
+		<div class='note'>
+			In other words, the font face is used only if it's available immediately;
+			otherwise, the user agent uses the fallback font immediately,
+			and sticks with that even if the font face eventually loads.
+
+			This value should be used for any font that's purely decorative,
+			where the user being able to read undisturbed as soon as possible
+			is more important than displaying the text in a chosen font.
+			Body text, or any font used for long blocks of text, should generally use this value.
+		</div>
+
+	<dt><dfn>swap</dfn>
+	<dd>
+		This keyword must act similarly to ''block 0s swap 3s''.
+		However, user agents may use slightly different duration values,
+		or more sophisticated behaviors that can't be expressed in the '@font-face/font-rendering' syntax.
+
+		<div class='note'>
+			In other words, the font face is rendered with a fallback at first if it's not loaded,
+			but it's swapped in as soon as it loads.
+			However, it too much time passes,
+			the fallback will be used for the rest of the page's lifetime,
+			to avoid "jiggling" the text on the page if the user has already started reading.
+
+			This value should be used for any text where the font is important,
+			but it's okay if the user initially sees the text in a fallback font.
+			For example, if a particular brand is strongly associated with a particular font,
+			it might be important for the website's text to be displayed in it,
+			so this value should be used.
+		</div>
+
+	<dt><dfn>block</dfn>
+	<dd>
+		This keyword must act similarly to ''block 3s swap infinite''.
+		However, user agents may use slightly different duration values,
+		or more sophisticated behaviors that can't be expressed in the '@font-face/font-rendering' syntax.
+
+		<div class='note'>
+			In other words, the browser draws "invisible" text at first if it's not loaded,
+			but swaps the font face in as soon as it loads.
+
+			This value should only be used when rendering text in a particular font is extremely important.
+			For example, badly designed "icon fonts" might associate a "⎙" (print) icon
+			with an unrelated character like "C",
+			so if the text is displayed with a fallback font instead
+			there will be confusing letters scattered around the page
+			rather than the desired icon.
+			In this case, temporary blank spots are better than using a fallback font.
+		</div>
+
+	<dt><dfn>[ [ block <<duration>> ]? [ swap <<duration>> ]? ]!</dfn>
+	<dd>
+		The ''block'' keyword sets the <a>block duration</a> for the font face
+		to its following <<duration>> value.
+		If the ''block'' keyword is omitted,
+		the <a>block duration</a> is zero seconds.
+
+		The ''swap'' keyword sets the <a>swap duration</a> for the font face
+		to its following <<duration>> value.
+		If the ''swap'' keyword is omitted,
+		the <a>swap duration</a> is infinite.
+</dl>
+
+At the moment the user agent first attempts to use a given downloaded font face on a page,
+it must start a <dfn local-lt="timer">font download timer</dfn> for that font face,
+ending when the font face is finished loading and ready to use.
+
+The <dfn>block duration</dfn> for a font face defines a span of time
+starting when the font face's <a>timer</a> starts
+and ending when the specified duration has passed.
+During this period,
+if the font face has not yet loaded
+it must be considered "not available",
+but must fallback to the <a>invisible font face</a>.
+
+The <dfn>swap duration</dfn> for a font face defines a span of time
+starting when the font face's <a>block duration</a> ends
+and ending when the specified duration has passed.
+During this period,
+if the font face has not yet loaded
+it must be considered "not available",
+and fallback as normal.
+
+If the font face loads during the <a>block duration</a> or the <a>swap duration</a>,
+the font face is considered to have successfully loaded and is available to the page for use.
+If both durations expire without the font face loading,
+the user agent must mark the font face as "not available"
+for the rest of the lifetime of the document,
+even if the font face later loads successfully.
+
+The <dfn export>invisible font face</dfn> is a special user-agent-defined font face.
+It contains glyphs for every possible character,
+but renders all of them as transparent boxes
+with user-agent-defined metrics.
+It exists solely to allow user agents to perform text layout with reasonable default text sizing
+while a font face is being blocked from rendering.
+
+
+Controlling Font Rendering Per Element: the 'font-rendering!!property' property {#font-rendering-prop}
+--------------------------------
+
+The text rendering strategy can sometimes vary based on the content displayed on the page,
+rather than based on the font face used.
+For example, it might be more important for headlines to render in a desired font,
+while it's okay for body text to use a fallback font if necessary.
+The 'font-rendering!!property' property allows the font rendering strategy to be controlled on a per-element basis,
+overriding the strategy specified by any font faces used in the element.
+
+<pre class='propdef'>
+Name: font-rendering
+Value: auto | optional | swap | block | [ [ block <<duration>> ]? [ swap <<duration>> ]? ]!
+Initial: auto
+Inherited: yes
+</pre>
+
+All values of the 'font-rendering!!property' property override the '@font-face/font-rendering' values
+for any downloaded fonts used on the element,
+causing them to act as if they were specified with the same value.
+
+If a font face is used on multiple elements which specify different 'font-rendering!!property' values,
+its behavior for each element is determined by comparing its <a>timer</a> to the 'font-rendering!!property' value
+the element is imposing on it.
+
+<div class='example'>
+	For example, the same font might be used for a page heading and individual article headings.
+	The page heading is more important, and the header element is fixed size,
+	so swapping it in at any point won't disturb the rest of the page's layout;
+	on the other hand, the article headings are auto-sized,
+	so a font swap might cause the following article content to move up or down,
+	disturbing the user if they've already started reading:
+
+	<pre class='lang-css'>
+	@font-face {
+		font-family: headline;
+		...
+	}
+	body > h1 {
+		font-family: headline;
+		font-rendering: block 3s swap infinite;
+	}
+	article h1 {
+		font-family: headline;
+		font-rendering: swap 3s;
+	}
+	</pre>
+
+	Initially, the page heading is rendered with the <a>invisible font face</a>
+	while the article headings use a fallback font.
+
+	If the “headline” font loads in less than three seconds,
+	both page and article headings will rerender with it.
+
+	However, if it takes four seconds to load,
+	the page headline will rerender with it,
+	but the article headlines will continue using the fallback font for the rest of the document's lifespan,
+	because the <a>font download timer</a> stopped at ''4s'',
+	<em>after</em> the <a>swap duration</a> for the article headlines expires.
+
+	If script later changes the ''article h1'' rule to <css>font-rendering: swap 5s;</css>, though,
+	the article headlines will then rerender with the font,
+	as the <a>timer</a> now ends within their <a>swap duration</a>.
+</div>
+
+Acknowledgements {#acks}
+================
+
+Special thanks to Ilya Grigorik and David Kuettel for their help in developing this specification.
