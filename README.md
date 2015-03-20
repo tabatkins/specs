@@ -12,3 +12,7 @@ Live copies of the specs:
 * [CSS Aliases (custom stuff)](http://tabatkins.github.io/specs/css-aliases)
 * [CSS will-change Property](http://tabatkins.github.io/specs/css-will-change)
 * [Layout Transitions](http://tabatkins.github.io/specs/layout-transitions)
+* [@extend](http://tabatkins.github.io/specs/css-extend-rule)
+* [Constructable Stylesheets](http://tabatkins.github.io/specs/construct-stylesheets)
+* [Sticky Scrollbar](http://tabatkins.github.io/specs/css-sticky-scrollbars)
+* [Font Rendering Controls](http://tabatkins.github.io/specs/css-font-rendering)
