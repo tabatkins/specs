@@ -68,6 +68,7 @@ pre, code, .idl-code {
   font-size: .9em;
   font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
 }
+pre .idl-code, pre code { font-size: 1em; }
 dt dfn code { font-size: inherit; }
 
 dfn { font-weight: bolder; }
@@ -550,598 +551,6 @@ span.issue, span.note {
   
 
   <meta content="Bikeshed 1.0.0" name="generator">
-  <script>self = (typeof window !== 'undefined')
-	? window   // if in browser
-	: (
-		(typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope)
-		? self // if in worker
-		: {}   // if in node js
-	);
-
-/**
- * Prism: Lightweight, robust, elegant syntax highlighting
- * MIT license http://www.opensource.org/licenses/mit-license.php/
- * @author Lea Verou http://lea.verou.me
- */
-
-var Prism = (function(){
-
-// Private helper vars
-var lang = /\blang(?:uage)?-(?!\*)(\w+)\b/i;
-
-var _ = self.Prism = {
-	util: {
-		encode: function (tokens) {
-			if (tokens instanceof Token) {
-				return new Token(tokens.type, _.util.encode(tokens.content), tokens.alias);
-			} else if (_.util.type(tokens) === 'Array') {
-				return tokens.map(_.util.encode);
-			} else {
-				return tokens.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
-			}
-		},
-
-		type: function (o) {
-			return Object.prototype.toString.call(o).match(/\[object (\w+)\]/)[1];
-		},
-
-		// Deep clone a language definition (e.g. to extend it)
-		clone: function (o) {
-			var type = _.util.type(o);
-
-			switch (type) {
-				case 'Object':
-					var clone = {};
-
-					for (var key in o) {
-						if (o.hasOwnProperty(key)) {
-							clone[key] = _.util.clone(o[key]);
-						}
-					}
-
-					return clone;
-
-				case 'Array':
-					return o.slice();
-			}
-
-			return o;
-		}
-	},
-
-	languages: {
-		extend: function (id, redef) {
-			var lang = _.util.clone(_.languages[id]);
-
-			for (var key in redef) {
-				lang[key] = redef[key];
-			}
-
-			return lang;
-		},
-
-		// Insert a token before another token in a language literal
-		insertBefore: function (inside, before, insert, root) {
-			root = root || _.languages;
-			var grammar = root[inside];
-			var ret = {};
-
-			for (var token in grammar) {
-
-				if (grammar.hasOwnProperty(token)) {
-
-					if (token == before) {
-
-						for (var newToken in insert) {
-
-							if (insert.hasOwnProperty(newToken)) {
-								ret[newToken] = insert[newToken];
-							}
-						}
-					}
-
-					ret[token] = grammar[token];
-				}
-			}
-
-			return root[inside] = ret;
-		},
-
-		// Traverse a language definition with Depth First Search
-		DFS: function(o, callback, type) {
-			for (var i in o) {
-				if (o.hasOwnProperty(i)) {
-					callback.call(o, i, o[i], type || i);
-
-					if (_.util.type(o[i]) === 'Object') {
-						_.languages.DFS(o[i], callback);
-					} else if (_.util.type(o[i]) === 'Array') {
-						_.languages.DFS(o[i], callback, i);
-					}
-				}
-			}
-		}
-	},
-
-	highlightAll: function(async, callback) {
-		var elements = document.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code');
-		for (var i=0, element; element = elements[i++];) {
-			if (element.classList.contains("idl")) {
-				// Bikeshed handles IDL blocks already.
-				continue;
-			}
-			_.highlightElement(element, async === true, callback);
-		}
-
-		var elements = document.querySelectorAll('pre[class*="language-"], [class*="language-"] pre, pre[class*="lang-"], [class*="lang-"] pre');
-		for (var i=0, element; element = elements[i++];) {
-			if (element.firstElementChild && element.firstElementChild.tagName.toLowerCase() == "code") {
-				// Already handled by the previous loop
-				continue;
-			}
-			if (element.classList.contains("idl")) {
-				// Bikeshed handles IDL blocks already.
-				continue;
-			}
-			_.highlightElement(element, async === true, callback);
-		}
-	},
-
-	highlightElement: function(element, async, callback) {
-		// Find language
-		var language, grammar, parent = element;
-
-		while (parent && !lang.test(parent.className)) {
-			parent = parent.parentNode;
-		}
-
-		if (parent) {
-			language = (parent.className.match(lang) || [,''])[1];
-			grammar = _.languages[language];
-		}
-
-		if (!grammar) {
-			return;
-		}
-
-		// Set language on the element, if not present
-		element.className = element.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
-
-		// Set language on the parent, for styling
-		parent = element.parentNode;
-
-		if (/pre/i.test(parent.nodeName)) {
-			parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
-		}
-
-		var code = element.textContent;
-
-		if(!code) {
-			return;
-		}
-
-		var env = {
-			element: element,
-			language: language,
-			grammar: grammar,
-			code: code
-		};
-
-		_.hooks.run('before-highlight', env);
-
-		if (async && self.Worker) {
-			var worker = new Worker(_.filename);
-
-			worker.onmessage = function(evt) {
-				env.highlightedCode = Token.stringify(JSON.parse(evt.data), language);
-
-				_.hooks.run('before-insert', env);
-
-				env.element.innerHTML = env.highlightedCode;
-
-				callback && callback.call(env.element);
-				_.hooks.run('after-highlight', env);
-			};
-
-			worker.postMessage(JSON.stringify({
-				language: env.language,
-				code: env.code
-			}));
-		}
-		else {
-			env.highlightedCode = _.highlight(env.code, env.grammar, env.language)
-
-			_.hooks.run('before-insert', env);
-
-			env.element.innerHTML = env.highlightedCode;
-
-			callback && callback.call(element);
-
-			_.hooks.run('after-highlight', env);
-		}
-	},
-
-	highlight: function (text, grammar, language) {
-		var tokens = _.tokenize(text, grammar);
-		return Token.stringify(_.util.encode(tokens), language);
-	},
-
-	tokenize: function(text, grammar, language) {
-		var Token = _.Token;
-
-		var strarr = [text];
-
-		var rest = grammar.rest;
-
-		if (rest) {
-			for (var token in rest) {
-				grammar[token] = rest[token];
-			}
-
-			delete grammar.rest;
-		}
-
-		tokenloop: for (var token in grammar) {
-			if(!grammar.hasOwnProperty(token) || !grammar[token]) {
-				continue;
-			}
-
-			var patterns = grammar[token];
-			patterns = (_.util.type(patterns) === "Array") ? patterns : [patterns];
-
-			for (var j = 0; j < patterns.length; ++j) {
-				var pattern = patterns[j],
-					inside = pattern.inside,
-					lookbehind = !!pattern.lookbehind,
-					lookbehindLength = 0,
-					alias = pattern.alias;
-
-				pattern = pattern.pattern || pattern;
-
-				for (var i=0; i<strarr.length; i++) { // Don’t cache length as it changes during the loop
-
-					var str = strarr[i];
-
-					if (strarr.length > text.length) {
-						// Something went terribly wrong, ABORT, ABORT!
-						break tokenloop;
-					}
-
-					if (str instanceof Token) {
-						continue;
-					}
-
-					pattern.lastIndex = 0;
-
-					var match = pattern.exec(str);
-
-					if (match) {
-						if(lookbehind) {
-							lookbehindLength = match[1].length;
-						}
-
-						var from = match.index - 1 + lookbehindLength,
-							match = match[0].slice(lookbehindLength),
-							len = match.length,
-							to = from + len,
-							before = str.slice(0, from + 1),
-							after = str.slice(to + 1);
-
-						var args = [i, 1];
-
-						if (before) {
-							args.push(before);
-						}
-
-						var wrapped = new Token(token, inside? _.tokenize(match, inside) : match, alias);
-
-						args.push(wrapped);
-
-						if (after) {
-							args.push(after);
-						}
-
-						Array.prototype.splice.apply(strarr, args);
-					}
-				}
-			}
-		}
-
-		return strarr;
-	},
-
-	hooks: {
-		all: {},
-
-		add: function (name, callback) {
-			var hooks = _.hooks.all;
-
-			hooks[name] = hooks[name] || [];
-
-			hooks[name].push(callback);
-		},
-
-		run: function (name, env) {
-			var callbacks = _.hooks.all[name];
-
-			if (!callbacks || !callbacks.length) {
-				return;
-			}
-
-			for (var i=0, callback; callback = callbacks[i++];) {
-				callback(env);
-			}
-		}
-	}
-};
-
-var Token = _.Token = function(type, content, alias) {
-	this.type = type;
-	this.content = content;
-	this.alias = alias;
-};
-
-Token.stringify = function(o, language, parent) {
-	if (typeof o == 'string') {
-		return o;
-	}
-
-	if (Object.prototype.toString.call(o) == '[object Array]') {
-		return o.map(function(element) {
-			return Token.stringify(element, language, o);
-		}).join('');
-	}
-
-	var env = {
-		type: o.type,
-		content: Token.stringify(o.content, language, parent),
-		tag: 'span',
-		classes: ['token', o.type],
-		attributes: {},
-		language: language,
-		parent: parent
-	};
-
-	if (env.type == 'comment') {
-		env.attributes['spellcheck'] = 'true';
-	}
-
-	if (o.alias) {
-		var aliases = _.util.type(o.alias) === 'Array' ? o.alias : [o.alias];
-		Array.prototype.push.apply(env.classes, aliases);
-	}
-
-	_.hooks.run('wrap', env);
-
-	var attributes = '';
-
-	for (var name in env.attributes) {
-		attributes += name + '="' + (env.attributes[name] || '') + '"';
-	}
-
-	return '<' + env.tag + ' class="' + env.classes.join(' ') + '" ' + attributes + '>' + env.content + '</' + env.tag + '>';
-
-};
-
-if (!self.document) {
-	if (!self.addEventListener) {
-		// in Node.js
-		return self.Prism;
-	}
- 	// In worker
-	self.addEventListener('message', function(evt) {
-		var message = JSON.parse(evt.data),
-		    lang = message.language,
-		    code = message.code;
-
-		self.postMessage(JSON.stringify(_.util.encode(_.tokenize(code, _.languages[lang]))));
-		self.close();
-	}, false);
-
-	return self.Prism;
-}
-
-// Get current script and highlight
-var script = document.getElementsByTagName('script');
-
-script = script[script.length - 1];
-
-if (script) {
-	_.filename = script.src;
-
-	if (document.addEventListener && !script.hasAttribute('data-manual')) {
-		document.addEventListener('DOMContentLoaded', _.highlightAll);
-	}
-}
-
-return self.Prism;
-
-})();
-
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = Prism;
-}
-;
-Prism.languages.css = {
-	'comment': /\/\*[\w\W]*?\*\//g,
-	'atrule': {
-		pattern: /@[\w-]+?.*?(;|(?=\s*{))/gi,
-		inside: {
-			'punctuation': /[;:]/g
-		}
-	},
-	'url': /url\((["']?).*?\1\)/gi,
-	'selector': /[^\{\}\s][^\{\};]*(?=\s*\{)/g,
-	'property': /(\b|\B)[\w-]+(?=\s*:)/ig,
-	'string': /("|')(\\?.)*?\1/g,
-	'important': /\B!important\b/gi,
-	'punctuation': /[\{\};:]/g,
-	'function': /[-a-z0-9]+(?=\()/ig
-};
-
-if (Prism.languages.markup) {
-	Prism.languages.insertBefore('markup', 'tag', {
-		'style': {
-			pattern: /<style[\w\W]*?>[\w\W]*?<\/style>/ig,
-			inside: {
-				'tag': {
-					pattern: /<style[\w\W]*?>|<\/style>/ig,
-					inside: Prism.languages.markup.tag.inside
-				},
-				rest: Prism.languages.css
-			}
-		}
-	});
-};
-Prism.languages.css.selector = {
-	pattern: /[^\{\}\s][^\{\}]*(?=\s*\{)/g,
-	inside: {
-		'pseudo-element': /:(?:after|before|first-letter|first-line|selection)|::[-\w]+/g,
-		'pseudo-class': /:[-\w]+(?:\(.*\))?/g,
-		'class': /\.[-:\.\w]+/g,
-		'id': /#[-:\.\w]+/g
-	}
-};
-
-Prism.languages.insertBefore('css', 'ignore', {
-	'hexcode': /#[\da-f]{3,6}/gi,
-	'entity': /\\[\da-f]{1,8}/gi,
-	'number': /[\d%\.]+/g
-});;
-</script>
-  <style>/* http://prismjs.com/download.html?themes=prism&languages=clike */
-/**
- * prism.js default theme for JavaScript, CSS and HTML
- * Based on dabblet (http://dabblet.com)
- * @author Lea Verou
- */
-
-code[class*="language-"],
-pre[class*="language-"] {
-	color: black;
-	text-shadow: 0 1px white;
-	font-family: Consolas, Monaco, 'Andale Mono', monospace;
-	direction: ltr;
-	text-align: left;
-	white-space: pre;
-	word-spacing: normal;
-	word-break: normal;
-	line-height: 1.5;
-
-	-moz-tab-size: 4;
-	-o-tab-size: 4;
-	tab-size: 4;
-
-	-webkit-hyphens: none;
-	-moz-hyphens: none;
-	-ms-hyphens: none;
-	hyphens: none;
-}
-
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-	text-shadow: none;
-	background: #b3d4fc;
-}
-
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
-	text-shadow: none;
-	background: #b3d4fc;
-}
-
-@media print {
-	code[class*="language-"],
-	pre[class*="language-"] {
-		text-shadow: none;
-	}
-}
-
-/* Code blocks */
-pre[class*="language-"] {
-	padding: 1em;
-	margin: .5em 0;
-	overflow: auto;
-}
-
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-	background: #f5f2f0;
-}
-
-/* Inline code */
-:not(pre) > code[class*="language-"] {
-	padding: .1em;
-	border-radius: .3em;
-}
-
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-	color: slategray;
-}
-
-.token.punctuation {
-	color: #999;
-}
-
-.namespace {
-	opacity: .7;
-}
-
-.token.property,
-.token.tag,
-.token.boolean,
-.token.number,
-.token.constant,
-.token.symbol,
-.token.deleted {
-	color: #905;
-}
-
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-	color: #690;
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string {
-	color: #a67f59;
-	background: hsla(0, 0%, 100%, .5);
-}
-
-.token.atrule,
-.token.attr-value,
-.token.keyword {
-	color: #07a;
-}
-
-.token.function {
-	color: #DD4A68;
-}
-
-.token.regex,
-.token.important,
-.token.variable {
-	color: #e90;
-}
-
-.token.important {
-	font-weight: bold;
-}
-
-.token.entity {
-	cursor: help;
-}
-</style>
  </head>
  
 
@@ -1154,12 +563,14 @@ pre[class*="language-"] {
    <h1 class="p-name no-ref" id="title">CSS Font Rendering Controls Module Level 1</h1>
   
    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Unofficial Proposal Draft,
-    <time class="dt-updated" datetime="2015-03-20">20 March 2015</time></span></h2>
+    <time class="dt-updated" datetime="2015-05-22">22 May 2015</time></span></h2>
   
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
      <dd><a class="u-url" href="https://tabatkins.github.io/specs/css-font-rendering/">https://tabatkins.github.io/specs/css-font-rendering/</a>
+     <dt>Issue Tracking:
+     <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editors:
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="http://xanthir.com">Tab Atkins</a> (<span class="p-org org">Google</span>)
      <dd class="editor p-author h-card vcard"><span class="p-name fn">Kenji Baheux</span> (<span class="p-org org">Google</span>)
@@ -1171,7 +582,7 @@ pre[class*="language-"] {
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 20 March 2015,
+In addition, as of 22 May 2015,
 the editors have made this specification available under the
 <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
@@ -1197,9 +608,8 @@ Parts of this work may be from another specification document.  If so, those par
   <div data-fill-with="table-of-contents" role="navigation">
    <ul class="toc" role="directory">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
-    <li><a href="#font-rendering-desc"><span class="secno">2</span> <span class="content">Controlling Font Rendering Per Font-Face: the <span class="css">font-rendering</span> descriptor</span></a>
-    <li><a href="#font-rendering-prop"><span class="secno">3</span> <span class="content">Controlling Font Rendering Per Element: the <span class="property">font-rendering</span> property</span></a>
-    <li><a href="#acks"><span class="secno">4</span> <span class="content">Acknowledgements</span></a>
+    <li><a href="#font-rendering-desc"><span class="secno">2</span> <span class="content">Controlling Font Rendering Per Font-Face: the <span class="css">font-display</span> descriptor</span></a>
+    <li><a href="#acks"><span class="secno">3</span> <span class="content">Acknowledgements</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content">
 Conformance</span></a>
     <li><a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -1216,6 +626,7 @@ Conformance</span></a>
      <ul class="toc">
       <li><a href="#font-face-descriptor-table"><span class="secno"></span> <span class="content"><span>@font-face</span> Descriptors</span></a>
      </ul>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
    </ul></div>
 
   <main>
@@ -1359,36 +770,47 @@ Specifically, it lets developers:</p>
 
 </ul>
 
-   <h2 class="heading settled" data-level="2" id="font-rendering-desc"><span class="secno">2. </span><span class="content">Controlling Font Rendering Per Font-Face: the <span class="css">font-rendering</span> descriptor</span><a class="self-link" href="#font-rendering-desc"></a></h2>
+   <h2 class="heading settled" data-level="2" id="font-rendering-desc"><span class="secno">2. </span><span class="content">Controlling Font Rendering Per Font-Face: the <span class="css">font-display</span> descriptor</span><a class="self-link" href="#font-rendering-desc"></a></h2>
 
 
-   <p>The <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-rendering">font-rendering</a> descriptor for <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a> determines whether and when a given downloaded font is used,
-based on whether and when the font is downloaded and ready for use.</p>
+   <p>The <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-display">font-display</a> descriptor for <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a>
+determines how a font face is displayed,
+based on whether and when it is downloaded and ready to use.</p>
+
+
+   <p>When a downloadable font-face is first requested,
+a <a data-link-type="dfn" href="#font-download-timer">font download timer</a> is started.
+Each <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a> rule has associated with it
+two periods of time--
+a <a data-link-type="dfn" href="#block-duration">block duration</a>
+and a <a data-link-type="dfn" href="#swap-duration">swap duration</a>--
+which determine the rendering behavior of the font face
+as its <a data-link-type="dfn" href="#font-download-timer">timer</a> advances.</p>
 
 
    <table class="definition descdef">
     <tbody>
      <tr>
       <th>Name:
-      <td><dfn class="css" data-dfn-for="@font-face" data-dfn-type="descriptor" data-export="" id="descdef-font-face-font-rendering">font-rendering<a class="self-link" href="#descdef-font-face-font-rendering"></a></dfn>
+      <td><dfn class="css" data-dfn-for="@font-face" data-dfn-type="descriptor" data-export="" id="descdef-font-face-font-display">font-display<a class="self-link" href="#descdef-font-face-font-display"></a></dfn>
      <tr>
       <th>For:
       <td><a class="css" data-link-type="at-rule" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a>
      <tr>
       <th>Value:
-      <td class="prod">auto <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> optional <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> swap <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> block <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> [ [ block <a class="production css" data-link-type="type" href="#typedef-duration">&lt;duration></a> ]<a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#mult-opt">?</a> [ swap <a class="production css" data-link-type="type" href="#typedef-duration" title="Expands to: ">&lt;duration></a> ]<a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#mult-opt">?</a> ]<a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#mult-req">!</a>
+      <td class="prod">auto <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> block <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> swap <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> fallback <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> optional
      <tr>
       <th>Initial:
       <td>auto</table>
 
 
-   <p>Where <a class="production css" data-link-type="type" href="#typedef-duration" title="Expands to: ">&lt;duration></a> is:</p>
-
-
-   <pre class="prod"><dfn data-dfn-type="type" data-export="" id="typedef-duration">&lt;duration><a class="self-link" href="#typedef-duration"></a></dfn> = <a class="production" data-link-type="type" href="http://dev.w3.org/csswg/css-values-3/#time-value">&lt;time></a> <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> infinite</pre>
-
-
-   <p>The <a class="production css" data-link-type="type" href="http://dev.w3.org/csswg/css-values-3/#time-value" title="Expands to: ">&lt;time></a> in <a class="production css" data-link-type="type" href="#typedef-duration" title="Expands to: ">&lt;duration></a> must be non-negative.</p>
+   <p class="note" role="note">Note: For all of these values,
+user agents may use slightly different durations,
+or more sophisticated behaviors that can’t be directly expressed in the <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-display">font-display</a> syntax,
+in order to provide more useful behavior for their users.
+They may also provide the ability for users to override author-chosen behavior
+with something more desirable;
+for example, forcing all fonts to have a <span class="css">0s</span> <a data-link-type="dfn" href="#block-duration">block duration</a>.</p>
 
 
    <dl>
@@ -1396,31 +818,43 @@ based on whether and when the font is downloaded and ready for use.</p>
     <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-auto">auto<a class="self-link" href="#valdef-font-face-font-rendering-auto"></a></dfn>
 	
     <dd>
-		The font rendering strategy is user-agent-defined.
+		The font display strategy is user-agent-defined.
 
 
-     <p class="note" role="note">Note: Many browsers have a default strategy similar to specifying <span class="css">block 3s swap infinite</span>.</p>
+     <p class="note" role="note">Note: Many browsers have a default strategy similar to that specified by <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-block">block</a>.</p>
      
 
 	
-    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-optional">optional<a class="self-link" href="#valdef-font-face-font-rendering-optional"></a></dfn>
+    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-block">block<a class="self-link" href="#valdef-font-face-font-rendering-block"></a></dfn>
 	
     <dd>
-		This keyword must act similarly to <span class="css">block 0s swap 0s</span>.
-		However, user agents may use slightly different duration values,
-		or more sophisticated behaviors that can’t be expressed in the <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-rendering">font-rendering</a> syntax.
+		Gives the font face a short <a data-link-type="dfn" href="#block-duration">block duration</a>
+		(<span class="css">3s</span> is recommended in most cases)
+		and an infinite <a data-link-type="dfn" href="#swap-duration">swap duration</a>.
+
+
+     <p class="note" role="note">Note: In other words, the browser draws "invisible" text at first if it’s not loaded,
+		but swaps the font face in as soon as it loads.</p>
+     
+
+
+     <p>This value must only be used when rendering text in a particular font is required for the page to be usable.
+		It must only be used for small pieces of text.</p>
+     
 
 		
-     <div class="note" role="note">
-			In other words, the font face is used only if it’s available immediately;
-			otherwise, the user agent uses the fallback font immediately,
-			and sticks with that even if the font face eventually loads.
+     <div class="example" id="example-fbc03512"><a class="self-link" href="#example-fbc03512"></a>
+			For example, badly designed "icon fonts" might associate a "⎙" (print) icon
+			with an unrelated character like "C",
+			so if the text is displayed with a fallback font instead
+			there will be confusing letters scattered around the page
+			rather than the desired icon.
+			In this case, temporary blank spots are better than using a fallback font.
 
 
-      <p>This value should be used for any font that’s purely decorative,
-			where the user being able to read undisturbed as soon as possible
-			is more important than displaying the text in a chosen font.
-			Body text, or any font used for long blocks of text, should generally use this value.</p>
+      <p>(However, the fallback font is used <em>eventually</em>,
+			as having confusing letters scattered around the page
+			is better than having links and such never show up at all.)</p>
       
 		
      </div>
@@ -1430,71 +864,143 @@ based on whether and when the font is downloaded and ready for use.</p>
     <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-swap">swap<a class="self-link" href="#valdef-font-face-font-rendering-swap"></a></dfn>
 	
     <dd>
-		This keyword must act similarly to <span class="css">block 0s swap 3s</span>.
-		However, user agents may use slightly different duration values,
-		or more sophisticated behaviors that can’t be expressed in the <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-rendering">font-rendering</a> syntax.
+		Gives the font face a <span class="css">0s</span> <a data-link-type="dfn" href="#block-duration">block duration</a>
+		and an infinite <a data-link-type="dfn" href="#swap-duration">swap duration</a>.
+
+
+     <p class="note" role="note">Note: In other words, the browser draws the text immediately with a fallback if the font face isn’t loaded,
+		but swaps the font face in as soon as it loads.</p>
+     
+
+
+     <p>This value should only be used when rendering text in a particular font is very important for the page,
+		but rendering in any font will still get a correct message across.
+		It should only be used for small pieces of text.</p>
+     
 
 		
-     <div class="note" role="note">
-			In other words, the font face is rendered with a fallback at first if it’s not loaded,
-			but it’s swapped in as soon as it loads.
-			However, it too much time passes,
-			the fallback will be used for the rest of the page’s lifetime,
-			to avoid "jiggling" the text on the page if the user has already started reading.
-
-
-      <p>This value should be used for any text where the font is important,
-			but it’s okay if the user initially sees the text in a fallback font.
-			For example, if a particular brand is strongly associated with a particular font,
-			it might be important for the website’s text to be displayed in it,
-			so this value should be used.</p>
-      
-		
-     </div>
+     <div class="example" id="example-faaf0f0d"><a class="self-link" href="#example-faaf0f0d"></a>
+			For example,
+			if a website has a custom font for rendering their logo,
+			rendering that logo correctly is fairly important for branding purposes,
+			but displaying the logo in any font will at least get the point across without confusion.
+		</div>
      
 
 	
-    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-block">block<a class="self-link" href="#valdef-font-face-font-rendering-block"></a></dfn>
+    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-fallback">fallback<a class="self-link" href="#valdef-font-face-font-rendering-fallback"></a></dfn>
 	
     <dd>
-		This keyword must act similarly to <span class="css">block 3s swap infinite</span>.
-		However, user agents may use slightly different duration values,
-		or more sophisticated behaviors that can’t be expressed in the <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-rendering">font-rendering</a> syntax.
+		Gives the font face a <span class="css">0s</span> <a data-link-type="dfn" href="#block-duration">block duration</a>
+		and a short <a data-link-type="dfn" href="#swap-duration">swap duration</a>
+		(<span class="css">3s</span> is recommended in most cases).
+
+
+     <p class="note" role="note">Note: In other words, the font face is rendered with a fallback at first if it’s not loaded,
+		but it’s swapped in as soon as it loads.
+		However, if too much time passes,
+		the fallback will be used for the rest of the page’s lifetime instead.</p>
+     
+
+
+     <p>This value should be used for body text,
+		or any other text where the use of the chosen font is useful and desired,
+		but it’s acceptable for the user to see the text in a fallback font.
+		This value is appropriate to use for large pieces of text.</p>
+     
 
 		
-     <div class="note" role="note">
-			In other words, the browser draws "invisible" text at first if it’s not loaded,
-			but swaps the font face in as soon as it loads.
+     <div class="example" id="example-6d2048f2"><a class="self-link" href="#example-6d2048f2"></a>
+			For example,
+			in large pieces of body text,
+			it’s most important just to get the text rendered quickly,
+			so the user can begin to read as quickly as possible.
+			Further, once the user has started reading,
+			they shouldn’t be disturbed by the text suddenly "shifting"
+			as a new font is swapped in,
+			as that’s distracting and annoying to re-find where one was in the text.
+		</div>
+     
 
 
-      <p>This value should only be used when rendering text in a particular font is extremely important.
-			For example, badly designed "icon fonts" might associate a "⎙" (print) icon
-			with an unrelated character like "C",
-			so if the text is displayed with a fallback font instead
-			there will be confusing letters scattered around the page
-			rather than the desired icon.
-			In this case, temporary blank spots are better than using a fallback font.</p>
-      
-		
-     </div>
+     <p class="issue" id="issue-b7310471"><a class="self-link" href="#issue-b7310471"></a>Maybe give this a very small <a data-link-type="dfn" href="#block-duration">block duration</a>,
+		so we can avoid FOUT if the font is available but hasn’t been loaded from cache yet?</p>
      
 
 	
-    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering---block-duration---swap-duration--">[ [ block <a class="production css" data-link-type="type" href="#typedef-duration" title="Expands to: ">&lt;duration></a> ]? [ swap <a class="production css" data-link-type="type" href="#typedef-duration" title="Expands to: ">&lt;duration></a> ]? ]!<a class="self-link" href="#valdef-font-face-font-rendering---block-duration---swap-duration--"></a></dfn>
+    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-optional">optional<a class="self-link" href="#valdef-font-face-font-rendering-optional"></a></dfn>
 	
     <dd>
-		The <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-block">block</a> keyword sets the <a data-link-type="dfn" href="#block-duration">block duration</a> for the font face
-		to its following <a class="production css" data-link-type="type" href="#typedef-duration" title="Expands to: ">&lt;duration></a> value.
-		If the <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-block">block</a> keyword is omitted,
-		the <a data-link-type="dfn" href="#block-duration">block duration</a> is zero seconds.
+		Gives the font face an extremely small <a data-link-type="dfn" href="#block-duration">block duration</a>
+		(<span class="css">100ms</span> or less is recommended in most cases)
+		and a <span class="css">0s</span> <a data-link-type="dfn" href="#swap-duration">swap duration</a>.
 
 
-     <p>The <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-swap">swap</a> keyword sets the <a data-link-type="dfn" href="#swap-duration">swap duration</a> for the font face
-		to its following <a class="production css" data-link-type="type" href="#typedef-duration" title="Expands to: ">&lt;duration></a> value.
-		If the <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-swap">swap</a> keyword is omitted,
-		the <a data-link-type="dfn" href="#swap-duration">swap duration</a> is infinite.</p>
+     <p>If the font is not retrieved before the two durations expire,
+		the user agent may choose to abort the font download,
+		or download it with a very low priority.
+		If the user agent believes it would be useful for the user,
+		it may avoid even starting the font download,
+		and proceed immediately to using a fallback font.</p>
+     
+
+
+     <p class="note" role="note">Note: In other words, the font is used if it’s already downloaded and available,
+		but otherwise a fallback is used for the rest of the page’s lifetime instead.
+		The font might download in the background and be available to future page loads,
+		but if the user-agent detects that the user has very limited bandwidth,
+		it might choose to simply never download and use the font.</p>
+     
+
+
+     <p>This value should be used for body text,
+		or any other text where the chosen font is purely a decorative "nice-to-have".
+		It should be used anytime it is more important that the web page render quickly on first visit,
+		than it is that the user wait a longer time to see everything perfect immediately.</p>
+     
+
+		
+     <div class="example" id="example-3ef4f141"><a class="self-link" href="#example-3ef4f141"></a>
+			For example, body text is perfectly readable in one of the browser default fonts,
+			though a downloadable font face may be more attractive
+			and mesh with the site’s aesthetics better.
+			First time visitors to a site generally care far more about the site being quickly usable
+			than they do about the finer points of its display,
+			and <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-optional">optional</a> provides a good behavior for them.
+			If they return later,
+			the desired font faces might have finished downloading,
+			giving them the "intended" experience without slowing down
+			either their first or subsequent visits.
+
+
+      <p>Users on very slow connections might not ever receive the "intended" experience,
+			but <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-optional">optional</a> ensures they can actually <em>use</em> the site,
+			rather than quitting and going elsewhere because the site takes too long to load.</p>
+      
+		
+     </div>
      
 </dl>
+
+
+   <div class="issue" id="issue-d2da4906"><a class="self-link" href="#issue-d2da4906"></a>
+	These names aren’t great.
+	It would probably be better to use "intent" names
+	that immediately capture the intended usage of each.
+	Some suggestions:
+
+
+    <ul>
+     <li data-md="">
+      <p>required / important / preferable / optional</p>
+      
+</ul></div>
+
+
+   <p class="issue" id="issue-e99cf2eb"><a class="self-link" href="#issue-e99cf2eb"></a><a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-fallback">fallback</a> and <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-optional">optional</a> can result in some faces in a family being used
+while others are required to fallback,
+giving a "ransom note" look.
+Perhaps require that all fonts in a family have the same behavior (all swapped in, or all fallback)?</p>
 
 
    <p>At the moment the user agent first attempts to use a given downloaded font face on a page,
@@ -1536,105 +1042,12 @@ It exists solely to allow user agents to perform text layout with reasonable def
 while a font face is being blocked from rendering.</p>
 
 
-
-   <h2 class="heading settled" data-level="3" id="font-rendering-prop"><span class="secno">3. </span><span class="content">Controlling Font Rendering Per Element: the <a class="property css" data-link-type="property" href="#propdef-font-rendering">font-rendering</a> property</span><a class="self-link" href="#font-rendering-prop"></a></h2>
-
-
-   <p>The text rendering strategy can sometimes vary based on the content displayed on the page,
-rather than based on the font face used.
-For example, it might be more important for headlines to render in a desired font,
-while it’s okay for body text to use a fallback font if necessary.
-The <a class="property css" data-link-type="property" href="#propdef-font-rendering">font-rendering</a> property allows the font rendering strategy to be controlled on a per-element basis,
-overriding the strategy specified by any font faces used in the element.</p>
+   <p class="issue" id="issue-57117fd6"><a class="self-link" href="#issue-57117fd6"></a>Nope, this should use the metrics of whatever fallback font will be used.
+That avoids any reflow at all if you switch from blank to fallback.</p>
 
 
-   <table class="definition propdef" data-link-for-hint="font-rendering">
-    <tbody>
-     <tr>
-      <th>Name:
-      <td><dfn class="css" data-dfn-type="property" data-export="" id="propdef-font-rendering">font-rendering<a class="self-link" href="#propdef-font-rendering"></a></dfn>
-     <tr class="value">
-      <th>Value:
-      <td class="prod">auto <a data-link-for-hint="font-rendering" data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> optional <a data-link-for-hint="font-rendering" data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> swap <a data-link-for-hint="font-rendering" data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> block <a data-link-for-hint="font-rendering" data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> [ [ block <a class="production css" data-link-for-hint="font-rendering" data-link-type="type" href="#typedef-duration" title="Expands to: ">&lt;duration></a> ]<a data-link-for-hint="font-rendering" data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#mult-opt">?</a> [ swap <a class="production css" data-link-for-hint="font-rendering" data-link-type="type" href="#typedef-duration" title="Expands to: ">&lt;duration></a> ]<a data-link-for-hint="font-rendering" data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#mult-opt">?</a> ]<a data-link-for-hint="font-rendering" data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#mult-req">!</a>
-     <tr>
-      <th>Initial:
-      <td>auto
-     <tr>
-      <th>Applies to:
-      <td>all elements
-     <tr>
-      <th>Inherited:
-      <td>yes
-     <tr>
-      <th>Percentages:
-      <td>n/a
-     <tr>
-      <th>Media:
-      <td>visual
-     <tr>
-      <th>Computed value:
-      <td>as specified
-     <tr>
-      <th>Animatable:
-      <td>no</table>
 
-
-   <p>All values of the <a class="property css" data-link-type="property" href="#propdef-font-rendering">font-rendering</a> property override the <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-rendering">font-rendering</a> values
-for any downloaded fonts used on the element,
-causing them to act as if they were specified with the same value.</p>
-
-
-   <p>If a font face is used on multiple elements which specify different <a class="property css" data-link-type="property" href="#propdef-font-rendering">font-rendering</a> values,
-its behavior for each element is determined by comparing its <a data-link-type="dfn" href="#font-download-timer">timer</a> to the <a class="property css" data-link-type="property" href="#propdef-font-rendering">font-rendering</a> value
-the element is imposing on it.</p>
-
-
-   <div class="example">
-	For example, the same font might be used for a page heading and individual article headings.
-	The page heading is more important, and the header element is fixed size,
-	so swapping it in at any point won’t disturb the rest of the page’s layout;
-	on the other hand, the article headings are auto-sized,
-	so a font swap might cause the following article content to move up or down,
-	disturbing the user if they’ve already started reading:
-
-	
-    <pre class="lang-css">@font-face {
-  font-family: headline;
-  ...
-}
-body > h1 {
-  font-family: headline;
-  font-rendering: block 3s swap infinite;
-}
-article h1 {
-  font-family: headline;
-  font-rendering: swap 3s;
-}
-</pre>
-
-
-    <p>Initially, the page heading is rendered with the <a data-link-type="dfn" href="#invisible-font-face">invisible font face</a>
-	while the article headings use a fallback font.</p>
-
-
-    <p>If the “headline” font loads in less than three seconds,
-	both page and article headings will rerender with it.</p>
-
-
-    <p>However, if it takes four seconds to load,
-	the page headline will rerender with it,
-	but the article headlines will continue using the fallback font for the rest of the document’s lifespan,
-	because the <a data-link-type="dfn" href="#font-download-timer">font download timer</a> stopped at <span class="css">4s</span>,
-	<em>after</em> the <a data-link-type="dfn" href="#swap-duration">swap duration</a> for the article headlines expires.</p>
-
-
-    <p>If script later changes the <span class="css">article h1</span> rule to <span class="css">font-rendering: swap 5s;</span>, though,
-	the article headlines will then rerender with the font,
-	as the <a data-link-type="dfn" href="#font-download-timer">timer</a> now ends within their <a data-link-type="dfn" href="#swap-duration">swap duration</a>.</p>
-</div>
-
-
-   <h2 class="heading settled" data-level="4" id="acks"><span class="secno">4. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acks"></a></h2>
+   <h2 class="heading settled" data-level="3" id="acks"><span class="secno">3. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acks"></a></h2>
 
 
    <p>Special thanks to Ilya Grigorik and David Kuettel for their help in developing this specification.</p>
@@ -1664,7 +1077,7 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
         or are set apart from the normative text with <code>class="example"</code>, like this:
 
     </p>
-  <div class="example">
+  <div class="example" id="example-ae2b6bc0"><a class="self-link" href="#example-ae2b6bc0"></a>
         This is an example of an informative example.
     </div>
 
@@ -1686,14 +1099,9 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
    <li>auto, <a href="#valdef-font-face-font-rendering-auto">2</a>
    <li>block, <a href="#valdef-font-face-font-rendering-block">2</a>
    <li>block duration, <a href="#block-duration">2</a>
-   <li>[ [ block &lt;duration> ]? [ swap &lt;duration> ]? ]!, <a href="#valdef-font-face-font-rendering---block-duration---swap-duration--">2</a>
-   <li>&lt;duration>, <a href="#typedef-duration">2</a>
+   <li>fallback, <a href="#valdef-font-face-font-rendering-fallback">2</a>
+   <li>font-display, <a href="#descdef-font-face-font-display">2</a>
    <li>font download timer, <a href="#font-download-timer">2</a>
-   <li>font-rendering
-    <ul>
-     <li>descriptor for @font-face, <a href="#descdef-font-face-font-rendering">2</a>
-     <li>(property), <a href="#propdef-font-rendering">3</a>
-    </ul>
    <li>invisible font face, <a href="#invisible-font-face">2</a>
    <li>optional, <a href="#valdef-font-face-font-rendering-optional">2</a>
    <li>swap, <a href="#valdef-font-face-font-rendering-swap">2</a>
@@ -1708,9 +1116,6 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
     </ul>
    <li><a data-link-type="biblio" href="#biblio-css-values-3">[css-values-3]</a> defines the following terms:
     <ul>
-     <li><a href="http://dev.w3.org/csswg/css-values-3/#mult-req">!</a>
-     <li><a href="http://dev.w3.org/csswg/css-values-3/#time-value">&lt;time></a>
-     <li><a href="http://dev.w3.org/csswg/css-values-3/#mult-opt">?</a>
      <li><a href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a>
     </ul>
   </ul>
@@ -1730,30 +1135,7 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
    <dd>Tab Atkins Jr.. <a href="http://www.w3.org/TR/css-font-loading-3/">CSS Font Loading Module Level 3</a>. 22 May 2014. LCWD. URL: <a href="http://www.w3.org/TR/css-font-loading-3/">http://www.w3.org/TR/css-font-loading-3/</a>
   </dl>
   <h2 class="no-num heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
-  <table class="proptable data">
-   <thead>
-    <tr>
-     <th scope="col">Name
-     <th scope="col">Value
-     <th scope="col">Initial
-     <th scope="col">Applies to
-     <th scope="col">Inh.
-     <th scope="col">%ages
-     <th scope="col">Media
-     <th scope="col">Animatable
-     <th scope="col">Computed value
-   <tbody>
-    <tr>
-     <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-rendering">font-rendering</a>
-     <td>auto | optional | swap | block | [ [ block &lt;duration> ]? [ swap &lt;duration> ]? ]!
-     <td>auto
-     <td>all elements
-     <td>yes
-     <td>n/a
-     <td>visual
-     <td>no
-     <td>as specified
-  </table>
+  <p>No properties defined.</p>
   <h3 class="no-num heading settled" id="font-face-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a> Descriptors</span><a class="self-link" href="#font-face-descriptor-table"></a></h3>
   <table class="proptable data">
    <thead>
@@ -1763,8 +1145,32 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
      <th scope="col">Initial
    <tbody>
    <tr>
-    <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-font-face-font-rendering">font-rendering</a>
-    <td>auto | optional | swap | block | [ [ block &lt;duration> ]? [ swap &lt;duration> ]? ]!
+    <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-font-face-font-display">font-display</a>
+    <td>auto | block | swap | fallback | optional
     <td>auto
-  </table></body>
+  </table>
+  <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue">Maybe give this a very small <a data-link-type="dfn" href="#block-duration">block duration</a>,
+		so we can avoid FOUT if the font is available but hasn’t been loaded from cache yet?<a href="#issue-b7310471"> ↵ </a></div>
+   <div class="issue">
+	These names aren’t great.
+	It would probably be better to use "intent" names
+	that immediately capture the intended usage of each.
+	Some suggestions:
+
+
+    <ul>
+     <li data-md="">
+      <p>required / important / preferable / optional</p>
+      
+</ul><a href="#issue-d2da4906"> ↵ </a>
+   </div>
+   <div class="issue"><a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-fallback">fallback</a> and <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-optional">optional</a> can result in some faces in a family being used
+while others are required to fallback,
+giving a "ransom note" look.
+Perhaps require that all fonts in a family have the same behavior (all swapped in, or all fallback)?<a href="#issue-e99cf2eb"> ↵ </a></div>
+   <div class="issue">Nope, this should use the metrics of whatever fallback font will be used.
+That avoids any reflow at all if you switch from blank to fallback.<a href="#issue-57117fd6"> ↵ </a></div>
+  </div></body>
 </html>
