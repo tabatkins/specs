@@ -1,0 +1,195 @@
+<pre class='metadata'>
+Title: CSS @apply Rule
+Shortname: css-apply-rule
+Level: 1
+Status: DREAM
+URL: http://tabatkins.github.io/specs/css-apply-rule
+Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/
+Abstract: This specification defines the ''@apply'' rule, which allows an author to store a set of properties in a named variable, then reference them in other style rules.
+Link Defaults: css-syntax-3 (dfn) style rule
+</pre>
+
+Introduction {#intro}
+=====================
+
+CSS <a>custom properties</a> enable authors to define reusable values,
+give them names,
+then invoke them throughout the stylesheet.
+This makes it easy to keep a page's theme consistent when changes are made,
+because the theming values are defined in a central place.
+
+But <a>custom properties</a> can hold more than just values--
+they can also be used to hold sets of declarations.
+The ''@apply'' rule takes these sets of declarations and inlines them in another style rule,
+serving a purpose analogous to what the ''var()'' function does for individual values.
+
+<div class=note>
+
+	There are many ways to apply sets of declarations to an element.
+	In particular, the common way is to just create a style rule,
+	and apply it to the desired elements via a selector.
+	However, this requires the elements you wish to target to already have the right features for a selector,
+	or else you have to alter your markup,
+	or write a complex selector that targets them precisely with their varied features
+	(and which needs to be maintained as you alter the page markup and change the selectors targetting those elements).
+	This also requires careful management of specificity,
+	as the rule has to interact with the existing rules styling the elements.
+
+	The ''@apply'' rule allows this reuse to be inlined into the existing selectors you're already using,
+	reducing the amount of effort required to keep your stylesheet consistent as things change in the page.
+	It also avoids the need to manage specificity any more than you already do,
+	as the properties are inlined alongside the existing properties,
+	in your existing style rules.
+</div>
+
+
+Defining Custom Sets of Properties {#defining}
+==============================================
+
+To define a <dfn export>custom property set</dfn> for use with ''@apply'',
+you simply use a <a>custom property</a>
+with a value of a {}-wrapped block of properties.
+
+<div class='example'>
+	For example, one might define a toolbar theme as a <a>custom property set</a> on the root element of the document,
+	and use it on your toolbars:
+
+	<pre class="lang-css">
+		:root {
+			--toolbar-theme: {
+				background-color: hsl(120, 70%, 95%);
+				border-radius: 4px;
+				border: 1px solid var(--theme-color late);
+			};
+			--toolbar-title-theme: {
+				color: green;
+			};
+		}
+
+		.toolbar {
+			@apply --toolbar-theme;
+		}
+		.toolbar > .title {
+			@apply --toolbar-title-theme;
+		}
+	</pre>
+
+	Then, we can override the theme for toolbars inside of "warning" elements:
+
+	<pre class="lang-css">
+		.warning {
+			--toolbar-title-theme: {
+				color: red;
+				font-weight: bold;
+			};
+		}
+	</pre>
+
+	We don't have to worry about the internal structure of the toolbars,
+	or precisely what internal elements use the styles.
+	Simply overriding the <a>custom property</a> will automatically do the right thing.
+</div>
+
+<div class="example">
+	Note that <a>custom property sets</a> override each other wholly,
+	rather than cascading together like colliding <a>style rules</a> do.
+
+	For example, if these two style rules applied to the same element:
+
+	<pre class="lang-css">
+		.foo {
+			color: red;
+			background: white;
+		}
+		#bar {
+			color: blue;
+		}
+	</pre>
+
+	The ''#bar'' rule will win due to having a higher specificity,
+	so its ''color:blue'' rule will apply to the element,
+	but the ''background:white'' rule from the ''.foo'' rule also applies,
+	since the ''#bar'' rule did not override 'background'.
+
+	However, if these were instead defined as <a>custom property sets</a>:
+
+	<pre class="lang-css">
+		.foo {
+			--my-theme: {
+				color: red;
+				background: white;
+			};
+		}
+		#bar {
+			--my-theme: {
+				color: blue;
+			};
+		}
+	</pre>
+
+	Then when an element uses the '--my-theme' <a>custom property set</a>,
+	it will receive <em>only</em> the ''color:blue'' declaration.
+	The ''background:white'' declaration from the ''.foo'' rule is ignored completely,
+	as its rule lost the specificity battle.
+</div>
+
+Issue: Need some way to let you opt into cascading when you want it.
+
+Using Custom Sets of Properties: the ''@apply'' rule {#using}
+=============================================================
+
+Once a <a>custom property set</a> has been declared,
+the ''@apply'' rule inlines it into a style rule.
+It's syntax is:
+
+	<pre class=prod>
+		<dfn>@apply</dfn> = @apply <<custom-property-name>> ;
+	</pre>
+
+The ''@apply'' rule is only valid inside of a style rule.
+Using it outside of a style rule,
+or inside any other rule,
+is invalid and causes the ''@apply'' to be ignored.
+
+<div class="example">
+	Here's a valid example of ''@apply'' usage:
+
+	<pre class="lang-css">
+		.foo {
+			color: blue;
+			@apply --foo-styles;
+		}
+	</pre>
+
+	Here's several invalid example of ''@apply'' usage:
+
+	<pre class="lang-css invalid">
+		.foo {
+			color: blue;
+		}
+
+		@apply --top-level-is-invalid;
+	</pre>
+
+	<pre class="lang-css invalid">
+		@keyframes foo {
+			from { color: red; }
+			to { color: blue; }
+			@apply --this-is-not-a-style-rule;
+		}
+	</pre>
+</div>
+
+For the purposes of the <a>cascade</a>,
+the ''@apply'' rule must be treated as if it were replaced by the properties
+in the <a>custom property set</a> that is the value of the <a>custom property</a> it references.
+
+Note: Within the CSSOM, the ''@apply'' rule is not replaced;
+examining the style rule will show it as having the ''@apply'' rule in its <code>.childRules</code> attribute,
+and the properties in the <a>custom property set</a> will not be visible in any way.
+
+If the <a>custom property</a> that the ''@apply'' rule references
+does not define a valid <a>custom property set</a>,
+the ''@apply'' rule is treated, for the purposes of the cascade, as if it were replaced with nothing.
+It is not invalid, however.
+(For example, it is not dropped from the CSSOM.)
