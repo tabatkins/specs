@@ -1,14 +1,8 @@
-<!doctype html>
-<html lang="en">
+<!doctype html><html lang="en">
  <head>
-  
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  
-  
   <title>CSS @apply Rule</title>
-  
-  
-  <style data-fill-with="stylesheet">/* This section copied from the W3C's ED styles. */
+<style data-fill-with="stylesheet">/* This section copied from the W3C's ED styles. */
 
 	body {
 		color: black;
@@ -994,10 +988,8 @@
 	}
 
 </style>
-  
-
   <meta content="Bikeshed 1.0.0" name="generator">
-  <style>.highlight .hll { background-color: #ffffcc }
+<style>.highlight .hll { background-color: #ffffcc }
 .highlight  { background: #ffffff; }
 .highlight .c { color: #708090 } /* Comment */
 .highlight .k { color: #990055 } /* Keyword */
@@ -1031,7 +1023,6 @@
 .highlight .nt { color: #0077aa } /* Name.Tag */
 .highlight .nv { color: #0077aa } /* Name.Variable */
 .highlight .ow { color: #999999 } /* Operator.Word */
-.highlight .mb { color: #990055 } /* Literal.Number.Bin */
 .highlight .mf { color: #990055 } /* Literal.Number.Float */
 .highlight .mh { color: #990055 } /* Literal.Number.Hex */
 .highlight .mi { color: #990055 } /* Literal.Number.Integer */
@@ -1056,19 +1047,11 @@
         pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
         </style>
  </head>
- 
-
  <body class="h-entry">
-
   <div class="head">
-  
    <p data-fill-with="logo"></p>
-  
    <h1 class="p-name no-ref" id="title">CSS @apply Rule</h1>
-  
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas,
-    <time class="dt-updated" datetime="2015-08-20">20 August 2015</time></span></h2>
-  
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2015-08-25">25 August 2015</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1080,77 +1063,55 @@
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="http://xanthir.com/contact/">Tab Atkins-Bittner</a> (<span class="p-org org">Google</span>)
     </dl>
    </div>
-  
    <div data-fill-with="warning"></div>
-  
-   <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a>
-To the extent possible under law, the editors have waived all copyright
+   <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 20 August 2015,
-the editors have made this specification available under the
-<a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
+In addition, as of 25 August 2015,
+the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
-Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document.
-</p>
-  
+Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
    <hr title="Separator for header">
-</div>
-
-
+  </div>
   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-
   <div class="p-summary" data-fill-with="abstract">
    <p>This specification defines the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule, which allows an author to store a set of properties in a named variable, then reference them in other style rules.</p>
-
-</div>
-
+  </div>
   <div data-fill-with="at-risk"></div>
-
-
   <h2 class="no-num no-toc no-ref heading settled" id="contents"><span class="content">Table of Contents</span></h2>
-
   <div data-fill-with="table-of-contents" role="navigation">
    <ul class="toc" role="directory">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
     <li><a href="#defining"><span class="secno">2</span> <span class="content">Defining Custom Sets of Properties</span></a>
     <li><a href="#using"><span class="secno">3</span> <span class="content">Using Custom Sets of Properties: the <span class="css">@apply</span> rule</span></a>
-    <li><a href="#conformance"><span class="secno"></span> <span class="content">
-Conformance</span></a>
-    <li><a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+    <li><a href="#cssom"><span class="secno">4</span> <span class="content">CSSOM</span></a>
+    <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ul class="toc">
       <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
       <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
      </ul>
-    <li><a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+    <li>
+     <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ul class="toc">
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
      </ul>
+    <li><a href="#idl-index"><span class="secno"></span> <span class="content">IDL Index</span></a>
     <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
-   </ul></div>
-
+   </ul>
+  </div>
   <main>
-
-
-
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
-
-
    <p>CSS <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom properties</a> enable authors to define reusable values,
 give them names,
 then invoke them throughout the stylesheet.
 This makes it easy to keep a page’s theme consistent when changes are made,
 because the theming values are defined in a central place.</p>
-
-
    <p>But <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom properties</a> can hold more than just values--
 they can also be used to hold sets of declarations.
 The <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule takes these sets of declarations and inlines them in another style rule,
 serving a purpose analogous to what the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-variables-1/#funcdef-var">var()</a> function does for individual values.</p>
-
-
    <div class="note" role="note">
-
-
     <p>There are many ways to apply sets of declarations to an element.
 	In particular, the common way is to just create a style rule,
 	and apply it to the desired elements via a selector.
@@ -1160,33 +1121,21 @@ serving a purpose analogous to what the <a class="css" data-link-type="maybe" hr
 	(and which needs to be maintained as you alter the page markup and change the selectors targetting those elements).
 	This also requires careful management of specificity,
 	as the rule has to interact with the existing rules styling the elements.</p>
-
-
     <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule allows this reuse to be inlined into the existing selectors you’re already using,
 	reducing the amount of effort required to keep your stylesheet consistent as things change in the page.
 	It also avoids the need to manage specificity any more than you already do,
 	as the properties are inlined alongside the existing properties,
 	in your existing style rules.</p>
-</div>
-
-
-
+   </div>
    <h2 class="heading settled" data-level="2" id="defining"><span class="secno">2. </span><span class="content">Defining Custom Sets of Properties</span><a class="self-link" href="#defining"></a></h2>
-
-
    <p>To define a <dfn data-dfn-type="dfn" data-export="" id="custom-property-set">custom property set<a class="self-link" href="#custom-property-set"></a></dfn> for use with <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a>,
-you simply use a <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom property</a>
-with a value of a {}-wrapped block of properties.</p>
-
-
-   <div class="example" id="example-ded67f3a"><a class="self-link" href="#example-ded67f3a"></a>
-	For example, one might define a toolbar theme as a <a data-link-type="dfn" href="#custom-property-set">custom property set</a> on the root element of the document,
-	and use it on your toolbars:
-
-	
-    <pre class="lang-css highlight"><span class="nd">:root</span> <span class="p">{</span>
+you simply use a <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom property</a> with a value of a {}-wrapped block of properties.</p>
+   <div class="example" id="example-ded67f3a">
+    <a class="self-link" href="#example-ded67f3a"></a> For example, one might define a toolbar theme as a <a data-link-type="dfn" href="#custom-property-set">custom property set</a> on the root element of the document,
+	and use it on your toolbars: 
+<pre class="lang-css highlight"><span class="nd">:root</span> <span class="p">{</span>
   <span class="o">--</span><span class="n">toolbar</span><span class="o">-</span><span class="n">theme</span><span class="o">:</span> <span class="err">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">120</span><span class="o">,</span> <span class="m">70%</span><span class="o">,</span> <span class="m">95%</span><span class="p">);</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">120</span><span class="o">,</span> <span class="m">70</span><span class="o">%,</span> <span class="m">95</span><span class="o">%</span><span class="p">);</span>
     <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
     <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="n">var</span><span class="p">(</span><span class="o">--</span><span class="n">theme</span><span class="o">-</span><span class="k">color</span> <span class="n">late</span><span class="p">);</span>
   <span class="p">}</span><span class="o">;</span>
@@ -1201,52 +1150,34 @@ with a value of a {}-wrapped block of properties.</p>
 <span class="nc">.toolbar</span> <span class="o">></span> <span class="nc">.title</span> <span class="p">{</span>
   <span class="o">@</span><span class="n">apply</span> <span class="o">--</span><span class="n">toolbar</span><span class="o">-</span><span class="n">title</span><span class="o">-</span><span class="n">theme</span><span class="p">;</span>
 <span class="p">}</span></pre>
-
-
     <p>Then, we can override the theme for toolbars inside of "warning" elements:</p>
-
-	
-    <pre class="lang-css highlight"><span class="nc">.warning</span> <span class="p">{</span>
+<pre class="lang-css highlight"><span class="nc">.warning</span> <span class="p">{</span>
   <span class="o">--</span><span class="n">toolbar</span><span class="o">-</span><span class="n">title</span><span class="o">-</span><span class="n">theme</span><span class="o">:</span> <span class="err">{</span>
     <span class="k">color</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span>
     <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
   <span class="p">}</span><span class="o">;</span>
 <span class="err">}</span></pre>
-
-
     <p>We don’t have to worry about the internal structure of the toolbars,
 	or precisely what internal elements use the styles.
 	Simply overriding the <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom property</a> will automatically do the right thing.</p>
-</div>
-
-
-   <div class="example" id="example-76e95e3a"><a class="self-link" href="#example-76e95e3a"></a>
-	Note that <a data-link-type="dfn" href="#custom-property-set">custom property sets</a> override each other wholly,
-	rather than cascading together like colliding <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#style-rule">style rules</a> do.
-
-
+   </div>
+   <div class="example" id="example-76e95e3a">
+    <a class="self-link" href="#example-76e95e3a"></a> Note that <a data-link-type="dfn" href="#custom-property-set">custom property sets</a> override each other wholly,
+	rather than cascading together like colliding <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#style-rule">style rules</a> do. 
     <p>For example, if these two style rules applied to the same element:</p>
-
-	
-    <pre class="lang-css highlight"><span class="nc">.foo</span> <span class="p">{</span>
+<pre class="lang-css highlight"><span class="nc">.foo</span> <span class="p">{</span>
   <span class="k">color</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span>
   <span class="k">background</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="nf">#bar</span> <span class="p">{</span>
   <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
 <span class="p">}</span></pre>
-
-
     <p>The <span class="css">#bar</span> rule will win due to having a higher specificity,
 	so its <span class="css">color:blue</span> rule will apply to the element,
 	but the <span class="css">background:white</span> rule from the <span class="css">.foo</span> rule also applies,
 	since the <span class="css">#bar</span> rule did not override <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#background">background</a>.</p>
-
-
     <p>However, if these were instead defined as <a data-link-type="dfn" href="#custom-property-set">custom property sets</a>:</p>
-
-	
-    <pre class="lang-css highlight"><span class="nc">.foo</span> <span class="p">{</span>
+<pre class="lang-css highlight"><span class="nc">.foo</span> <span class="p">{</span>
   <span class="o">--</span><span class="n">my</span><span class="o">-</span><span class="n">theme</span><span class="o">:</span> <span class="err">{</span>
     <span class="k">color</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span>
     <span class="k">background</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
@@ -1257,151 +1188,137 @@ with a value of a {}-wrapped block of properties.</p>
     <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
   <span class="p">}</span><span class="o">;</span>
 <span class="err">}</span></pre>
-
-
-    <p>Then when an element uses the <a class="property" data-link-type="propdesc">--my-theme</a> <a data-link-type="dfn" href="#custom-property-set">custom property set</a>,
+    <p>Then when an element uses the <a class="property" data-link-type="propdesc">--my-theme</a><a data-link-type="dfn" href="#custom-property-set">custom property set</a>,
 	it will receive <em>only</em> the <span class="css">color:blue</span> declaration.
 	The <span class="css">background:white</span> declaration from the <span class="css">.foo</span> rule is ignored completely,
 	as its rule lost the specificity battle.</p>
-</div>
-
-
+   </div>
    <p class="issue" id="issue-fe3c41ea"><a class="self-link" href="#issue-fe3c41ea"></a> Need some way to let you opt into cascading when you want it.</p>
-
-
    <h2 class="heading settled" data-level="3" id="using"><span class="secno">3. </span><span class="content">Using Custom Sets of Properties: the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule</span><a class="self-link" href="#using"></a></h2>
-
-
    <p>Once a <a data-link-type="dfn" href="#custom-property-set">custom property set</a> has been declared,
 the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule inlines it into a style rule.
 It’s syntax is:</p>
-
-	
-   <pre class="prod"><dfn data-dfn-type="at-rule" data-export="" id="at-ruledef-apply">@apply<a class="self-link" href="#at-ruledef-apply"></a></dfn> = @apply <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-variables-1/#typedef-custom-property-name">&lt;custom-property-name></a> ;
+<pre class="prod"><dfn data-dfn-type="at-rule" data-export="" id="at-ruledef-apply">@apply<a class="self-link" href="#at-ruledef-apply"></a></dfn> = @apply <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-variables-1/#typedef-custom-property-name">&lt;custom-property-name></a> ;
 </pre>
-
-
    <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule is only valid inside of a style rule.
 Using it outside of a style rule,
 or inside any other rule,
 is invalid and causes the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> to be ignored.</p>
-
-
-   <div class="example" id="example-6b8ddfef"><a class="self-link" href="#example-6b8ddfef"></a>
-	Here’s a valid example of <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> usage:
-
-	
-    <pre class="lang-css highlight"><span class="nc">.foo</span> <span class="p">{</span>
+   <div class="example" id="example-6b8ddfef">
+    <a class="self-link" href="#example-6b8ddfef"></a> Here’s a valid example of <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> usage: 
+<pre class="lang-css highlight"><span class="nc">.foo</span> <span class="p">{</span>
   <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
   <span class="o">@</span><span class="n">apply</span> <span class="o">--</span><span class="n">foo</span><span class="o">-</span><span class="n">styles</span><span class="p">;</span>
 <span class="p">}</span></pre>
-
-
     <p>Here’s several invalid example of <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> usage:</p>
-
-	
-    <pre class="lang-css invalid highlight"><span class="nc">.foo</span> <span class="p">{</span>
+<pre class="lang-css invalid highlight"><span class="nc">.foo</span> <span class="p">{</span>
   <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="k">@apply</span> <span class="nt">--top-level-is-invalid</span><span class="p">;</span></pre>
-
-	
-    <pre class="lang-css invalid highlight"><span class="k">@keyframes</span> <span class="nt">foo</span> <span class="p">{</span>
+<pre class="lang-css invalid highlight"><span class="k">@keyframes</span> <span class="nt">foo</span> <span class="p">{</span>
   <span class="nt">from</span> <span class="p">{</span> <span class="k">color</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span> <span class="p">}</span>
   <span class="nt">to</span> <span class="p">{</span> <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span> <span class="p">}</span>
   <span class="k">@apply</span> <span class="nt">--this-is-not-a-style-rule</span><span class="p">;</span>
 <span class="p">}</span></pre>
-</div>
-
-
+   </div>
    <p>For the purposes of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-4/#cascade">cascade</a>,
 the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule must be treated as if it were replaced by the properties
 in the <a data-link-type="dfn" href="#custom-property-set">custom property set</a> that is the value of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom property</a> it references.</p>
-
-
    <p class="note" role="note">Note: Within the CSSOM, the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule is not replaced;
 examining the style rule will show it as having the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule in its <code>.childRules</code> attribute,
 and the properties in the <a data-link-type="dfn" href="#custom-property-set">custom property set</a> will not be visible in any way.</p>
-
-
    <p>If the <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom property</a> that the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule references
 does not define a valid <a data-link-type="dfn" href="#custom-property-set">custom property set</a>,
 the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule is treated, for the purposes of the cascade, as if it were replaced with nothing.
 It is not invalid, however.
 (For example, it is not dropped from the CSSOM.)</p>
-
-</main>
-
-  <h2 class="no-ref no-num heading settled" id="conformance"><span class="content">
-Conformance</span><a class="self-link" href="#conformance"></a></h2>
-
-    
-  <p>
-        Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
+   <h2 class="heading settled" data-level="4" id="cssom"><span class="secno">4. </span><span class="content">CSSOM</span><a class="self-link" href="#cssom"></a></h2>
+<pre class="idl">interface <dfn class="idl-code" data-dfn-type="interface" data-export="" id="cssapplyrule">CSSApplyRule<a class="self-link" href="#cssapplyrule"></a></dfn> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssrule">CSSRule</a> {
+  attribute DOMString <a class="idl-code" data-link-type="attribute" data-type="DOMString " href="#dom-cssapplyrule-referencedproperty">referencedProperty</a>;
+};
+</pre>
+   <dl>
+    <dt><dfn class="idl-code" data-dfn-for="CSSApplyRule" data-dfn-type="attribute" data-export="" id="dom-cssapplyrule-referencedproperty">referencedProperty<a class="self-link" href="#dom-cssapplyrule-referencedproperty"></a></dfn> , <span> of type <a data-link-type="idl-name" href="http://heycam.github.io/webidl/#idl-DOMString">DOMString</a></span>
+    <dd>
+      The custom property that the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule is referencing. 
+     <p>Upon setting, if the value is not a valid <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-variables-1/#typedef-custom-property-name">&lt;custom-property-name></a>,
+		ignore the set and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#throw">throw</a> a <code class="idl"><a data-link-type="idl">SyntaxError</a></code>.</p>
+   </dl>
+   <p class="issue" id="issue-882293bd"><a class="self-link" href="#issue-882293bd"></a> Also, switch <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-1/#cssstylerule">CSSStyleRule</a></code> to inherit from <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-1/#cssgroupingrule">CSSGroupingRule</a></code>.</p>
+  </main>
+  <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
+  <p> Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
         The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”
         in the normative parts of this document
         are to be interpreted as described in RFC 2119.
         However, for readability,
-        these words do not appear in all uppercase letters in this specification.
-
-    </p>
-  <p>
-        All of the text of this specification is normative
-        except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a>
-
-    </p>
-  <p>
-        Examples in this specification are introduced with the words “for example”
-        or are set apart from the normative text with <code>class="example"</code>, like this:
-
-    </p>
-  <div class="example" id="example-ae2b6bc0"><a class="self-link" href="#example-ae2b6bc0"></a>
-        This is an example of an informative example.
-    </div>
-
-    
-  <p>
-        Informative notes begin with the word “Note”
-        and are set apart from the normative text with <code>class="note"</code>, like this:
-
-    </p>
-  <p class="note" role="note">
-        Note, this is an informative note.
-
-
-
-</p>
+        these words do not appear in all uppercase letters in this specification. </p>
+  <p> All of the text of this specification is normative
+        except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a></p>
+  <p> Examples in this specification are introduced with the words “for example”
+        or are set apart from the normative text with <code>class="example"</code>, like this: </p>
+  <div class="example" id="example-ae2b6bc0"><a class="self-link" href="#example-ae2b6bc0"></a> This is an example of an informative example. </div>
+  <p> Informative notes begin with the word “Note”
+        and are set apart from the normative text with <code>class="note"</code>, like this: </p>
+  <p class="note" role="note"> Note, this is an informative note. </p>
   <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="indexlist">
    <li><a href="#at-ruledef-apply">@apply</a><span>, in §3</span>
+   <li><a href="#cssapplyrule">CSSApplyRule</a><span>, in §4</span>
    <li><a href="#custom-property-set">custom property set</a><span>, in §2</span>
+   <li><a href="#dom-cssapplyrule-referencedproperty">referencedProperty</a><span>, in §4</span>
   </ul>
   <h3 class="no-num heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="indexlist">
-   <li><a data-link-type="biblio" href="#biblio-css-backgrounds-3">[css-backgrounds-3]</a> defines the following terms:
+   <li>
+    <a data-link-type="biblio" href="#biblio-css-backgrounds-3">[css-backgrounds-3]</a> defines the following terms:
     <ul>
      <li><a href="https://drafts.csswg.org/css-backgrounds-3/#background">background</a>
     </ul>
-   <li><a data-link-type="biblio" href="#biblio-css-cascade-4">[css-cascade-4]</a> defines the following terms:
+   <li>
+    <a data-link-type="biblio" href="#biblio-css-cascade-4">[css-cascade-4]</a> defines the following terms:
     <ul>
      <li><a href="https://drafts.csswg.org/css-cascade-4/#cascade">cascade</a>
     </ul>
-   <li><a data-link-type="biblio" href="#biblio-css-syntax-3">[css-syntax-3]</a> defines the following terms:
+   <li>
+    <a data-link-type="biblio" href="#biblio-css-syntax-3">[css-syntax-3]</a> defines the following terms:
     <ul>
      <li><a href="https://drafts.csswg.org/css-syntax-3/#style-rule">style rule</a>
     </ul>
-   <li><a data-link-type="biblio" href="#biblio-css-variables-1">[css-variables-1]</a> defines the following terms:
+   <li>
+    <a data-link-type="biblio" href="#biblio-css-variables-1">[css-variables-1]</a> defines the following terms:
     <ul>
      <li><a href="https://drafts.csswg.org/css-variables-1/#typedef-custom-property-name">&lt;custom-property-name></a>
      <li><a href="https://drafts.csswg.org/css-variables-1/#custom-property">custom property</a>
      <li><a href="https://drafts.csswg.org/css-variables-1/#funcdef-var">var()</a>
     </ul>
+   <li>
+    <a data-link-type="biblio" href="#biblio-cssom-1">[cssom]</a> defines the following terms:
+    <ul>
+     <li><a href="https://drafts.csswg.org/cssom-1/#cssgroupingrule">CSSGroupingRule</a>
+     <li><a href="https://drafts.csswg.org/cssom-1/#cssrule">CSSRule</a>
+     <li><a href="https://drafts.csswg.org/cssom-1/#cssstylerule">CSSStyleRule</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio" href="#biblio-html">[HTML]</a> defines the following terms:
+    <ul>
+     <li><a href="https://html.spec.whatwg.org/multipage/infrastructure.html#throw">throw</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio" href="#biblio-webidl">[WebIDL]</a> defines the following terms:
+    <ul>
+     <li><a href="http://heycam.github.io/webidl/#idl-DOMString">DOMString</a>
+    </ul>
   </ul>
   <h2 class="no-num heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-html"><a class="self-link" href="#biblio-html"></a>[HTML]
+   <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dt id="biblio-webidl"><a class="self-link" href="#biblio-webidl"></a>[WebIDL]
+   <dd>Cameron McCormack. <a href="http://www.w3.org/TR/WebIDL/">Web IDL</a>. 19 April 2012. CR. URL: <a href="http://www.w3.org/TR/WebIDL/">http://www.w3.org/TR/WebIDL/</a>
    <dt id="biblio-css-backgrounds-3"><a class="self-link" href="#biblio-css-backgrounds-3"></a>[CSS-BACKGROUNDS-3]
    <dd>CSS Backgrounds and Borders Module Level 3 URL: <a href="http://www.w3.org/TR/css3-background/">http://www.w3.org/TR/css3-background/</a>
    <dt id="biblio-css-cascade-4"><a class="self-link" href="#biblio-css-cascade-4"></a>[CSS-CASCADE-4]
@@ -1410,11 +1327,21 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
    <dd>Tab Atkins Jr.; Simon Sapin. <a href="http://www.w3.org/TR/css-syntax-3/">CSS Syntax Module Level 3</a>. 20 February 2014. CR. URL: <a href="http://www.w3.org/TR/css-syntax-3/">http://www.w3.org/TR/css-syntax-3/</a>
    <dt id="biblio-css-variables-1"><a class="self-link" href="#biblio-css-variables-1"></a>[CSS-VARIABLES-1]
    <dd>Tab Atkins Jr.. <a href="http://www.w3.org/TR/css-variables-1/">CSS Custom Properties for Cascading Variables Module Level 1</a>. 6 May 2014. LCWD. URL: <a href="http://www.w3.org/TR/css-variables-1/">http://www.w3.org/TR/css-variables-1/</a>
+   <dt id="biblio-cssom"><a class="self-link" href="#biblio-cssom"></a>[CSSOM]
+   <dd>Simon Pieters; Glenn Adams. <a href="http://www.w3.org/TR/cssom/">CSS Object Model (CSSOM)</a>. 5 December 2013. WD. URL: <a href="http://www.w3.org/TR/cssom/">http://www.w3.org/TR/cssom/</a>
    <dt id="biblio-rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
   </dl>
+  <h2 class="no-num heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="idl">interface <a href="#cssapplyrule">CSSApplyRule</a> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssrule">CSSRule</a> {
+  attribute DOMString <a class="idl-code" data-link-type="attribute" data-type="DOMString " href="#dom-cssapplyrule-referencedproperty">referencedProperty</a>;
+};
+
+</pre>
   <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Need some way to let you opt into cascading when you want it.<a href="#issue-fe3c41ea"> ↵ </a></div>
-  </div></body>
+   <div class="issue"> Also, switch <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-1/#cssstylerule">CSSStyleRule</a></code> to inherit from <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-1/#cssgroupingrule">CSSGroupingRule</a></code>.<a href="#issue-882293bd"> ↵ </a></div>
+  </div>
+ </body>
 </html>

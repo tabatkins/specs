@@ -6,7 +6,8 @@ Status: DREAM
 URL: http://tabatkins.github.io/specs/css-apply-rule
 Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/
 Abstract: This specification defines the ''@apply'' rule, which allows an author to store a set of properties in a named variable, then reference them in other style rules.
-Link Defaults: css-syntax-3 (dfn) style rule
+Link Defaults: css-syntax-3 (dfn) style rule, html (dfn) throw
+Ignored Terms: SyntaxError
 </pre>
 
 Introduction {#intro}
@@ -193,3 +194,23 @@ does not define a valid <a>custom property set</a>,
 the ''@apply'' rule is treated, for the purposes of the cascade, as if it were replaced with nothing.
 It is not invalid, however.
 (For example, it is not dropped from the CSSOM.)
+
+CSSOM {#cssom}
+==============
+
+<pre class=idl>
+interface CSSApplyRule : CSSRule {
+	attribute DOMString referencedProperty;
+};
+</pre>
+
+<dl dfn-for="CSSApplyRule">
+	<dt><dfn attribute>referencedProperty</dfn>
+	<dd>
+		The custom property that the ''@apply'' rule is referencing.
+
+		Upon setting, if the value is not a valid <<custom-property-name>>,
+		ignore the set and <a>throw</a> a {{SyntaxError}}.
+</dl>
+
+Issue: Also, switch {{CSSStyleRule}} to inherit from {{CSSGroupingRule}}.
