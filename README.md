@@ -15,5 +15,5 @@ Live copies of the specs:
 * [@extend](http://tabatkins.github.io/specs/css-extend-rule)
 * [Constructable Stylesheets](http://tabatkins.github.io/specs/construct-stylesheets)
 * [Sticky Scrollbar](http://tabatkins.github.io/specs/css-sticky-scrollbars)
-* [Font Rendering Controls](http://tabatkins.github.io/specs/css-font-rendering)
+* [Font Display Controls](http://tabatkins.github.io/specs/css-font-display)
 * [CSS @apply Rule](http://tabatkins.github.io/specs/css-apply-rule)

@@ -1,12 +1,12 @@
 <pre class='metadata'>
-Title: CSS Font Rendering Controls Module Level 1
+Title: CSS Font Display Controls Module Level 1
 Status: UD
-Shortname: css-font-rendering
+Shortname: css-font-display
 Level: 1
 Editor: Tab Atkins, Google, http://xanthir.com
 Editor: Kenji Baheux, Google
-Abstract: This spec introduces a new ''@font-face'' descriptor and a corresponding property for controlling how a downloadable font renders before it is fully loaded.  It's intended that this spec be merged into the Fonts spec, likely Fonts Level 4.
-ED: https://tabatkins.github.io/specs/css-font-rendering/
+Abstract: This spec introduces a new ''@font-face'' descriptor for controlling how a downloadable font renders before it is fully loaded.  It's intended that this spec be merged into the Fonts spec, likely Fonts Level 4.
+ED: https://tabatkins.github.io/specs/css-font-display/
 </pre>
 
 Introduction {#intro}
