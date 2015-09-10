@@ -85,22 +85,60 @@ Specifically, it lets developers:
 * Define custom timeout values for each font.
 * Define custom render and timeout strategies per element.
 
+The Font Display Timeline {#timeline}
+=====================================
 
-Controlling Font Rendering Per Font-Face: the ''@font-face/font-display'' descriptor {#font-rendering-desc}
+At the moment the user agent first attempts to use a given downloaded font face on a page,
+the font face's <dfn export local-lt="timer">font download timer</dfn> is started.
+This timer advances through three periods of time associated with the font face--
+the <a>block period</a>, the <a>swap period</a>, and the <a>failure period</a>--
+which dictate the rendering behavior of any elements using the font face:
+
+* The first period is the <dfn export local-lt="block period">font block period</dfn>.
+	During this period,
+	if the font face is not loaded,
+	any element attempting to use it must instead <a>render with an invisible fallback font face</a>.
+	If the font face successfully loads during the <a>block period</a>,
+	the font face is then used normally.
+* The second period, occuring immediately after the <a>block period</a>,
+	is the <dfn export local-lt="swap period">font swap period</dfn>.
+	During this period,
+	if the font face is not loaded,
+	any element attempting to use it must instead <a>render with a fallback font face</a>.
+	If the font face successfully loads during the <a>swap period</a>,
+	the font face is then used normally.
+* The third period, occuring immediately after the <a>swap period</a>,
+	is the <dfn export local-lt="failure period">font failure period</dfn>.
+	If the font face is not yet loaded when this period starts,
+	it's marked as a failed load,
+	causing normal font fallback.
+	Otherwise, the font face is used normally.
+
+To <dfn export>render with a fallback font face</dfn> for a given element,
+the user agent must find the first font face specified in the element's 'font-family!!property' list
+which is already loaded,
+and use that for rendering text.
+Doing this must not trigger loads of any of the fallback fonts.
+
+To <dfn export>render with an invisible fallback font face</dfn> for a given element,
+find a font face as per "<a>render with a fallback font face</a>".
+Create an anonymous font face with the same metrics as the selected font face
+but with all glyphs "invisible" (containing no "ink"),
+and use that for rendering text.
+Doing this must not trigger loads of any of the fallback fonts.
+
+Issue: ''fallback'' and ''optional'' can result in some faces in a family being used
+while others are required to fallback,
+giving a "ransom note" look.
+Perhaps require that all fonts in a family have the same behavior (all swapped in, or all fallback)?
+
+
+Controlling Font Display Per Font-Face: the ''@font-face/font-display'' descriptor {#font-display-desc}
 ===========================
 
 The '@font-face/font-display' descriptor for ''@font-face''
 determines how a font face is displayed,
 based on whether and when it is downloaded and ready to use.
-
-When a downloadable font-face is first requested,
-a <a>font download timer</a> is started.
-Each ''@font-face'' rule has associated with it
-two periods of time--
-a <a>block duration</a>
-and a <a>swap duration</a>--
-which determine the rendering behavior of the font face
-as its <a>timer</a> advances.
 
 <pre class='descdef'>
 Name: font-display
@@ -115,9 +153,9 @@ or more sophisticated behaviors that can't be directly expressed in the 'font-di
 in order to provide more useful behavior for their users.
 They may also provide the ability for users to override author-chosen behavior
 with something more desirable;
-for example, forcing all fonts to have a ''0s'' <a>block duration</a>.
+for example, forcing all fonts to have a ''0s'' <a>block period</a>.
 
-<dl dfn-type="value" dfn-for="@font-face/font-rendering">
+<dl dfn-type="value" dfn-for="@font-face/font-display">
 	<dt><dfn>auto</dfn>
 	<dd>
 		The font display strategy is user-agent-defined.
@@ -126,9 +164,9 @@ for example, forcing all fonts to have a ''0s'' <a>block duration</a>.
 
 	<dt><dfn>block</dfn>
 	<dd>
-		Gives the font face a short <a>block duration</a>
+		Gives the font face a short <a>block period</a>
 		(''3s'' is recommended in most cases)
-		and an infinite <a>swap duration</a>.
+		and an infinite <a>swap period</a>.
 
 		Note: In other words, the browser draws "invisible" text at first if it's not loaded,
 		but swaps the font face in as soon as it loads.
@@ -151,8 +189,8 @@ for example, forcing all fonts to have a ''0s'' <a>block duration</a>.
 
 	<dt><dfn>swap</dfn>
 	<dd>
-		Gives the font face a ''0s'' <a>block duration</a>
-		and an infinite <a>swap duration</a>.
+		Gives the font face a ''0s'' <a>block period</a>
+		and an infinite <a>swap period</a>.
 
 		Note: In other words, the browser draws the text immediately with a fallback if the font face isn't loaded,
 		but swaps the font face in as soon as it loads.
@@ -170,8 +208,8 @@ for example, forcing all fonts to have a ''0s'' <a>block duration</a>.
 
 	<dt><dfn>fallback</dfn>
 	<dd>
-		Gives the font face a ''0s'' <a>block duration</a>
-		and a short <a>swap duration</a>
+		Gives the font face a ''0s'' <a>block period</a>
+		and a short <a>swap period</a>
 		(''3s'' is recommended in most cases).
 
 		Note: In other words, the font face is rendered with a fallback at first if it's not loaded,
@@ -195,14 +233,14 @@ for example, forcing all fonts to have a ''0s'' <a>block duration</a>.
 			as that's distracting and annoying to re-find where one was in the text.
 		</div>
 
-		Issue: Maybe give this a very small <a>block duration</a>,
+		Issue: Maybe give this a very small <a>block period</a>,
 		so we can avoid FOUT if the font is available but hasn't been loaded from cache yet?
 
 	<dt><dfn>optional</dfn>
 	<dd>
-		Gives the font face an extremely small <a>block duration</a>
+		Gives the font face an extremely small <a>block period</a>
 		(''100ms'' or less is recommended in most cases)
-		and a ''0s'' <a>swap duration</a>.
+		and a ''0s'' <a>swap period</a>.
 
 		If the font is not retrieved before the two durations expire,
 		the user agent may choose to abort the font download,
@@ -248,48 +286,6 @@ for example, forcing all fonts to have a ''0s'' <a>block duration</a>.
 
 	* required / important / preferable / optional
 </div>
-
-Issue: ''fallback'' and ''optional'' can result in some faces in a family being used
-while others are required to fallback,
-giving a "ransom note" look.
-Perhaps require that all fonts in a family have the same behavior (all swapped in, or all fallback)?
-
-At the moment the user agent first attempts to use a given downloaded font face on a page,
-it must start a <dfn local-lt="timer">font download timer</dfn> for that font face,
-ending when the font face is finished loading and ready to use.
-
-The <dfn>block duration</dfn> for a font face defines a span of time
-starting when the font face's <a>timer</a> starts
-and ending when the specified duration has passed.
-During this period,
-if the font face has not yet loaded
-it must be considered "not available",
-but must fallback to the <a>invisible font face</a>.
-
-The <dfn>swap duration</dfn> for a font face defines a span of time
-starting when the font face's <a>block duration</a> ends
-and ending when the specified duration has passed.
-During this period,
-if the font face has not yet loaded
-it must be considered "not available",
-and fallback as normal.
-
-If the font face loads during the <a>block duration</a> or the <a>swap duration</a>,
-the font face is considered to have successfully loaded and is available to the page for use.
-If both durations expire without the font face loading,
-the user agent must mark the font face as "not available"
-for the rest of the lifetime of the document,
-even if the font face later loads successfully.
-
-The <dfn export>invisible font face</dfn> is a special user-agent-defined font face.
-It contains glyphs for every possible character,
-but renders all of them as transparent boxes
-with user-agent-defined metrics.
-It exists solely to allow user agents to perform text layout with reasonable default text sizing
-while a font face is being blocked from rendering.
-
-Issue: Nope, this should use the metrics of whatever fallback font will be used.
-That avoids any reflow at all if you switch from blank to fallback.
 
 
 Acknowledgements {#acks}

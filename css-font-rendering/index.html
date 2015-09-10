@@ -1,740 +1,1111 @@
-<!doctype html>
-<html lang="en">
+<!doctype html><html lang="en">
  <head>
-  
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  
-  
   <title>CSS Font Rendering Controls Module Level 1</title>
-  
-  
-  <style>
-@media print {
-  html { margin: 0 !important; }
-  body { font-family: serif; }
-  th, td { font-family: inherit; }
-  a { color: inherit !important; }
-  .example:before { font-family: serif !important; }
-  a:link, a:visited { text-decoration: none !important; }
-  a:link:after, a:visited:after { /* create a cross-ref "see..." */; }
-}
-@page {
-  margin: 1.5cm 1.1cm;
-}
-h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
-figure, div.figure, div.sidefigure, pre, table.propdef, table.propdef-extra,
-.example { page-break-inside: avoid; }
-dt { page-break-after: avoid; }
+<style data-fill-with="stylesheet">/* This section copied from the W3C's ED styles. */
 
-body {
-  background: white;
-  /* background-image: floating-margin-image-goes-here; */
-  background-position: top left;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  color: black;
-  counter-reset: exampleno figure issue;
-  font-family: sans-serif;
-  line-height: 1.5;
-  margin: 0 auto;
-  max-width: 50em;
-  padding: 2em 1em 2em 70px;
-}
+	body {
+		color: black;
+		font-family: sans-serif;
+		margin: 0 auto;
+		max-width: 50em;
+		padding: 2em 1em 2em 70px;
+	}
+	:link { color: #00C; background: transparent }
+	:visited { color: #609; background: transparent }
+	a[href]:active { color: #C00; background: transparent }
+	a[href]:hover { background: #ffa }
 
-/* General structural markup */
+	a[href] img { border-style: none }
 
-h1, h2, h3, h4, h5, h6 { text-align: left; }
-h1, h2, h3 { color: #005A9C; }
-h1 { font: 170% sans-serif; }
-h2 { font: 140% sans-serif; }
-h3 { font: 120% sans-serif; }
-h4 { font: bold 100% sans-serif; }
-h5 { font: italic 100% sans-serif; }
-h6 { font: small-caps 100% sans-serif; }
-h2, h3, h4, h5, h6 { margin-top: 3em; }
-h1 + h2 { margin-top: 0em; }
-h2 + h3, h3 + h4, h4 + h5, h5 + h6 { margin-top: 1.2em; }
+	h1, h2, h3, h4, h5, h6 { text-align: left }
+	h1, h2, h3 { color: #005A9C; }
+	h1 { font: 170% sans-serif }
+	h2 { font: 140% sans-serif }
+	h3 { font: 120% sans-serif }
+	h4 { font: bold 100% sans-serif }
+	h5 { font: italic 100% sans-serif }
+	h6 { font: small-caps 100% sans-serif }
 
-.head { margin-bottom: 1em; }
-.head h1 { margin-top: 2em; clear: both; }
-.head table { margin-left: 2em; margin-top: 2em; }
-.head dd { margin-bottom: 0; }
+	.hide { display: none }
 
-p.copyright { font-size: small; }
-p.copyright small { font-size: small; }
+	div.head { margin-bottom: 1em }
+	div.head h1 { margin-top: 2em; clear: both }
+	div.head table { margin-left: 2em; margin-top: 2em }
 
-pre { margin: 1em 0 1em 2em; overflow: auto; }
-pre, code, .idl-code {
-  font-size: .9em;
-  font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
-}
-pre .idl-code, pre code { font-size: 1em; }
-dt dfn code { font-size: inherit; }
+	p.copyright { font-size: small }
+	p.copyright small { font-size: small }
 
-dfn { font-weight: bolder; }
-dfn var { font-style: normal; }
+	pre { margin-left: 2em }
+	dt { font-weight: bold }
 
-s, del {text-decoration: line-through; color: red; }
-u, ins {text-decoration: underline; background: #bfa; }
+	ul.toc, ol.toc {
+		list-style: none;
+	}
 
-sup {
-  vertical-align: super;
-  font-size: 80%
-}
+/* The rest copied from the CSSWG's default.css */
 
-details { display: block; }
+	body {
+		counter-reset: exampleno figure issue;
+		max-width: 50em;
+		margin: 0 auto !important;
+		line-height: 1.5;
+	}
 
-dt { font-weight: bold; }
-dd { margin: 0 0 1em 2em; }
-ul, ol { margin-left: 0; padding-left: 2em; }
-li { margin: 0.25em 2em 0.5em 0; padding-left: 0; }
-[data-md] > :first-child { margin-top: 0; }
-[data-md] > :last-child { margin-bottom: 0; }
+/******************************************************************************/
+/*                                Sectioning                                  */
+/******************************************************************************/
 
-td.pre {
-  white-space: pre-wrap;
-}
+/** Headings ******************************************************************/
 
-.css, .property { color: #005a9c; }
-.property { white-space: nowrap; }
+	h1, h2, h3, h4, h5, h6, dt {
+		page-break-after: avoid;
+	}
 
+	h2, h3, h5, h6 {
+		margin-top: 3em;
+	}
+	h4 {
+		 margin-top: 4em;
+	}
 
-/* Boilerplate sections */
+/** Subheadings ***************************************************************/
 
-ul.indexlist { margin-left: 0; columns: 13em; }
-ul.indexlist li { margin-left: 0; list-style: none }
-ul.indexlist li li { margin-left: 1em; }
-ul.indexlist a { font-weight: bold; }
-ul.indexlist ul, ul.indexlist dl { font-size: smaller; }
-ul.indexlist dl { margin-top: 0; }
-ul.indexlist dt { margin: .2em 0 .2em 20px; }
-ul.indexlist dd { margin: .2em 0 .2em 40px; }
+	h1 + h2,
+	#subtitle + h2 {
+		/* #subtitle is a subtitle in an H2 under the H1 */
+		margin-top: 0;
+	}
+	h2 + h3,
+	h3 + h4,
+	h4 + h5,
+	h5 + h6 {
+		margin-top: 1.2em; /* = 1 x line-height */
+	}
 
-.toc {
-  font-weight: bold;
-  line-height: 1.3;
-  list-style: none;
-  margin: 1em 0 0 5em;
-  padding: 0;
-}
-.toc ul { margin: 0; padding: 0; font-weight: normal; }
-.toc ul ul { margin: 0 0 0 2em; font-style: italic; }
-.toc ul ul ul { margin: 0}
-.toc > li { margin: 1.5em 0; padding: 0; }
-.toc li { clear: both; }
-.toc ul.toc li { margin: 0.3em 0 0 0; }
-.toc a { border-bottom-style: none; }
-.toc a:hover, ul.toc a:focus { border-bottom-style: solid; }
-/* Section numbers in a column of their own */
-.toc span.secno {float: left; width: 4em; margin-left: -5em}
-.toc ul ul span.secno { margin-left: -7em; }
+/** Section divider ***********************************************************/
+	/* &lt;hr> used to separate TMI into the second half of a section              */
+	hr:not([title]) {
+		font-size: 1.5em;
+		text-align: center;
+		margin: 1em auto;
+		height: auto;
+		border: transparent solid 0;
+		background: transparent;
+	}
+	hr:not([title])::before {
+		content: "\1F411\2003\2003\1F411\2003\2003\1F411";
+	}
+	/* note: &lt;hr> with title separates document header from contents */
 
-table.proptable {
-  font-size: small;
-  border-collapse: collapse;
-  border-spacing: 0;
-  text-align: left;
-  margin: 1em 0;
-}
-table.proptable td, table.proptable th {
-  padding: 0.4em;
-  text-align: center;
-}
-table.proptable tr:hover td { background: #DEF; }
+/******************************************************************************/
+/*                            Paragraphs and Lists                            */
+/******************************************************************************/
 
+	p {
+		margin: 1em 0;
+	}
+	dd     > p:first-child,
+	li     > p:first-child {
+		margin-top: 0;
+	}
 
-/* Links */
+	ul, ol {
+		margin-left: 0;
+		padding-left: 2em;
+	}
+	li {
+		margin: 0.25em 2em 0.5em 0;
+		padding-left: 0;
+	}
 
-a[href] { color: inherit; border-bottom: 1px solid silver; text-decoration: none; }
-a[href]:hover { background: #ffa; }
-a[href]:active { color: #C00; background: transparent; }
-img, a.logo { border-style: none; }
-.heading, .issue, .note, .example, li, dt { position: relative; }
-/* CSS-ish link types */
-[data-link-type="property"]::before,
-[data-link-type="propdesc"]::before,
-[data-link-type="descriptor"]::before,
-[data-link-type="value"]::before,
-[data-link-type="function"]::before,
-[data-link-type="at-rule"]::before,
-[data-link-type="selector"]::before,
-[data-link-type="maybe"]::before {content: "“";}
-[data-link-type="property"]::after,
-[data-link-type="propdesc"]::after,
-[data-link-type="descriptor"]::after,
-[data-link-type="value"]::after,
-[data-link-type="function"]::after,
-[data-link-type="at-rule"]::after,
-[data-link-type="selector"]::after,
-[data-link-type="maybe"]::after {content: "”";}
-[data-link-type].production::before,
-[data-link-type].production::after,
-.prod [data-link-type]::before,
-.prod [data-link-type]::after { content: ""; }
-/* Element-type link styling */
-[data-link-type=element] { font-family: monospace; }
-[data-link-type=element]::before { content: "<" }
-[data-link-type=element]::after { content: ">" }
-/* Self-links */
-a.self-link {
-  position: absolute;
-  top: 0;
-  left: -2.5em;
-  width: 2em;
-  height: 2em;
-  text-align: center;
-  border: none;
-  transition: opacity .2s;
-  opacity: .5;
-}
-a.self-link:hover {
-  opacity: 1;
-}
-.heading > a.self-link {
-  font-size: 83%;
-}
-li > a.self-link {
-  left: -3.5em;
-}
-dfn > a.self-link {
-  top: auto;
-  left: auto;
-  opacity: 0;
-  width: 1.5em;
-  height: 1.5em;
-  background: gray;
-  color: white;
-  font-style: normal;
-  transition: opacity .2s, background-color .2s, color .2s;
-}
-dfn:hover > a.self-link {
-  opacity: 1;
-}
-dfn > a.self-link:hover {
-  color: black;
-}
-a.self-link::before { content: "¶"; }
-.heading > a.self-link::before { content: "§"; }
-dfn > a.self-link::before { content: "#"; }
+	dl dd {
+		margin: 0 0 1em 2em;
+	}
+	.head dd {
+		margin-bottom: 0;
+	}
+
+	/* Style for algorithms */
+	ol.algorithm ol {
+	 border-left: 1px solid #90b8de;
+	 margin-left: 1em;
+	}
+	ol.algorithm ol.algorithm {
+	 border-left: none;
+	 margin-left: 0;
+	}
+
+	/* Style for switch/case &lt;dl>s */
+	dl.switch > dd > ol.only {
+	 margin-left: 0;
+	}
+	dl.switch > dd > ol.algorithm {
+	 margin-left: -2em;
+	}
+	dl.switch {
+	 padding-left: 2em;
+	}
+	dl.switch > dt {
+	 text-indent: -1.5em;
+	 margin-top: 1em;
+	}
+	dl.switch > dt + dt {
+	 margin-top: 0;
+	}
+	dl.switch > dt::before {
+	 content: '\21AA';
+	 padding: 0 0.5em 0 0;
+	 display: inline-block;
+	 width: 1em;
+	 text-align: right;
+	 line-height: 0.5em;
+	}
+
+	/* Style for paragraphs I know are in MD-genned lists */
+	[data-md] > :first-child {
+		margin-top: 0;
+	}
+	[data-md] > :last-child {
+		margin-bottom: 0;
+	}
+
+/** Inline Lists **************************************************************/
+	/* This is mostly to make the list inside the CR exit criteria more compact. */
+
+	ol.inline, ol.inline li {
+		display: inline;
+		padding: 0; margin: 0;
+	}
+	ol.inline {
+		counter-reset: list-item;
+	}
+	ol.inline li {
+		counter-increment: list-item;
+	}
+	ol.inline li::before {
+		content: "(" counter(list-item) ") ";
+		font-weight: bold;
+	}
+
+/** Terminology Markup ********************************************************/
 
 
-/* Figures */
+/******************************************************************************/
+/*                                 Inline Markup                              */
+/******************************************************************************/
 
-figure {
-  display: block;
-  text-align: center;
-  margin: 2.5em 0;
-}
-figure.sidefigure {
-  float: right;
-  width: 50%;
-  margin: 0 0 0.5em 0.5em
-}
-figure pre {
-  text-align: left;
-  display: table;
-  margin: 1em auto;
-}
-figure table {
-  margin: auto;
-}
-figure img, figure object {
-  display: block;
-  margin: auto;
-  max-width: 100%
-}
-figcaption {
-  counter-increment: figure;
-  font-size: 90%;
-  font-style: italic;
-  text-align: center;
-}
-figcaption::before {
-  content: "Figure " counter(figure) ". ";
-  font-weight: bold;
-}
-dd figure { margin-left: -2em; }
+/** Terminology Markup ********************************************************/
+	dfn   { /* Defining instance */
+		font-weight: bolder;
+	}
+	a > i { /* Instance of term */
+		font-style: normal;
+	}
+	dt dfn code, code.idl {
+		font-size: inherit;
+	}
+	dfn var {
+		font-style: normal;
+	}
 
+/** Change Marking ************************************************************/
 
-/* Definition tables */
+	del { color: red;  text-decoration: line-through; }
+	ins { color: #080; text-decoration: underline;    }
 
-table.definition {
-  border-spacing: 0;
-  padding: 0 1em 0.5em;
-  width: 100%;
-  table-layout: fixed;
-  margin: 1.2em 0;
-}
-table.definition td, table.definition th {
-  padding: 0.5em;
-  vertical-align: baseline;
-  border-bottom: 1px solid #bbd7e9;
-}
-table.definition th:first-child {
-  font-style: italic;
-  font-weight: normal;
-  text-align: left;
-  width: 8.3em;
-  padding-left: 1em;
-}
-table.definition > tbody > tr:last-child > th,
-table.definition > tbody > tr:last-child > td {
-  border-bottom: none;
-}
-table.definition tr:first-child > th,
-table.definition tr:first-child > td {
-  padding-top: 1em;
-}
-/* Footnotes at the bottom of a definition table */
-table.definition td.footnote {
-  font-style: normal;
-  padding-top: .6em;
-  width: auto;
-}
-table.definition td.footnote::before {
-  content: " ";
-  display: block;
-  height: 0.6em;
-  width: 4em;
-  border-top: thin solid;
-}
+/** Miscellaneous improvements to inline formatting ***************************/
 
+	sup {
+		vertical-align: super;
+		font-size: 80%
+	}
 
-/* IDL fragments */
+/******************************************************************************/
+/*                                    Code                                    */
+/******************************************************************************/
 
-pre.idl {
-  padding: .5em 1em;
-  margin: 1.2em 0;
-}
-pre.idl :link, pre.idl :visited {
-  color:inherit;
-  background:transparent;
-}
+/** General monospace/pre rules ***********************************************/
 
+	pre, code {
+		font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+		font-size: .9em;
+		page-break-inside: avoid;
+	}
+	pre {
+		margin-top: 1em;
+		margin-bottom: 1em;
+		overflow: auto;
+	}
 
-/* Data tables */
-/* Comes in plain, long, complex, or define varieties */
+/** Syntax-Highlighted Code ***************************************************/
 
-.data {
-  margin: 1em auto;
-  border-collapse: collapse;
-  width: 100%;
-  border: hidden;
-}
-.data {
-  text-align: center;
-  width: auto;
-}
-.data caption {
-  width: 100%;
-}
-.data td, .data th {
-  padding: 0.5em;
-  border-width: 1px;
-  border-color: silver;
-  border-top-style: solid;
-}
-.data thead td:empty {
-  padding: 0;
-  border: 0;
-}
-.data thead th[scope="row"] {
-  text-align: right;
-  color: inherit;
-}
-.data thead,
-.data tbody {
-  color: inherit;
-  border-bottom: 2px solid;
-}
-.data colgroup {
-  border-left: 2px solid;
-}
-.data tbody th:first-child,
-.data tbody td[scope="row"]:first-child {
-  text-align: right;
-  color: inherit;
-  border-right: 2px solid;
-  border-top: 1px solid silver;
-  padding-right: 1em;
-}
-.data.define td:last-child {
-  text-align: left;
-}
-.data tbody th[rowspan],
-.data tbody td[rowspan] {
-  border-left: 1px solid silver;
-}
-.data tbody th[rowspan]:first-child,
-.data tbody td[rowspan]:first-child {
-  border-left: 0;
-  border-right: 1px solid silver;
-}
-.data.complex th,
-.data.complex td {
-  border: 1px solid silver;
-}
-.data td.long {
- vertical-align: baseline;
- text-align: left;
-}
-.data img {
-  vertical-align: middle;
-}
+	.example pre[class*="language-"],
+	.example [class*="language-"] pre,
+	.example pre[class*="lang-"],
+	.example [class*="lang-"] pre {
+		background: transparent; /* Prism applies a gray background that doesn't work well in the template. */
+	}
+
+/** Example Code **************************************************************/
+
+	div.html, div.xml,
+	pre.html, pre.xml {
+		padding: 0.5em;
+		margin: 1em 0;
+		position: relative;
+		clear: both;
+		color: #600;
+	}
+	pre.example,
+	pre.html,
+	pre.xml {
+		padding-top: 1.5em;
+	}
+
+	pre.illegal, .illegal pre
+	pre.deprecated, .deprecated pre {
+		color: red;
+	}
+
+/** IDL fragments *************************************************************/
+
+	pre.idl {
+		/* Match blue propdef boxes */
+		padding: .5em 1em;
+		background: #DEF;
+		margin: 1.2em 0;
+		border-left: 0.5em solid #8CCBF2;
+	}
+	pre.idl :link, pre.idl :visited {
+		color:inherit;
+		background:transparent;
+	}
+
+/** Inline CSS fragments ******************************************************/
+
+	.css.css, .property.property, .descriptor.descriptor {
+		color: #005a9c;
+		font-size: inherit;
+		font-family: inherit;
+	}
+	.css::before, .property::before, .descriptor::before {
+		content: "‘";
+	}
+	.css::after, .property::after, .descriptor::after {
+		content: "’";
+	}
+	.property, .descriptor {
+		/* Don't wrap property and descriptor names */
+		white-space: nowrap;
+	}
+	.type { /* CSS value &lt;type> */
+	font-style: italic;
+	}
+	pre .property::before, pre .property::after {
+		content: "";
+	}
+
+/** Inline markup fragments ***************************************************/
+
+	code.html, code.xml {
+		color: #660000;
+	}
+
+/** Autolinks produced using Bikeshed *****************************************/
+
+	[data-link-type="property"]::before,
+	[data-link-type="propdesc"]::before,
+	[data-link-type="descriptor"]::before,
+	[data-link-type="value"]::before,
+	[data-link-type="function"]::before,
+	[data-link-type="at-rule"]::before,
+	[data-link-type="selector"]::before,
+	[data-link-type="maybe"]::before {
+		content: "‘";
+	}
+	[data-link-type="property"]::after,
+	[data-link-type="propdesc"]::after,
+	[data-link-type="descriptor"]::after,
+	[data-link-type="value"]::after,
+	[data-link-type="function"]::after,
+	[data-link-type="at-rule"]::after,
+	[data-link-type="selector"]::after,
+	[data-link-type="maybe"]::after {
+		content: "’";
+	}
+
+	[data-link-type].production::before,
+	[data-link-type].production::after,
+	.prod [data-link-type]::before,
+	.prod [data-link-type]::after {
+		content: "";
+	}
+
+	[data-link-type=element]         { font-family: monospace; }
+	[data-link-type=element]::before { content: "&lt;" }
+	[data-link-type=element]::after  { content: ">" }
+
+	[data-link-type=biblio] {
+		white-space: pre;
+	}
 
 
-/* Switch/case <dl>s */
+/******************************************************************************/
+/*                                    Links                                   */
+/******************************************************************************/
 
-dl.switch {
- padding-left: 2em;
-}
-dl.switch > dt {
- text-indent: -1.5em;
-}
-dl.switch > dt:before {
- content: '↪';
- padding: 0 0.5em 0 0;
- display: inline-block;
- width: 1em;
- text-align: right;
- line-height: 0.5em;
+/** General Hyperlinks ********************************************************/
+
+	/* We hyperlink a lot, so make it less intrusive */
+	a:link, a:visited {
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid silver;
+	}
+	@supports (text-decoration-color: silver) {
+		a:link, a:visited {
+			border-bottom: none;
+			text-decoration: underline;
+			text-decoration-color: silver;
+		}
+		a:visited {
+			text-decoration-style: dotted;
+		}
+	}
+
+	a.logo:link, a.logo:visited { /* backout above styling for W3C logo */
+		padding: 0;
+		border: none;
+		text-decoration: none;
+	}
+
+/** Self-Links ****************************************************************/
+	/* Auto-generated links from an element to its own anchor, for usability */
+
+	.heading, .issue, .note, .example, li, dt {
+		position: relative;
+	}
+	a.self-link {
+		position: absolute;
+		top: 0;
+		left: -2.5em;
+		width: 2em;
+		height: 2em;
+		text-align: center;
+		border: none;
+		transition: opacity .2s;
+		opacity: .5;
+	}
+	a.self-link:hover {
+		opacity: 1;
+	}
+	.heading > a.self-link {
+		font-size: 83%;
+	}
+	li > a.self-link {
+		left: -3.5em;
+	}
+	dfn > a.self-link {
+		top: auto;
+		left: auto;
+		opacity: 0;
+		width: 1.5em;
+		height: 1.5em;
+		background: gray;
+		color: white;
+		font-style: normal;
+		transition: opacity .2s, background-color .2s, color .2s;
+	}
+	dfn:hover > a.self-link {
+		opacity: 1;
+	}
+	dfn > a.self-link:hover {
+		color: black;
+	}
+
+	a.self-link::before            { content: "¶"; }
+	.heading > a.self-link::before { content: "§"; }
+	dfn > a.self-link::before      { content: "#"; }
+
+/******************************************************************************/
+/*                                    Images                                  */
+/******************************************************************************/
+
+	img {
+		border-style: none;
+		color: white;
+	}
+
+	figure, div.figure, div.sidefigure {
+		page-break-inside: avoid;
+	}
+
+	div.figure, p.figure, div.sidefigure, figure {
+		text-align: center;
+		margin: 2.5em 0;
+	}
+	div.figure pre, div.sidefigure pre, figure pre {
+		text-align: left;
+		display: table;
+		margin: 1em auto;
+	}
+	.figure table, figure table {
+		margin: auto;
+	}
+	div.sidefigure, figure.sidefigure {
+		float: right;
+		width: 50%;
+		margin: 0 0 0.5em 0.5em
+	}
+	div.figure img, div.sidefigure img, figure img,
+	div.figure object, div.sidefigure object, figure object {
+		display: block;
+		margin: auto;
+		max-width: 100%
+	}
+	p.caption, figcaption, caption {
+		text-align: center;
+		font-style: italic;
+		font-size: 90%;
+	}
+	p.caption:not(.no-marker)::before, figcaption:not(.no-marker)::before {
+		content: "Figure " counter(figure) ". ";
+	}
+	p.caption::before, figcaption::before, figcaption > .marker {
+		font-weight: bold;
+	}
+	p.caption, figcaption {
+		counter-increment: figure;
+	}
+
+	/* DL list is indented 2em, but figure inside it is not */
+	dd > div.figure, dd > figure { margin-left: -2em }
+
+	pre.ascii-art {
+		display: table; /* shrinkwrap */
+		margin: 1em auto;
+	}
+
+	/* Displaying the output of text layout, particularly when
+		 line-breaking is being invoked, and thus having a
+		 visible width is good. */
+	pre.output {
+		margin: 1em;
+		border: solid thin silver;
+		padding: 0.25em;
+		display: table;
+	}
+
+/******************************************************************************/
+/*                             Colored Boxes                                  */
+/******************************************************************************/
+
+	.issue, .note, .example, .why, .advisement, blockquote {
+		padding: .5em;
+		border: .5em;
+		border-left-style: solid;
+		page-break-inside: avoid;
+	}
+	span.issue, span.note {
+		padding: .1em .5em .15em;
+		border-right-style: solid;
+	}
+
+	div.issue,
+	div.note,
+	div.example,
+	details.why,
+	blockquote {
+		margin: 1em auto;
+	}
+	.note  > p:first-child,
+	.issue > p:first-child,
+	blockquote > :first-child {
+		margin-top: 0;
+	}
+	blockquote > :last-child {
+		margin-bottom: 0;
+	}
+
+/** Blockquotes ***************************************************************/
+
+	blockquote {
+		border-color: silver;
+	}
+
+/** Open issue ****************************************************************/
+	/* not intended for CR+ publication */
+
+	.issue {
+		border-color: #E05252;
+		background: #FBE9E9;
+		counter-increment: issue;
+		overflow: auto;
+	}
+	.issue:not(.no-marker)::before {
+		content: "ISSUE " counter(issue);
+		padding-right: 1em;
+	}
+	.issue::before, .issue > .marker {
+		color: #AE1E1E;
+	}
+
+/** Example *******************************************************************/
+
+	.example {
+		border-color: #E0CB52;
+		background: #FCFAEE;
+		counter-increment: exampleno;
+		overflow: auto;
+		clear: both;
+	}
+	.example::before, .example > .marker {
+		color: #827017;
+		font-family: sans-serif;
+		min-width: 7.5em;
+		display: block;
+	}
+	.example:not(.no-marker)::before {
+		content: "EXAMPLE";
+		content: "EXAMPLE " counter(exampleno);
+	}
+	.invalid.example::before, .invalid.example > .marker,
+	.illegal.example::before, .illegal.example > .marker {
+		color: red;
+	}
+	.invalid.example:not(.no-marker)::before,
+	.illegal.example:not(.no-marker)::before {
+		content: "INVALID EXAMPLE";
+		content: "INVALID EXAMPLE" counter(exampleno);
+	}
+
+/** Non-normative Note ********************************************************/
+
+	.note, .why {
+		border-color: #52E052;
+		background: #E9FBE9;
+		overflow: auto;
+	}
+	.note::before, .note > .marker {
+		display: block;
+		color: hsl(120, 70%, 30%);
+	}
+
+/** Advisement Box ************************************************************/
+	/*  for attention-grabbing normative statements */
+
+	.advisement {
+		border-color: orange;
+		border-style: none solid;
+		background: #FFEECC;
+		text-align: center;
+	}
+	strong.advisement {
+		display: block;
+	}
+	/*.advisement::before { color: #FF8800; } */
+
+/** ??? ***********************************************************************/
+
+	details.why {
+		border-color: #52E052;
+		background: #E9FBE9;
+		display: block;
+	}
+
+	details.why > summary {
+		font-style: italic;
+		display: block;
+	}
+
+	details.why[open] > summary {
+		border-bottom: 1px silver solid;
+	}
+
+/** Spec Obsoletion Notice ****************************************************/
+	/* obnoxious obsoletion notice for older/abandoned specs. */
+
+	details.annoying-warning {
+		display: block;
+	}
+
+	details.annoying-warning[open] {
+		background: #fdd;
+		color: red;
+		font-weight: bold;
+		text-align: center;
+		padding: .5em;
+		border: thick solid red;
+		border-radius: 1em;
+	}
+@media not print {
+	details.annoying-warning[open] {
+		position: fixed;
+		left: 1em;
+		right: 1em;
+		bottom: 1em;
+		z-index: 1000;
+	}
 }
 
+	details.annoying-warning:not([open]) > summary {
+		background: #fdd;
+		color: red;
+		font-weight: bold;
+		text-align: center;
+		padding: .5em;
+	}
 
-/* Style for At Risk features (intended as editorial aid, not intended for publishing) */
-.atrisk::before {
- position: absolute;
- margin-left: -5em;
- margin-top: -2px;
- padding: 4px;
- border: 1px solid;
- content: 'At risk';
- font-size: small;
- background-color: white;
- color: gray;
- border-radius: 1em;
- text-align: center;
-}
+/******************************************************************************/
+/*                                    Tables                                  */
+/******************************************************************************/
+
+/** Property/Descriptor Definition Tables *************************************/
+
+	table.propdef, table.propdef-extra,
+	table.descdef, table.definition-table {
+		page-break-inside: avoid;
+		width: 100%;
+		margin: 1.2em 0;
+		border-left: 0.5em solid #8CCBF2;
+		padding: 0.5em 1em;
+		background: #DEF;
+		border-spacing: 0;
+	}
+
+	table.propdef td, table.propdef-extra td,
+	table.descdef td, table.definition-table td,
+	table.propdef th, table.propdef-extra th,
+	table.descdef th, table.definition-table th {
+		padding: 0.5em;
+		vertical-align: baseline;
+		border-bottom: 1px solid #bbd7e9;
+	}
+	table.propdef > tbody > tr:last-child th,
+	table.propdef-extra > tbody > tr:last-child th,
+	table.descdef > tbody > tr:last-child th,
+	table.definition-table > tbody > tr:last-child th,
+	table.propdef > tbody > tr:last-child td,
+	table.propdef-extra > tbody > tr:last-child td,
+	table.descdef > tbody > tr:last-child td,
+	table.definition-table > tbody > tr:last-child td {
+		border-bottom: 0;
+	}
+
+	table.propdef th,
+	table.propdef-extra th,
+	table.descdef th,
+	table.definition-table th {
+		font-style: italic;
+		font-weight: normal;
+		width: 8.3em;
+		padding-left: 1em;
+	}
+
+	/* For when values are extra-complex and need formatting for readability */
+	table td.pre {
+		white-space: pre-wrap;
+	}
+
+	/* A footnote at the bottom of a propdef */
+	table.propdef td.footnote,
+	table.propdef-extra td.footnote,
+	table.descdef td.footnote,
+	table.definition-table td.footnote {
+		padding-top: 0.6em;
+	}
+	table.propdef td.footnote::before,
+	table.propdef-extra td.footnote::before,
+	table.descdef td.footnote::before,
+	table.definition-table td.footnote::before {
+		content: " ";
+		display: block;
+		height: 0.6em;
+		width: 4em;
+		border-top: thin solid;
+	}
+
+/** Profile Tables ************************************************************/
+	/* table of required features in a CSS profile */
+
+	table.features th {
+		background: #00589f;
+		color: #fff;
+		text-align: left;
+		padding: 0.2em 0.2em 0.2em 0.5em;
+	}
+	table.features td {
+		vertical-align: top;
+		border-bottom: 1px solid #ccc;
+		padding: 0.3em 0.3em 0.3em 0.7em;
+	}
+
+/** Data tables (and properly marked-up proptables) ***************************/
+	/*
+		 &lt;table class="data"> highlights structural relationships in a table
+		 when correct markup is used (e.g. thead/tbody, th vs. td, scope attribute)
+
+		 Use class="complex data" for particularly complicated tables --
+		 (This will draw more lines: busier, but clearer.)
+
+		 Use class="long" on table cells with paragraph-like contents
+		 (This will adjust text alignment accordingly.)
+	*/
+
+	.data, .proptable {
+		margin: 1em auto;
+		border-collapse: collapse;
+		width: 100%;
+		border: hidden;
+	}
+	.data {
+		text-align: center;
+		width: auto;
+	}
+	.data caption {
+		width: 100%;
+	}
+
+	.data td, .data th,
+	.proptable td, .proptable th {
+		padding: 0.5em;
+		border-width: 1px;
+		border-color: silver;
+		border-top-style: solid;
+	}
+
+	.data thead td:empty {
+		padding: 0;
+		border: 0;
+	}
+
+	.data thead th[scope="row"],
+	.proptable thead th[scope="row"] {
+		text-align: right;
+		color: inherit;
+	}
+
+	.data thead,
+	.proptable thead,
+	.data tbody,
+	.proptable tbody {
+		color: inherit;
+		border-bottom: 2px solid;
+	}
+
+	.data colgroup {
+		border-left: 2px solid;
+	}
+
+	.data tbody th:first-child,
+	.proptable tbody th:first-child ,
+	.data tbody td[scope="row"]:first-child,
+	.proptable tbody td[scope="row"]:first-child {
+		text-align: right;
+		color: inherit;
+		border-right: 2px solid;
+		border-top: 1px solid silver;
+		padding-right: 1em;
+	}
+	.data.define td:last-child {
+		text-align: left;
+	}
+
+	.data tbody th[rowspan],
+	.proptable tbody th[rowspan],
+	.data tbody td[rowspan],
+	.proptable tbody td[rowspan]{
+		border-left:  1px solid silver;
+		border-right: 1px solid silver;
+	}
+
+	.complex.data th,
+	.complex.data td {
+		border: 1px solid silver;
+	}
+
+	.data td.long {
+	 vertical-align: baseline;
+	 text-align: left;
+	}
+
+	.data img {
+		vertical-align: middle;
+	}
 
 
-/* Obsoletion notice */
-details.annoying-warning[open] {
-  background: #fdd;
-  color: red;
-  font-weight: bold;
-  text-align: center;
-  padding: .5em;
-  border: thick solid red;
-  border-radius: 1em;
-  position: fixed;
-  left: 1em;
-  right: 1em;
-  bottom: 1em;
-  z-index: 1000;
-}
-details.annoying-warning:not([open]) > summary {
-  background: #fdd;
-  color: red;
-  font-weight: bold;
-  text-align: center;
-  padding: .5em;
-}
+/******************************************************************************/
+/*                                  Indices                                   */
+/******************************************************************************/
 
 
-/* Examples */
+/** Table of Contents *********************************************************/
 
-.example {
-  counter-increment: exampleno;
-}
-.example::before {
-  content: "Example";
-  content: "Example " counter(exampleno);
-  min-width: 7.5em;
-  text-transform: uppercase;
-  display: block;
-}
-.illegal-example::before {
-  content: "Invalid Example";
-  content: "Invalid Example" counter(exampleno);
-}
-.example, .illegal-example, .html, .illegal-html, .xml, .illegal-xml {
-  padding: 0.5em;
-  margin: 1em 0;
-  position: relative;
-  clear: both;
-}
-pre.example, pre.illegal-example, pre.html,
-pre.illegal-html, pre.xml, pre.illegal-xml {
-  padding-top: 1.5em;
-}
-.illegal-example { color: red; }
-.illegal-example p { color: black; }
-.html { color: #600; }
-.illegal-html { color: red; }
-.illegal-html p { color: black; }
-.xml { color: #600; }
-.illegal-xml { color: red; }
-.illegal-xml p { color: black; }
-code.css { font-family: inherit; font-size: 100% }
-code.html { color: #600 } /* inline HTML */
-code.xml { color: #600 }  /* inline XML */
+	/* ToC not indented, but font style shows hierarchy */
+	ul.toc           { margin: 1em 0;     font-weight: bold; /*text-transform: uppercase;*/ }
+	ul.toc ul        { margin: 0;        font-weight: normal; text-transform: none; }
+	ul.toc ul ul     { margin: 0 0 0 2em; font-style: italic; }
+	ul.toc ul ul ul  { margin: 0; }
+	ul.toc > li      { margin: 1.5em 0; }
+	ul.toc ul.toc li { margin: 0.3em 0 0 0; }
 
+	ul.toc, ul.toc ul, ul.toc li { padding: 0; line-height: 1.3; }
+	ul.toc a { text-decoration: none; border-bottom-style: none; }
+	ul.toc a:hover, ul.toc a:focus  { border-bottom-style: solid; }
+	@supports (text-decoration-style: solid) {
+		ul.toc a:hover, ul.toc a:focus  {
+			border-bottom-style: none;
+			text-decoration-style: solid;
+		}
+	}
+	/*
+	ul.toc li li li, ul.toc li li li ul {margin-left: 0; display: inline}
+	ul.toc li li li ul, ul.toc li li li ul li {margin-left: 0; display: inline}
+	*/
 
-/* Issues */
+	/* Section numbers in a column of their own */
+	ul.toc {
+		margin-left: 5em
+	}
+	ul.toc span.secno {
+		float: left;
+		width: 4em;
+		margin-left: -5em;
+	}
+	ul.toc ul ul span.secno {
+		margin-left: -7em;
+	}
+	/*ul.toc span.secno {text-align: right}*/
+	ul.toc li {
+		clear: both;
+	}
+	/* If we had 'tab', floats would not be needed here:
+		 ul.toc span.secno {tab: 5em right; margin-right: 1em}
+		 ul.toc li {text-indent: 5em hanging}
+	 The second line in case items wrap
+	*/
 
-.issue {
-  border-color: #E05252;
-  background: #FBE9E9;
-  counter-increment: issue;
-}
-.issue:before {
-  content: "Issue " counter(issue);
-  padding-right: 1em;
-  text-transform: uppercase;
-  color: #E05252;
-}
+/** At-risk List **************************************************************/
+	/* Style for At Risk features (intended as editorial aid, not intended for publishing) */
 
+	.atrisk::before {
+	 float: right;
+	 margin-top: -0.25em;
+	 padding: 0.5em 1em 0.5em 0;
+	 text-indent: -0.9em;
+	 border: 1px solid;
+	 content: '\25C0    Not yet widely implemented';
+	 white-space: pre;
+	 font-size: small;
+	 background-color: white;
+	 color: gray;
+	 text-align: center;
+	}
 
-/* Whys */
+	.toc .atrisk::before { content:none }
 
-details.why > summary {
-  font-style: italic;
-}
-details.why[open] > summary {
-  border-bottom: 1px silver solid;
-}
+/** Index *********************************************************************/
 
+	/* Index Lists: Layout */
+	ul.indexlist       { margin-left: 0; columns: 15em; -webkit-columns: 15em; text-indent: 1em hanging; }
+	ul.indexlist li    { margin-left: 0; list-style: none; break-inside: avoid; word-break: break-word; }
+	ul.indexlist li li { margin-left: 1em }
+	ul.indexlist dl    { margin-top: 0; }
+	ul.indexlist dt    { margin: .2em 0 .2em 20px;}
+	ul.indexlist dd    { margin: .2em 0 .2em 40px;}
+	/* Index Lists: Typography */
+	ul.indexlist ul,
+	ul.indexlist dl { font-size: smaller; }
+	ul.indexlist li span {
+		white-space: nowrap;
+		position: absolute;
+		color: transparent; }
+	ul.indexlist li a:hover + span,
+	ul.indexlist li a:focus + span {
+		color: gray;
+	}
+	@media print {
+		ul.indexlist li span { color: gray; }
+	}
 
-/* All the blocks get similarly styled */
+/** Property Index Tables *****************************************************/
+	/* See also the data table styling section, which this effectively subclasses */
 
-table.definition, pre.idl, .example, .note, details.why, .issue {
-  border: none;
-  border-left: .5em solid black;
-  border-left: .5rem solid black;
-}
-.issue, .note, .example, .why {
-  padding: .5em;
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-table.definition, pre.idl {
-  background: hsl(210, 70%, 95%);
-  border-color: hsl(210, 80%, 75%);
-}
-.example {
-  background: hsl(50, 70%, 95%);
-  border-color: hsl(50, 70%, 60%);
-}
-.example::before {
-  color: hsl(50, 70%, 60%);
-}
-.note, details.why {
-  background: hsl(120, 70%, 95%);
-  border-color: hsl(120, 70%, 60%);
-}
-.note::before {
-  color: hsl(120, 70%, 60%);
-}
-.issue {
-  background: hsl(0, 70%, 95%);
-  border-color: hsl(0, 70%, 60%);
-}
-.issue::before {
-  color: hsl(0, 70%, 60%);
-}
-span.issue, span.note {
-  padding: .1em .5em .15em;
-  border-right-width: .5em;
-  border-right-style: solid;
-}
-  </style>
-  
+	table.proptable {
+		font-size: small;
+		border-collapse: collapse;
+		border-spacing: 0;
+		text-align: left;
+		margin: 1em 0;
+	}
 
+	table.proptable td,
+	table.proptable th {
+		padding: 0.4em;
+		text-align: center;
+	}
+
+	table.proptable tr:hover td {
+		background: #DEF;
+	}
+	.propdef th {
+		font-style: italic;
+		font-weight: normal;
+		text-align: left;
+		width: 3em;
+	}
+	/* The link in the first column in the property table (formerly a TD) */
+	table.proptable td .property,
+	table.proptable th .property {
+		display: block;
+		text-align: left;
+		font-weight: bold;
+	}
+
+/******************************************************************************/
+/*                                    Print                                   */
+/******************************************************************************/
+
+	@media print {
+		html {
+			margin: 0 !important; }
+		body {
+			font-family: serif; }
+		th, td {
+			font-family: inherit; }
+		a {
+			color: inherit !important; }
+
+		a:link, a:visited {
+			text-decoration: none !important }
+		a:link::after, a:visited::after { /* create a cross-ref "see..." */ }
+		.example::before {
+			font-family: serif !important; }
+	}
+	@page {
+		margin: 1.5cm 1.1cm;
+	}
+
+</style>
   <meta content="Bikeshed 1.0.0" name="generator">
  </head>
- 
-
  <body class="h-entry">
-
   <div class="head">
-  
    <p data-fill-with="logo"></p>
-  
    <h1 class="p-name no-ref" id="title">CSS Font Rendering Controls Module Level 1</h1>
-  
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Unofficial Proposal Draft,
-    <time class="dt-updated" datetime="2015-05-22">22 May 2015</time></span></h2>
-  
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Unofficial Proposal Draft, <time class="dt-updated" datetime="2015-09-10">10 September 2015</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
      <dd><a class="u-url" href="https://tabatkins.github.io/specs/css-font-rendering/">https://tabatkins.github.io/specs/css-font-rendering/</a>
      <dt>Issue Tracking:
+     <dd><a href="https://github.com/tabatkins/specs/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editors:
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="http://xanthir.com">Tab Atkins</a> (<span class="p-org org">Google</span>)
      <dd class="editor p-author h-card vcard"><span class="p-name fn">Kenji Baheux</span> (<span class="p-org org">Google</span>)
     </dl>
    </div>
-  
    <div data-fill-with="warning"></div>
-  
-   <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a>
-To the extent possible under law, the editors have waived all copyright
+   <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 22 May 2015,
-the editors have made this specification available under the
-<a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
+In addition, as of 10 September 2015,
+the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
-Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document.
-</p>
-  
+Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
    <hr title="Separator for header">
-</div>
-
-
+  </div>
   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-
   <div class="p-summary" data-fill-with="abstract">
-   <p>This spec introduces a new <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a> descriptor and a corresponding property for controlling how a downloadable font renders before it is fully loaded.  It’s intended that this spec be merged into the Fonts spec, likely Fonts Level 4.</p>
-
-</div>
-
+   <p>This spec introduces a new <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-3/#at-font-face-rule">@font-face</a> descriptor and a corresponding property for controlling how a downloadable font renders before it is fully loaded.  It’s intended that this spec be merged into the Fonts spec, likely Fonts Level 4.</p>
+  </div>
   <div data-fill-with="at-risk"></div>
-
-
   <h2 class="no-num no-toc no-ref heading settled" id="contents"><span class="content">Table of Contents</span></h2>
-
   <div data-fill-with="table-of-contents" role="navigation">
    <ul class="toc" role="directory">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
-    <li><a href="#font-rendering-desc"><span class="secno">2</span> <span class="content">Controlling Font Rendering Per Font-Face: the <span class="css">font-display</span> descriptor</span></a>
-    <li><a href="#acks"><span class="secno">3</span> <span class="content">Acknowledgements</span></a>
-    <li><a href="#conformance"><span class="secno"></span> <span class="content">
-Conformance</span></a>
-    <li><a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+    <li><a href="#timeline"><span class="secno">2</span> <span class="content">The Font Display Timeline</span></a>
+    <li><a href="#font-display-desc"><span class="secno">3</span> <span class="content">Controlling Font Display Per Font-Face: the <span class="css">font-display</span> descriptor</span></a>
+    <li><a href="#acks"><span class="secno">4</span> <span class="content">Acknowledgements</span></a>
+    <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ul class="toc">
       <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
       <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
      </ul>
-    <li><a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+    <li>
+     <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ul class="toc">
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
       <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ul>
-    <li><a href="#property-index"><span class="secno"></span> <span class="content">Property Index</span></a>
+    <li>
+     <a href="#property-index"><span class="secno"></span> <span class="content">Property Index</span></a>
      <ul class="toc">
       <li><a href="#font-face-descriptor-table"><span class="secno"></span> <span class="content"><span>@font-face</span> Descriptors</span></a>
      </ul>
     <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
-   </ul></div>
-
+   </ul>
+  </div>
   <main>
-
-
-
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
-
-
-   <p>When using downloadable webfonts via <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a>,
+   <p>When using downloadable webfonts via <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-3/#at-font-face-rule">@font-face</a>,
 the user agent needs to know what to do while the font is actively loading.
 Most web browsers have adopted some form of timeout:</p>
-
-
    <table class="data">
-	
     <thead>
-		
      <tr>
-			
-      <th>Browser
-			
-      <th>Timeout
-			
-      <th>Fallback
-			
-      <th>Swap
-	
+      <th>Browser 
+      <th>Timeout 
+      <th>Fallback 
+      <th>Swap 
     <tbody>
-		
      <tr>
-			
-      <th>Chrome 35+
-			
-      <td>3 seconds
-			
-      <td>yes
-			
-      <td>yes
-		
+      <th>Chrome 35+ 
+      <td>3 seconds 
+      <td>yes 
+      <td>yes 
      <tr>
-			
-      <th>Opera
-			
-      <td>3 seconds
-			
-      <td>yes
-			
-      <td>yes
-		
+      <th>Opera 
+      <td>3 seconds 
+      <td>yes 
+      <td>yes 
      <tr>
-			
-      <th>Firefox
-			
-      <td>3 seconds
-			
-      <td>yes
-			
-      <td>yes
-		
+      <th>Firefox 
+      <td>3 seconds 
+      <td>yes 
+      <td>yes 
      <tr>
-			
-      <th>Internet Explorer
-			
-      <td>0 seconds
-			
-      <td>yes
-			
-      <td>yes
-		
+      <th>Internet Explorer 
+      <td>0 seconds 
+      <td>yes 
+      <td>yes 
      <tr>
-			
-      <th>Safari
-			
-      <td>no timeout
-			
-      <td>n/a
-			
-      <td>n/a
-</table>
-
-
+      <th>Safari 
+      <td>no timeout 
+      <td>n/a 
+      <td>n/a 
+   </table>
    <ul>
     <li data-md="">
      <p>Chrome and Firefox have a 3 second timeout after which the text is shown with the fallback font.
 Eventually, a swap occurs:
 the text is re-rendered with the intended font once it becomes available.</p>
-     
-
     <li data-md="">
      <p>Internet Explorer has a 0 second timeout which results in immediate text rendering:
 if the requested font is not yet available,
 fallback is used,
 and text is rerendered later once the requested font becomes available.</p>
-     
-
     <li data-md="">
      <p>Safari has no timeout behavior
 (or at least nothing beyond a baseline network timeout)</p>
-     
-</ul>
-
+   </ul>
    <p>While these default behaviors are reasonable,
 they’re unfortunately inconsistent across browsers.
 Worse, no single approach is sufficient to cover the range of use-cases
 required by modern user-experience– and performance–conscious applications.</p>
-
-
    <p>The Font Loading API <a data-link-type="biblio" href="#biblio-css-font-loading-3">[CSS-FONT-LOADING-3]</a> allows a developer to override some of the above behaviors,
 but that requires scripting,
 a non-trivial amount of effort,
@@ -744,50 +1115,67 @@ the developer needs to either inline the loading script into their page
 or load an external library,
 introducing additional network latency before the fonts can be loaded
 and delaying text rendering.</p>
-
-
    <p>Design/performance-conscious web developers have a good sense for the relative importance of a given web font for the intended user experience.
 This specification provides them the ability to control font timeout and rendering behavior.
 Specifically, it lets developers:</p>
-
-
    <ul>
     <li data-md="">
      <p>Define the font rendering strategy when text is ready to be painted: block, or paint with fallback.</p>
-     
-
     <li data-md="">
      <p>Define the font rendering behavior once the desired font is available: rerender text with the new font, or leave it with the fallback.</p>
-     
-
     <li data-md="">
      <p>Define custom timeout values for each font.</p>
-     
-
     <li data-md="">
      <p>Define custom render and timeout strategies per element.</p>
-     
-
-</ul>
-
-   <h2 class="heading settled" data-level="2" id="font-rendering-desc"><span class="secno">2. </span><span class="content">Controlling Font Rendering Per Font-Face: the <span class="css">font-display</span> descriptor</span><a class="self-link" href="#font-rendering-desc"></a></h2>
-
-
-   <p>The <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-display">font-display</a> descriptor for <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a>
-determines how a font face is displayed,
+   </ul>
+   <h2 class="heading settled" data-level="2" id="timeline"><span class="secno">2. </span><span class="content">The Font Display Timeline</span><a class="self-link" href="#timeline"></a></h2>
+   <p>At the moment the user agent first attempts to use a given downloaded font face on a page,
+the font face’s <dfn data-dfn-type="dfn" data-export="" data-local-lt="timer" id="font-download-timer">font download timer<a class="self-link" href="#font-download-timer"></a></dfn> is started.
+This timer advances through three periods of time associated with the font face--
+the <a data-link-type="dfn" href="#font-block-period">block period</a>, the <a data-link-type="dfn" href="#font-swap-period">swap period</a>, and the <a data-link-type="dfn" href="#font-failure-period">failure period</a>--
+which dictate the rendering behavior of any elements using the font face:</p>
+   <ul>
+    <li data-md="">
+     <p>The first period is the <dfn data-dfn-type="dfn" data-export="" data-local-lt="block period" id="font-block-period">font block period<a class="self-link" href="#font-block-period"></a></dfn>.
+During this period,
+if the font face is not loaded,
+any element attempting to use it must instead <a data-link-type="dfn" href="#render-with-an-invisible-fallback-font-face">render with an invisible fallback font face</a>.
+If the font face successfully loads during the <a data-link-type="dfn" href="#font-block-period">block period</a>,
+the font face is then used normally.</p>
+    <li data-md="">
+     <p>The second period, occuring immediately after the <a data-link-type="dfn" href="#font-block-period">block period</a>,
+is the <dfn data-dfn-type="dfn" data-export="" data-local-lt="swap period" id="font-swap-period">font swap period<a class="self-link" href="#font-swap-period"></a></dfn>.
+During this period,
+if the font face is not loaded,
+any element attempting to use it must instead <a data-link-type="dfn" href="#render-with-a-fallback-font-face">render with a fallback font face</a>.
+If the font face successfully loads during the <a data-link-type="dfn" href="#font-swap-period">swap period</a>,
+the font face is then used normally.</p>
+    <li data-md="">
+     <p>The third period, occuring immediately after the <a data-link-type="dfn" href="#font-swap-period">swap period</a>,
+is the <dfn data-dfn-type="dfn" data-export="" data-local-lt="failure period" id="font-failure-period">font failure period<a class="self-link" href="#font-failure-period"></a></dfn>.
+If the font face is not yet loaded when this period starts,
+it’s marked as a failed load,
+causing normal font fallback.
+Otherwise, the font face is used normally.</p>
+   </ul>
+   <p>To <dfn data-dfn-type="dfn" data-export="" id="render-with-a-fallback-font-face">render with a fallback font face<a class="self-link" href="#render-with-a-fallback-font-face"></a></dfn> for a given element,
+the user agent must find the first font face specified in the element’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-3/#propdef-font-family">font-family</a> list
+which is already loaded,
+and use that for rendering text.
+Doing this must not trigger loads of any of the fallback fonts.</p>
+   <p>To <dfn data-dfn-type="dfn" data-export="" id="render-with-an-invisible-fallback-font-face">render with an invisible fallback font face<a class="self-link" href="#render-with-an-invisible-fallback-font-face"></a></dfn> for a given element,
+find a font face as per "<a data-link-type="dfn" href="#render-with-a-fallback-font-face">render with a fallback font face</a>".
+Create an anonymous font face with the same metrics as the selected font face
+but with all glyphs "invisible" (containing no "ink"),
+and use that for rendering text.
+Doing this must not trigger loads of any of the fallback fonts.</p>
+   <p class="issue" id="issue-e99cf2eb"><a class="self-link" href="#issue-e99cf2eb"></a> <a class="css" data-link-type="maybe" href="#valdef-font-face-font-display-fallback">fallback</a> and <a class="css" data-link-type="maybe" href="#valdef-font-face-font-display-optional">optional</a> can result in some faces in a family being used
+while others are required to fallback,
+giving a "ransom note" look.
+Perhaps require that all fonts in a family have the same behavior (all swapped in, or all fallback)?</p>
+   <h2 class="heading settled" data-level="3" id="font-display-desc"><span class="secno">3. </span><span class="content">Controlling Font Display Per Font-Face: the <span class="css">font-display</span> descriptor</span><a class="self-link" href="#font-display-desc"></a></h2>
+   <p>The <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-display">font-display</a> descriptor for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-3/#at-font-face-rule">@font-face</a> determines how a font face is displayed,
 based on whether and when it is downloaded and ready to use.</p>
-
-
-   <p>When a downloadable font-face is first requested,
-a <a data-link-type="dfn" href="#font-download-timer">font download timer</a> is started.
-Each <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a> rule has associated with it
-two periods of time--
-a <a data-link-type="dfn" href="#block-duration">block duration</a>
-and a <a data-link-type="dfn" href="#swap-duration">swap duration</a>--
-which determine the rendering behavior of the font face
-as its <a data-link-type="dfn" href="#font-download-timer">timer</a> advances.</p>
-
-
    <table class="definition descdef">
     <tbody>
      <tr>
@@ -795,328 +1183,173 @@ as its <a data-link-type="dfn" href="#font-download-timer">timer</a> advances.</
       <td><dfn class="css" data-dfn-for="@font-face" data-dfn-type="descriptor" data-export="" id="descdef-font-face-font-display">font-display<a class="self-link" href="#descdef-font-face-font-display"></a></dfn>
      <tr>
       <th>For:
-      <td><a class="css" data-link-type="at-rule" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a>
+      <td><a class="css" data-link-type="at-rule" href="https://drafts.csswg.org/css-fonts-3/#at-font-face-rule">@font-face</a>
      <tr>
       <th>Value:
-      <td class="prod">auto <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> block <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> swap <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> fallback <a data-link-type="grammar" href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a> optional
+      <td class="prod">auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> block <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> swap <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> fallback <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> optional
      <tr>
       <th>Initial:
-      <td>auto</table>
-
-
+      <td>auto
+   </table>
    <p class="note" role="note">Note: For all of these values,
 user agents may use slightly different durations,
 or more sophisticated behaviors that can’t be directly expressed in the <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-display">font-display</a> syntax,
 in order to provide more useful behavior for their users.
 They may also provide the ability for users to override author-chosen behavior
 with something more desirable;
-for example, forcing all fonts to have a <span class="css">0s</span> <a data-link-type="dfn" href="#block-duration">block duration</a>.</p>
-
-
+for example, forcing all fonts to have a <span class="css">0s</span> <a data-link-type="dfn" href="#font-block-period">block period</a>.</p>
    <dl>
-	
-    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-auto">auto<a class="self-link" href="#valdef-font-face-font-rendering-auto"></a></dfn>
-	
+    <dt><dfn class="css" data-dfn-for="@font-face/font-display" data-dfn-type="value" data-export="" id="valdef-font-face-font-display-auto">auto<a class="self-link" href="#valdef-font-face-font-display-auto"></a></dfn> 
     <dd>
-		The font display strategy is user-agent-defined.
-
-
-     <p class="note" role="note">Note: Many browsers have a default strategy similar to that specified by <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-block">block</a>.</p>
-     
-
-	
-    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-block">block<a class="self-link" href="#valdef-font-face-font-rendering-block"></a></dfn>
-	
+      The font display strategy is user-agent-defined. 
+     <p class="note" role="note">Note: Many browsers have a default strategy similar to that specified by <a class="css" data-link-type="maybe" href="#valdef-font-face-font-display-block">block</a>.</p>
+    <dt><dfn class="css" data-dfn-for="@font-face/font-display" data-dfn-type="value" data-export="" id="valdef-font-face-font-display-block">block<a class="self-link" href="#valdef-font-face-font-display-block"></a></dfn> 
     <dd>
-		Gives the font face a short <a data-link-type="dfn" href="#block-duration">block duration</a>
-		(<span class="css">3s</span> is recommended in most cases)
-		and an infinite <a data-link-type="dfn" href="#swap-duration">swap duration</a>.
-
-
+      Gives the font face a short <a data-link-type="dfn" href="#font-block-period">block period</a> (<span class="css">3s</span> is recommended in most cases)
+		and an infinite <a data-link-type="dfn" href="#font-swap-period">swap period</a>. 
      <p class="note" role="note">Note: In other words, the browser draws "invisible" text at first if it’s not loaded,
 		but swaps the font face in as soon as it loads.</p>
-     
-
-
      <p>This value must only be used when rendering text in a particular font is required for the page to be usable.
 		It must only be used for small pieces of text.</p>
-     
-
-		
-     <div class="example" id="example-fbc03512"><a class="self-link" href="#example-fbc03512"></a>
-			For example, badly designed "icon fonts" might associate a "⎙" (print) icon
+     <div class="example" id="example-fbc03512">
+      <a class="self-link" href="#example-fbc03512"></a> For example, badly designed "icon fonts" might associate a "⎙" (print) icon
 			with an unrelated character like "C",
 			so if the text is displayed with a fallback font instead
 			there will be confusing letters scattered around the page
 			rather than the desired icon.
-			In this case, temporary blank spots are better than using a fallback font.
-
-
+			In this case, temporary blank spots are better than using a fallback font. 
       <p>(However, the fallback font is used <em>eventually</em>,
 			as having confusing letters scattered around the page
 			is better than having links and such never show up at all.)</p>
-      
-		
      </div>
-     
-
-	
-    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-swap">swap<a class="self-link" href="#valdef-font-face-font-rendering-swap"></a></dfn>
-	
+    <dt><dfn class="css" data-dfn-for="@font-face/font-display" data-dfn-type="value" data-export="" id="valdef-font-face-font-display-swap">swap<a class="self-link" href="#valdef-font-face-font-display-swap"></a></dfn> 
     <dd>
-		Gives the font face a <span class="css">0s</span> <a data-link-type="dfn" href="#block-duration">block duration</a>
-		and an infinite <a data-link-type="dfn" href="#swap-duration">swap duration</a>.
-
-
+      Gives the font face a <span class="css">0s</span> <a data-link-type="dfn" href="#font-block-period">block period</a> and an infinite <a data-link-type="dfn" href="#font-swap-period">swap period</a>. 
      <p class="note" role="note">Note: In other words, the browser draws the text immediately with a fallback if the font face isn’t loaded,
 		but swaps the font face in as soon as it loads.</p>
-     
-
-
      <p>This value should only be used when rendering text in a particular font is very important for the page,
 		but rendering in any font will still get a correct message across.
 		It should only be used for small pieces of text.</p>
-     
-
-		
-     <div class="example" id="example-faaf0f0d"><a class="self-link" href="#example-faaf0f0d"></a>
-			For example,
+     <div class="example" id="example-faaf0f0d"><a class="self-link" href="#example-faaf0f0d"></a> For example,
 			if a website has a custom font for rendering their logo,
 			rendering that logo correctly is fairly important for branding purposes,
-			but displaying the logo in any font will at least get the point across without confusion.
-		</div>
-     
-
-	
-    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-fallback">fallback<a class="self-link" href="#valdef-font-face-font-rendering-fallback"></a></dfn>
-	
+			but displaying the logo in any font will at least get the point across without confusion. </div>
+    <dt><dfn class="css" data-dfn-for="@font-face/font-display" data-dfn-type="value" data-export="" id="valdef-font-face-font-display-fallback">fallback<a class="self-link" href="#valdef-font-face-font-display-fallback"></a></dfn> 
     <dd>
-		Gives the font face a <span class="css">0s</span> <a data-link-type="dfn" href="#block-duration">block duration</a>
-		and a short <a data-link-type="dfn" href="#swap-duration">swap duration</a>
-		(<span class="css">3s</span> is recommended in most cases).
-
-
+      Gives the font face a <span class="css">0s</span> <a data-link-type="dfn" href="#font-block-period">block period</a> and a short <a data-link-type="dfn" href="#font-swap-period">swap period</a> (<span class="css">3s</span> is recommended in most cases). 
      <p class="note" role="note">Note: In other words, the font face is rendered with a fallback at first if it’s not loaded,
 		but it’s swapped in as soon as it loads.
 		However, if too much time passes,
 		the fallback will be used for the rest of the page’s lifetime instead.</p>
-     
-
-
      <p>This value should be used for body text,
 		or any other text where the use of the chosen font is useful and desired,
 		but it’s acceptable for the user to see the text in a fallback font.
 		This value is appropriate to use for large pieces of text.</p>
-     
-
-		
-     <div class="example" id="example-6d2048f2"><a class="self-link" href="#example-6d2048f2"></a>
-			For example,
+     <div class="example" id="example-6d2048f2"><a class="self-link" href="#example-6d2048f2"></a> For example,
 			in large pieces of body text,
 			it’s most important just to get the text rendered quickly,
 			so the user can begin to read as quickly as possible.
 			Further, once the user has started reading,
 			they shouldn’t be disturbed by the text suddenly "shifting"
 			as a new font is swapped in,
-			as that’s distracting and annoying to re-find where one was in the text.
-		</div>
-     
-
-
-     <p class="issue" id="issue-b7310471"><a class="self-link" href="#issue-b7310471"></a>Maybe give this a very small <a data-link-type="dfn" href="#block-duration">block duration</a>,
+			as that’s distracting and annoying to re-find where one was in the text. </div>
+     <p class="issue" id="issue-790399a9"><a class="self-link" href="#issue-790399a9"></a> Maybe give this a very small <a data-link-type="dfn" href="#font-block-period">block period</a>,
 		so we can avoid FOUT if the font is available but hasn’t been loaded from cache yet?</p>
-     
-
-	
-    <dt><dfn class="css" data-dfn-for="@font-face/font-rendering" data-dfn-type="value" data-export="" id="valdef-font-face-font-rendering-optional">optional<a class="self-link" href="#valdef-font-face-font-rendering-optional"></a></dfn>
-	
+    <dt><dfn class="css" data-dfn-for="@font-face/font-display" data-dfn-type="value" data-export="" id="valdef-font-face-font-display-optional">optional<a class="self-link" href="#valdef-font-face-font-display-optional"></a></dfn> 
     <dd>
-		Gives the font face an extremely small <a data-link-type="dfn" href="#block-duration">block duration</a>
-		(<span class="css">100ms</span> or less is recommended in most cases)
-		and a <span class="css">0s</span> <a data-link-type="dfn" href="#swap-duration">swap duration</a>.
-
-
+      Gives the font face an extremely small <a data-link-type="dfn" href="#font-block-period">block period</a> (<span class="css">100ms</span> or less is recommended in most cases)
+		and a <span class="css">0s</span> <a data-link-type="dfn" href="#font-swap-period">swap period</a>. 
      <p>If the font is not retrieved before the two durations expire,
 		the user agent may choose to abort the font download,
 		or download it with a very low priority.
 		If the user agent believes it would be useful for the user,
 		it may avoid even starting the font download,
 		and proceed immediately to using a fallback font.</p>
-     
-
-
      <p class="note" role="note">Note: In other words, the font is used if it’s already downloaded and available,
 		but otherwise a fallback is used for the rest of the page’s lifetime instead.
 		The font might download in the background and be available to future page loads,
 		but if the user-agent detects that the user has very limited bandwidth,
 		it might choose to simply never download and use the font.</p>
-     
-
-
      <p>This value should be used for body text,
 		or any other text where the chosen font is purely a decorative "nice-to-have".
 		It should be used anytime it is more important that the web page render quickly on first visit,
 		than it is that the user wait a longer time to see everything perfect immediately.</p>
-     
-
-		
-     <div class="example" id="example-3ef4f141"><a class="self-link" href="#example-3ef4f141"></a>
-			For example, body text is perfectly readable in one of the browser default fonts,
+     <div class="example" id="example-3ef4f141">
+      <a class="self-link" href="#example-3ef4f141"></a> For example, body text is perfectly readable in one of the browser default fonts,
 			though a downloadable font face may be more attractive
 			and mesh with the site’s aesthetics better.
 			First time visitors to a site generally care far more about the site being quickly usable
 			than they do about the finer points of its display,
-			and <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-optional">optional</a> provides a good behavior for them.
+			and <a class="css" data-link-type="maybe" href="#valdef-font-face-font-display-optional">optional</a> provides a good behavior for them.
 			If they return later,
 			the desired font faces might have finished downloading,
 			giving them the "intended" experience without slowing down
-			either their first or subsequent visits.
-
-
+			either their first or subsequent visits. 
       <p>Users on very slow connections might not ever receive the "intended" experience,
-			but <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-optional">optional</a> ensures they can actually <em>use</em> the site,
+			but <a class="css" data-link-type="maybe" href="#valdef-font-face-font-display-optional">optional</a> ensures they can actually <em>use</em> the site,
 			rather than quitting and going elsewhere because the site takes too long to load.</p>
-      
-		
      </div>
-     
-</dl>
-
-
-   <div class="issue" id="issue-d2da4906"><a class="self-link" href="#issue-d2da4906"></a>
-	These names aren’t great.
+   </dl>
+   <div class="issue" id="issue-d2da4906">
+    <a class="self-link" href="#issue-d2da4906"></a> These names aren’t great.
 	It would probably be better to use "intent" names
 	that immediately capture the intended usage of each.
-	Some suggestions:
-
-
+	Some suggestions: 
     <ul>
      <li data-md="">
       <p>required / important / preferable / optional</p>
-      
-</ul></div>
-
-
-   <p class="issue" id="issue-e99cf2eb"><a class="self-link" href="#issue-e99cf2eb"></a><a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-fallback">fallback</a> and <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-optional">optional</a> can result in some faces in a family being used
-while others are required to fallback,
-giving a "ransom note" look.
-Perhaps require that all fonts in a family have the same behavior (all swapped in, or all fallback)?</p>
-
-
-   <p>At the moment the user agent first attempts to use a given downloaded font face on a page,
-it must start a <dfn data-dfn-type="dfn" data-local-lt="timer" data-noexport="" id="font-download-timer">font download timer<a class="self-link" href="#font-download-timer"></a></dfn> for that font face,
-ending when the font face is finished loading and ready to use.</p>
-
-
-   <p>The <dfn data-dfn-type="dfn" data-noexport="" id="block-duration">block duration<a class="self-link" href="#block-duration"></a></dfn> for a font face defines a span of time
-starting when the font face’s <a data-link-type="dfn" href="#font-download-timer">timer</a> starts
-and ending when the specified duration has passed.
-During this period,
-if the font face has not yet loaded
-it must be considered "not available",
-but must fallback to the <a data-link-type="dfn" href="#invisible-font-face">invisible font face</a>.</p>
-
-
-   <p>The <dfn data-dfn-type="dfn" data-noexport="" id="swap-duration">swap duration<a class="self-link" href="#swap-duration"></a></dfn> for a font face defines a span of time
-starting when the font face’s <a data-link-type="dfn" href="#block-duration">block duration</a> ends
-and ending when the specified duration has passed.
-During this period,
-if the font face has not yet loaded
-it must be considered "not available",
-and fallback as normal.</p>
-
-
-   <p>If the font face loads during the <a data-link-type="dfn" href="#block-duration">block duration</a> or the <a data-link-type="dfn" href="#swap-duration">swap duration</a>,
-the font face is considered to have successfully loaded and is available to the page for use.
-If both durations expire without the font face loading,
-the user agent must mark the font face as "not available"
-for the rest of the lifetime of the document,
-even if the font face later loads successfully.</p>
-
-
-   <p>The <dfn data-dfn-type="dfn" data-export="" id="invisible-font-face">invisible font face<a class="self-link" href="#invisible-font-face"></a></dfn> is a special user-agent-defined font face.
-It contains glyphs for every possible character,
-but renders all of them as transparent boxes
-with user-agent-defined metrics.
-It exists solely to allow user agents to perform text layout with reasonable default text sizing
-while a font face is being blocked from rendering.</p>
-
-
-   <p class="issue" id="issue-57117fd6"><a class="self-link" href="#issue-57117fd6"></a>Nope, this should use the metrics of whatever fallback font will be used.
-That avoids any reflow at all if you switch from blank to fallback.</p>
-
-
-
-   <h2 class="heading settled" data-level="3" id="acks"><span class="secno">3. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acks"></a></h2>
-
-
+    </ul>
+   </div>
+   <h2 class="heading settled" data-level="4" id="acks"><span class="secno">4. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acks"></a></h2>
    <p>Special thanks to Ilya Grigorik and David Kuettel for their help in developing this specification.</p>
-
-</main>
-
-  <h2 class="no-ref no-num heading settled" id="conformance"><span class="content">
-Conformance</span><a class="self-link" href="#conformance"></a></h2>
-
-    
-  <p>
-        Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
+  </main>
+  <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
+  <p> Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
         The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”
         in the normative parts of this document
         are to be interpreted as described in RFC 2119.
         However, for readability,
-        these words do not appear in all uppercase letters in this specification.
-
-    </p>
-  <p>
-        All of the text of this specification is normative
-        except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a>
-
-    </p>
-  <p>
-        Examples in this specification are introduced with the words “for example”
-        or are set apart from the normative text with <code>class="example"</code>, like this:
-
-    </p>
-  <div class="example" id="example-ae2b6bc0"><a class="self-link" href="#example-ae2b6bc0"></a>
-        This is an example of an informative example.
-    </div>
-
-    
-  <p>
-        Informative notes begin with the word “Note”
-        and are set apart from the normative text with <code>class="note"</code>, like this:
-
-    </p>
-  <p class="note" role="note">
-        Note, this is an informative note.
-
-
-
-</p>
+        these words do not appear in all uppercase letters in this specification. </p>
+  <p> All of the text of this specification is normative
+        except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p>
+  <p> Examples in this specification are introduced with the words “for example”
+        or are set apart from the normative text with <code>class="example"</code>, like this: </p>
+  <div class="example" id="example-ae2b6bc0"><a class="self-link" href="#example-ae2b6bc0"></a> This is an example of an informative example. </div>
+  <p> Informative notes begin with the word “Note”
+        and are set apart from the normative text with <code>class="note"</code>, like this: </p>
+  <p class="note" role="note"> Note, this is an informative note. </p>
   <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="indexlist">
-   <li>auto, <a href="#valdef-font-face-font-rendering-auto">2</a>
-   <li>block, <a href="#valdef-font-face-font-rendering-block">2</a>
-   <li>block duration, <a href="#block-duration">2</a>
-   <li>fallback, <a href="#valdef-font-face-font-rendering-fallback">2</a>
-   <li>font-display, <a href="#descdef-font-face-font-display">2</a>
-   <li>font download timer, <a href="#font-download-timer">2</a>
-   <li>invisible font face, <a href="#invisible-font-face">2</a>
-   <li>optional, <a href="#valdef-font-face-font-rendering-optional">2</a>
-   <li>swap, <a href="#valdef-font-face-font-rendering-swap">2</a>
-   <li>swap duration, <a href="#swap-duration">2</a>
-   <li>timer, <a href="#font-download-timer">2</a>
+   <li><a href="#valdef-font-face-font-display-auto">auto</a><span>, in §3</span>
+   <li><a href="#valdef-font-face-font-display-block">block</a><span>, in §3</span>
+   <li><a href="#font-block-period">block period</a><span>, in §2</span>
+   <li><a href="#font-failure-period">failure period</a><span>, in §2</span>
+   <li><a href="#valdef-font-face-font-display-fallback">fallback</a><span>, in §3</span>
+   <li><a href="#font-block-period">font block period</a><span>, in §2</span>
+   <li><a href="#descdef-font-face-font-display">font-display</a><span>, in §3</span>
+   <li><a href="#font-download-timer">font download timer</a><span>, in §2</span>
+   <li><a href="#font-failure-period">font failure period</a><span>, in §2</span>
+   <li><a href="#font-swap-period">font swap period</a><span>, in §2</span>
+   <li><a href="#valdef-font-face-font-display-optional">optional</a><span>, in §3</span>
+   <li><a href="#render-with-a-fallback-font-face">render with a fallback font face</a><span>, in §2</span>
+   <li><a href="#render-with-an-invisible-fallback-font-face">render with an invisible fallback font face</a><span>, in §2</span>
+   <li><a href="#valdef-font-face-font-display-swap">swap</a><span>, in §3</span>
+   <li><a href="#font-swap-period">swap period</a><span>, in §2</span>
+   <li><a href="#font-download-timer">timer</a><span>, in §2</span>
   </ul>
   <h3 class="no-num heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="indexlist">
-   <li><a data-link-type="biblio" href="#biblio-css-fonts-3">[css-fonts-3]</a> defines the following terms:
+   <li>
+    <a data-link-type="biblio" href="#biblio-css-fonts-3">[css-fonts-3]</a> defines the following terms:
     <ul>
-     <li><a href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a>
+     <li><a href="https://drafts.csswg.org/css-fonts-3/#at-font-face-rule">@font-face</a>
+     <li><a href="https://drafts.csswg.org/css-fonts-3/#propdef-font-family">font-family</a>
     </ul>
-   <li><a data-link-type="biblio" href="#biblio-css-values-3">[css-values-3]</a> defines the following terms:
+   <li>
+    <a data-link-type="biblio" href="#biblio-css-values-3">[css-values]</a> defines the following terms:
     <ul>
-     <li><a href="http://dev.w3.org/csswg/css-values-3/#comb-one">|</a>
+     <li><a href="https://drafts.csswg.org/css-values-3/#comb-one">|</a>
     </ul>
   </ul>
   <h2 class="no-num heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -1124,8 +1357,8 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
   <dl>
    <dt id="biblio-css-fonts-3"><a class="self-link" href="#biblio-css-fonts-3"></a>[CSS-FONTS-3]
    <dd>John Daggett. <a href="http://www.w3.org/TR/css-fonts-3/">CSS Fonts Module Level 3</a>. 3 October 2013. CR. URL: <a href="http://www.w3.org/TR/css-fonts-3/">http://www.w3.org/TR/css-fonts-3/</a>
-   <dt id="biblio-css-values-3"><a class="self-link" href="#biblio-css-values-3"></a>[CSS-VALUES-3]
-   <dd>CSS Values and Units Module Level 3 URL: <a href="http://www.w3.org/TR/css3-values/">http://www.w3.org/TR/css3-values/</a>
+   <dt id="biblio-css-values"><a class="self-link" href="#biblio-css-values"></a>[CSS-VALUES]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="http://www.w3.org/TR/css-values/">CSS Values and Units Module Level 3</a>. 11 June 2015. CR. URL: <a href="http://www.w3.org/TR/css-values/">http://www.w3.org/TR/css-values/</a>
    <dt id="biblio-rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
   </dl>
@@ -1136,7 +1369,7 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
   </dl>
   <h2 class="no-num heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <p>No properties defined.</p>
-  <h3 class="no-num heading settled" id="font-face-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="http://dev.w3.org/csswg/css-fonts-3/#at-ruledef-font-face">@font-face</a> Descriptors</span><a class="self-link" href="#font-face-descriptor-table"></a></h3>
+  <h3 class="no-num heading settled" id="font-face-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="https://drafts.csswg.org/css-fonts-3/#at-font-face-rule">@font-face</a> Descriptors</span><a class="self-link" href="#font-face-descriptor-table"></a></h3>
   <table class="proptable data">
    <thead>
     <tr>
@@ -1151,26 +1384,23 @@ Conformance</span><a class="self-link" href="#conformance"></a></h2>
   </table>
   <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue">Maybe give this a very small <a data-link-type="dfn" href="#block-duration">block duration</a>,
-		so we can avoid FOUT if the font is available but hasn’t been loaded from cache yet?<a href="#issue-b7310471"> ↵ </a></div>
-   <div class="issue">
-	These names aren’t great.
-	It would probably be better to use "intent" names
-	that immediately capture the intended usage of each.
-	Some suggestions:
-
-
-    <ul>
-     <li data-md="">
-      <p>required / important / preferable / optional</p>
-      
-</ul><a href="#issue-d2da4906"> ↵ </a>
-   </div>
-   <div class="issue"><a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-fallback">fallback</a> and <a class="css" data-link-type="maybe" href="#valdef-font-face-font-rendering-optional">optional</a> can result in some faces in a family being used
+   <div class="issue"> <a class="css" data-link-type="maybe" href="#valdef-font-face-font-display-fallback">fallback</a> and <a class="css" data-link-type="maybe" href="#valdef-font-face-font-display-optional">optional</a> can result in some faces in a family being used
 while others are required to fallback,
 giving a "ransom note" look.
 Perhaps require that all fonts in a family have the same behavior (all swapped in, or all fallback)?<a href="#issue-e99cf2eb"> ↵ </a></div>
-   <div class="issue">Nope, this should use the metrics of whatever fallback font will be used.
-That avoids any reflow at all if you switch from blank to fallback.<a href="#issue-57117fd6"> ↵ </a></div>
-  </div></body>
+   <div class="issue"> Maybe give this a very small <a data-link-type="dfn" href="#font-block-period">block period</a>,
+		so we can avoid FOUT if the font is available but hasn’t been loaded from cache yet?<a href="#issue-790399a9"> ↵ </a></div>
+   <div class="issue">
+     These names aren’t great.
+	It would probably be better to use "intent" names
+	that immediately capture the intended usage of each.
+	Some suggestions: 
+    <ul>
+     <li data-md="">
+      <p>required / important / preferable / optional</p>
+    </ul>
+    <a href="#issue-d2da4906"> ↵ </a>
+   </div>
+  </div>
+ </body>
 </html>
