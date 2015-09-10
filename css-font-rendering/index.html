@@ -1236,7 +1236,8 @@ for example, forcing all fonts to have a <span class="css">0s</span> <a data-lin
 			but displaying the logo in any font will at least get the point across without confusion. </div>
     <dt><dfn class="css" data-dfn-for="@font-face/font-display" data-dfn-type="value" data-export="" id="valdef-font-face-font-display-fallback">fallback<a class="self-link" href="#valdef-font-face-font-display-fallback"></a></dfn> 
     <dd>
-      Gives the font face a <span class="css">0s</span> <a data-link-type="dfn" href="#font-block-period">block period</a> and a short <a data-link-type="dfn" href="#font-swap-period">swap period</a> (<span class="css">3s</span> is recommended in most cases). 
+      Gives the font face an extremely small <a data-link-type="dfn" href="#font-block-period">block period</a> (<span class="css">100ms</span> or less is recommended in most cases)
+		and a short <a data-link-type="dfn" href="#font-swap-period">swap period</a> (<span class="css">3s</span> is recommended in most cases). 
      <p class="note" role="note">Note: In other words, the font face is rendered with a fallback at first if it’s not loaded,
 		but it’s swapped in as soon as it loads.
 		However, if too much time passes,
@@ -1253,8 +1254,6 @@ for example, forcing all fonts to have a <span class="css">0s</span> <a data-lin
 			they shouldn’t be disturbed by the text suddenly "shifting"
 			as a new font is swapped in,
 			as that’s distracting and annoying to re-find where one was in the text. </div>
-     <p class="issue" id="issue-790399a9"><a class="self-link" href="#issue-790399a9"></a> Maybe give this a very small <a data-link-type="dfn" href="#font-block-period">block period</a>,
-		so we can avoid FOUT if the font is available but hasn’t been loaded from cache yet?</p>
     <dt><dfn class="css" data-dfn-for="@font-face/font-display" data-dfn-type="value" data-export="" id="valdef-font-face-font-display-optional">optional<a class="self-link" href="#valdef-font-face-font-display-optional"></a></dfn> 
     <dd>
       Gives the font face an extremely small <a data-link-type="dfn" href="#font-block-period">block period</a> (<span class="css">100ms</span> or less is recommended in most cases)
@@ -1388,8 +1387,6 @@ for example, forcing all fonts to have a <span class="css">0s</span> <a data-lin
 while others are required to fallback,
 giving a "ransom note" look.
 Perhaps require that all fonts in a family have the same behavior (all swapped in, or all fallback)?<a href="#issue-e99cf2eb"> ↵ </a></div>
-   <div class="issue"> Maybe give this a very small <a data-link-type="dfn" href="#font-block-period">block period</a>,
-		so we can avoid FOUT if the font is available but hasn’t been loaded from cache yet?<a href="#issue-790399a9"> ↵ </a></div>
    <div class="issue">
      These names aren’t great.
 	It would probably be better to use "intent" names

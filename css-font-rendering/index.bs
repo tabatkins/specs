@@ -208,7 +208,8 @@ for example, forcing all fonts to have a ''0s'' <a>block period</a>.
 
 	<dt><dfn>fallback</dfn>
 	<dd>
-		Gives the font face a ''0s'' <a>block period</a>
+		Gives the font face an extremely small <a>block period</a>
+		(''100ms'' or less is recommended in most cases)
 		and a short <a>swap period</a>
 		(''3s'' is recommended in most cases).
 
@@ -232,9 +233,6 @@ for example, forcing all fonts to have a ''0s'' <a>block period</a>.
 			as a new font is swapped in,
 			as that's distracting and annoying to re-find where one was in the text.
 		</div>
-
-		Issue: Maybe give this a very small <a>block period</a>,
-		so we can avoid FOUT if the font is available but hasn't been loaded from cache yet?
 
 	<dt><dfn>optional</dfn>
 	<dd>
