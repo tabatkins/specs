@@ -1,0 +1,179 @@
+<pre class='metadata'>
+Title: SVG Parameters
+Shortname: svg-params
+Level: 1
+Status: DREAM
+URL: https://tabatkins.github.io/specs/svg-parameters/
+Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/
+Abstract: This introduces "parameters" to SVG, which are a method of setting CSS custom properties in an external SVG document via the fragment on the referencing URL.  This allows easy reuse of "templated" SVG images, which can be adapted to a site's theme color, etc. easily, without having to modify the source SVG.
+Ignored Terms: css value definition syntax
+</pre>
+
+<pre class="link-defaults">
+spec:selectors-4; type:selector; text::hover
+spec:html; type:element
+	text: iframe
+	text: a
+</pre>
+
+Introduction {#intro}
+=====================
+
+SVG is stylable with CSS,
+and when used inline in HTML,
+this capability can be very useful.
+For example, an SVG icon can take on a different color based on whether the user is hovering it or not,
+just by appling a '':hover'' rule to it that changes the 'fill' property.
+
+When the SVG is referenced in a way that doesn't allow selectors or CSS inheritance from the outer page to apply to it
+(such as embedding it via <{img}> or <{iframe}> in HTML),
+though, this functionality is lost.
+The only way to change the display of such "external" SVG images
+is to produce several of them,
+and change which image you're referencing.
+This incurs delay on the page as a new resource is downloaded,
+and disallows dynamic effects like CSS Transitions.
+
+<dfn export>SVG Parameters</dfn> are a way to set CSS <a>custom properties</a> on an "external" SVG image,
+by passing them through a special fragment scheme on the URL.
+This gives a limited, but powerful, subset of the customizability that "inline" SVG images have
+to "external" SVG images.
+
+Setting an SVG Parameter {#setting}
+===================================
+
+To "set" an SVG Parameter,
+a special "fragment identifier" must be used in the <a for=url>fragment</a> of the URL used to reference.
+Several examples of existing "fragment identifiers" for SVG documents can be found in <a href="http://www.w3.org/TR/SVG/linking.html#LinksIntoSVG">the SVG 1.1 specification</a>.
+
+The syntax of an <dfn export local-lt="param()">SVG parameter fragment identifier</dfn> is:
+
+<pre class=prod>param( <<custom-property-name>> <<declaration-value>> )</pre>
+
+(using the <a>CSS value definition syntax</a>).
+
+<div class="example">
+	For example, to set the "--text-color" <a>custom property</a> of an SVG image to ''blue'',
+	one can reference the image with a url like “<code>http://example.com/image.svg#param(--text-color%20blue)</code>”.
+</div>
+
+If passing multiple parameters to an image,
+additional <a>param()</a> functions must be appended to the URL.
+If multiple <a>param()</a> functions specify the same <<custom-property-name>>,
+the <a>custom property</a> is set to the value of the last one.
+
+<div class="example">
+	For example, if the image from the previous example also used a "--bg-color" <a>custom property</a>,
+	it could be referenced with a url like “<code>http://example.com/image.svg#param(--text-color%20blue)param(--bg-color%20white)</code>”.
+</div>
+
+Note: Spaces, and some other characters that might be valid in CSS syntax,
+are not technically valid in URLs.
+In some contexts,
+you might need to escape those characters to form a valid URL.
+In most cases, though,
+such as HTML's <{a}> element or CSS's ''url()'' function,
+spaces are accepted and do not need to be escaped.
+
+When a valid <a>param()</a> function is encountered in the <a for=url>fragment</a> referencing an SVG document,
+it sets the <a>initial value</a> of the given <a>custom property</a> to the given <<declaration-value>>.
+(By default, the <a>initial value</a> of a <a>custom property</a> is an invalid value.)
+
+Setting via the CSS ''url()'' Function {#setting-url}
+-----------------------------------------------------
+
+When referencing an SVG image via CSS,
+the <a>param()</a> function can be used in the ''url()'' function.
+But a common use-case is passing in values of the page's own <a>custom properties</a>;
+for example, a page might use a ''--primary-color'' <a>custom property</a>,
+and want to make an SVG image match.
+There's no way, however, to integrate the value of a <a>custom property</a> in CSS into the URL passed to the ''url()'' function.
+
+To accomodate this,
+this specification defines a new <<url-modifier>>,
+the ''param()'' function:
+
+<pre class='prod'><dfn function>param()</dfn> = param( <<custom-property-name>> <<declaration-value>> )</pre>
+
+Note: You may recognize this as identical to the syntax of the <a>param()</a> fragment identifer.
+
+Similarly to the <a>param()</a> fragment identifier,
+the ''param()'' <<url-modifier>>
+sets the initial value of the referenced <a>custom property</a> to the passed <<declaration-value>>.
+Also similarly to the fragment identifier,
+if multiple ''param()'' functions reference the same <a>custom property</a>,
+the last one wins.
+
+<div class="example">
+	For example,
+	if the site is using a ''-primary-color'' custom property to theme its elements with,
+	and wanted an SVG background using a ''--color'' custom property to reflect it,
+	it could write:
+
+	<pre class='lang-css'>
+		.foo {
+			background-image: url("http://example.com/image.svg" param(--color var(--primary-color)));
+		}
+	</pre>
+</div>
+
+Using SVG Parameters {#using}
+=============================
+
+Within an SVG image,
+any <a>SVG parameters</a> set the <a>initial value</a> of the corresponding <a>custom properties</a>.
+They can then be used directly in any CSS property
+via the CSS ''var()'' function.
+
+<div class="example">
+	For example, if an SVG image wanted to expose a ''--color'' parameter,
+	it could use it like:
+
+	<pre class="lang-markup">
+		&lt;svg>
+			&lt;g style="fill: var(--color);">
+				&lt;path d="..." />
+			&lt;/g>
+		&lt;/svg>
+	</pre>
+</div>
+
+Issue: Can it be used in presentation attributes?
+
+<div class="note">
+	It's usually a good idea to make your SVG image usable even if no parameters are given,
+	by providing "default values" for each of the custom properties.
+	There are several ways to do this.
+
+	1. On each ''var()'' function, provide a fallback value, like ''fill: var(--color, blue)''.
+	2. If the custom property is going to be used a lot,
+		such that providing a fallback for each individual ''var()'' is troublesome,
+		store the <a>custom property</a> in a different name while invoking the default,
+		like:
+
+		<pre class="lang-css">
+			:root {
+				--color2: var(--color, blue);
+			}
+		</pre>
+
+		In this example, if ''--color'' is provided via an <a>SVG parameter</a>,
+		''--color2'' will receive its value.
+		If not, it will recieve the default ''blue'' value.
+		In either case, ''--color2'' can be used in the SVG image's stylesheet unconditionally,
+		secure in the knowledge that it will always have a value.
+	3. In a future level of the Custom Properties specification [[CSS-VARIABLES]],
+		some "parent's value" functionality will be available to make the previous suggestion more usable:
+
+		<pre class="lang-css">
+			:root {
+				--color: var(parent --color, blue);
+			}
+		</pre>
+
+		(This is an example syntax, and is not yet final.)
+
+		By invoking the value of the --color property on the parent
+		(which, on the root element, refers to the initial value),
+		an author can avoid self-reference loops while retaining the same <a>custom property</a> name.
+</div>

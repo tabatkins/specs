@@ -17,3 +17,4 @@ Live copies of the specs:
 * [Sticky Scrollbar](http://tabatkins.github.io/specs/css-sticky-scrollbars)
 * [Font Display Controls](http://tabatkins.github.io/specs/css-font-display)
 * [CSS @apply Rule](http://tabatkins.github.io/specs/css-apply-rule)
+* [SVG Parameters](http://tabatkins.github.io/specs/svg-params)
