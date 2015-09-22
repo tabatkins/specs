@@ -59,18 +59,18 @@ Motivation</h3>
 
 	<div class='example'>
 		<pre>
-			table.colortable {{
-				td {
+			table.colortable {
+				@nest & td {
 					text-align:center;
-					{&.c { text-transform:uppercase }}
-					{&:first-child, &:first-child + td { border:1px solid black }}
+					@nest &.c { text-transform:uppercase }
+					@nest &:first-child, &:first-child + td { border:1px solid black }
 				}
-				th {
+				@nest & th {
 					text-align:center;
 					background:black;
 					color:white;
 				}
-			}}
+			}
 		</pre>
 	</div>
 
@@ -82,7 +82,7 @@ The Nesting Block</h2>
 	Style rules cannot be nested <em>directly</em> inside of style rules,
 	as selectors are ambiguous with properties on a syntax level.
 	Instead, the <dfn export>nesting block</dfn>,
-	which is simply a pair of "{}" characters surrounding the nested rules,
+	which is simply an at rule followed by a pair of "{}" characters surrounding the nested rules,
 	is used.
 	The <a>nesting block</a> separates the nested rules from surrounding properties
 	so that they can be parsed unambiguously.
@@ -121,7 +121,7 @@ The Nesting Block</h2>
 
 		<pre>
 			div, p {{
-				.keyword, .constant {color: red;}
+				@nest & .keyword, & .constant {color: red;}
 			}}
 		</pre>
 
@@ -144,12 +144,12 @@ The Nesting Block</h2>
 		<pre>
 			div, p {
 				font-size: 10px;
-				{.keyword {color: green;}}
-				{.constant {
+				@nest & .keyword {color: green;}
+				@nest & .constant {
 					color: red;
 					background-color: green;
-					{&:hover::after { content: " [" attr(value) "]";}}
-				}}
+					@nest &:hover::after { content: " [" attr(value) "]";}
+				}
 			}
 		</pre>
 
@@ -198,11 +198,11 @@ The &amp; Selector</h2>
 		The following example using Nesting:
 
 		<pre>
-			div {{
-				.keyword {color: red;}
-				&:hover {background-color: rgb(200, 255, 255);}
-				section > & {border: 2px solid gray;}
-			}}
+			div {
+				@nest & .keyword {color: red;}
+				@nest &:hover {background-color: rgb(200, 255, 255);}
+				@nest section > & {border: 2px solid gray;}
+			}
 		</pre>
 
 		...produces the same results as the following CSS:
