@@ -88,7 +88,7 @@ Nesting Selector: the ''&'' selector {#nest-selector}
 	this specification defines a new selector,
 	the <dfn>nesting selector</dfn>,
 	written as an ASCII ampersand “<dfn selector>&</dfn>”.
- rule
+
 	When used in the selector of a <a>nested style rule</a>,
 	the <a>nesting selector</a> represents the elements matched by the parent rule.
 	When used in any other context,
