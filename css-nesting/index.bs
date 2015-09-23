@@ -2,7 +2,6 @@
 <pre class='metadata'>
 Status: ED
 Shortname: css-nesting
-Group: personal
 Level: 1
 ED: http://tabatkins.github.io/specs/css-nesting/
 Editor: Tab Atkins, Google, http://xanthir.com/contact/
