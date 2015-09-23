@@ -141,6 +141,19 @@ Nesting Selector: the ''&'' selector {#nest-selector}
 
 	Note: This specificity is intentionally equivalent to that of the desugaring described above.
 
+	The <a>nesting selector</a> is allowed anywhere in a <a>compound selector</a>,
+	even before a <a>type selector</a>,
+	violating the normal restrictions on ordering within a <a>compound selector</a>.
+
+	Note: This is required to allow direct nesting.
+	Also, the "type selectors must come first" has no <em>intrinsic</em> reason behind it;
+	it exists because we need to be able to tell simple selectors apart unambiguously
+	when they're directly appended together in a <a>compound selector</a>,
+	and it's not clear from ''.foodiv'' that it should mean the same as ''div.foo''.
+	An ampersand is unambiguously separable from an ident, tho,
+	so there is no problem with it preceding a type selector,
+	like ''&div''.
+
 Nesting Style Rules {#nesting}
 ==============================
 

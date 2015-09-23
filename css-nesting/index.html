@@ -1202,6 +1202,17 @@ Parts of this work may be from another specification document.  If so, those par
 		giving the entire <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-color-4/#propdef-color">color: blue</a> rule a specificity of [1,0,1].</p>
    </div>
    <p class="note" role="note">Note: This specificity is intentionally equivalent to that of the desugaring described above.</p>
+   <p>The <a data-link-type="dfn" href="#nesting-selector">nesting selector</a> is allowed anywhere in a <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#compound">compound selector</a>,
+	even before a <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#type-selector">type selector</a>,
+	violating the normal restrictions on ordering within a <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#compound">compound selector</a>.</p>
+   <p class="note" role="note">Note: This is required to allow direct nesting.
+	Also, the "type selectors must come first" has no <em>intrinsic</em> reason behind it;
+	it exists because we need to be able to tell simple selectors apart unambiguously
+	when they’re directly appended together in a <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#compound">compound selector</a>,
+	and it’s not clear from <span class="css">.foodiv</span> that it should mean the same as <span class="css">div.foo</span>.
+	An ampersand is unambiguously separable from an ident, tho,
+	so there is no problem with it preceding a type selector,
+	like <span class="css">&amp;div</span>.</p>
    <h2 class="heading settled" data-level="3" id="nesting"><span class="secno">3. </span><span class="content">Nesting Style Rules</span><a class="self-link" href="#nesting"></a></h2>
    <p>Nesting style rules naively inside of other style rules is, unfortunately, problematic—<wbr>the syntax of a selector is ambiguous with the syntax of a declaration,
 	so an implementation requires unbounded lookahead
@@ -1436,6 +1447,7 @@ Parts of this work may be from another specification document.  If so, those par
      <li><a href="https://drafts.csswg.org/selectors-4/#compound">compound selector</a>
      <li><a href="https://drafts.csswg.org/selectors-4/#simple">simple selector</a>
      <li><a href="https://drafts.csswg.org/selectors-4/#specificity">specificity</a>
+     <li><a href="https://drafts.csswg.org/selectors-4/#type-selector">type selector</a>
     </ul>
   </ul>
   <h2 class="no-num heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
