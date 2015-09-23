@@ -38,7 +38,7 @@ Motivation</h3>
 	For example, here is a portion of the CSS markup for one version of the [[CSS3COLOR]] module:
 
 	<div class='example'>
-		<pre>
+		<pre class=lang-css>
 			table.colortable td {
 				text-align:center;
 			}
@@ -59,7 +59,7 @@ Motivation</h3>
 	Nesting allow the grouping of related style rules, like this:
 
 	<div class='example'>
-		<pre>
+		<pre class=lang-css>
 			table.colortable {
 				& td {
 					text-align:center;
