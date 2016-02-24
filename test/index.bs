@@ -1,0 +1,40 @@
+<pre class='metadata'>
+Title: Test
+Status: ED
+ED: https://example.com
+Shortname: test
+Level: 1
+No Editor: true
+Abstract: Test
+Use Dfn Panels: yes
+</pre>
+
+Heading {#h1}
+=============
+
+<dfn>foo</dfn>
+
+<dfn>bar</dfn>
+
+<dfn>baz</dfn>
+
+<a>foo</a>
+
+More Headings {#h2}
+===================
+
+<a>foo</a>
+
+And Subheadings {#h3}
+---------------------
+
+<a>foo</a>
+
+<h2 id=h4 class="no-num no-toc">
+Unnumbered!</h2>
+
+<a>foo</a>
+
+<a>foo</a>
+
+<a>baz</a>
