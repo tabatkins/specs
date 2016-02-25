@@ -1,0 +1,461 @@
+<!doctype html><html lang="en">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <title>CSS Filter Rule</title>
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <meta content="[WORKSTATUS]" name="csswg-work-status">
+  <meta content="ED" name="w3c-status">
+  <link href="../default.css" rel="stylesheet" type="text/css">
+  <link href="../csslogo.ico" rel="shortcut icon" type="image/x-icon">
+<style>
+  body {
+    background-image: url("https://www.w3.org/StyleSheets/TR/logo-ED");
+  };
+  </style>
+  <meta content="Bikeshed 1.0.0" name="generator">
+ <body class="h-entry">
+  <div class="head">
+   <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/Icons/w3c_home" width="72"> </a> </p>
+   <h1 class="p-name no-ref" id="title">CSS Filter Rule</h1>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-02-24">24 February 2016</time></span></h2>
+   <div data-fill-with="spec-metadata">
+    <dl>
+     <dt>This version:
+     <dd><a class="u-url" href="http://tabatkins.github.io/specs/css-filter-rule/">http://tabatkins.github.io/specs/css-filter-rule/</a>
+     <dt>Feedback:
+     <dd><span><a href="mailto:www-style@w3.org?subject=%5Bcss-filter-rule%5D%20YOUR%20TOPIC%20HERE">www-style@w3.org</a> with subject line “<kbd>[css-filter-rule] <i data-lt="">… message topic …</i></kbd>” (<a href="http://lists.w3.org/Archives/Public/www-style/" rel="discussion">archives</a>)</span>
+     <dt class="editor">Editor:
+     <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="http://xanthir.com/contact/">Tab Atkins-Bittner</a> (<span class="p-org org">Google</span>)
+    </dl>
+   </div>
+   <div data-fill-with="warning"></div>
+   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2016 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply. </p>
+   <hr title="Separator for header">
+  </div>
+  <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+  <div class="p-summary" data-fill-with="abstract">
+   <p>The CSS <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filters-1/#propdef-filter">filter</a> property allows an author to apply a number of useful visual filters to an element. Unfortunately, CSS only provides a few built-in filters for direct use; for anything more advanced, an author has to write an SVG document to define a <code><a data-link-type="element" href="https://drafts.fxtf.org/filters-1/#elementdef-filter">filter</a></code> element and then reference it via URL. This specification defines the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule, which allows complex filters to be defined in a CSS stylesheet, avoiding the need to write a separate document in a different language.</p>
+    <a href="http://www.w3.org/TR/CSS/">CSS</a> is a language for describing the rendering of structured documents 
+(such as HTML and XML) 
+on screen, on paper, in speech, etc.
+  </div>
+  <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+  <div data-fill-with="status">
+   <p> This is a public copy of the editors’ draft.
+	It is provided for discussion only and may change at any moment.
+	Its publication here does not imply endorsement of its contents by W3C.
+	Don’t cite this document other than as work in progress. </p>
+   <p> The (<a href="http://lists.w3.org/Archives/Public/www-style/">archived</a>) public mailing list <a href="mailto:www-style@w3.org?Subject=%5Bcss-filter-rule%5D%20PUT%20SUBJECT%20HERE">www-style@w3.org</a> (see <a href="http://www.w3.org/Mail/Request">instructions</a>)
+	is preferred for discussion of this specification.
+	When sending e-mail,
+	please put the text “css-filter-rule” in the subject,
+	preferably like this:
+	“[css-filter-rule] <em>…summary of comment…</em>” </p>
+   <p> This document was produced by the <a href="http://www.w3.org/Style/CSS/members">CSS Working Group</a> (part of the <a href="http://www.w3.org/Style/">Style Activity</a>). </p>
+   <p> This document was produced by a group operating under
+	the <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 W3C Patent Policy</a>.
+	W3C maintains a <a href="http://www.w3.org/2004/01/pp-impl/32061/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
+	that page also includes instructions for disclosing a patent.
+	An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
+   <p> This document is governed by the <a href="http://www.w3.org/2015/Process-20150901/" id="w3c_process_revision">1 September 2015 W3C Process Document</a>. </p>
+   <p></p>
+  </div>
+  <div data-fill-with="at-risk"></div>
+  <nav data-fill-with="table-of-contents" id="toc">
+   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
+   <ol class="toc" role="directory">
+    <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
+    <li>
+     <a href="#filter-rule"><span class="secno">2</span> <span class="content">Defining Complex Filters in CSS: the <span class="css">@filter</span> rule</span></a>
+     <ol class="toc">
+      <li><a href="#filter-errors"><span class="secno">2.1</span> <span class="content">Filter Errors</span></a>
+      <li><a href="#filter-size"><span class="secno">2.2</span> <span class="content">Sizing the Filter Region: the <span class="property">position</span> and <span class="property">size</span> descriptors</span></a>
+      <li><a href="#filter-resolution"><span class="secno">2.3</span> <span class="content">Controlling the Resolution of a Filter: the <span class="property">resolution</span> descriptor</span></a>
+     </ol>
+    <li><a href="#vars"><span class="secno">3</span> <span class="content">Using Variable References in <span class="css">@filter</span> Descriptors</span></a>
+    <li>
+     <a href="#filter-primitive"><span class="secno">4</span> <span class="content">Filter Primitive Rules</span></a>
+     <ol class="toc">
+      <li><a href="#common"><span class="secno">4.1</span> <span class="content">Common Descriptors</span></a>
+     </ol>
+    <li><a href="#at-blend"><span class="secno">5</span> <span class="content">Compositing Two Images: the <span class="css">@blend</span> filter primitive rule</span></a>
+    <li>
+     <a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
+     <ol class="toc">
+      <li><a href="#document-conventions"><span class="secno"></span> <span class="content"> Document conventions</span></a>
+      <li><a href="#conform-classes"><span class="secno"></span> <span class="content"> Conformance classes</span></a>
+      <li>
+       <a href="#conform-responsible"><span class="secno"></span> <span class="content"> Requirements for Responsible Implementation of CSS</span></a>
+       <ol class="toc">
+        <li><a href="#conform-partial"><span class="secno"></span> <span class="content"> Partial Implementations</span></a>
+        <li><a href="#conform-future-proofing"><span class="secno"></span> <span class="content"> Implementations of Unstable and Proprietary Features</span></a>
+        <li><a href="#conform-testing"><span class="secno"></span> <span class="content"> Implementations of CR-level Features</span></a>
+       </ol>
+     </ol>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ol>
+    <li>
+     <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+     <ol class="toc">
+      <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+     </ol>
+    <li>
+     <a href="#property-index"><span class="secno"></span> <span class="content">Property Index</span></a>
+     <ol class="toc">
+      <li><a href="#blend-descriptor-table"><span class="secno"></span> <span class="content"><span>@blend</span> Descriptors</span></a>
+      <li><a href="#filter-descriptor-table"><span class="secno"></span> <span class="content"><span>@filter</span> Descriptors</span></a>
+     </ol>
+   </ol>
+  </nav>
+  <main>
+   <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
+   <p>This spec is a <em>very</em> rough draft. I’m not gonna try for precise wording here; you’ll get the gist. Details can be nailed down when we take this seriously.</p>
+   <h2 class="heading settled" data-level="2" id="filter-rule"><span class="secno">2. </span><span class="content">Defining Complex Filters in CSS: the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule</span><a class="self-link" href="#filter-rule"></a></h2>
+   <p>The syntax of an <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule is:</p>
+<pre class="prod"><dfn data-dfn-type="at-rule" data-export="" id="at-ruledef-filter">@filter<a class="self-link" href="#at-ruledef-filter"></a></dfn> = @filter <custom-ident> { <declaration-list> }
+</declaration-list></custom-ident></pre>
+   <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule accepts a handful of descriptors,
+described in later subsections,
+but is mostly filled by other <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rules</a>,
+such as <a class="css" data-link-type="maybe" href="#at-ruledef-blend">@blend</a>.
+The presense of unknown descriptors,
+or at-rules other than <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rules</a>,
+are invalid and cause those descriptors/rules to be ignored,
+but do not make the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule invalid.</p>
+   <p class="note" role="note">Note: Equivalents of filterUnits and primitiveUnits are intentionally not included.
+The *Units properties are a weird SVG-ism caused by the fact that they only have two units - integers and percentages.
+CSS doesn’t need this.</p>
+   <h3 class="heading settled" data-level="2.1" id="filter-errors"><span class="secno">2.1. </span><span class="content">Filter Errors</span><a class="self-link" href="#filter-errors"></a></h3>
+   <p>Some mistakes in defining a <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule or its contents can cause a <dfn data-dfn-type="dfn" data-export="" id="filter-error">filter error<a class="self-link" href="#filter-error"></a></dfn>.
+When a <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule or its contents cause a <a data-link-type="dfn" href="#filter-error">filter error</a>,
+the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule represents the <a data-link-type="dfn" href="#null-filter">null filter</a>,
+regardless of what else it specifies.</p>
+   <p>The <dfn data-dfn-type="dfn" data-export="" id="null-filter">null filter<a class="self-link" href="#null-filter"></a></dfn> has no effect—<wbr>its output is exactly equivalent to its input.</p>
+   <h3 class="heading settled" data-level="2.2" id="filter-size"><span class="secno">2.2. </span><span class="content">Sizing the Filter Region: the <a class="property" data-link-type="propdesc" href="#descdef-filter-position">position</a> and <a class="property" data-link-type="propdesc" href="#descdef-filter-size">size</a> descriptors</span><a class="self-link" href="#filter-size"></a></h3>
+   <table class="def descdef">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn class="css" data-dfn-for="@filter" data-dfn-type="descriptor" data-export="" id="descdef-filter-position">position<a class="self-link" href="#descdef-filter-position"></a></dfn>
+     <tr>
+      <th>For:
+      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-filter">@filter</a>
+     <tr>
+      <th>Value:
+      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-backgrounds-3/#position">&lt;position></a>
+     <tr>
+      <th>Initial:
+      <td>-10% -10%
+   </table>
+   <table class="def descdef">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn class="css" data-dfn-for="@filter" data-dfn-type="descriptor" data-export="" id="descdef-filter-size">size<a class="self-link" href="#descdef-filter-size"></a></dfn>
+     <tr>
+      <th>For:
+      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-filter">@filter</a>
+     <tr>
+      <th>Value:
+      <td class="prod"><a class="production" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#background-size">&lt;‘background-size’></a>
+     <tr>
+      <th>Initial:
+      <td>120% 120%
+   </table>
+   <h3 class="heading settled" data-level="2.3" id="filter-resolution"><span class="secno">2.3. </span><span class="content">Controlling the Resolution of a Filter: the <a class="property" data-link-type="propdesc" href="#descdef-filter-resolution">resolution</a> descriptor</span><a class="self-link" href="#filter-resolution"></a></h3>
+   <table class="def descdef">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn class="css" data-dfn-for="@filter" data-dfn-type="descriptor" data-export="" id="descdef-filter-resolution">resolution<a class="self-link" href="#descdef-filter-resolution"></a></dfn>
+     <tr>
+      <th>For:
+      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-filter">@filter</a>
+     <tr>
+      <th>Value:
+      <td class="prod">auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#resolution-value">&lt;resolution></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#mult-num-range">{1,2}</a>
+     <tr>
+      <th>Initial:
+      <td>auto
+   </table>
+   <h2 class="heading settled" data-level="3" id="vars"><span class="secno">3. </span><span class="content">Using Variable References in <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> Descriptors</span><a class="self-link" href="#vars"></a></h2>
+   <p>All of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#at-rule">at-rules</a> defined in this specification allow variable references
+(the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-variables-1/#funcdef-var">var()</a> function)
+in their descriptors,
+in addition to whatever else their syntax states.
+During parsing, these are interpreted identically to the use of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-variables-1/#funcdef-var">var()</a> in CSS properties—<wbr>they "turn off" syntax validation during parsing,
+reverting the descriptor to containing an arbitrary token stream.</p>
+   <p>Variables are substituted at time-of-use,
+based on the values of <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom properties</a> on the element referencing the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule.</p>
+   <p class="note" role="note">Note: Thus, a single <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule can have its variables filled in with multiple different values,
+if it’s referenced by multiple different elements.
+Each reference is a separate "instance" for this purpose.</p>
+   <p class="note" role="note">Note: This should also work for <span class="css">@apply</span> in the same way.
+Need to generalize/define the concept of "variable reference" to include that.</p>
+   <h2 class="heading settled" data-level="4" id="filter-primitive"><span class="secno">4. </span><span class="content">Filter Primitive Rules</span><a class="self-link" href="#filter-primitive"></a></h2>
+   <p>The <dfn data-dfn-type="dfn" data-export="" id="filter-primitive-rules">filter primitive rules<a class="self-link" href="#filter-primitive-rules"></a></dfn> are a set of at-rules that define the behavior of a filter.
+They’re only valid within the top-level of an <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule;
+if found anywhere else, they’re invalid and must be ignored.</p>
+   <h3 class="heading settled" data-level="4.1" id="common"><span class="secno">4.1. </span><span class="content">Common Descriptors</span><a class="self-link" href="#common"></a></h3>
+   <p>All <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rules</a> accept the following descriptors,
+and interpret them in the same way:</p>
+   <table class="def descdef">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-position">position<a class="self-link" href="#descdef-blend-position"></a></dfn>
+     <tr>
+      <th>For:
+      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a>
+     <tr>
+      <th>Value:
+      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-backgrounds-3/#position">&lt;position></a>
+     <tr>
+      <th>Initial:
+      <td>-10% -10%
+   </table>
+   <table class="def descdef">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-size">size<a class="self-link" href="#descdef-blend-size"></a></dfn>
+     <tr>
+      <th>For:
+      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a>
+     <tr>
+      <th>Value:
+      <td class="prod"><a class="production" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#background-size">&lt;‘background-size’></a>
+     <tr>
+      <th>Initial:
+      <td>120% 120%
+   </table>
+   <p>These two are interpreted the same as for <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a>.</p>
+   <table class="def descdef">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-in">in<a class="self-link" href="#descdef-blend-in"></a></dfn>
+     <tr>
+      <th>For:
+      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a>
+     <tr>
+      <th>Value:
+      <td class="prod">auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> source-graphic <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> source-alpha <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> background-image <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> background-alpha <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> fill-paint <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> stroke-paint <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#string-value">&lt;string></a>
+     <tr>
+      <th>Initial:
+      <td>auto
+   </table>
+   <p>The <a class="property" data-link-type="propdesc" href="#descdef-blend-in">in</a> descriptor specifies what the input to the filter is.
+Values are defined as follows:</p>
+   <dl>
+    <dt><dfn class="css" data-dfn-for="@blend/in" data-dfn-type="value" data-export="" id="valdef-blend-in-auto">auto<a class="self-link" href="#valdef-blend-in-auto"></a></dfn> 
+    <dd>
+      If this is specified on the first <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> in a <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule,
+		it behaves as <span class="css">source-graphic</span>. 
+     <p>Otherwise, the input is the output of the <em>previous <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> in the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule.</em></p>
+     <em> </em>
+    <dt><em><dfn class="css" data-dfn-for="@blend/in" data-dfn-type="value" data-export="" id="valdef-blend-in-string"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#string-value">&lt;string></a><a class="self-link" href="#valdef-blend-in-string"></a></dfn> </em>
+    <dd><em> Refers to the nearest preceding <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> which specified the same string as its <a class="property" data-link-type="propdesc" href="#descdef-blend-result">result</a> descriptor. <p>If there is no such preceding <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a>,
+		this causes a <a data-link-type="dfn" href="#filter-error">filter error</a>.</p> </em>
+    <dt><em>etc </em>
+    <dd><em> Same as SVG. </em>
+   </dl>
+   <em> <table class="def descdef"><tbody><tr><th>Name:</th><td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-result">result<a class="self-link" href="#descdef-blend-result"></a></dfn></td></tr><tr><th>For:</th><td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a></td></tr><tr><th>Value:</th><td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#string-value">&lt;string></a></td></tr><tr><th>Initial:</th><td>none</td></tr></tbody></table> <p>The <a class="property" data-link-type="propdesc" href="#descdef-blend-result">result</a> descriptor gives the output of a <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> a name,
+so it can be referred to by later <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rules</a> in the same <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule.</p> <p class="note" role="note">Note: In most common cases it is not necessary to specify this,
+as the value of one <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> is fed directly into the following <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> by default.</p> <h2 class="heading settled" data-level="5" id="at-blend"><span class="secno">5. </span><span class="content">Compositing Two Images: the <a class="css" data-link-type="maybe" href="#at-ruledef-blend">@blend</a> filter primitive rule</span><a class="self-link" href="#at-blend"></a></h2> <p>The <dfn class="css" data-dfn-type="at-rule" data-export="" id="at-ruledef-blend">@blend<a class="self-link" href="#at-ruledef-blend"></a></dfn> rule composites two inputs together into a single output.</p> <table class="def descdef"><tbody><tr><th>Name:</th><td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-in2">in2<a class="self-link" href="#descdef-blend-in2"></a></dfn></td></tr><tr><th>For:</th><td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a></td></tr><tr><th>Value:</th><td class="prod"><a class="production" data-link-type="propdesc" href="#descdef-blend-in">&lt;‘in’></a></td></tr><tr><th>Initial:</th><td>auto</td></tr></tbody></table> <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-blend">@blend</a> rule requires two inputs.
+The <a class="property" data-link-type="propdesc" href="#descdef-blend-in2">in2</a> descriptor specifies the second input.</p> <table class="def descdef"><tbody><tr><th>Name:</th><td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-mode">mode<a class="self-link" href="#descdef-blend-mode"></a></dfn></td></tr><tr><th>For:</th><td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a></td></tr><tr><th>Value:</th><td class="prod">normal <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> multiply <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> screen <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> darken <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> lighten</td></tr><tr><th>Initial:</th><td>normal</td></tr></tbody></table> <p>The <a class="property" data-link-type="propdesc" href="#descdef-blend-mode">mode</a> descriptor specifies how the two inputs are to be blended together.
+The values are defined in the SVG spec.</p> </em>
+  </main>
+  <em> <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2> <h3 class="heading settled" id="document-conventions"><span class="content"> Document conventions</span><a class="self-link" href="#document-conventions"></a></h3> <p>Conformance requirements are expressed with a combination of
+	descriptive assertions and RFC 2119 terminology. The key words “MUST”,
+	“MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”,
+	“RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative parts of this
+	document are to be interpreted as described in RFC 2119.
+	However, for readability, these words do not appear in all uppercase
+	letters in this specification. </p><p>All of the text of this specification is normative except sections
+	explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p><p>Examples in this specification are introduced with the words “for example”
+	or are set apart from the normative text with <code>class="example"</code>,
+	like this: </p><div class="example" id="example-52448c84"><a class="self-link" href="#example-52448c84"></a> <p>This is an example of an informative example. </p></div> <p>Informative notes begin with the word “Note” and are set apart from the
+	normative text with <code>class="note"</code>, like this: </p><p class="note" role="note">Note, this is an informative note. </p><p>Advisements are normative sections styled to evoke special attention and are
+	set apart from other normative text with <code>&lt;strong class="advisement"></code>, like
+	this: <strong class="advisement"> UAs MUST provide an accessible alternative. </strong> </p><h3 class="heading settled" id="conform-classes"><span class="content"> Conformance classes</span><a class="self-link" href="#conform-classes"></a></h3> <p>Conformance to this specification
+	is defined for three conformance classes: </p><dl> <dt>style sheet </dt><dd>A <a href="http://www.w3.org/TR/CSS2/conform.html#style-sheet">CSS
+			style sheet</a>. </dd><dt>renderer </dt><dd>A <a href="http://www.w3.org/TR/CSS2/conform.html#user-agent">UA</a> that interprets the semantics of a style sheet and renders
+			documents that use them. </dd><dt>authoring tool </dt><dd>A <a href="http://www.w3.org/TR/CSS2/conform.html#user-agent">UA</a> that writes a style sheet. </dd></dl> <p>A style sheet is conformant to this specification
+	if all of its statements that use syntax defined in this module are valid
+	according to the generic CSS grammar and the individual grammars of each
+	feature defined in this module. </p><p>A renderer is conformant to this specification
+	if, in addition to interpreting the style sheet as defined by the
+	appropriate specifications, it supports all the features defined
+	by this specification by parsing them correctly
+	and rendering the document accordingly. However, the inability of a
+	UA to correctly render a document due to limitations of the device
+	does not make the UA non-conformant. (For example, a UA is not
+	required to render color on a monochrome monitor.) </p><p>An authoring tool is conformant to this specification
+	if it writes style sheets that are syntactically correct according to the
+	generic CSS grammar and the individual grammars of each feature in
+	this module, and meet all other conformance requirements of style sheets
+	as described in this module. </p><h3 class="heading settled" id="conform-responsible"><span class="content"> Requirements for Responsible Implementation of CSS</span><a class="self-link" href="#conform-responsible"></a></h3> <p>The following sections define several conformance requirements
+		for implementing CSS responsibly,
+		in a way that promotes interoperability in the present and future. </p><h4 class="heading settled" id="conform-partial"><span class="content"> Partial Implementations</span><a class="self-link" href="#conform-partial"></a></h4> <p>So that authors can exploit the forward-compatible parsing rules to assign fallback values, <strong>CSS renderers <em>must</em> treat as invalid
+		(and <a href="http://www.w3.org/TR/CSS2/conform.html#ignore">ignore as appropriate</a>)
+		any at-rules, properties, property values, keywords, and other syntactic constructs
+		for which they have no usable level of support</strong>.
+		In particular, user agents <em>must not</em> selectively ignore
+		unsupported property values and honor supported values in a single multi-value property declaration:
+		if any value is considered invalid (as unsupported values must be),
+		CSS requires that the entire declaration be ignored. </p><h4 class="heading settled" id="conform-future-proofing"><span class="content"> Implementations of Unstable and Proprietary Features</span><a class="self-link" href="#conform-future-proofing"></a></h4> <p>To avoid clashes with future stable CSS features,
+		the CSSWG recommends <a href="http://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="http://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="http://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS. </p><h4 class="heading settled" id="conform-testing"><span class="content"> Implementations of CR-level Features</span><a class="self-link" href="#conform-testing"></a></h4> <p>Once a specification reaches the Candidate Recommendation stage,
+		implementers should release an <a data-link-type="dfn" href="http://www.w3.org/TR/CSS/#vendor-prefix">unprefixed</a> implementation
+		of any CR-level feature they can demonstrate
+		to be correctly implemented according to spec,
+		and should avoid exposing a prefixed variant of that feature. </p><p>To establish and maintain the interoperability of CSS across
+		implementations, the CSS Working Group requests that non-experimental
+		CSS renderers submit an implementation report (and, if necessary, the
+		testcases used for that implementation report) to the W3C before
+		releasing an unprefixed implementation of any CSS features. Testcases
+		submitted to W3C are subject to review and correction by the CSS
+		Working Group. </p><p>Further information on submitting testcases and implementation reports
+		can be found from on the CSS Working Group’s website at <a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
+		Questions should be directed to the <a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a> mailing list. </p></em>
+  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="index">
+   <li><a href="#valdef-blend-in-auto">auto</a><span>, in §4.1</span>
+   <li><a href="#at-ruledef-blend">@blend</a><span>, in §5</span>
+   <li><a href="#at-ruledef-filter">@filter</a><span>, in §2</span>
+   <li><a href="#filter-error">filter error</a><span>, in §2.1</span>
+   <li><a href="#filter-primitive-rules">filter primitive rules</a><span>, in §4</span>
+   <li><a href="#descdef-blend-in">in</a><span>, in §4.1</span>
+   <li><a href="#descdef-blend-in2">in2</a><span>, in §5</span>
+   <li><a href="#descdef-blend-mode">mode</a><span>, in §5</span>
+   <li><a href="#null-filter">null filter</a><span>, in §2.1</span>
+   <li>
+    position
+    <ul>
+     <li><a href="#descdef-filter-position">descriptor for @filter</a><span>, in §2.2</span>
+     <li><a href="#descdef-blend-position">descriptor for @blend</a><span>, in §4.1</span>
+    </ul>
+   <li><a href="#descdef-filter-resolution">resolution</a><span>, in §2.3</span>
+   <li><a href="#descdef-blend-result">result</a><span>, in §4.1</span>
+   <li>
+    size
+    <ul>
+     <li><a href="#descdef-filter-size">descriptor for @filter</a><span>, in §2.2</span>
+     <li><a href="#descdef-blend-size">descriptor for @blend</a><span>, in §4.1</span>
+    </ul>
+   <li><a href="#valdef-blend-in-string">&lt;string></a><span>, in §4.1</span>
+  </ul>
+  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio" href="#biblio-css-backgrounds-3">[css-backgrounds-3]</a> defines the following terms:
+    <ul>
+     <li><a href="https://drafts.csswg.org/css-backgrounds-3/#position">&lt;position></a>
+     <li><a href="https://drafts.csswg.org/css-backgrounds-3/#background-size">background-size</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio" href="#biblio-css-syntax-3">[css-syntax-3]</a> defines the following terms:
+    <ul>
+     <li><a href="https://drafts.csswg.org/css-syntax-3/#at-rule">at-rule</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio" href="#biblio-css-values-3">[css-values]</a> defines the following terms:
+    <ul>
+     <li><a href="https://drafts.csswg.org/css-values-3/#resolution-value">&lt;resolution></a>
+     <li><a href="https://drafts.csswg.org/css-values-3/#string-value">&lt;string></a>
+     <li><a href="https://drafts.csswg.org/css-values-3/#mult-num-range">{a,b}</a>
+     <li><a href="https://drafts.csswg.org/css-values-3/#comb-one">|</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio" href="#biblio-css-variables-1">[css-variables-1]</a> defines the following terms:
+    <ul>
+     <li><a href="https://drafts.csswg.org/css-variables-1/#custom-property">custom property</a>
+     <li><a href="https://drafts.csswg.org/css-variables-1/#funcdef-var">var()</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio" href="#biblio-filters-1">[filters-1]</a> defines the following terms:
+    <ul>
+     <li><a href="https://drafts.fxtf.org/filters-1/#propdef-filter">filter</a>
+    </ul>
+  </ul>
+  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <dl>
+   <dt id="biblio-css-backgrounds-3"><a class="self-link" href="#biblio-css-backgrounds-3"></a>[CSS-BACKGROUNDS-3]
+   <dd>CSS Backgrounds and Borders Module Level 3 URL: <a href="https://drafts.csswg.org/css-backgrounds-3/">https://drafts.csswg.org/css-backgrounds-3/</a>
+   <dt id="biblio-css-syntax-3"><a class="self-link" href="#biblio-css-syntax-3"></a>[CSS-SYNTAX-3]
+   <dd>Tab Atkins Jr.; Simon Sapin. <a href="http://dev.w3.org/csswg/css-syntax/">CSS Syntax Module Level 3</a>. 20 February 2014. CR. URL: <a href="http://dev.w3.org/csswg/css-syntax/">http://dev.w3.org/csswg/css-syntax/</a>
+   <dt id="biblio-css-values"><a class="self-link" href="#biblio-css-values"></a>[CSS-VALUES]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="http://dev.w3.org/csswg/css-values/">CSS Values and Units Module Level 3</a>. 11 June 2015. CR. URL: <a href="http://dev.w3.org/csswg/css-values/">http://dev.w3.org/csswg/css-values/</a>
+   <dt id="biblio-css-variables-1"><a class="self-link" href="#biblio-css-variables-1"></a>[CSS-VARIABLES-1]
+   <dd>Tab Atkins Jr.. <a href="http://dev.w3.org/csswg/css-variables/">CSS Custom Properties for Cascading Variables Module Level 1</a>. 3 December 2015. CR. URL: <a href="http://dev.w3.org/csswg/css-variables/">http://dev.w3.org/csswg/css-variables/</a>
+   <dt id="biblio-filters-1"><a class="self-link" href="#biblio-filters-1"></a>[FILTERS-1]
+   <dd>Filter Effects Level 1 URL: <a href="https://drafts.fxtf.org/filters-1/">https://drafts.fxtf.org/filters-1/</a>
+   <dt id="biblio-rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[RFC2119]
+   <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+  </dl>
+  <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
+  <p>No properties defined.</p>
+  <h3 class="no-num no-ref heading settled" id="blend-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a> Descriptors</span><a class="self-link" href="#blend-descriptor-table"></a></h3>
+  <div class="big-element-wrapper">
+   <table class="index">
+    <thead>
+     <tr>
+      <th scope="col">Name
+      <th scope="col">Value
+      <th scope="col">Initial
+    <tbody>
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-position">position</a>
+      <td>&lt;position>
+      <td>-10% -10%
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-size">size</a>
+      <td>&lt;‘background-size’>
+      <td>120% 120%
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-in">in</a>
+      <td>auto | source-graphic | source-alpha | background-image | background-alpha | fill-paint | stroke-paint | &lt;string>
+      <td>auto
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-result">result</a>
+      <td>none | &lt;string>
+      <td>none
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-in2">in2</a>
+      <td>&lt;‘in’>
+      <td>auto
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-mode">mode</a>
+      <td>normal | multiply | screen | darken | lighten
+      <td>normal
+   </table>
+  </div>
+  <h3 class="no-num no-ref heading settled" id="filter-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="#at-ruledef-filter">@filter</a> Descriptors</span><a class="self-link" href="#filter-descriptor-table"></a></h3>
+  <div class="big-element-wrapper">
+   <table class="index">
+    <thead>
+     <tr>
+      <th scope="col">Name
+      <th scope="col">Value
+      <th scope="col">Initial
+    <tbody>
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-position">position</a>
+      <td>&lt;position>
+      <td>-10% -10%
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-size">size</a>
+      <td>&lt;‘background-size’>
+      <td>120% 120%
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-resolution">resolution</a>
+      <td>auto | &lt;resolution>{1,2}
+      <td>auto
+   </table>
+  </div>

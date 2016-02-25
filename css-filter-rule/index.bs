@@ -1,0 +1,196 @@
+<pre class='metadata'>
+Title: CSS Filter Rule
+Shortname: css-filter-rule
+Level: 1
+Status: ED
+Group: CSSWG
+URL: http://tabatkins.github.io/specs/css-filter-rule/
+Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/
+Abstract: The CSS 'filter' property allows an author to apply a number of useful visual filters to an element. Unfortunately, CSS only provides a few built-in filters for direct use; for anything more advanced, an author has to write an SVG document to define a <{filter}> element and then reference it via URL. This specification defines the ''@filter'' rule, which allows complex filters to be defined in a CSS stylesheet, avoiding the need to write a separate document in a different language.
+</pre>
+
+Introduction {#intro}
+=====================
+
+This spec is a <em>very</em> rough draft. I'm not gonna try for precise wording here; you'll get the gist. Details can be nailed down when we take this seriously.
+
+Defining Complex Filters in CSS: the ''@filter'' rule {#filter-rule}
+====================================================================
+
+The syntax of an ''@filter'' rule is:
+
+<pre class=prod>
+<dfn at-rule>@filter</dfn> = @filter <custom-ident> { <declaration-list> }
+</pre>
+
+The ''@filter'' rule accepts a handful of descriptors,
+described in later subsections,
+but is mostly filled by other <a>filter primitive rules</a>,
+such as ''@blend''.
+The presense of unknown descriptors,
+or at-rules other than <a>filter primitive rules</a>,
+are invalid and cause those descriptors/rules to be ignored,
+but do not make the ''@filter'' rule invalid.
+
+Note: Equivalents of filterUnits and primitiveUnits are intentionally not included.
+The *Units properties are a weird SVG-ism caused by the fact that they only have two units - integers and percentages.
+CSS doesn't need this.
+
+Filter Errors {#filter-errors}
+------------------------------
+
+Some mistakes in defining a ''@filter'' rule or its contents can cause a <dfn export>filter error</dfn>.
+When a ''@filter'' rule or its contents cause a <a>filter error</a>,
+the ''@filter'' rule represents the <a>null filter</a>,
+regardless of what else it specifies.
+
+The <dfn export>null filter</dfn> has no effect--
+its output is exactly equivalent to its input.
+
+Sizing the Filter Region: the '@filter/position' and '@filter/size' descriptors {#filter-size}
+----------------------------------------------------------------------------------------
+
+<pre class="descdef">
+Name: position
+For: @filter
+Value: <<position>>
+Initial: -10% -10%
+</pre>
+
+<pre class="descdef">
+Name: size
+For: @filter
+Value: <<'background-size'>>
+Initial: 120% 120%
+</pre>
+
+Controlling the Resolution of a Filter: the '@filter/resolution' descriptor {#filter-resolution}
+-----------------------------------------------------------------------------------------------
+
+<pre class=descdef>
+Name: resolution
+For: @filter
+Value: auto | <<resolution>>{1,2}
+Initial: auto
+</pre>
+
+
+Using Variable References in ''@filter'' Descriptors {#vars}
+============================================================
+
+All of the <a>at-rules</a> defined in this specification allow variable references
+(the ''var()'' function)
+in their descriptors,
+in addition to whatever else their syntax states.
+During parsing, these are interpreted identically to the use of ''var()'' in CSS properties--
+they "turn off" syntax validation during parsing,
+reverting the descriptor to containing an arbitrary token stream.
+
+Variables are substituted at time-of-use,
+based on the values of <a>custom properties</a> on the element referencing the ''@filter'' rule.
+
+Note: Thus, a single ''@filter'' rule can have its variables filled in with multiple different values,
+if it's referenced by multiple different elements.
+Each reference is a separate "instance" for this purpose.
+
+Note: This should also work for ''@apply'' in the same way.
+Need to generalize/define the concept of "variable reference" to include that.
+
+
+Filter Primitive Rules {#filter-primitive}
+==========================================
+
+The <dfn export>filter primitive rules</dfn> are a set of at-rules that define the behavior of a filter.
+They're only valid within the top-level of an ''@filter'' rule;
+if found anywhere else, they're invalid and must be ignored.
+
+Common Descriptors {#common}
+----------------------------
+
+All <a>filter primitive rules</a> accept the following descriptors,
+and interpret them in the same way:
+
+<pre class="descdef">
+Name: position
+For: @blend
+Value: <<position>>
+Initial: -10% -10%
+</pre>
+
+<pre class="descdef">
+Name: size
+For: @blend
+Value: <<'background-size'>>
+Initial: 120% 120%
+</pre>
+
+These two are interpreted the same as for ''@filter''.
+
+<pre class="descdef">
+Name: in
+For: @blend
+Value: auto | source-graphic | source-alpha | background-image | background-alpha | fill-paint | stroke-paint | <<string>>
+Initial: auto
+</pre>
+
+The 'in' descriptor specifies what the input to the filter is.
+Values are defined as follows:
+
+<dl dfn-type=value dfn-for="@blend/in">
+	<dt><dfn>auto</dfn>
+	<dd>
+		If this is specified on the first <a>filter primitive rule</a> in a ''@filter'' rule,
+		it behaves as ''source-graphic''.
+
+		Otherwise, the input is the output of the <em>previous</a> <a>filter primitive rule</a> in the ''@filter'' rule.
+
+	<dt><dfn><<string>></dfn>
+	<dd>
+		Refers to the nearest preceding <a>filter primitive rule</a> which specified the same string as its 'result' descriptor.
+
+		If there is no such preceding <a>filter primitive rule</a>,
+		this causes a <a>filter error</a>.
+
+	<dt>etc
+	<dd>
+		Same as SVG.
+</dl>
+
+<pre class="descdef">
+Name: result
+For: @blend
+Value: none | <<string>>
+Initial: none
+</pre>
+
+The 'result' descriptor gives the output of a <a>filter primitive rule</a> a name,
+so it can be referred to by later <a>filter primitive rules</a> in the same ''@filter'' rule.
+
+Note: In most common cases it is not necessary to specify this,
+as the value of one <a>filter primitive rule</a>
+is fed directly into the following <a>filter primitive rule</a> by default.
+
+Compositing Two Images: the ''@blend'' filter primitive rule {#at-blend}
+========================================================================
+
+The <dfn>@blend</dfn> rule composites two inputs together into a single output.
+
+<pre class='descdef'>
+Name: in2
+For: @blend
+Value: <<'in'>>
+Initial: auto
+</pre>
+
+The ''@blend'' rule requires two inputs.
+The '@blend/in2' descriptor specifies the second input.
+
+<pre class='descdef'>
+Name: mode
+For: @blend
+Value: normal | multiply | screen | darken | lighten
+Initial: normal
+</pre>
+
+The '@blend/mode' descriptor specifies how the two inputs are to be blended together.
+The values are defined in the SVG spec.
