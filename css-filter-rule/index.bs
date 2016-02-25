@@ -46,6 +46,13 @@ regardless of what else it specifies.
 The <dfn export>null filter</dfn> has no effect--
 its output is exactly equivalent to its input.
 
+Referring to ''@filter'' Rules {#refs}
+--------------------------------------
+
+Issue: I'm currently requiring filter names to be <<custom-ident>>s - can we just accept that as an ident in the 'filter' property?
+Or maybe we can relax that and just prevent filter names from being "none" or the global keywords,
+like ''@counter-style'' does, ugh.
+
 Sizing the Filter Region: the '@filter/position' and '@filter/size' descriptors {#filter-size}
 ----------------------------------------------------------------------------------------
 

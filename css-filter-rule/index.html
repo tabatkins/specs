@@ -1268,8 +1268,9 @@ Parts of this work may be from another specification document.  If so, those par
      <a href="#filter-rule"><span class="secno">2</span> <span class="content">Defining Complex Filters in CSS: the <span class="css">@filter</span> rule</span></a>
      <ol class="toc">
       <li><a href="#filter-errors"><span class="secno">2.1</span> <span class="content">Filter Errors</span></a>
-      <li><a href="#filter-size"><span class="secno">2.2</span> <span class="content">Sizing the Filter Region: the <span class="property">position</span> and <span class="property">size</span> descriptors</span></a>
-      <li><a href="#filter-resolution"><span class="secno">2.3</span> <span class="content">Controlling the Resolution of a Filter: the <span class="property">resolution</span> descriptor</span></a>
+      <li><a href="#refs"><span class="secno">2.2</span> <span class="content">Referring to <span class="css">@filter</span> Rules</span></a>
+      <li><a href="#filter-size"><span class="secno">2.3</span> <span class="content">Sizing the Filter Region: the <span class="property">position</span> and <span class="property">size</span> descriptors</span></a>
+      <li><a href="#filter-resolution"><span class="secno">2.4</span> <span class="content">Controlling the Resolution of a Filter: the <span class="property">resolution</span> descriptor</span></a>
      </ol>
     <li><a href="#vars"><span class="secno">3</span> <span class="content">Using Variable References in <span class="css">@filter</span> Descriptors</span></a>
     <li>
@@ -1296,6 +1297,7 @@ Parts of this work may be from another specification document.  If so, those par
       <li><a href="#blend-descriptor-table"><span class="secno"></span> <span class="content"><span>@blend</span> Descriptors</span></a>
       <li><a href="#filter-descriptor-table"><span class="secno"></span> <span class="content"><span>@filter</span> Descriptors</span></a>
      </ol>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
    </ol>
   </nav>
   <main>
@@ -1322,7 +1324,11 @@ When a <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</
 the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule represents the <a data-link-type="dfn" href="#null-filter">null filter</a>,
 regardless of what else it specifies.</p>
    <p>The <dfn data-dfn-type="dfn" data-export="" id="null-filter">null filter<a class="self-link" href="#null-filter"></a></dfn> has no effect—<wbr>its output is exactly equivalent to its input.</p>
-   <h3 class="heading settled" data-level="2.2" id="filter-size"><span class="secno">2.2. </span><span class="content">Sizing the Filter Region: the <a class="property" data-link-type="propdesc" href="#descdef-filter-position">position</a> and <a class="property" data-link-type="propdesc" href="#descdef-filter-size">size</a> descriptors</span><a class="self-link" href="#filter-size"></a></h3>
+   <h3 class="heading settled" data-level="2.2" id="refs"><span class="secno">2.2. </span><span class="content">Referring to <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> Rules</span><a class="self-link" href="#refs"></a></h3>
+   <p class="issue" id="issue-ed7e2870"><a class="self-link" href="#issue-ed7e2870"></a> I’m currently requiring filter names to be <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#identifier-value">&lt;custom-ident></a>s - can we just accept that as an ident in the <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filters-1/#propdef-filter">filter</a> property?
+Or maybe we can relax that and just prevent filter names from being "none" or the global keywords,
+like <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style">@counter-style</a> does, ugh.</p>
+   <h3 class="heading settled" data-level="2.3" id="filter-size"><span class="secno">2.3. </span><span class="content">Sizing the Filter Region: the <a class="property" data-link-type="propdesc" href="#descdef-filter-position">position</a> and <a class="property" data-link-type="propdesc" href="#descdef-filter-size">size</a> descriptors</span><a class="self-link" href="#filter-size"></a></h3>
    <table class="def descdef">
     <tbody>
      <tr>
@@ -1353,7 +1359,7 @@ regardless of what else it specifies.</p>
       <th>Initial:
       <td>120% 120%
    </table>
-   <h3 class="heading settled" data-level="2.3" id="filter-resolution"><span class="secno">2.3. </span><span class="content">Controlling the Resolution of a Filter: the <a class="property" data-link-type="propdesc" href="#descdef-filter-resolution">resolution</a> descriptor</span><a class="self-link" href="#filter-resolution"></a></h3>
+   <h3 class="heading settled" data-level="2.4" id="filter-resolution"><span class="secno">2.4. </span><span class="content">Controlling the Resolution of a Filter: the <a class="property" data-link-type="propdesc" href="#descdef-filter-resolution">resolution</a> descriptor</span><a class="self-link" href="#filter-resolution"></a></h3>
    <table class="def descdef">
     <tbody>
      <tr>
@@ -1481,15 +1487,15 @@ The values are defined in the SVG spec.</p> </em>
    <li>
     position
     <ul>
-     <li><a href="#descdef-filter-position">descriptor for @filter</a><span>, in §2.2</span>
+     <li><a href="#descdef-filter-position">descriptor for @filter</a><span>, in §2.3</span>
      <li><a href="#descdef-blend-position">descriptor for @blend</a><span>, in §4.1</span>
     </ul>
-   <li><a href="#descdef-filter-resolution">resolution</a><span>, in §2.3</span>
+   <li><a href="#descdef-filter-resolution">resolution</a><span>, in §2.4</span>
    <li><a href="#descdef-blend-result">result</a><span>, in §4.1</span>
    <li>
     size
     <ul>
-     <li><a href="#descdef-filter-size">descriptor for @filter</a><span>, in §2.2</span>
+     <li><a href="#descdef-filter-size">descriptor for @filter</a><span>, in §2.3</span>
      <li><a href="#descdef-blend-size">descriptor for @blend</a><span>, in §4.1</span>
     </ul>
    <li><a href="#valdef-blend-in-string">&lt;string></a><span>, in §4.1</span>
@@ -1503,6 +1509,11 @@ The values are defined in the SVG spec.</p> </em>
      <li><a href="https://drafts.csswg.org/css-backgrounds-3/#background-size">background-size</a>
     </ul>
    <li>
+    <a data-link-type="biblio" href="#biblio-css-counter-styles-3">[css-counter-styles-3]</a> defines the following terms:
+    <ul>
+     <li><a href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style">@counter-style</a>
+    </ul>
+   <li>
     <a data-link-type="biblio" href="#biblio-css-syntax-3">[css-syntax-3]</a> defines the following terms:
     <ul>
      <li><a href="https://drafts.csswg.org/css-syntax-3/#at-rule">at-rule</a>
@@ -1510,6 +1521,7 @@ The values are defined in the SVG spec.</p> </em>
    <li>
     <a data-link-type="biblio" href="#biblio-css-values-3">[css-values]</a> defines the following terms:
     <ul>
+     <li><a href="https://drafts.csswg.org/css-values-3/#identifier-value">&lt;custom-ident></a>
      <li><a href="https://drafts.csswg.org/css-values-3/#resolution-value">&lt;resolution></a>
      <li><a href="https://drafts.csswg.org/css-values-3/#string-value">&lt;string></a>
      <li><a href="https://drafts.csswg.org/css-values-3/#mult-num-range">{a,b}</a>
@@ -1532,6 +1544,8 @@ The values are defined in the SVG spec.</p> </em>
   <dl>
    <dt id="biblio-css-backgrounds-3"><a class="self-link" href="#biblio-css-backgrounds-3"></a>[CSS-BACKGROUNDS-3]
    <dd>CSS Backgrounds and Borders Module Level 3 URL: <a href="https://drafts.csswg.org/css-backgrounds-3/">https://drafts.csswg.org/css-backgrounds-3/</a>
+   <dt id="biblio-css-counter-styles-3"><a class="self-link" href="#biblio-css-counter-styles-3"></a>[CSS-COUNTER-STYLES-3]
+   <dd>Tab Atkins Jr.. <a href="http://dev.w3.org/csswg/css-counter-styles/">CSS Counter Styles Level 3</a>. 11 June 2015. CR. URL: <a href="http://dev.w3.org/csswg/css-counter-styles/">http://dev.w3.org/csswg/css-counter-styles/</a>
    <dt id="biblio-css-syntax-3"><a class="self-link" href="#biblio-css-syntax-3"></a>[CSS-SYNTAX-3]
    <dd>Tab Atkins Jr.; Simon Sapin. <a href="http://dev.w3.org/csswg/css-syntax/">CSS Syntax Module Level 3</a>. 20 February 2014. CR. URL: <a href="http://dev.w3.org/csswg/css-syntax/">http://dev.w3.org/csswg/css-syntax/</a>
    <dt id="biblio-css-values"><a class="self-link" href="#biblio-css-values"></a>[CSS-VALUES]
@@ -1602,4 +1616,10 @@ The values are defined in the SVG spec.</p> </em>
       <td>auto | &lt;resolution>{1,2}
       <td>auto
    </table>
+  </div>
+  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue"> I’m currently requiring filter names to be <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#identifier-value">&lt;custom-ident></a>s - can we just accept that as an ident in the <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filters-1/#propdef-filter">filter</a> property?
+Or maybe we can relax that and just prevent filter names from being "none" or the global keywords,
+like <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style">@counter-style</a> does, ugh.<a href="#issue-ed7e2870"> ↵ </a></div>
   </div>
