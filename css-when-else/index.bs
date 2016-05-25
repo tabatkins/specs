@@ -115,6 +115,12 @@ There cannot be anything between the successive <a>conditional group rules</a>
 other than whitespace and/or comments;
 any other token "breaks" the chain.
 
+Issue: Should we require that only the last ''@else'' in a chain can have an omitted condition?
+It's not uncommon for me, when debugging code,
+to short-circuit an if-else chain by setting one of them to "true";
+I presume that would be similarly useful in CSS?
+It's still pretty easy to see you've done something wrong if you omit the condition accidentally.
+
 Within a <a>conditional rule chain</a>,
 the conditions of each <a>conditional group rule</a> are evaluated in order.
 If one of them is true,

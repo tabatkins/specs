@@ -1516,12 +1516,17 @@ starting with a <a data-link-type="dfn" href="https://drafts.csswg.org/css-condi
 followed by zero or more <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-5">@else</a> rules.
 There cannot be anything between the successive <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rules</a> other than whitespace and/or comments;
 any other token "breaks" the chain.</p>
+   <p class="issue" id="issue-38595c95"><a class="self-link" href="#issue-38595c95"></a> Should we require that only the last <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-6">@else</a> in a chain can have an omitted condition?
+It’s not uncommon for me, when debugging code,
+to short-circuit an if-else chain by setting one of them to "true";
+I presume that would be similarly useful in CSS?
+It’s still pretty easy to see you’ve done something wrong if you omit the condition accidentally.</p>
    <p>Within a <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-4">conditional rule chain</a>,
 the conditions of each <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rule</a> are evaluated in order.
 If one of them is true,
 the conditions of all <em>following</em> <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rules</a> in the chain must evaluate to false,
 regardless of what they contain.</p>
-   <p>An <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-6">@else</a> rule that is not part of a <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-5">conditional rule chain</a> is invalid and must be ignored.</p>
+   <p>An <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-7">@else</a> rule that is not part of a <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-5">conditional rule chain</a> is invalid and must be ignored.</p>
    <div class="example" id="example-07637608">
     <a class="self-link" href="#example-07637608"></a> For example, here’s a (somewhat silly) conditional chain: 
 <pre class="lang-css highlight"><span class="n">@when</span> <span class="nf">media</span><span class="p">((</span>width <span class="nt">>= 400px) and (pointer: fine)) and supports(display: flex) </span><span class="p">{</span>
@@ -1779,6 +1784,11 @@ regardless of what they contain.</p>
    <div class="issue"> Define "boolean algebra, with X as leaves" in a generic way in Conditional,
 so all the conditional rules can reference it directly,
 rather than having to redefine boolean algebra on their own.<a href="#issue-84e8178b"> ↵ </a></div>
+   <div class="issue"> Should we require that only the last <a class="css" data-link-type="maybe" href="#at-ruledef-else">@else</a> in a chain can have an omitted condition?
+It’s not uncommon for me, when debugging code,
+to short-circuit an if-else chain by setting one of them to "true";
+I presume that would be similarly useful in CSS?
+It’s still pretty easy to see you’ve done something wrong if you omit the condition accidentally.<a href="#issue-38595c95"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="at-ruledef-when">
    <b><a href="#at-ruledef-when">#at-ruledef-when</a></b><b>Referenced in:</b>
@@ -1804,7 +1814,7 @@ rather than having to redefine boolean algebra on their own.<a href="#issue-84e8
    <b><a href="#at-ruledef-else">#at-ruledef-else</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-at-ruledef-else-1">1. Introduction</a>
-    <li><a href="#ref-for-at-ruledef-else-2">3. Chained Conditionals: the @else rule</a> <a href="#ref-for-at-ruledef-else-3">(2)</a> <a href="#ref-for-at-ruledef-else-4">(3)</a> <a href="#ref-for-at-ruledef-else-5">(4)</a> <a href="#ref-for-at-ruledef-else-6">(5)</a>
+    <li><a href="#ref-for-at-ruledef-else-2">3. Chained Conditionals: the @else rule</a> <a href="#ref-for-at-ruledef-else-3">(2)</a> <a href="#ref-for-at-ruledef-else-4">(3)</a> <a href="#ref-for-at-ruledef-else-5">(4)</a> <a href="#ref-for-at-ruledef-else-6">(5)</a> <a href="#ref-for-at-ruledef-else-7">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="conditional-rule-chain">
