@@ -169,21 +169,19 @@ An ''@else-if'' or ''@else'' rule that is not part of a <a>conditional rule chai
 			}
 		}
 		@media not ((width >= 400px) and (pointer: fine)) {
-			@supports not (display: flex) {
-				@supports (caret-color: pink) and (background: double-rainbow()) {
-					/* B */
-				}
-				@supports not ((caret-color: pink) and (background: double-rainbow())) {
-					/* C */
-				}
+			@supports (caret-color: pink) and (background: double-rainbow()) {
+				/* B */
 			}
-
+			@supports not ((caret-color: pink) and (background: double-rainbow())) {
+				/* C */
+			}
 		}
 	</pre>
 
 	This is simultaneously impossible to read,
 	requires significant duplication of both conditions and contents,
-	and is <em>very</em> difficult to write correctly.
+	and is <em>very</em> difficult to write correctly
+	(I wrote it wrong <em>twice</em> while producing this example).
 	If the conditions got any more complicated
 	(which is not unusual in real-world content),
 	the example would get <em>significantly</em> worse.

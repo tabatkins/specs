@@ -1526,8 +1526,8 @@ If one of them is true,
 the conditions of all <em>following</em> <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rules</a> in the chain must evaluate to false,
 regardless of what they contain.</p>
    <p>An <a class="css" data-link-type="maybe" href="#at-ruledef-else-if" id="ref-for-at-ruledef-else-if-6">@else-if</a> or <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-6">@else</a> rule that is not part of a <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-5">conditional rule chain</a> is invalid and must be ignored.</p>
-   <div class="example" id="example-5e22494e">
-    <a class="self-link" href="#example-5e22494e"></a> For example, here’s a (somewhat silly) conditional chain: 
+   <div class="example" id="example-9ca31f56">
+    <a class="self-link" href="#example-9ca31f56"></a> For example, here’s a (somewhat silly) conditional chain: 
 <pre class="lang-css highlight"><span class="n">@if</span> <span class="nf">media</span><span class="p">((</span>width <span class="nt">>= 400px) and (pointer: fine)) and supports(display: flex) </span><span class="p">{</span>
   <span class="c">/* A */</span>
 <span class="p">}</span>
@@ -1560,19 +1560,17 @@ regardless of what they contain.</p>
   }
 }
 @media not ((width >= 400px) and (pointer: fine)) {
-  @supports not (display: flex) {
-    @supports (caret-color: pink) and (background: double-rainbow()) {
-      /* B */
-    }
-    @supports not ((caret-color: pink) and (background: double-rainbow())) {
-      /* C */
-    }
+  @supports (caret-color: pink) and (background: double-rainbow()) {
+    /* B */
   }
-
+  @supports not ((caret-color: pink) and (background: double-rainbow())) {
+    /* C */
+  }
 }</pre>
     <p>This is simultaneously impossible to read,
 	requires significant duplication of both conditions and contents,
-	and is <em>very</em> difficult to write correctly.
+	and is <em>very</em> difficult to write correctly
+	(I wrote it wrong <em>twice</em> while producing this example).
 	If the conditions got any more complicated
 	(which is not unusual in real-world content),
 	the example would get <em>significantly</em> worse.</p>
