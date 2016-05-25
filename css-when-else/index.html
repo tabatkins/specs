@@ -1391,7 +1391,7 @@ Possible extra rowspan handling
 .highlight .il { color: #000000 } /* Literal.Number.Integer.Long */
         .highlight { background: hsl(24, 20%, 95%); }
         code.highlight { padding: .1em; border-radius: .3em; }
-        pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
+        xmp.highlight, pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
         </style>
  <body class="h-entry">
   <div class="head">
@@ -1428,7 +1428,7 @@ Parts of this work may be from another specification document.  If so, those par
    <ol class="toc" role="directory">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
     <li><a href="#when-rule"><span class="secno">2</span> <span class="content">Generalized Conditional Rules: the <span class="css">@when</span> rule</span></a>
-    <li><a href="#chains"><span class="secno">3</span> <span class="content">Chained Conditionals: the <span class="css">@else-when</span> and <span class="css">@else</span> rules</span></a>
+    <li><a href="#else-rule"><span class="secno">3</span> <span class="content">Chained Conditionals: the <span class="css">@else</span> rule</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -1468,7 +1468,7 @@ which is harder to read and write,
 presupposes the conditions are to be conjoined with the "and" boolean relation
 (with no easy way to indicate anything else),
 and restricts their utility in the proposed <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-1">conditional rule chains</a>.</p>
-   <p>Second, it proposes the introduction of <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-1">@else</a> and <a class="css" data-link-type="maybe" href="#at-ruledef-else-when" id="ref-for-at-ruledef-else-when-1">@else-when</a> rules,
+   <p>Second, it proposes the introduction of <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-1">@else</a> rules,
 which follow conditional rules
 and automatically qualify their conditions as you’d expect,
 such that at most one rule in an <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-2">conditional rule chain</a> is chosen as active.</p>
@@ -1490,7 +1490,7 @@ rather than having to redefine boolean algebra on their own.</p>
 </pre>
    <p>A <a class="css" data-link-type="maybe" href="#funcdef-media" id="ref-for-funcdef-media-3">media()</a> or <a class="css" data-link-type="maybe" href="#funcdef-supports" id="ref-for-funcdef-supports-3">supports()</a> function is associated the boolean result
 that its contained condition is associated with.</p>
-   <h2 class="heading settled" data-level="3" id="chains"><span class="secno">3. </span><span class="content">Chained Conditionals: the <a class="css" data-link-type="maybe" href="#at-ruledef-else-when" id="ref-for-at-ruledef-else-when-2">@else-when</a> and <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-2">@else</a> rules</span><a class="self-link" href="#chains"></a></h2>
+   <h2 class="heading settled" data-level="3" id="else-rule"><span class="secno">3. </span><span class="content">Chained Conditionals: the <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-2">@else</a> rule</span><a class="self-link" href="#else-rule"></a></h2>
    <p>Usually, <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rules</a> are independent;
 each one has a separate condition,
 evaluated without direct reference to any other rule,
@@ -1500,24 +1500,20 @@ based solely on their condition.</p>
 but makes it difficult to write a collection of conditionals that are meant to be mutually exclusive;
 authors have to very carefully craft their conditions to not activate when the other rules are meant to,
 and make sure the collection of conditionals don’t accidentally <em>all</em> exclude some situation.</p>
-   <p>The <dfn class="dfn-paneled css" data-dfn-type="at-rule" data-export="" id="at-ruledef-else-when">@else-when</dfn> and <dfn class="dfn-paneled css" data-dfn-type="at-rule" data-export="" id="at-ruledef-else">@else</dfn> rules are <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rules</a> that form <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-3">conditional rule chains</a>,
+   <p>The <dfn class="dfn-paneled css" data-dfn-type="at-rule" data-export="" id="at-ruledef-else">@else</dfn> rule is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rule</a> used to form <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-3">conditional rule chains</a>,
 which allow multiple conditional rules to be provided
 and guarantee that at most one of them will evaluate their condition as true.
-They are defined as:</p>
-<pre class="prod">@else-when <a class="production" data-link-type="type">&lt;boolean-condition></a> {
-  <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-stylesheet">&lt;stylesheet></a>
-}
-
-@else {
+It is defined as:</p>
+<pre class="prod">@else <a class="production" data-link-type="type">&lt;boolean-condition></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#mult-opt">?</a> {
   <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-stylesheet">&lt;stylesheet></a>
 }
 </pre>
-   <p><a class="css" data-link-type="maybe" href="#at-ruledef-else-when" id="ref-for-at-ruledef-else-when-3">@else-when</a> is interpreted identically to <a class="css" data-link-type="maybe" href="#at-ruledef-when" id="ref-for-at-ruledef-when-4">@when</a>. <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-3">@else</a> is interpreted identically to <a class="css" data-link-type="maybe" href="#at-ruledef-when" id="ref-for-at-ruledef-when-5">@when</a>,
-but is treated as having a condition that is always true.</p>
+   <p><a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-3">@else</a> is interpreted identically to <a class="css" data-link-type="maybe" href="#at-ruledef-when" id="ref-for-at-ruledef-when-4">@when</a>.
+If its <a class="production css" data-link-type="type">&lt;boolean-condition></a> is omitted,
+it’s treated as having a condition that’s always true.</p>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="conditional-rule-chain">conditional rule chain</dfn> is a series of consecutive <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rules</a>,
-starting with a <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rule</a> other than <a class="css" data-link-type="maybe" href="#at-ruledef-else-when" id="ref-for-at-ruledef-else-when-4">@else-when</a> or <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-4">@else</a>,
-followed by zero or more <a class="css" data-link-type="maybe" href="#at-ruledef-else-when" id="ref-for-at-ruledef-else-when-5">@else-when</a> rules,
-optionally ended by an <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-5">@else</a> rule.
+starting with a <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rule</a> other than <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-4">@else</a>,
+followed by zero or more <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-5">@else</a> rules.
 There cannot be anything between the successive <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rules</a> other than whitespace and/or comments;
 any other token "breaks" the chain.</p>
    <p>Within a <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-4">conditional rule chain</a>,
@@ -1525,22 +1521,20 @@ the conditions of each <a data-link-type="dfn" href="https://drafts.csswg.org/cs
 If one of them is true,
 the conditions of all <em>following</em> <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rules</a> in the chain must evaluate to false,
 regardless of what they contain.</p>
-   <p>An <a class="css" data-link-type="maybe" href="#at-ruledef-else-when" id="ref-for-at-ruledef-else-when-6">@else-when</a> or <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-6">@else</a> rule that is not part of a <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-5">conditional rule chain</a> is invalid and must be ignored.</p>
-   <div class="example" id="example-822daa3c">
-    <a class="self-link" href="#example-822daa3c"></a> For example, here’s a (somewhat silly) conditional chain: 
+   <p>An <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-6">@else</a> rule that is not part of a <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-5">conditional rule chain</a> is invalid and must be ignored.</p>
+   <div class="example" id="example-07637608">
+    <a class="self-link" href="#example-07637608"></a> For example, here’s a (somewhat silly) conditional chain: 
 <pre class="lang-css highlight"><span class="n">@when</span> <span class="nf">media</span><span class="p">((</span>width <span class="nt">>= 400px) and (pointer: fine)) and supports(display: flex) </span><span class="p">{</span>
   <span class="c">/* A */</span>
-<span class="p">}</span> <span class="n">@else-when</span> <span class="nf">supports</span><span class="p">((</span>caret-color<span class="nt">: pink) or (background: double-rainbow()) </span><span class="p">{</span>
+<span class="p">}</span> <span class="n">@else</span> <span class="nf">supports</span><span class="p">((</span>caret-color<span class="nt">: pink) or (background: double-rainbow()) </span><span class="p">{</span>
   <span class="c">/* B */</span>
 <span class="p">}</span> <span class="n">@else</span> <span class="err">{</span>
   <span class="c">/* C */</span>
 <span class="p">}</span></pre>
     <p>Exactly one of the preceding rules will be chosen,
 	even tho the second rule
-	(the <a class="css" data-link-type="maybe" href="#at-ruledef-else-when" id="ref-for-at-ruledef-else-when-7">@else-when</a>)
 	doesn’t exclude large widths, fine points, or flexbox support,
 	and the last rule
-	(the <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-7">@else</a>)
 	doesn’t specify anything at all.</p>
     <p>To achieve the same result without <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-6">conditional rule chains</a>,
 	you’d need to write:</p>
@@ -1725,7 +1719,6 @@ regardless of what they contain.</p>
   <ul class="index">
    <li><a href="#conditional-rule-chain">conditional rule chain</a><span>, in §3</span>
    <li><a href="#at-ruledef-else">@else</a><span>, in §3</span>
-   <li><a href="#at-ruledef-else-when">@else-when</a><span>, in §3</span>
    <li><a href="#funcdef-media">media()</a><span>, in §2</span>
    <li><a href="#funcdef-supports">supports()</a><span>, in §2</span>
    <li><a href="#at-ruledef-when">@when</a><span>, in §2</span>
@@ -1753,6 +1746,7 @@ regardless of what they contain.</p>
    <li>
     <a data-link-type="biblio">[css-values]</a> defines the following terms:
     <ul>
+     <li><a href="https://drafts.csswg.org/css-values-3/#mult-opt">?</a>
      <li><a href="https://drafts.csswg.org/css-values-3/#comb-one">|</a>
     </ul>
    <li>
@@ -1791,7 +1785,7 @@ rather than having to redefine boolean algebra on their own.<a href="#issue-84e8
    <ul>
     <li><a href="#ref-for-at-ruledef-when-1">1. Introduction</a> <a href="#ref-for-at-ruledef-when-2">(2)</a>
     <li><a href="#ref-for-at-ruledef-when-3">2. Generalized Conditional Rules: the @when rule</a>
-    <li><a href="#ref-for-at-ruledef-when-4">3. Chained Conditionals: the @else-when and @else rules</a> <a href="#ref-for-at-ruledef-when-5">(2)</a>
+    <li><a href="#ref-for-at-ruledef-when-4">3. Chained Conditionals: the @else rule</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="funcdef-media">
@@ -1806,25 +1800,18 @@ rather than having to redefine boolean algebra on their own.<a href="#issue-84e8
     <li><a href="#ref-for-funcdef-supports-1">2. Generalized Conditional Rules: the @when rule</a> <a href="#ref-for-funcdef-supports-2">(2)</a> <a href="#ref-for-funcdef-supports-3">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="at-ruledef-else-when">
-   <b><a href="#at-ruledef-else-when">#at-ruledef-else-when</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-at-ruledef-else-when-1">1. Introduction</a>
-    <li><a href="#ref-for-at-ruledef-else-when-2">3. Chained Conditionals: the @else-when and @else rules</a> <a href="#ref-for-at-ruledef-else-when-3">(2)</a> <a href="#ref-for-at-ruledef-else-when-4">(3)</a> <a href="#ref-for-at-ruledef-else-when-5">(4)</a> <a href="#ref-for-at-ruledef-else-when-6">(5)</a> <a href="#ref-for-at-ruledef-else-when-7">(6)</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="at-ruledef-else">
    <b><a href="#at-ruledef-else">#at-ruledef-else</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-at-ruledef-else-1">1. Introduction</a>
-    <li><a href="#ref-for-at-ruledef-else-2">3. Chained Conditionals: the @else-when and @else rules</a> <a href="#ref-for-at-ruledef-else-3">(2)</a> <a href="#ref-for-at-ruledef-else-4">(3)</a> <a href="#ref-for-at-ruledef-else-5">(4)</a> <a href="#ref-for-at-ruledef-else-6">(5)</a> <a href="#ref-for-at-ruledef-else-7">(6)</a>
+    <li><a href="#ref-for-at-ruledef-else-2">3. Chained Conditionals: the @else rule</a> <a href="#ref-for-at-ruledef-else-3">(2)</a> <a href="#ref-for-at-ruledef-else-4">(3)</a> <a href="#ref-for-at-ruledef-else-5">(4)</a> <a href="#ref-for-at-ruledef-else-6">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="conditional-rule-chain">
    <b><a href="#conditional-rule-chain">#conditional-rule-chain</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-conditional-rule-chain-1">1. Introduction</a> <a href="#ref-for-conditional-rule-chain-2">(2)</a>
-    <li><a href="#ref-for-conditional-rule-chain-3">3. Chained Conditionals: the @else-when and @else rules</a> <a href="#ref-for-conditional-rule-chain-4">(2)</a> <a href="#ref-for-conditional-rule-chain-5">(3)</a> <a href="#ref-for-conditional-rule-chain-6">(4)</a>
+    <li><a href="#ref-for-conditional-rule-chain-3">3. Chained Conditionals: the @else rule</a> <a href="#ref-for-conditional-rule-chain-4">(2)</a> <a href="#ref-for-conditional-rule-chain-5">(3)</a> <a href="#ref-for-conditional-rule-chain-6">(4)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
