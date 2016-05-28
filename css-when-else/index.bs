@@ -71,8 +71,8 @@ rather than having to redefine boolean algebra on their own.
 The ''media()'' and ''supports()'' functions are defined as:
 
 <pre class=prod>
-<dfn>media()</dfn> = media( [ <<media-query-list>> | <<mf-plain>> | <<mf-boolean>> | <<mf-range>> ] )
-<dfn>supports()</dfn> = supports( [ <<supports-condition>> | <<declaration>> ] )
+<dfn>media()</dfn> = media( [ <<mf-plain>> | <<mf-boolean>> | <<mf-range>> ] )
+<dfn>supports()</dfn> = supports( <<declaration>> )
 </pre>
 
 A ''media()'' or ''supports()'' function is associated the boolean result
@@ -133,9 +133,9 @@ An ''@else'' rule that is not part of a <a>conditional rule chain</a> is invalid
 	For example, here's a (somewhat silly) conditional chain:
 
 	<pre class="lang-css">
-		@when media((width >= 400px) and (pointer: fine)) and supports(display: flex) {
+		@when media(width >= 400px) and media(pointer: fine) and supports(display: flex) {
 			/* A */
-		} @else supports((caret-color: pink) or (background: double-rainbow()) {
+		} @else supports(caret-color: pink) or supports(background: double-rainbow()) {
 			/* B */
 		} @else {
 			/* C */

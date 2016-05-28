@@ -408,15 +408,18 @@
 	}
 
 	/* Style for algorithms */
-	ol.algorithm ol:not(.algorithm) {
+	ol.algorithm ol:not(.algorithm),
+	.algorithm > ol ol:not(.algorithm) {
 	 border-left: 0.5em solid #DEF;
 	}
 
 	/* Style for switch/case <dl>s */
-	dl.switch > dd > ol.only {
+	dl.switch > dd > ol.only,
+	dl.switch > dd > .only > ol {
 	 margin-left: 0;
 	}
-	dl.switch > dd > ol.algorithm {
+	dl.switch > dd > ol.algorithm,
+	dl.switch > dd > .algorithm > ol {
 	 margin-left: -2em;
 	}
 	dl.switch {
@@ -962,10 +965,9 @@ Possible extra rowspan handling
 	/* ToC not indented until third level, but font style & margins show hierarchy */
 	.toc > li             { font-weight: bold;   }
 	.toc > li li          { font-weight: normal; }
-	.toc > li li li       { font-style:  italic; }
-	.toc > li li li li    { font-style:  normal; }
-	.toc > li li li li li { font-style:  italic;
-	                        font-size:   85%;    }
+	.toc > li li li       { font-size:   95%;    }
+	.toc > li li li li    { font-size:   90%;    }
+	.toc > li li li li li { font-size:   85%;    }
 
 	.toc > li             { margin: 1.5rem 0;    }
 	.toc > li li          { margin: 0.3rem 0;    }
@@ -1397,7 +1399,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">CSS When/Else Rules</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-05-25">25 May 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-05-27">27 May 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1412,7 +1414,7 @@ Possible extra rowspan handling
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 25 May 2016,
+In addition, as of 27 May 2016,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -1485,8 +1487,8 @@ but with <a class="css" data-link-type="maybe" href="#funcdef-media" id="ref-for
 so all the conditional rules can reference it directly,
 rather than having to redefine boolean algebra on their own.</p>
    <p>The <a class="css" data-link-type="maybe" href="#funcdef-media" id="ref-for-funcdef-media-2">media()</a> and <a class="css" data-link-type="maybe" href="#funcdef-supports" id="ref-for-funcdef-supports-2">supports()</a> functions are defined as:</p>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export="" id="funcdef-media">media()</dfn> = media( [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-4/#typedef-media-query-list">&lt;media-query-list></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-4/#typedef-mf-plain">&lt;mf-plain></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-4/#typedef-mf-boolean">&lt;mf-boolean></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-4/#typedef-mf-range">&lt;mf-range></a> ] )
-<dfn class="dfn-paneled" data-dfn-type="function" data-export="" id="funcdef-supports">supports()</dfn> = supports( [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition">&lt;supports-condition></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-cascade-4/#typedef-declaration">&lt;declaration></a> ] )
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export="" id="funcdef-media">media()</dfn> = media( [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-4/#typedef-mf-plain">&lt;mf-plain></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-4/#typedef-mf-boolean">&lt;mf-boolean></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-4/#typedef-mf-range">&lt;mf-range></a> ] )
+<dfn class="dfn-paneled" data-dfn-type="function" data-export="" id="funcdef-supports">supports()</dfn> = supports( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-cascade-4/#typedef-declaration">&lt;declaration></a> )
 </pre>
    <p>A <a class="css" data-link-type="maybe" href="#funcdef-media" id="ref-for-funcdef-media-3">media()</a> or <a class="css" data-link-type="maybe" href="#funcdef-supports" id="ref-for-funcdef-supports-3">supports()</a> function is associated the boolean result
 that its contained condition is associated with.</p>
@@ -1527,11 +1529,11 @@ If one of them is true,
 the conditions of all <em>following</em> <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rules</a> in the chain must evaluate to false,
 regardless of what they contain.</p>
    <p>An <a class="css" data-link-type="maybe" href="#at-ruledef-else" id="ref-for-at-ruledef-else-7">@else</a> rule that is not part of a <a data-link-type="dfn" href="#conditional-rule-chain" id="ref-for-conditional-rule-chain-5">conditional rule chain</a> is invalid and must be ignored.</p>
-   <div class="example" id="example-07637608">
-    <a class="self-link" href="#example-07637608"></a> For example, here’s a (somewhat silly) conditional chain: 
-<pre class="lang-css highlight"><span class="n">@when</span> <span class="nf">media</span><span class="p">((</span>width <span class="nt">>= 400px) and (pointer: fine)) and supports(display: flex) </span><span class="p">{</span>
+   <div class="example" id="example-a3ad87c9">
+    <a class="self-link" href="#example-a3ad87c9"></a> For example, here’s a (somewhat silly) conditional chain: 
+<pre class="lang-css highlight"><span class="n">@when</span> <span class="nf">media</span><span class="p">(</span>width <span class="nt">>= 400px) and media(pointer: fine) and supports(display: flex) </span><span class="p">{</span>
   <span class="c">/* A */</span>
-<span class="p">}</span> <span class="n">@else</span> <span class="nf">supports</span><span class="p">((</span>caret-color<span class="nt">: pink) or (background: double-rainbow()) </span><span class="p">{</span>
+<span class="p">}</span> <span class="n">@else</span> <span class="nf">supports</span><span class="p">(</span>caret-color<span class="nt">: pink) or supports(background: double-rainbow()) </span><span class="p">{</span>
   <span class="c">/* B */</span>
 <span class="p">}</span> <span class="n">@else</span> <span class="err">{</span>
   <span class="c">/* C */</span>
@@ -1738,7 +1740,6 @@ regardless of what they contain.</p>
    <li>
     <a data-link-type="biblio">[css-conditional-3]</a> defines the following terms:
     <ul>
-     <li><a href="https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition">&lt;supports-condition></a>
      <li><a href="https://drafts.csswg.org/css-conditional-3/#at-ruledef-media">@media</a>
      <li><a href="https://drafts.csswg.org/css-conditional-3/#at-ruledef-supports">@supports</a>
      <li><a href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rules">conditional group rules</a>
@@ -1757,7 +1758,6 @@ regardless of what they contain.</p>
    <li>
     <a data-link-type="biblio">[mediaqueries-4]</a> defines the following terms:
     <ul>
-     <li><a href="https://drafts.csswg.org/mediaqueries-4/#typedef-media-query-list">&lt;media-query-list></a>
      <li><a href="https://drafts.csswg.org/mediaqueries-4/#typedef-mf-boolean">&lt;mf-boolean></a>
      <li><a href="https://drafts.csswg.org/mediaqueries-4/#typedef-mf-plain">&lt;mf-plain></a>
      <li><a href="https://drafts.csswg.org/mediaqueries-4/#typedef-mf-range">&lt;mf-range></a>
