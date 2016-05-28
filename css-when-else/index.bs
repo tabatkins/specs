@@ -12,7 +12,6 @@ Ignored Terms: <boolean-condition>
 <pre class="link-defaults">
 spec: css-conditional-3
 	type: dfn; text: conditional group rule
-	type: type; text: <supports-condition>
 </pre>
 
 Introduction {#intro}
