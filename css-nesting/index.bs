@@ -5,7 +5,7 @@ Shortname: css-nesting
 Level: 1
 ED: http://tabatkins.github.io/specs/css-nesting/
 Editor: Tab Atkins, Google, http://xanthir.com/contact/
-Abstract: This module introduces the ability to nest one style rule inside another, with the selector of the child rule relative to the selector of the parent rule.  This increase the modularity and maintainability of CSS stylesheets.
+Abstract: This module introduces the ability to nest one style rule inside another, with the selector of the child rule relative to the selector of the parent rule.  This increases the modularity and maintainability of CSS stylesheets.
 Link Defaults: css-color-4 (property) color
 </pre>
 
@@ -150,7 +150,7 @@ Nesting Selector: the ''&'' selector {#nest-selector}
 	it exists because we need to be able to tell simple selectors apart unambiguously
 	when they're directly appended together in a <a>compound selector</a>,
 	and it's not clear from ''.foodiv'' that it should mean the same as ''div.foo''.
-	An ampersand is unambiguously separable from an ident, tho,
+	An ampersand is unambiguously separable from an ident, though,
 	so there is no problem with it preceding a type selector,
 	like ''&div''.
 
