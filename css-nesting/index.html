@@ -1074,7 +1074,7 @@ Parts of this work may be from another specification document.  If so, those par
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
   <div class="p-summary" data-fill-with="abstract">
-   <p>This module introduces the ability to nest one style rule inside another, with the selector of the child rule relative to the selector of the parent rule.  This increase the modularity and maintainability of CSS stylesheets.</p>
+   <p>This module introduces the ability to nest one style rule inside another, with the selector of the child rule relative to the selector of the parent rule.  This increases the modularity and maintainability of CSS stylesheets.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <h2 class="no-num no-toc no-ref heading settled" id="contents"><span class="content">Table of Contents</span></h2>
@@ -1128,7 +1128,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p>CSS Rules for even moderately complicated web pages include lots of duplication for the purpose of styling related content.
 	For example, here is a portion of the CSS markup for one version of the <a data-link-type="biblio" href="#biblio-css3color">[CSS3COLOR]</a> module:</p>
    <div class="example" id="example-0fd3acbb">
-    <a class="self-link" href="#example-0fd3acbb"></a> 
+    <a class="self-link" href="#example-0fd3acbb"></a>
 <pre class="lang-css highlight"><span class="nt">table</span><span class="nc">.colortable</span> <span class="nt">td</span> <span class="p">{</span>
   <span class="k">text-align</span><span class="o">:</span><span class="k">center</span><span class="p">;</span>
 <span class="p">}</span>
@@ -1146,7 +1146,7 @@ Parts of this work may be from another specification document.  If so, those par
    </div>
    <p>Nesting allow the grouping of related style rules, like this:</p>
    <div class="example" id="example-9d52adf0">
-    <a class="self-link" href="#example-9d52adf0"></a> 
+    <a class="self-link" href="#example-9d52adf0"></a>
 <pre class="lang-css highlight"><span class="nt">table</span><span class="nc">.colortable</span> <span class="p">{</span>
   <span class="o">&amp;</span> <span class="n">td</span> <span class="err">{</span>
     <span class="k">text-align</span><span class="o">:</span><span class="k">center</span><span class="p">;</span>
@@ -1179,7 +1179,7 @@ Parts of this work may be from another specification document.  If so, those par
      The <a data-link-type="dfn" href="#nesting-selector">nesting selector</a> can be desugared
 		by replacing it with the parent style rule’s selector,
 		wrapped in a <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#matches-pseudo">:matches()</a> selector.
-		For example, 
+		For example,
 <pre class="lang-css highlight"><span class="nt">a</span><span class="o">,</span> <span class="nt">b</span> <span class="p">{</span>
   <span class="o">&amp;</span> <span class="n">c</span> <span class="err">{</span> <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span> <span class="p">}</span>
 <span class="err">}</span></pre>
@@ -1189,7 +1189,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#specificity">specificity</a> of the <a data-link-type="dfn" href="#nesting-selector">nesting selector</a> is equal to the largest specificity among the parent style rule’s selector
 	that match the given element.</p>
    <div class="example" id="example-36b8cd98">
-    <a class="self-link" href="#example-36b8cd98"></a> For example, given the following style rules: 
+    <a class="self-link" href="#example-36b8cd98"></a> For example, given the following style rules:
 <pre class="lang-css highlight"><span class="nf">#a</span><span class="o">,</span> <span class="nc">.b</span> <span class="p">{</span>
   <span class="o">&amp;</span> <span class="n">c</span> <span class="err">{</span> <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span> <span class="p">}</span>
 <span class="err">}</span></pre>
@@ -1238,7 +1238,7 @@ Parts of this work may be from another specification document.  If so, those par
 	If the selector is a list of selectors,
 	every <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#complex">complex selector</a> in the list must be <a data-link-type="dfn" href="#nest-prefixed">nest-prefixed</a> for the selector as a whole to <a data-link-type="dfn" href="#nest-prefixed">nest-prefixed</a>.</p>
    <div class="example" id="example-0c180746">
-    <a class="self-link" href="#example-0c180746"></a> For example, the following nestings are valid: 
+    <a class="self-link" href="#example-0c180746"></a> For example, the following nestings are valid:
 <pre class="lang-css highlight"><span class="nc">.foo</span> <span class="p">{</span>
   <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
   <span class="o">&amp;</span> <span class="o">></span> <span class="o">.</span><span class="n">bar</span> <span class="err">{</span> <span class="k">color</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span> <span class="p">}</span>
@@ -1321,7 +1321,7 @@ Parts of this work may be from another specification document.  If so, those par
 	which means it contains a <a data-link-type="dfn" href="#nesting-selector">nesting selector</a> in it somewhere.
 	A list of selectors is <a data-link-type="dfn" href="#nest-containing">nest-containing</a> if all of its individual <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#complex">complex selectors</a> are <a data-link-type="dfn" href="#nest-containing">nest-containing</a>.</p>
    <div class="example" id="example-bad4c111">
-    <a class="self-link" href="#example-bad4c111"></a> For example, the following nestings are valid: 
+    <a class="self-link" href="#example-bad4c111"></a> For example, the following nestings are valid:
 <pre class="lang-css highlight"><span class="nc">.foo</span> <span class="p">{</span>
   <span class="k">color</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span>
   <span class="o">@</span><span class="n">nest</span> <span class="o">&amp;</span> <span class="o">></span> <span class="o">.</span><span class="n">bar</span> <span class="err">{</span>
@@ -1383,7 +1383,7 @@ Parts of this work may be from another specification document.  If so, those par
 	determines which declaration "wins" the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-4/#cascade">cascade</a>.</p>
     <h2 class="heading settled" data-level="4" id="cssom"><span class="secno">4. </span><span class="content">CSS Object Model Modifications</span><a class="self-link" href="#cssom"></a></h2>
     <div class="issue" id="issue-a72d3683">
-     <a class="self-link" href="#issue-a72d3683"></a> 
+     <a class="self-link" href="#issue-a72d3683"></a>
      <ol>
       <li data-md="">
        <p>Add an interface for the @nest rule.</p>
