@@ -5,7 +5,7 @@ Shortname: css-nesting
 Level: 1
 ED: http://tabatkins.github.io/specs/css-nesting/
 Editor: Tab Atkins, Google, http://xanthir.com/contact/
-Abstract: This module introduces the ability to nest one style rule inside another, with the selector of the child rule relative to the selector of the parent rule.  This increase the modularity and maintainability of CSS stylesheets.
+Abstract: This module introduces the ability to nest one style rule inside another, with the selector of the child rule relative to the selector of the parent rule.  This increases the modularity and maintainability of CSS stylesheets.
 Link Defaults: css-color-4 (property) color
 </pre>
 
