@@ -131,6 +131,7 @@ Issue: ''fallback'' and ''optional'' can result in some faces in a family being 
 while others are required to fallback,
 giving a "ransom note" look.
 Perhaps require that all fonts in a family have the same behavior (all swapped in, or all fallback)?
+See also the @font-feature-values for controlling the behavior on a font family basis.
 
 
 Controlling Font Display Per Font-Face: the ''@font-face/font-display'' descriptor {#font-display-desc}
@@ -275,6 +276,21 @@ for example, forcing all fonts to have a ''0s'' <a>block period</a>.
 			rather than quitting and going elsewhere because the site takes too long to load.
 		</div>
 </dl>
+
+Controlling Font Display Per Font-Family via ''@font-feature-values''
+===========================
+The '@font-feature-values/font-display' descriptor for ''@font-feature-values''
+determines how a font family is displayed, by setting the "default" font-display value for @font-face rules targeting the same font family.
+In other words, @font-feature-values/font-display will set the value of "font-display:auto" (and its omission) for the @font-face rules of a given font-family.
+
+This can be used to avoid the ransom note effect (i.e. "different loading behavior on different parts of the page") and to customize third party served fonts for which the modification of @font-face rules is not always possible.
+
+<pre class='descdef'>
+Name: font-display
+Value: auto | block | swap | fallback | optional
+Initial: auto
+For: @font-feature-values
+</pre>
 
 <div class='issue'>
 	These names aren't great.
