@@ -80,10 +80,10 @@ Design/performance-conscious web developers have a good sense for the relative i
 This specification provides them the ability to control font timeout and rendering behavior.
 Specifically, it lets developers:
 
-* Define the font rendering strategy when text is ready to be painted: block, or paint with fallback.
-* Define the font rendering behavior once the desired font is available: rerender text with the new font, or leave it with the fallback.
+* Define the font display policy when text is ready to be painted: block, or paint with fallback.
+* Define the font display policy once the desired font is available: rerender text with the new font, or leave it with the fallback.
 * Define custom timeout values for each font.
-* Define custom render and timeout strategies per element.
+* Define custom display and timeout policies per element.
 
 The Font Display Timeline {#timeline}
 =====================================
@@ -159,9 +159,9 @@ for example, forcing all fonts to have a ''0s'' <a>block period</a>.
 <dl dfn-type="value" dfn-for="@font-face/font-display">
 	<dt><dfn>auto</dfn>
 	<dd>
-		The font display strategy is user-agent-defined.
+		The font display policy is user-agent-defined.
 
-		Note: Many browsers have a default strategy similar to that specified by ''block''.
+		Note: Many browsers have a default policy similar to that specified by ''block''.
 
 	<dt><dfn>block</dfn>
 	<dd>
@@ -279,11 +279,12 @@ for example, forcing all fonts to have a ''0s'' <a>block period</a>.
 
 Controlling Font Display Per Font-Family via ''@font-feature-values''
 ===========================
-The '@font-feature-values/font-display' descriptor for ''@font-feature-values''
-determines how a font family is displayed, by setting the "default" font-display value for @font-face rules targeting the same font family.
-In other words, @font-feature-values/font-display will set the value of "font-display:auto" (and its omission) for the @font-face rules of a given font-family.
+The '@font-feature-values/font-display' descriptor for ''@font-feature-values'' determines how a font family is displayed, by setting the "default" font-display value for @font-face rules targeting the same font family.
+When font-display is omitted in an @font-face rule, the user agent uses the font-display value set via the @font-feature-values/font-display for the relevant font-family if one is set, and otherwise defaults to "font-display: auto".
 
-This can be used to avoid the ransom note effect (i.e. "different loading behavior on different parts of the page") and to customize third party served fonts for which the modification of @font-face rules is not always possible.
+This mechanism can be used to set a default display policy for an entire font-family, and enables developers to set a display policy for @font-face rules that are not directly under their control.
+For example, when a font is served by a third-party font foundry, the developer does not control the @font-face rules but is still able to set a default font-display policy for the provided font-family.
+The ability to set a default policy for an entire font-family is also useful to avoid the ransom note effect (i.e. mismatched font faces) because the display policy is then applied to the entire font family.
 
 <pre class='descdef'>
 Name: font-display
