@@ -1,0 +1,181 @@
+<pre class='metadata'>
+Title: CSS Cascade Control
+Shortname: css-cascade-control
+Level: 1
+Status: DREAM
+URL: https://tabatkins.github.io/specs/css-cascade-control/
+Editor: Tab Atkins-Bittner
+Abstract: A proposal to improve the handling of list-value and set-valued properties when one wants to alter them in multiple independent ways, without overriding each other or having to explicitly handle all combinations.
+</pre>
+
+Introduction {#intro}
+=====================
+
+A number of CSS properties are list-valued (background, transition, etc) or set-valued (will-change, etc).
+These can be difficult to manage in an application written by several authors
+(or partially styled by indepedent libraries),
+or even when there's only a single author
+that just wants to style an element in multiple independent ways.
+
+For example,
+a particular class might do some 'transform' work,
+and thus want to set ''will-change: transform'',
+while another class does some 'opacity' changes,
+and thus wants to set ''will-change: opacity''.
+Done naively, if these two classes get set at the same time,
+one will win over the other,
+and 'will-change' will only reflect one of the values.
+
+Currently, the only way to get around this is to explicitly handle the collision,
+manually applying ''will-change: transform, opacity'' when the element matches both classes.
+This sort of explicit collision-handling is unmaintainable,
+and can quickly grow out of control if more cases are added,
+as each one increases the number of combinations to be handled combinatorially.
+(A third class means you need to explicitly handle the 1+2, 1+3, 2+3, and 1+2+3 cases.
+A fourth class means handling 11 different combinations!)
+
+In this spec we propose a few possible mechanisms to handle these situations more elegantly.
+
+Cascade Declarations
+====================
+
+During the <a>cascade</a> process,
+multiple declarations of the same property on a given element
+are sorted in <a>specificity</a> order
+to produce the <a>output of the cascade</a>,
+and then only the last value
+(the one with highest <a>specificity</a>)
+is actually used as the value of that property on the element.
+
+A <dfn>cascade modifier</dfn> is a modifier on a property name
+that makes the property's value depend partially on the
+<dfn>previous cascaded value</dfn>:
+the value for that property that comes before the current value
+(that is, is lower <a>specificity</a>)
+in the <a>output of the cascade</a>.
+
+For any set-valued property with a name 'set-prop',
+the following <a>cascade modifiers</a> exist:
+
+: <dfn>set-prop+</dfn>
+:: Represents the union of its value with the <a>previous cascaded value</a>.
+: <dfn>set-prop-</dfn>
+:: Represents the difference of the <a>previous cascaded value</a> with its value.
+	(That is, the <a>previous cascaded value</a>,
+	minus the current values.)
+: <dfn>set-prop{}</dfn>
+:: Represents the intersection its value with the <a>previous cascaded value</a>.
+
+Issue: This involves defining the "unit" of each set-valued property
+(for example, in 'will-change' each keyword is a "unit"),
+and ensuring that all of them have a "null" value
+(like ''will-change/none'').
+
+For any list-valued property with a name 'list-prop',
+the following <a>cascade modifiers</a> exist:
+
+: <dfn>list-prop+</dfn>
+:: Represents the current value appended to the end of the <a>previous cascaded value</a>.
+: <dfn>+list-prop</dfn>
+:: Represents the current value prepended to the start of the <a>previous cascade value</a>.
+
+Issue: The "unit" of list-valued properties are much easier to define;
+for all but some legacy properties like 'counter-reset',
+it's just splitting on commas.
+
+<div class=issue>
+	Define that, for all of these,
+	we interpret the property as normal first,
+	then split it into units for merging;
+	this isn't variable-style concatenation.
+
+	That is, the following does <em>not</em> define a 2px-offset blue shadow:
+
+	<pre class=lang-css>
+	.foo {
+		box-shadow+: 2px 2px;
+	}
+	.foo {
+		box-shadow+: blue;
+	}
+	</pre>
+
+	As each property is still interpreted <em>as a property</em>,
+	the first is interpreted the same as ''box-shadow: 2px 2px;''
+	(specifying a single drop-shadow set to ''currentcolor''),
+	while the second is simply invalid.
+</div>
+
+Managing Order Explicitly with Variables
+----------------------------------------
+
+Using <a>cascade modifiers</a> directly can achieve a number of useful, simple effects,
+but direct usage doesn't allow a number of common use-cases.
+For example, you can't <em>override</em> a particular <a>cascade modifier</a> with a more specific rule.
+
+<div class=example>
+	For example, take the following:
+
+	<pre class=lang-css>
+	div {
+		background-image: url(base.jpg);
+	}
+	div.foo {
+		+background-image: url(one.jpg);
+	}
+	div.foo.bar {
+		+background-image: url(two.jpg);
+	}
+	</pre>
+
+	This does *not* override the ''one.jpg'' with ''two.jpg'';
+	for an element matching all three rules,
+	it produces an equivalent effect to ''background-image: url(two.jpg), url(one.jpg), url(base.jpg);''.
+
+	In other words, so long as the element matches the ''div.foo'' rule,
+	the value will contain ''url(one.jpg)''.
+
+	(You can override the <em>entire thing</em>
+	with a higher-specificity declaration
+	that doesn't use a <a>cascade modifier</a>,
+	but that overrides the ''base.jpg'' too.
+	There's no way to directly override <em>just</em>
+	one of the modified declarations.)
+</div>
+
+The preferred pattern to achieve this is to use a <a>custom property</a>:
+
+<div class=example>
+	To fix the previous example,
+	so ''base.jpg'' always applies
+	but ''one.jpg'' and ''two.jpg'' apply based on specificity,
+	you can write:
+
+	<pre class=lang-css>
+	div {
+		background-image: url(base.jpg);
+		+background-image: var(--upper-background) !important;
+	}
+	div.foo {
+		--upper-background: url(one.jpg);
+	}
+	div.foo.bar {
+		--upper-background: url(two.jpg);
+	}
+	</pre>
+</div>
+
+<details class=note>
+	<summary>Why not just use variables by themselves? Why the extra complexity?
+
+cascade() Function
+==================
+
+<div class=issue>
+	More directly but slightly more complex,
+	we coudl add a cascade() function
+	that's accepted by all set-valued and list-values properties
+	as a whole "unit".
+	By default it subs in the <a>previous cascaded value</a> for itself,
+	but for set-valued things it needs to offer more functionality to do difference/intersection.
+</div>
