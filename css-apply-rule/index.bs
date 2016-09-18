@@ -216,50 +216,15 @@ It is not invalid, however.
 
 Processing ''@apply'' Rules {#processing}
 =========================================
+To process ''@apply'' rules:
 
-To process ''@apply'' rules
-
-.parent {
---foo: var(--bar);
---bar: var(--foo);
-
---foo: { var(--bar) };
-@apply --foo;
---bar: var(
-
-}
-.child {
-	width: var(--foo);
-}
+1. Inherit as normal.
+2. Do var() substitution into custom properties only.
+3. Do @apply substitution.
+4. Re-do var() substitutions based on new property info.
 
 
 
-.parent {
-	--foo: {--bar: blue;};
-}
-.child {
-	color: var(--bar);
-	@apply --foo;
-	@apply --bar;
-}
-
-
-1. Resolve custom properties.
-2. Resolve @apply.
-3. Resolve errything else.
-
-
---foo: {
-	color: var(--foo);
-	@apply --bar;
-};
-
---foo: var(--bar);
---bar: var(--foo);
-
---foo: { var(--bar) };
-@apply --foo;
---bar: var(--foo);
 
 CSSOM {#cssom}
 ==============
