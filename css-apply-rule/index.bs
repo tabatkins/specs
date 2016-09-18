@@ -5,6 +5,7 @@ Level: 1
 Status: DREAM
 URL: http://tabatkins.github.io/specs/css-apply-rule
 Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/
+Editor: Shane Stephens, Google, shanestephens@google.com
 Abstract: This specification defines the ''@apply'' rule, which allows an author to store a set of properties in a named variable, then reference them in other style rules.
 Link Defaults: css-syntax-3 (dfn) style rule, html (dfn) throw
 Ignored Terms: SyntaxError
@@ -136,6 +137,24 @@ with a value of a {}-wrapped block of properties.
 
 Issue: Need some way to let you opt into cascading when you want it.
 
+Changes to Custom Property Processing {#processing-change}
+----------------------------------------------------------
+
+If the value of a <a>custom property</a> contains an ''@apply'' rule,
+the ''@apply'' rule must be valid according to the specified ''@apply'' grammar.
+If not, the <a>custom property</a> is invalid and must be ignored.
+
+''@apply'' rules in <a>custom property</a> values are substituted at <a>computed value</a> time,
+identically to ''var()'' functions.
+
+For this purpose, an ''@apply'' rule is composed of a sequence of tokens
+starting with the ''@apply'' token,
+and ending at (and including) the first same-level semicolon,
+the end of the <a>simple block</a> the ''@apply'' token is in,
+or the end of the <a>custom property's</a> value.
+
+The computed value of a <a>custom property</a>
+
 Using Custom Sets of Properties: the ''@apply'' rule {#using}
 =============================================================
 
@@ -194,6 +213,53 @@ does not define a valid <a>custom property set</a>,
 the ''@apply'' rule is treated, for the purposes of the cascade, as if it were replaced with nothing.
 It is not invalid, however.
 (For example, it is not dropped from the CSSOM.)
+
+Processing ''@apply'' Rules {#processing}
+=========================================
+
+To process ''@apply'' rules
+
+.parent {
+--foo: var(--bar);
+--bar: var(--foo);
+
+--foo: { var(--bar) };
+@apply --foo;
+--bar: var(
+
+}
+.child {
+	width: var(--foo);
+}
+
+
+
+.parent {
+	--foo: {--bar: blue;};
+}
+.child {
+	color: var(--bar);
+	@apply --foo;
+	@apply --bar;
+}
+
+
+1. Resolve custom properties.
+2. Resolve @apply.
+3. Resolve errything else.
+
+
+--foo: {
+	color: var(--foo);
+	@apply --bar;
+};
+
+--foo: var(--bar);
+--bar: var(--foo);
+
+--foo: { var(--bar) };
+@apply --foo;
+--bar: var(--foo);
 
 CSSOM {#cssom}
 ==============

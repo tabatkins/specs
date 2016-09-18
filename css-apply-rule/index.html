@@ -434,7 +434,6 @@
 
 	img {
 		border-style: none;
-		color: white;
 	}
 
 	figure, div.figure, div.sidefigure {
@@ -909,7 +908,7 @@
 
 	/* Index Lists: Layout */
 	ul.indexlist       { margin-left: 0; columns: 15em; -webkit-columns: 15em; text-indent: 1em hanging; }
-	ul.indexlist li    { margin-left: 0; list-style: none; break-inside: avoid; }
+	ul.indexlist li    { margin-left: 0; list-style: none; break-inside: avoid; word-break: break-word; }
 	ul.indexlist li li { margin-left: 1em }
 	ul.indexlist dl    { margin-top: 0; }
 	ul.indexlist dt    { margin: .2em 0 .2em 20px;}
@@ -1058,7 +1057,6 @@
      <dd><a class="u-url" href="http://tabatkins.github.io/specs/css-apply-rule">http://tabatkins.github.io/specs/css-apply-rule</a>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/tabatkins/specs/issues/">GitHub</a>
-     <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editor:
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="http://xanthir.com/contact/">Tab Atkins-Bittner</a> (<span class="p-org org">Google</span>)
     </dl>
@@ -1107,8 +1105,7 @@ give them names,
 then invoke them throughout the stylesheet.
 This makes it easy to keep a page’s theme consistent when changes are made,
 because the theming values are defined in a central place.</p>
-   <p>But <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom properties</a> can hold more than just values--
-they can also be used to hold sets of declarations.
+   <p>But <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom properties</a> can hold more than just values—<wbr>they can also be used to hold sets of declarations.
 The <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> rule takes these sets of declarations and inlines them in another style rule,
 serving a purpose analogous to what the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-variables-1/#funcdef-var">var()</a> function does for individual values.</p>
    <div class="note" role="note">
@@ -1188,7 +1185,7 @@ you simply use a <a data-link-type="dfn" href="https://drafts.csswg.org/css-vari
     <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
   <span class="p">}</span><span class="o">;</span>
 <span class="err">}</span></pre>
-    <p>Then when an element uses the <a class="property" data-link-type="propdesc">--my-theme</a><a data-link-type="dfn" href="#custom-property-set">custom property set</a>,
+    <p>Then when an element uses the <a class="property" data-link-type="propdesc">--my-theme</a> <a data-link-type="dfn" href="#custom-property-set">custom property set</a>,
 	it will receive <em>only</em> the <span class="css">color:blue</span> declaration.
 	The <span class="css">background:white</span> declaration from the <span class="css">.foo</span> rule is ignored completely,
 	as its rule lost the specificity battle.</p>
@@ -1234,7 +1231,7 @@ the <a class="css" data-link-type="maybe" href="#at-ruledef-apply">@apply</a> ru
 It is not invalid, however.
 (For example, it is not dropped from the CSSOM.)</p>
    <h2 class="heading settled" data-level="4" id="cssom"><span class="secno">4. </span><span class="content">CSSOM</span><a class="self-link" href="#cssom"></a></h2>
-<pre class="idl">interface <dfn class="idl-code" data-dfn-type="interface" data-export="" id="cssapplyrule">CSSApplyRule<a class="self-link" href="#cssapplyrule"></a></dfn> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssrule">CSSRule</a> {
+<pre class="idl">interface <dfn class="idl-code" data-dfn-type="interface" data-export="" id="cssapplyrule">CSSApplyRule<a class="self-link" href="#cssapplyrule"></a></dfn> : <a data-link-type="idl-name" href="https://drafts.csswg.org/css-device-adapt-1/#cssrule">CSSRule</a> {
   attribute DOMString <a class="idl-code" data-link-type="attribute" data-type="DOMString " href="#dom-cssapplyrule-referencedproperty">referencedProperty</a>;
 };
 </pre>
@@ -1255,7 +1252,7 @@ It is not invalid, however.
         However, for readability,
         these words do not appear in all uppercase letters in this specification. </p>
   <p> All of the text of this specification is normative
-        except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a></p>
+        except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p>
   <p> Examples in this specification are introduced with the words “for example”
         or are set apart from the normative text with <code>class="example"</code>, like this: </p>
   <div class="example" id="example-ae2b6bc0"><a class="self-link" href="#example-ae2b6bc0"></a> This is an example of an informative example. </div>
@@ -1283,6 +1280,11 @@ It is not invalid, however.
      <li><a href="https://drafts.csswg.org/css-cascade-4/#cascade">cascade</a>
     </ul>
    <li>
+    <a data-link-type="biblio" href="#biblio-css-device-adapt-1">[css-device-adapt]</a> defines the following terms:
+    <ul>
+     <li><a href="https://drafts.csswg.org/css-device-adapt-1/#cssrule">CSSRule</a>
+    </ul>
+   <li>
     <a data-link-type="biblio" href="#biblio-css-syntax-3">[css-syntax-3]</a> defines the following terms:
     <ul>
      <li><a href="https://drafts.csswg.org/css-syntax-3/#style-rule">style rule</a>
@@ -1298,7 +1300,6 @@ It is not invalid, however.
     <a data-link-type="biblio" href="#biblio-cssom-1">[cssom]</a> defines the following terms:
     <ul>
      <li><a href="https://drafts.csswg.org/cssom-1/#cssgroupingrule">CSSGroupingRule</a>
-     <li><a href="https://drafts.csswg.org/cssom-1/#cssrule">CSSRule</a>
      <li><a href="https://drafts.csswg.org/cssom-1/#cssstylerule">CSSStyleRule</a>
     </ul>
    <li>
@@ -1318,11 +1319,13 @@ It is not invalid, however.
    <dt id="biblio-html"><a class="self-link" href="#biblio-html"></a>[HTML]
    <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-webidl"><a class="self-link" href="#biblio-webidl"></a>[WebIDL]
-   <dd>Cameron McCormack. <a href="http://www.w3.org/TR/WebIDL/">Web IDL</a>. 19 April 2012. CR. URL: <a href="http://www.w3.org/TR/WebIDL/">http://www.w3.org/TR/WebIDL/</a>
+   <dd>Cameron McCormack; Boris Zbarsky. <a href="http://www.w3.org/TR/WebIDL-1/">WebIDL Level 1</a>. 4 August 2015. WD. URL: <a href="http://www.w3.org/TR/WebIDL-1/">http://www.w3.org/TR/WebIDL-1/</a>
    <dt id="biblio-css-backgrounds-3"><a class="self-link" href="#biblio-css-backgrounds-3"></a>[CSS-BACKGROUNDS-3]
    <dd>CSS Backgrounds and Borders Module Level 3 URL: <a href="http://www.w3.org/TR/css3-background/">http://www.w3.org/TR/css3-background/</a>
    <dt id="biblio-css-cascade-4"><a class="self-link" href="#biblio-css-cascade-4"></a>[CSS-CASCADE-4]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="http://www.w3.org/TR/css-cascade-4/">CSS Cascading and Inheritance Level 4</a>. 21 April 2015. WD. URL: <a href="http://www.w3.org/TR/css-cascade-4/">http://www.w3.org/TR/css-cascade-4/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="http://www.w3.org/TR/css-cascade-4/">CSS Cascading and Inheritance Level 4</a>. 8 September 2015. WD. URL: <a href="http://www.w3.org/TR/css-cascade-4/">http://www.w3.org/TR/css-cascade-4/</a>
+   <dt id="biblio-css-device-adapt"><a class="self-link" href="#biblio-css-device-adapt"></a>[CSS-DEVICE-ADAPT]
+   <dd>Rune Lillesveen. <a href="http://www.w3.org/TR/css-device-adapt/">CSS Device Adaptation</a>. 15 September 2011. WD. URL: <a href="http://www.w3.org/TR/css-device-adapt/">http://www.w3.org/TR/css-device-adapt/</a>
    <dt id="biblio-css-syntax-3"><a class="self-link" href="#biblio-css-syntax-3"></a>[CSS-SYNTAX-3]
    <dd>Tab Atkins Jr.; Simon Sapin. <a href="http://www.w3.org/TR/css-syntax-3/">CSS Syntax Module Level 3</a>. 20 February 2014. CR. URL: <a href="http://www.w3.org/TR/css-syntax-3/">http://www.w3.org/TR/css-syntax-3/</a>
    <dt id="biblio-css-variables-1"><a class="self-link" href="#biblio-css-variables-1"></a>[CSS-VARIABLES-1]
@@ -1333,7 +1336,7 @@ It is not invalid, however.
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
   </dl>
   <h2 class="no-num heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
-<pre class="idl">interface <a href="#cssapplyrule">CSSApplyRule</a> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssrule">CSSRule</a> {
+<pre class="idl">interface <a href="#cssapplyrule">CSSApplyRule</a> : <a data-link-type="idl-name" href="https://drafts.csswg.org/css-device-adapt-1/#cssrule">CSSRule</a> {
   attribute DOMString <a class="idl-code" data-link-type="attribute" data-type="DOMString " href="#dom-cssapplyrule-referencedproperty">referencedProperty</a>;
 };
 
