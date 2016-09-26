@@ -46,9 +46,9 @@ Most web browsers have adopted some form of timeout:
 			<td>yes
 		<tr>
 			<th>Safari
-			<td>no timeout
-			<td>n/a
-			<td>n/a
+			<td>3 seconds
+			<td>yes
+			<td>yes
 </table>
 
 * Chrome and Firefox have a 3 second timeout after which the text is shown with the fallback font.
@@ -58,8 +58,6 @@ Most web browsers have adopted some form of timeout:
 	if the requested font is not yet available,
 	fallback is used,
 	and text is rerendered later once the requested font becomes available.
-* Safari has no timeout behavior
-	(or at least nothing beyond a baseline network timeout)
 
 While these default behaviors are reasonable,
 they're unfortunately inconsistent across browsers.
