@@ -1421,7 +1421,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">CSS Cascade Control</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-09-09">9 September 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2016-10-10">10 October 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1436,7 +1436,7 @@ Possible extra rowspan handling
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 9 September 2016,
+In addition, as of 10 October 2016,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -1551,11 +1551,13 @@ it’s just splitting on commas.</p>
 	then split it into units for merging;
 	this isn’t variable-style concatenation. 
     <p>That is, the following does <em>not</em> define a 2px-offset blue shadow:</p>
-<pre class="lang-css highlight"><span></span><span class="nt">.foo </span><span class="p">{</span>box-shadow+: 2px 2px;
+<pre class="lang-css highlight"><span class="nt">.foo </span><span class="p">{</span>
+  box-shadow+: 2px 2px;
 }
 .foo {
   box-shadow+: blue;
-}</pre>
+}
+</pre>
     <p>As each property is still interpreted <em>as a property</em>,
 	the first is interpreted the same as <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#box-shadow">box-shadow: 2px 2px;</a> (specifying a single drop-shadow set to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-currentcolor">currentcolor</a>),
 	while the second is simply invalid.</p>
@@ -1566,14 +1568,16 @@ but direct usage doesn’t allow a number of common use-cases.
 For example, you can’t <em>override</em> a particular <a data-link-type="dfn" href="#cascade-modifier" id="ref-for-cascade-modifier-4">cascade modifier</a> with a more specific rule.</p>
    <div class="example" id="example-ada5a5f2">
     <a class="self-link" href="#example-ada5a5f2"></a> For example, take the following: 
-<pre class="lang-css highlight"><span></span><span class="nt">div </span><span class="p">{</span>
-  <span class="k">background-image</span><span class="p">:</span> <span class="nf">url</span><span class="p">(</span><span class="s">base.jpg</span><span class="p">);</span>
+<pre class="lang-css highlight"><span class="nt">div </span><span class="p">{</span>
+  <span class="k">background-image</span><span class="p">:</span> <span class="nf">url</span><span class="p">(</span><span class="s">base.jpg</span><span class="p">)</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="nt">div.foo </span><span class="p">{</span>+background-image: url(one.jpg);
+<span class="nt">div.foo </span><span class="p">{</span>
+  +background-image: url(one.jpg);
 }
 div.foo.bar {
   +background-image: url(two.jpg);
-}</pre>
+}
+</pre>
     <p>This does *not* override the <span class="css">one.jpg</span> with <span class="css">two.jpg</span>;
 	for an element matching all three rules,
 	it produces an equivalent effect to <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#background-image">background-image: url(two.jpg), url(one.jpg), url(base.jpg);</a>.</p>
@@ -1590,28 +1594,49 @@ div.foo.bar {
 	so <span class="css">base.jpg</span> always applies
 	but <span class="css">one.jpg</span> and <span class="css">two.jpg</span> apply based on specificity,
 	you can write: 
-<pre class="lang-css highlight"><span></span><span class="nt">div </span><span class="p">{</span>
-  <span class="k">background-image</span><span class="p">:</span> <span class="nf">url</span><span class="p">(</span><span class="s">base.jpg</span><span class="p">);</span>+background-image: var(--upper-background) !important;
+<pre class="lang-css highlight"><span class="nt">div </span><span class="p">{</span>
+  <span class="k">background-image</span><span class="p">:</span> <span class="nf">url</span><span class="p">(</span><span class="s">base.jpg</span><span class="p">)</span><span class="p">;</span>
+  +background-image: var(--upper-background) !important;
 }
 div.foo {
   --upper-background: url(one.jpg);
 }
 div.foo.bar {
   --upper-background: url(two.jpg);
-}</pre>
+}
+</pre>
    </div>
-   <details class="note" role="note">
-    <summary>
-     Why not just use variables by themselves? Why the extra complexity? 
-     <h2 class="heading settled" data-level="3" id="cascade-function"><span class="secno">3. </span><span class="content">cascade() Function</span><a class="self-link" href="#cascade-function"></a></h2>
-     <div class="issue" id="issue-363f97c7"><a class="self-link" href="#issue-363f97c7"></a> More directly but slightly more complex,
+   <details class="note">
+    <summary>Why not just use variables by themselves? Why the extra complexity?</summary>
+    <p>The above example could instead be written only using variables,
+	with no cascade controls:</p>
+<pre class="lang-css highlight"><span class="nt">div </span><span class="p">{</span>
+  <span class="k">background-image</span><span class="p">:</span> <span class="nf">var</span><span class="p">(</span>--upper-background<span class="p">,</span> none<span class="p">)</span><span class="p">,</span> <span class="nf">url</span><span class="p">(</span><span class="s">base.jpg</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">div.foo </span><span class="p">{</span>
+  <span class="k">--upper-background</span><span class="p">:</span> <span class="nf">url</span><span class="p">(</span><span class="s">one.jpg</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">div.foo.bar </span><span class="p">{</span>
+  <span class="k">--upper-background</span><span class="p">:</span> <span class="nf">url</span><span class="p">(</span><span class="s">two.jpg</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+    <p>While this works in simple situations,
+	it’s less useful as more things interact.
+	It requires that <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#background-image">background-image</a> never be disturbed;
+	if anything else attempts to set background-image,
+	it’ll wipe out the variable use.
+	The <a data-link-type="dfn" href="#cascade-modifier" id="ref-for-cascade-modifier-6">cascade modifier</a> approach,
+	on the other hand,
+	maintains the images set by the variables
+	even if other code sets the <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#background-image">background-image</a> property.</p>
+   </details>
+   <h2 class="heading settled" data-level="3" id="cascade-function"><span class="secno">3. </span><span class="content">cascade() Function</span><a class="self-link" href="#cascade-function"></a></h2>
+   <div class="issue" id="issue-363f97c7"><a class="self-link" href="#issue-363f97c7"></a> More directly but slightly more complex,
 	we coudl add a cascade() function
 	that’s accepted by all set-valued and list-values properties
 	as a whole "unit".
 	By default it subs in the <a data-link-type="dfn" href="#previous-cascaded-value" id="ref-for-previous-cascaded-value-6">previous cascaded value</a> for itself,
 	but for set-valued things it needs to offer more functionality to do difference/intersection. </div>
-    </summary>
-   </details>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
@@ -1853,11 +1878,13 @@ it’s just splitting on commas.<a href="#issue-9e5af580"> ↵ </a></div>
 	then split it into units for merging;
 	this isn’t variable-style concatenation. 
     <p>That is, the following does <em>not</em> define a 2px-offset blue shadow:</p>
-<pre class="lang-css highlight"><span></span><span class="nt">.foo </span><span class="p">{</span>box-shadow+: 2px 2px;
+<pre class="lang-css highlight"><span class="nt">.foo </span><span class="p">{</span>
+  box-shadow+: 2px 2px;
 }
 .foo {
   box-shadow+: blue;
-}</pre>
+}
+</pre>
     <p>As each property is still interpreted <em>as a property</em>,
 	the first is interpreted the same as <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#box-shadow">box-shadow: 2px 2px;</a> (specifying a single drop-shadow set to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-currentcolor">currentcolor</a>),
 	while the second is simply invalid.</p>
@@ -1874,7 +1901,7 @@ it’s just splitting on commas.<a href="#issue-9e5af580"> ↵ </a></div>
    <b><a href="#cascade-modifier">#cascade-modifier</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-cascade-modifier-1">2. Cascade Declarations</a> <a href="#ref-for-cascade-modifier-2">(2)</a>
-    <li><a href="#ref-for-cascade-modifier-3">2.1. Managing Order Explicitly with Variables</a> <a href="#ref-for-cascade-modifier-4">(2)</a> <a href="#ref-for-cascade-modifier-5">(3)</a>
+    <li><a href="#ref-for-cascade-modifier-3">2.1. Managing Order Explicitly with Variables</a> <a href="#ref-for-cascade-modifier-4">(2)</a> <a href="#ref-for-cascade-modifier-5">(3)</a> <a href="#ref-for-cascade-modifier-6">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="previous-cascaded-value">

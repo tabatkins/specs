@@ -166,7 +166,33 @@ The preferred pattern to achieve this is to use a <a>custom property</a>:
 </div>
 
 <details class=note>
-	<summary>Why not just use variables by themselves? Why the extra complexity?
+	<summary>Why not just use variables by themselves? Why the extra complexity?</summary>
+
+	The above example could instead be written only using variables,
+	with no cascade controls:
+
+	<pre class=lang-css>
+	div {
+		background-image: var(--upper-background, none), url(base.jpg);
+	}
+	div.foo {
+		--upper-background: url(one.jpg);
+	}
+	div.foo.bar {
+		--upper-background: url(two.jpg);
+	}
+	</pre>
+
+	While this works in simple situations,
+	it's less useful as more things interact.
+	It requires that 'background-image' never be disturbed;
+	if anything else attempts to set background-image,
+	it'll wipe out the variable use.
+	The <a>cascade modifier</a> approach,
+	on the other hand,
+	maintains the images set by the variables
+	even if other code sets the 'background-image' property.
+</details>
 
 cascade() Function
 ==================
