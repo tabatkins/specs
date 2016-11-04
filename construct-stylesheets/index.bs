@@ -10,14 +10,14 @@ Ignored Terms: ShadowRoot, create a medialist object, add a css style sheet, doc
 </pre>
 
 <pre class='link-defaults'>
-spec:dom-core-ls; type:interface; text:Document
+spec:dom; type:interface; text:Document
 </pre>
 
 Adding Stylesheets In Script {#adding-stylesheets}
 =================================
 
 <pre class='idl'>
-[Constructor(DOMString text, CSSStyleSheetInit? options)]
+[Constructor(DOMString text, optional CSSStyleSheetInit options)]
 partial interface CSSStyleSheet {
 };
 
@@ -55,7 +55,7 @@ ShadowRoot implements TreeScope;
 			set <var>sheet’s</var> alternate flag.
 		4. If the {{CSSStyleSheetInit/disabled}} attribute of <var>options</var> is true,
 			set <var>sheet’s</var> disabled flag.
-		5. <a spec=css-syntax-3>Parse a stylesheet</a> from <var>text</var>.
+		5. <a spec=css-syntax-3>Parse a stylesheet</a> from {{text}}.
 			If it returned a list of rules,
 			and assign the list as <var>sheet’s</var> CSS rules;
 			otherwise,
