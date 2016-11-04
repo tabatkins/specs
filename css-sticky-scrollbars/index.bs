@@ -8,109 +8,47 @@ Editor: Tab Atkins, Google, http://xanthir.com/contact
 Abstract: Scrollbars that "stick" to an edge!
 </pre>
 
-<h2 id='intro'>
-Introduction</h2>
+<pre class=link-defaults>
+spec: css-scroll-snap; type: dfn;
+	text: scroll snap area
+	text: snap
+</pre>
 
-	The "scroll position" of an element--
-	the current point you've scrolled to in a scrollable element--
-	is measured as a length from the start edges of the scroll area.
-	It stays static when the size of the scrollable area changes.
+This Spec Has Been Superseded {#intro}
+======================================
 
-	In most cases, this is fine,
-	but some user interfaces, like chat rooms,
-	add new content to the bottom of an element,
-	and you want to always be looking at the newest content;
-	a static length measured from the top of the element doesn't work well with this.
+This spec has been superseded by other CSS technology.
+In particular, to implement a chatroom
+that "sticks" the scrollbar to the bottom of the scroller when you're near the bottom,
+staying there if you add new messages to the bottom,
+but not messing with your scroll position when you're scrolled elsewhere in the history,
+just use [[css-scroll-snap-1]]:
 
-	Scripting can be used to address this problem,
-	but it's easy to accidentally produce a buggy or hostile behavior,
-	such as scrolling <em>almost</em> to the bottom but not quite all the way,
-	or constantly adjusting the scroll position when you're looking further back in the chat logs
-	and don't care about new content at the moment.
+<pre highlight=css>
+.message-container {
+  scroll-snap-type: proximity;
+}
+.message-container::after {
+  content: "";
+  height: 0;
+  overflow: hidden;
+  display: block;
+  scroll-snap-align: end;
+}
+</pre>
 
-	This module introduces properties to tweak scrolling behavior
-	to handle these kinds of cases correctly and automatically.
+This creates a single <a>scroll snap area</a> in the message container,
+aligned with the very bottom of the container.
+If you scroll "near" the bottom, you'll <a>snap</a> to it;
+if you add more content to the message container
+(thus pushing the ::after further down),
+it'll automatically re-snap to it
+(because <a>scroll containers</a> have to re-snap to the same <a>scroll snap area</a> if it still exists);
+if you are scrolled somewhere else in the history,
+it won't do anything at all.
 
-<h2 id='overflow-anchor'>
-Sticking the Scrollbar to an Edge: the 'overflow-anchor' property</h2>
-
-	<pre class='propdef'>
-	Name: overflow-anchor
-	Value: none | [ [ block-start | block-end ] <<length>>? || [ inline-start | inline-end ] <<length>>? ] ]
-	Initial: none
-	Applies to: scrollable elements
-	Inherited: no
-	Media: visual
-	Computed value: specified value, with <<length>>s made absolute
-	</pre>
-
-	The 'overflow-anchor' property allows certain edges of a scrollable area to be designated as "anchors".
-	If the visible area of a scrollable element is within a certain distance of one of the "anchor edges",
-	then when the size of the scrollable area changes
-	(such as from adding new content,
-		or adjusting the size of content elsewhere in the element),
-	the scroll position is adjusted to maintain the same distance from the "anchor edge".
-
-	<dl dfn-type=value dfn-for=overflow-anchor>
-		<dt><dfn>none</dfn>
-		<dd>
-			No special behavior;
-			the element acts as normal.
-
-		<dt><dfn>[ block-start | block-end ] <<length>>? || [ inline-start | inline-end ] <<length>>? ]</dfn>
-		<dd>
-			Indicates that the edges denoted by the keywords are <a>scroll-anchor edges</a>.
-
-			If a <<length>> is provided,
-			it gives the <a>scroll-anchoring distance</a> for that edge.
-			if omitted,
-			the <a>scroll-anchoring distance</a> for the edge is a UA-defined length.
-
-			Note: It is recommended that UAs default to a distance of ''2em''.
-	</dl>
-
-	Issue: Do we really need the block-start and inline-start values?
-	It seems like their behavior is sufficiently handled by omitting them,
-	or using ''none''.
-
-	Some of the edges of a scrollable element's scrollable area can be <dfn export>scroll-anchor edges</dfn>.
-	Each <a>scroll-anchor edge</a> has a <dfn>scroll-anchoring distance</dfn>,
-	which specifies how far away from the <a>scroll-anchor edge</a> the anchoring effect extends.
-
-	While an element's visible area is scrolled to within the <a>scroll-anchoring distance</a> of a <a>scroll-anchor edge</a>,
-	it is <dfn>scroll-anchored</dfn> to that edge.
-	Whenever the size of the scrollable area changes,
-	if an element is <a>scroll-anchored</a> to any <a>scroll-anchor edges</a>,
-	it must adjust its scroll position to maintain the same distance from that edge
-	as it had before the scrollable area changed size.
-
-	Issue: Obviously this shouldn't play with the scroll position *while* you're scrolling.
-	We don't have a notion of "while the user is scrolling" currently.
-	How do I talk about this?
-
-	<div class='example'>
-		For example, if you're designing a chatroom,
-		new content is added to the end of the chat log.
-
-		<pre>
-			.chat-log {
-				overflow-anchor: block-end;
-			}
-		</pre>
-
-		The above CSS will make it so that,
-		if a user scrolls to the bottom of the chat log,
-		the log will "auto-scroll" to reveal new messages as they come in.
-		However, if the user is scrolled to somewhere in the middle of the chat log
-		to review old messages,
-		nothing special will happen when new messages come in,
-		enabling them to read in peace.
-	</div>
-
-	Issue: Do we need another property for keeping what you're currently looking at stable,
-	regardless of where you are?
-	That way, something like Twitter could just automatically add Tweets as they come in,
-	without disturbing your position in the timeline.
-	It's definitely not part of this property,
-	as this one purposely makes what you're looking at *not* stable,
-	to preserve your *conceptual* position at the "end" of the content.
+The use-case of "stable scrolling",
+where you want "whatever you're currently looking at" to stay on the screen
+when things are added/removed/resized higher up in the scroll container,
+is handled by the <a href="https://skobes.github.io/ScrollAnchoring/">Scroll Anchoring</a> proposal
+currently making its way thru the standards process.
