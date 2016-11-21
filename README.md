@@ -18,3 +18,4 @@ Live copies of the specs:
 * [Font Display Controls](http://tabatkins.github.io/specs/css-font-display)
 * [CSS @apply Rule](http://tabatkins.github.io/specs/css-apply-rule)
 * [SVG Parameters](http://tabatkins.github.io/specs/svg-params)
+* [CSS Cascade Control](https://tabatkins.github.io/specs/css-cascade-control/)
