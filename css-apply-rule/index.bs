@@ -216,6 +216,7 @@ It is not invalid, however.
 
 Processing ''@apply'' Rules {#processing}
 =========================================
+
 To process ''@apply'' rules:
 
 1. Inherit as normal.
