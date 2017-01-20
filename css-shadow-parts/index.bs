@@ -131,15 +131,15 @@ The part attribute is parsed as a comma-separated list of part mappings.
 Each part mapping is one of:
 
 <dl class=switch>
-    : ident
+    : <code>ident</code>
     :: Adds «[ ident → el ]» to the <a>shadow root's</a> <a>shadow part map</a>.
 
-    : ident1 => ident2
+    : <code>ident1 => ident2</code>
     :: If el is a <a>shadow host</a>,
         and it's <a>shadow root's</a> <a>shadow part map</a> |partMap| [=map/contains=] ident1,
         then this adds «[ ident2 → |partMap|[ident1] ]» to the <a>shadow root's</a> <a>shadow part map</a>.
 
-    : * => prefix*
+    : <code>* => prefix*</code>
     :: If el is a <a>shadow host</a>,
         then [=map/for each=] |ident| → |subEl| in el's <a>shadow root's</a> <a>shadow part map</a>,
         «[ prefix + |ident| → |subEl| ]» is added to the <a>shadow root's</a> <a>shadow part map</a>.
