@@ -19,3 +19,4 @@ Live copies of the specs:
 * [CSS @apply Rule](http://tabatkins.github.io/specs/css-apply-rule)
 * [SVG Parameters](http://tabatkins.github.io/specs/svg-params)
 * [CSS Cascade Control](https://tabatkins.github.io/specs/css-cascade-control/)
+* [CSS Shadow Parts](http://tabatkins.github.io/specs/css-shadow-parts)
