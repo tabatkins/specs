@@ -1,0 +1,238 @@
+<pre class='metadata'>
+Title: Unit Problems
+Shortname: unit-problems
+Status: LS
+URL: https://tabatkins.github.com/specs/unit-problems/
+Editor: Tab Atkins-Bittner
+Abstract: An exploration of the problem with Houdini's Typed OM unit treatment, and a solution therein.
+Markup Shorthands: markdown yes
+</pre>
+
+Introduction {#intro}
+=====================
+
+The current [[css-typed-om-1]] approach to unitted valued is incoherent and inextensible.
+There are three distinct object "shapes" employed right now,
+and we're only handling two "types" of units - lengths and angles.
+The inconsistency makes it difficult for authors to predict how to interact with unitted values,
+and limits our ability to innovate in the future.
+The overall approach means we have to invent a large number of different interfaces
+to handle all the different types of unitted values CSS has,
+and completely fails to handle the planned addition
+of custom unit types.
+
+Inconsistency {#inconsistency}
+------------------------------
+
+We're currently using three different "shapes" for unitted value objects:
+
+1. "Simple" lengths (corresponding to values like `5px` or `2em`)
+	have a {value, unit} structure.
+
+2. "Complex" lengths (corresponding to a `calc()` expressions)
+	have a {px, pc, in, em, vw, ...} structure,
+	where each field is an independent entry in the sum-of-values
+	that makes up the calc().
+
+3. "Simple" angles have a {deg, rad, grad, turn} structure,
+	where each field is linked;
+	they all reflect a hidden internal value,
+	so you can write to any field
+	and then read the equivalent value in a different unit
+	from another field.
+	(Such as `x.deg = 180; print(x.turn) // .5`.)
+
+
+Explosion of Types {#type-explosion}
+------------------------------------
+
+While <<length>> has two types--
+simple and `calc()`--
+<<angle>> only has one,
+because all <<angle>>-related `calc()`s can be resolved into a "simple" angle currently.
+
+This ignores the possibility of a future property using <<angle>> and <<percentage>> together
+in a way that isn't immediately resolvable
+(for example, audio properties
+that use % to convey left-to-right progress along the audio stage,
+which has an unknown width),
+or the addition of an <<angle>> unit that doesn't have a fixed conversion ratio
+(like ''em'' or ''vw'' has for <<length>>).
+
+The spec also currently ignores all the *other* types of units,
+which will need to be represented in the Typed OM at some point.
+They'll result in a number of additional interfaces when we support them.
+These interfaces will all need to decide whether they look like {{CSSSimpleLength}} or {{CSSAngleValue}},
+sometimes without any information about the type family
+(for example, the <<flex>> type has only a single unit in it;
+which variant should we choose?).
+
+
+No User Extensibility {#no-extensibility}
+-----------------------------------------
+
+One of the recorded plans for a future Houdini API
+is to allow authors to define custom units for themselves.
+For example,
+there's still a mess of length units
+used by publishers
+which we don't particularly want to add to core CSS
+(we've already added several, like `pc` and `q`),
+but which would be useful for authors using CSS for publishing.
+
+The {{CSSSimpleLength}} interface is compatible with custom units--
+you just express the custom unit in the `.type`.
+(We'll have to relax the attribute into a DOMString,
+and the constructor into `(LengthType or DOMString)`,
+but that's easy.)
+
+The {{CSSCalcLength}} interface is also able to be extended to handle custom units;
+we'll have to extend it to handle *complex* units already
+(when we allow unit algebra),
+and a similar approach will allow arbitrary unit extensions
+(a Map hanging off the side which contains arbitrary additional entries).
+
+But the {{CSSAngleValue}} interface doesn't work at all,
+at least not without some severe awkwardness.
+If you hang a map off the side,
+you need to have magical updating going on whenever you set a value,
+which is difficult to spec right now
+(because Maps don't have a natural way to observe them).
+
+And this doesn't cover brand new units,
+which don't map to any of the existing types,
+at all.
+They don't have a corresponding OM class to live under.
+
+
+Proposal {#proposal}
+====================
+
+<pre class=idl>
+interface CSSDimension {
+	CSSDimension add(CSSDimension value);
+	CSSDimension subtract(CSSDimension value);
+	CSSDimension multiply(double value);
+	CSSDimension divide(double value);
+	static CSSDimension from(DOMString cssText);
+	static CSSDimension from(double value, DOMString type);
+	CSSDimension to(DOMString type);
+};
+
+interface CSSSimpleDimension : CSSDimension {
+	attribute double value;
+	attribute DOMString type;
+};
+
+interface CSSCalcLength : CSSDimension {
+	attribute double? px;
+	attribute double? percent;
+	// ...
+	static CSSDimension from(optional CSSCalcLengthDictionary dictionary);
+};
+
+interface CSSCalcAngle : CSSDimension {
+	attribute double deg;
+	attribute double rad;
+	attribute double grad;
+	attribute double turn;
+	static CSSDimension from(optional CSSCalcAngleDictionary dictionary);
+};
+
+// same for &lt;time> and &lt;frequency>,
+// the only other types allowed in calc() currently
+</pre>
+
+*All* unitted values share the {{CSSSimpleDimension}} interface.
+
+Arithmetic on {{CSSDimension}} values
+throws if the value types aren't compatible
+(just like, today, they'd throw if you passed a {{CSSAngleValue}}
+to {{CSSLengthValue/add()}}).
+Otherwise, it returns the appropriate {{CSSCalc*}} subclass.
+
+The new {{CSSDimension/to()}} method converts from one unit to another.
+It throws if the types aren't convertible
+(such as `px` to `deg`, but also `px` to `em`),
+or if the object is a {{CSSCalc*}}
+and some of its non-zero specified values aren't convertible
+(so `CSSCalcLength({px:5, in:1}).to("px")` is fine,
+but `CSSCalcLength({px:5, em:1}).to("px")` throws).
+Otherwise,
+it returns a new {{CSSSimpleDimension}} with the specified unit.
+
+Consistency {#consistency}
+--------------------------
+
+All unitted values now use the same interface structure.
+You don't need to remember whether something is a <<length>> or <<angle>>
+to know how to get its value out,
+or just guess at less-used unit types;
+they're all `.value`.
+
+All types that are allowed in ''calc()''
+now have corresponding interfaces,
+again all with the same structure.
+As we expand ''calc()'' to allow new types,
+we'll add new classes.
+
+All types that can be converted
+do so with a standard mechanism
+(the {{to()}} method),
+which is short and easy to use.
+
+
+Minimal Types {#minimal-types}
+------------------------------
+
+Rather than needing separate classes for every new kind of unit
+(and who knows about user-defined units),
+we have a single class for all "simple" unitted values,
+and one class per variety of type allowed in calc(),
+which is a small group that grows slowly.
+
+
+User Extensibility {#extensibility}
+-----------------------------------
+
+When user-defined units arrive,
+they'll be handled with the exact same mechanism as any other unit--
+the author will just create a CSSSimpleDimension for them.
+
+For calc()-allowed types,
+all {{CSSCalc*}} classes will use the same mechanism
+to represent user-defined units
+(a Map hanging off the side).
+
+Cons {#cons}
+------------
+
+* Converting between the types of angles is somewhat more difficult.
+	Before you just read the attribute you want, like `x.rad`,
+	now you have to do `x.to("rad").value`.
+	(On the plus side, you can now convert between all the absolute length units,
+	which wasn't previously possible.)
+
+* You could previously tell by standard JS type-testing
+	whether a given unitted value was a length or angle.
+	That's no longer possible unless it's a calc() value;
+	you have to be able to infer that from the unit now.
+
+
+
+Alternatives {#alternatives}
+============================
+
+Instead of the calc() interfaces having explicit attributes for their known units,
+with extra Maps eventually hanging off of them
+for user-defined units
+and complex units,
+we could instead just make them Maplike.
+*All* units would then be treated identically;
+you `.get()` and `.set()` them,
+and can iterate over it to get the values.
+
+This also lets us avoid any name collisions between CSS units
+and future attributes or methods on the objects;
+for example, in the current design we wouldn't be able to ever create a `to` unit,
+as it would clash with the {{to()}} method on the prototype.
