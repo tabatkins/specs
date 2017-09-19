@@ -5,7 +5,7 @@ Abstract: This module defines the ''@extend'' rule, which allows elements to act
 	when some new type of element should act like an existing element,
 	but with tweaks.
 Editor: Tab Atkins, Google, http://xanthir.com
-ED: tabatkins.github.io/specs/css-extend-rule/
+ED: https://tabatkins.github.io/specs/css-extend-rule/
 Status: DREAM
 Shortname: extend-rule
 Level: 1
