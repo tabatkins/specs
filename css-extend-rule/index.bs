@@ -179,7 +179,7 @@ as long as the rule it's inside of matches them.
 <div class='example'>
 	The ''@extend'' rule effectively adds qualities to an element,
 	so that it matches other rules.
-	The selector used to apply the ''@extend'' rule has no effect on this.
+	However, the selector used to apply the ''@extend'' rule still determines the specificity.
 	For example, in the following code:
 
 	<pre class='lang-css'>
@@ -190,24 +190,10 @@ as long as the rule it's inside of matches them.
 	div { @extend .blue-text; }
 	</pre>
 
-	A naive author looking at the code and wondering how a <code>&lt;div id=sidebar></code> element would be styled
-	might assume that it gets red text,
+	The <code>&lt;div id=sidebar></code> element would be styled with red text,
 	as an ID selector is used to ''@extend'' the ''.red-text'' class,
 	versus a much less specific tagname selector.
-	However, this is wrong--
-	the element gets blue text,
-	as the ''.red-text'' and ''.blue-text'' rules have equal specificity,
-	and the ''.blue-text'' rule appears later in the stylesheet.
-	The specificity of the rules that caused the element to match ''.red-text'' or ''.blue-text'' are irrelevant here.
-
-	While this may in some cases be confusing,
-	it can also be a great benefit in some cases.
-	For example,
-	an author can define a lot of styles with simple, one-class (or one <a>placeholder selector</a>) rules,
-	effectively ignoring specificity entirely,
-	then apply them via longer, much more specific selectors,
-	using ''@extend'' to invoke the behavior of the simpler rules.
-	This can allow an author to avoid many of the specificity problems of using IDs in rules, for example.
+	The specificity of the rules that caused the element to extend ''.red-text'' or ''.blue-text'' are relevant here.
 </div>
 
 ''@extend'' Chaining {#extend-chaining}
@@ -244,15 +230,18 @@ not because it's a separate feature that needs to be specifically defined.
 	is equivalent to the following code without ''@extend'':
 
 	<pre class='lang-css'>
-	.error, .serious-error, .super-serious-error {
+	.error {
 		color: red;
 	}
 
-	.serious-error, .super-serious-error {
+	.serious-error {
+		color: red;
 		font-weight: bold;
 	}
 
 	.super-serious-error {
+		color: red;
+		font-weight: bold;
 		animation: flashing 1s infinite;
 	}
 	</pre>
