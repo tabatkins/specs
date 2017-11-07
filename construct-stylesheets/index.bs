@@ -57,7 +57,7 @@ ShadowRoot implements TreeScope;
 			set <var>sheet’s</var> disabled flag.
 		5. <a spec=css-syntax-3>Parse a stylesheet</a> from {{text}}.
 			If it returned a list of rules,
-			also assign the list as <var>sheet’s</var> CSS rules;
+			assign the list as <var>sheet’s</var> CSS rules;
 			otherwise,
 			set <var>sheet’s</var> CSS rules to an empty list.
 		6. Return <var>sheet</var>.
