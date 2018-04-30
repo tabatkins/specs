@@ -19,7 +19,7 @@ Defining Complex Filters in CSS: the ''@filter'' rule {#filter-rule}
 The syntax of an ''@filter'' rule is:
 
 <pre class=prod>
-<dfn at-rule>@filter</dfn> = @filter <custom-ident> { <declaration-list> }
+<dfn at-rule>@filter</dfn> = @filter <<custom-ident>> { <<declaration-list>> }
 </pre>
 
 The ''@filter'' rule accepts a handful of descriptors,

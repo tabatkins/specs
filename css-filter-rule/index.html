@@ -1178,7 +1178,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 951e7b470416b6a5244aaf48ce985558817bcacc" name="generator">
   <link href="http://tabatkins.github.io/specs/css-filter-rule/" rel="canonical">
-  <meta content="1a56e8c99b35caff5a5cee202033288d98dc51a6" name="document-revision">
+  <meta content="e5ed3c7fd56c43ccb045a6ace23e395c43652bb3" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1437,8 +1437,8 @@ Parts of this work may be from another specification document.  If so, those par
    <p>This spec is a <em>very</em> rough draft. I’m not gonna try for precise wording here; you’ll get the gist. Details can be nailed down when we take this seriously.</p>
    <h2 class="heading settled" data-level="2" id="filter-rule"><span class="secno">2. </span><span class="content">Defining Complex Filters in CSS: the <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①">@filter</a> rule</span><a class="self-link" href="#filter-rule"></a></h2>
    <p>The syntax of an <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter②">@filter</a> rule is:</p>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="at-rule" data-export="" id="at-ruledef-filter">@filter</dfn> = @filter <custom-ident> { <declaration-list> }
-</declaration-list></custom-ident></pre>
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="at-rule" data-export="" id="at-ruledef-filter">@filter</dfn> = @filter <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value">&lt;custom-ident></a> { <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-list" id="ref-for-typedef-declaration-list">&lt;declaration-list></a> }
+</pre>
    <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter③">@filter</a> rule accepts a handful of descriptors,
 described in later subsections,
 but is mostly filled by other <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules">filter primitive rules</a>,
@@ -1457,7 +1457,7 @@ the <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-
 regardless of what else it specifies.</p>
    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="null-filter">null filter</dfn> has no effect—<wbr>its output is exactly equivalent to its input.</p>
    <h3 class="heading settled" data-level="2.2" id="refs"><span class="secno">2.2. </span><span class="content">Referring to <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter⑧">@filter</a> Rules</span><a class="self-link" href="#refs"></a></h3>
-   <p class="issue" id="issue-0ebb6d0d"><a class="self-link" href="#issue-0ebb6d0d"></a> I’m currently requiring filter names to be <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value">&lt;custom-ident></a>s - can we just accept that as an ident in the <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filter-effects-1/#propdef-filter" id="ref-for-propdef-filter①">filter</a> property?
+   <p class="issue" id="issue-0ebb6d0d"><a class="self-link" href="#issue-0ebb6d0d"></a> I’m currently requiring filter names to be <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value①">&lt;custom-ident></a>s - can we just accept that as an ident in the <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filter-effects-1/#propdef-filter" id="ref-for-propdef-filter①">filter</a> property?
 Or maybe we can relax that and just prevent filter names from being "none" or the global keywords,
 like <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style" id="ref-for-at-ruledef-counter-style">@counter-style</a> does, ugh.</p>
    <h3 class="heading settled" data-level="2.3" id="filter-size"><span class="secno">2.3. </span><span class="content">Sizing the Filter Region: the <a class="property" data-link-type="propdesc" href="#descdef-filter-position" id="ref-for-descdef-filter-position">position</a> and <a class="property" data-link-type="propdesc" href="#descdef-filter-size" id="ref-for-descdef-filter-size">size</a> descriptors</span><a class="self-link" href="#filter-size"></a></h3>
@@ -1775,6 +1775,7 @@ The values are defined in the SVG spec.</p> </em>
    <li>
     <a data-link-type="biblio">[css-syntax-3]</a> defines the following terms:
     <ul>
+     <li><a href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-list">&lt;declaration-list></a>
      <li><a href="https://drafts.csswg.org/css-syntax-3/#at-rule">at-rule</a>
     </ul>
    <li>
