@@ -10,7 +10,7 @@
  *
  * Indices
  *   - .toc for the Table of Contents (<ol class="toc">)
- *     -> <span class="secno"> for the section numbers
+ *     + <span class="secno"> for the section numbers
  *   - #toc for the Table of Contents (<nav id="toc">)
  *   - ul.index for Indices (<a href="#ref">term</a><span>, in §N.M</span>)
  *   - table.index for Index Tables (e.g. for properties or elements)
@@ -34,6 +34,7 @@
  *   - .note       for informative notes             (div, p, span, aside, details)
  *   - .example    for informative examples          (div, p, pre, span)
  *   - .issue      for issues                        (div, p, span)
+ *   - .assertion  for assertions                    (div, p, span)
  *   - .advisement for loud normative statements     (div, p, strong)
  *   - .annoying-warning for spec obsoletion notices (div, aside, details)
  *
@@ -48,9 +49,9 @@
  *   - ::before styled for CSS-generated issue/example/figure numbers:
  *     -> Documents wishing to use this only need to add
  *        figcaption::before,
- *        .caption::before { content: "Figure "  counter(figure);  }
- *        .example::before { content: "Example " counter(example); }
- *        .issue::before   { content: "Issue "   counter(issue);   }
+ *        .caption::before { content: "Figure "  counter(figure) " ";  }
+ *        .example::before { content: "Example " counter(example) " "; }
+ *        .issue::before   { content: "Issue "   counter(issue) " ";   }
  *
  * Header Stuff (ignore, just don't conflict with these classes)
  *   - .head for the header
@@ -63,8 +64,7 @@
  *     Note that this styling basically doesn't help at all when printing,
  *     since A4 paper isn't much wider than the max-width here.
  *     It's better to design things to fit into a narrower measure if possible.
- *   - back-to-top link:
- *     <p role=navigation id="back-to-top"><a href="#toc"><abbr title="Back to Top">&uarr;</abbr>
+ *   - js-added ToC jump links (see fixup.js)
  *
  ******************************************************************************/
 
@@ -114,11 +114,36 @@
 
 	div.head h2 { margin-bottom: 1.5em;}
 
-	.head > :first-child {
+/** W3C Logo ******************************************************************/
+
+	.head .logo {
 		float: right;
-		margin: 0;
+		margin: 0.4rem 0 0.2rem .4rem;
 	}
 
+	.head img[src*="logos/W3C"] {
+		display: block;
+		border: solid #1a5e9a;
+		border-width: .65rem .7rem .6rem;
+		border-radius: .4rem;
+		background: #1a5e9a;
+		color: white;
+		font-weight: bold;
+	}
+
+	.head a:hover > img[src*="logos/W3C"],
+	.head a:focus > img[src*="logos/W3C"] {
+		opacity: .8;
+	}
+
+	.head a:active > img[src*="logos/W3C"] {
+		background: #c00;
+		border-color: #c00;
+	}
+
+	/* see also additional rules in Link Styling section */
+
+/** Copyright *****************************************************************/
 
 	p.copyright,
 	p.copyright small { font-size: small }
@@ -126,48 +151,60 @@
 /** Back to Top / ToC Toggle **************************************************/
 
 	@media print {
-		#back-to-top,
-		.toc-toggle {
+		#toc-nav {
 			display: none;
 		}
 	}
 	@media not print {
-		#back-to-top,
-		body > #toc-toggle {
+		#toc-nav {
 			position: fixed;
 			z-index: 2;
 			bottom: 0; left: 0;
 			margin: 0;
-			width: 26px;
-			text-align: center;
-			border-top-right-radius: 26px;
+			min-width: 1.33em;
+			border-top-right-radius: 2rem;
 			box-shadow: 0 0 2px;
-			font: 1em monospace;
-			font: 1rem monospace;
+			font-size: 1.5em;
 			color: black;
 		}
-		#back-to-top a,
-		body > #toc-toggle {
+		#toc-nav > a {
 			display: block;
-			width: 22px;
-			height: 22px;
-			padding: 4px 4px 0 0;
+			white-space: nowrap;
+
+			height: 1.33em;
+			padding: .1em 0.3em;
 			margin: 0;
-			border: none;
-			border-top-right-radius: 26px;
-		}
-		#back-to-top :first-child {
-			display: block;
-			padding-bottom: 22px;
-			margin-bottom: -22px;
-		}
-		#back-to-top > a {
+
 			background: white;
 			box-shadow: 0 0 2px;
+			border: none;
+			border-top-right-radius: 1.33em;
+			background: white;
 		}
-		#back-to-top > a:hover,
-		#back-to-top > a:focus {
+		#toc-nav > #toc-jump {
+			padding-bottom: 2em;
+			margin-bottom: -1.9em;
+		}
+
+		#toc-nav > a:hover,
+		#toc-nav > a:focus {
 			background: #f8f8f8;
+		}
+		#toc-nav > a:not(:hover):not(:focus) {
+			color: #707070;
+		}
+
+		/* statusbar gets in the way on keyboard focus; remove once browsers fix */
+		#toc-nav > a[href="#toc"]:not(:hover):focus:last-child {
+			padding-bottom: 1.5rem;
+		}
+
+		#toc-nav:not(:hover) > a:not(:focus) > span + span {
+			/* Ideally this uses :focus-within on #toc-nav */
+			display: none;
+		}
+		#toc-nav > a > span + span {
+			padding-right: 0.2em;
 		}
 
 		#toc-toggle-inline {
@@ -186,14 +223,8 @@
 			left: -1px;
 		}
 
-		.toc-toggle:active,
-		#back-to-top :active {
+		#toc-nav :active {
 			color: #C00;
-		}
-
-		#back-to-top abbr {
-			border: none;
-			text-decoration: none;
 		}
 	}
 
@@ -206,6 +237,8 @@
 			top: 0; bottom: 0;
 			left: 0;
 			width: 23.5em;
+			max-width: 80%;
+			max-width: calc(100% - 2em - 26px);
 			overflow: auto;
 			padding: 0 1em;
 			padding-left: 42px;
@@ -224,8 +257,18 @@
 			color: gray;
 			color: hsla(203,20%,40%,.7);
 		}
-		body.toc-sidebar #back-to-top :first-child {
-			display: none;
+		body.toc-sidebar #toc-jump:not(:focus) {
+			width: 0;
+			height: 0;
+			padding: 0;
+			position: absolute;
+			overflow: hidden;
+		}
+	}
+	/* Hide main scroller when only the ToC is visible anyway */
+	@media screen and (max-width: 28em) {
+		body.toc-sidebar {
+			overflow: hidden;
 		}
 	}
 
@@ -260,8 +303,12 @@
 		}
 		/* See also Overflow section at the bottom */
 
-		body:not(.toc-inline) #back-to-top :first-child {
-			display: none;
+		body:not(.toc-inline) #toc-jump:not(:focus) {
+			width: 0;
+			height: 0;
+			padding: 0;
+			position: absolute;
+			overflow: hidden;
 		}
 	}
 	@media screen and (min-width: 90em) {
@@ -282,6 +329,7 @@
 		font: 100% sans-serif;   /* Reset all font styling to clear out UA styles */
 		font-family: inherit;    /* Inherit the font family. */
 		line-height: 1.2;        /* Keep wrapped headings compact */
+		hyphens: manual;         /* Hyphenated headings look weird */
 	}
 
 	h2, h3, h4, h5, h6 {
@@ -353,27 +401,39 @@
 	}
 
 	dl dd {
-		margin: 0 0 1em 2em;
+		margin: 0 0 .5em 2em;
 	}
 
-	.head dd + dt {
-		margin-top: .5em;
-	}
-
-	.head dd { /* undo for header */
-		margin-bottom: 0;
+	.head dd + dd { /* compact for header */
+		margin-top: -.5em;
 	}
 
 	/* Style for algorithms */
-	ol.algorithm ol:not(.algorithm) {
+	ol.algorithm ol:not(.algorithm),
+	.algorithm > ol ol:not(.algorithm) {
 	 border-left: 0.5em solid #DEF;
 	}
 
+	/* Put nice boxes around each algorithm. */
+	[data-algorithm]:not(.heading) {
+	  padding: .5em;
+	  border: thin solid #ddd; border-radius: .5em;
+	  margin: .5em calc(-0.5em - 1px);
+	}
+	[data-algorithm]:not(.heading) > :first-child {
+	  margin-top: 0;
+	}
+	[data-algorithm]:not(.heading) > :last-child {
+	  margin-bottom: 0;
+	}
+
 	/* Style for switch/case <dl>s */
-	dl.switch > dd > ol.only {
+	dl.switch > dd > ol.only,
+	dl.switch > dd > .only > ol {
 	 margin-left: 0;
 	}
-	dl.switch > dd > ol.algorithm {
+	dl.switch > dd > ol.algorithm,
+	dl.switch > dd > .algorithm > ol {
 	 margin-left: -2em;
 	}
 	dl.switch {
@@ -410,7 +470,7 @@
 		font-style: normal;
 	}
 	dt dfn code, code.idl {
-		font-size: inherit;
+		font-size: medium;
 	}
 	dfn var {
 		font-style: normal;
@@ -489,9 +549,11 @@
 	}
 
 	/* Backout above styling for W3C logo */
-	.head > p:first-child > a {
+	.head .logo,
+	.head .logo a {
 		border: none;
 		text-decoration: none;
+		background: transparent;
 	}
 
 /******************************************************************************/
@@ -549,7 +611,7 @@
 /*                             Colored Boxes                                  */
 /******************************************************************************/
 
-	.issue, .note, .example, .advisement, blockquote {
+	.issue, .note, .example, .assertion, .advisement, blockquote {
 		padding: .5em;
 		border: .5em;
 		border-left-style: solid;
@@ -564,6 +626,7 @@
 	.note,
 	.example,
 	.advisement,
+	.assertion,
 	blockquote {
 		margin: 1em auto;
 	}
@@ -596,7 +659,7 @@
 		padding-right: 1em;
 		text-transform: uppercase;
 	}
-	/* Add .issue::before { content: "Issue " counter(issue); } for autogen numbers,
+	/* Add .issue::before { content: "Issue " counter(issue) " "; } for autogen numbers,
 	   or use class="marker" to mark up the issue number in source. */
 
 /** Example *******************************************************************/
@@ -614,7 +677,7 @@
 		min-width: 7.5em;
 		display: block;
 	}
-	/* Add .example::before { content: "Example " counter(example); } for autogen numbers,
+	/* Add .example::before { content: "Example " counter(example) " "; } for autogen numbers,
 	   or use class="marker" to mark up the example number in source. */
 
 /** Non-normative Note ********************************************************/
@@ -641,6 +704,14 @@
 	}
 	details.note[open] > summary {
 		border-bottom: 1px silver solid;
+	}
+
+/** Assertion Box *************************************************************/
+	/*  for assertions in algorithms */
+
+	.assertion {
+		border-color: #AAA;
+		background: #EEE;
 	}
 
 /** Advisement Box ************************************************************/
@@ -740,6 +811,7 @@
 		font-style: italic;
 		font-weight: normal;
 		padding-left: 1em;
+		width: 3em;
 	}
 
 	/* For when values are extra-complex and need formatting for readability */
@@ -782,8 +854,8 @@
 	table.index {
 		margin: 1em auto;
 		border-collapse: collapse;
-		width: 100%;
 		border: hidden;
+		width: 100%;
 	}
 	table.data caption,
 	table.index caption {
@@ -804,11 +876,6 @@
 		border: 0;
 	}
 
-	table.data  thead th[scope="row"],
-	table.index thead th[scope="row"] {
-		text-align: right;
-	}
-
 	table.data  thead,
 	table.index thead,
 	table.data  tbody,
@@ -823,7 +890,6 @@
 
 	table.data  tbody th:first-child,
 	table.index tbody th:first-child  {
-		text-align: right;
 		border-right: 2px solid;
 		border-top: 1px solid silver;
 		padding-right: 1em;
@@ -852,10 +918,7 @@
 
 
 /*
-	a.property {
-		font-weight: bold;
-		color: hsla(203, 90%, 30%,.8);
-	}
+Alternate table alignment rules
 
 	table.data,
 	table.index {
@@ -871,6 +934,8 @@
 	table.index tbody th:first-child  {
 		text-align: right;
 	}
+
+Possible extra rowspan handling
 
 	table.data  tbody th[rowspan]:not([rowspan='1']),
 	table.index tbody th[rowspan]:not([rowspan='1']),
@@ -895,29 +960,16 @@
 
 /** Table of Contents *********************************************************/
 
-	.toc, .toc ol, .toc ul, .toc li {
-		list-style: none; /* Numbers must be inlined into source */
-		/* because generated content isn't search/selectable and markers can't do multilevel yet */
-		margin:  0;
-		padding: 0;
-		line-height: 1.2rem; /* consistent spacing */
-	}
-
-	/* ToC not indented until third level, but font style & margins show hierarchy */
-	.toc > li             { margin: 1.2em 0;   font-weight: bold;   }
-	.toc > li li          { margin: 0;         font-weight: normal; }
-	.toc > li li li       { margin-left:  1em; font-style:  italic; }
-	.toc > li li li li    { margin-left:  1em; font-style:  normal; }
-	.toc > li li li li li { margin-left: 1rem; font-style:  italic; font-size: 85%; }
-
 	.toc a {
 		/* More spacing; use padding to make it part of the click target. */
-		padding-top: 0.1em;
+		padding-top: 0.1rem;
 		/* Larger, more consistently-sized click target */
 		display: block;
 		/* Reverse color scheme */
 		color: black;
 		border-color: #3980B5;
+		border-bottom-width: 3px !important;
+		margin-bottom: 0px !important;
 	}
 	.toc a:visited {
 		border-color: #054572;
@@ -927,31 +979,67 @@
 		border-bottom-color: transparent;
 	}
 
-	/* Section numbers in a column of their own */
-	:not(li) > .toc {
-		margin-left: 4em;
+	.toc, .toc ol, .toc ul, .toc li {
+		list-style: none; /* Numbers must be inlined into source */
+		/* because generated content isn't search/selectable and markers can't do multilevel yet */
+		margin:  0;
+		padding: 0;
+		line-height: 1.1rem; /* consistent spacing */
 	}
 
+	/* ToC not indented until third level, but font style & margins show hierarchy */
+	.toc > li             { font-weight: bold;   }
+	.toc > li li          { font-weight: normal; }
+	.toc > li li li       { font-size:   95%;    }
+	.toc > li li li li    { font-size:   90%;    }
+	.toc > li li li li li { font-size:   85%;    }
+
+	.toc > li             { margin: 1.5rem 0;    }
+	.toc > li li          { margin: 0.3rem 0;    }
+	.toc > li li li       { margin-left: 2rem;   }
+
+	/* Section numbers in a column of their own */
 	.toc .secno {
 		float: left;
-		width: 4em;
-		margin-left: -4em;
+		width: 4rem;
 		white-space: nowrap;
-	}
-
-	.toc > li li li .secno {
-		margin-left: -5em;
 	}
 	.toc > li li li li .secno {
 		font-size: 85%;
-		margin-left: -7.06em;
-		margin-left: -6rem;
 	}
 	.toc > li li li li li .secno {
-		margin-left: -8.24em;
-		margin-left: -7rem;
 		font-size: 100%;
 	}
+
+	:not(li) > .toc              { margin-left:  5rem; }
+	.toc .secno                  { margin-left: -5rem; }
+	.toc > li li li .secno       { margin-left: -7rem; }
+	.toc > li li li li .secno    { margin-left: -9rem; }
+	.toc > li li li li li .secno { margin-left: -11rem; }
+
+	/* Tighten up indentation in narrow ToCs */
+	@media (max-width: 30em) {
+		:not(li) > .toc              { margin-left:  4rem; }
+		.toc .secno                  { margin-left: -4rem; }
+		.toc > li li li              { margin-left:  1rem; }
+		.toc > li li li .secno       { margin-left: -5rem; }
+		.toc > li li li li .secno    { margin-left: -6rem; }
+		.toc > li li li li li .secno { margin-left: -7rem; }
+	}
+	@media screen and (min-width: 78em) {
+		body:not(.toc-inline) :not(li) > .toc              { margin-left:  4rem; }
+		body:not(.toc-inline) .toc .secno                  { margin-left: -4rem; }
+		body:not(.toc-inline) .toc > li li li              { margin-left:  1rem; }
+		body:not(.toc-inline) .toc > li li li .secno       { margin-left: -5rem; }
+		body:not(.toc-inline) .toc > li li li li .secno    { margin-left: -6rem; }
+		body:not(.toc-inline) .toc > li li li li li .secno { margin-left: -7rem; }
+	}
+	body.toc-sidebar #toc :not(li) > .toc              { margin-left:  4rem; }
+	body.toc-sidebar #toc .toc .secno                  { margin-left: -4rem; }
+	body.toc-sidebar #toc .toc > li li li              { margin-left:  1rem; }
+	body.toc-sidebar #toc .toc > li li li .secno       { margin-left: -5rem; }
+	body.toc-sidebar #toc .toc > li li li li .secno    { margin-left: -6rem; }
+	body.toc-sidebar #toc .toc > li li li li li .secno { margin-left: -7rem; }
 
 	.toc li {
 		clear: both;
@@ -961,7 +1049,7 @@
 /** Index *********************************************************************/
 
 	/* Index Lists: Layout */
-	ul.index       { margin-left: 0; columns: 15em; -webkit-columns: 15em; -moz-columns: 15em; text-indent: 1em hanging; }
+	ul.index       { margin-left: 0; columns: 15em; text-indent: 1em hanging; }
 	ul.index li    { margin-left: 0; list-style: none; break-inside: avoid; }
 	ul.index li li { margin-left: 1em }
 	ul.index dl    { margin-top: 0; }
@@ -1043,6 +1131,12 @@
 		margin-left: auto;
 		margin-right: auto;
 	}
+	.overlarge > table {
+		/* limit preferred width of table */
+		max-width: 50em;
+		margin-left: auto;
+		margin-right: auto;
+	}
 
 	@media (min-width: 55em) {
 		.overlarge {
@@ -1081,167 +1175,205 @@
 			*/
 		}
 	}
-
-/******************************************************************************/
-/*                                  Bikeshed                                  */
-/******************************************************************************/
-
-	/* Style for paragraphs I know are in MD-genned lists */
-	/* This is a weird hack for me not yet following the commonmark spec
-	   regarding paragraph and lists. */
-	[data-md] > :first-child {
-		margin-top: 0;
-	}
-	[data-md] > :last-child {
-		margin-bottom: 0;
-	}
-
-/** Inline CSS fragments ******************************************************/
-
-	.css.css, .property.property, .descriptor.descriptor {
-		color: #005a9c;
-		font-size: inherit;
-		font-family: inherit;
-	}
-	.css::before, .property::before, .descriptor::before {
-		content: "‘";
-	}
-	.css::after, .property::after, .descriptor::after {
-		content: "’";
-	}
-	.property, .descriptor {
-		/* Don't wrap property and descriptor names */
-		white-space: nowrap;
-	}
-	.type { /* CSS value <type> */
-		font-style: italic;
-	}
-	pre .property::before, pre .property::after {
-		content: "";
-	}
-
-/** Autolinks produced using Bikeshed *****************************************/
-
-	[data-link-type="property"]::before,
-	[data-link-type="propdesc"]::before,
-	[data-link-type="descriptor"]::before,
-	[data-link-type="value"]::before,
-	[data-link-type="function"]::before,
-	[data-link-type="at-rule"]::before,
-	[data-link-type="selector"]::before,
-	[data-link-type="maybe"]::before {
-		content: "‘";
-	}
-	[data-link-type="property"]::after,
-	[data-link-type="propdesc"]::after,
-	[data-link-type="descriptor"]::after,
-	[data-link-type="value"]::after,
-	[data-link-type="function"]::after,
-	[data-link-type="at-rule"]::after,
-	[data-link-type="selector"]::after,
-	[data-link-type="maybe"]::after {
-		content: "’";
-	}
-
-	[data-link-type].production::before,
-	[data-link-type].production::after,
-	.prod [data-link-type]::before,
-	.prod [data-link-type]::after {
-		content: "";
-	}
-
-	[data-link-type=element],
-	[data-link-type=element-attr] {
-		font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
-		font-size: .9em;
-	}
-	[data-link-type=element]::before { content: "<" }
-	[data-link-type=element]::after  { content: ">" }
-
-	[data-link-type=biblio] {
-		white-space: pre;
-	}
-
-/** Self-Links ****************************************************************/
-/* Auto-generated links from an element to its own anchor, for usability */
-
-	.heading, .issue, .note, .example, li, dt {
-		position: relative;
-	}
-	a.self-link {
-		position: absolute;
-		top: 0;
-		left: calc(-1 * (3.5rem - 26px));
-		width: calc(3.5rem - 26px);
-		height: 2em;
-		text-align: center;
-		border: none;
-		transition: opacity .2s;
-		opacity: .5;
-	}
-	a.self-link:hover {
-		opacity: 1;
-	}
-	.heading > a.self-link {
-		font-size: 83%;
-	}
-	dfn > a.self-link {
-		top: auto;
-		left: auto;
-		opacity: 0;
-		width: 1.5em;
-		height: 1.5em;
-		background: gray;
-		color: white;
-		font-style: normal;
-		transition: opacity .2s, background-color .2s, color .2s;
-	}
-	dfn:hover > a.self-link {
-		opacity: 1;
-	}
-	dfn > a.self-link:hover {
-		color: black;
-	}
-
-	a.self-link::before            { content: "¶"; }
-	.heading > a.self-link::before { content: "§"; }
-	dfn > a.self-link::before      { content: "#"; }
-
-/** Counters ******************************************************************/
-/* Adds the auto-genned issue/example counters,
-   until Bikeshed fills in manual ones. */
-	.issue:not(.no-marker)::before {
-		content: "Issue " counter(issue);
-	}
-
-	.example:not(.no-marker)::before {
-		content: "Example";
-		content: "Example " counter(example);
-	}
-	.invalid.example:not(.no-marker)::before,
-	.illegal.example:not(.no-marker)::before {
-		content: "Invalid Example";
-		content: "Invalid Example" counter(example);
-	}
-
-
-
-/********************************************
- Remember to remove the logo section when copypasting freshly.
- */
 </style>
-  <meta content="Bikeshed 1.0.0" name="generator">
+  <meta content="Bikeshed version 951e7b470416b6a5244aaf48ce985558817bcacc" name="generator">
+  <link href="http://tabatkins.github.io/specs/css-filter-rule/" rel="canonical">
+  <meta content="1dcaf02e2c739be794c3cbd99a53753a5c87b69f" name="document-revision">
+<style>/* style-md-lists */
+
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
+}
+[data-md] > :last-child {
+    margin-bottom: 0;
+}</style>
+<style>/* style-counters */
+
+body {
+    counter-reset: example figure issue;
+}
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
+}
+
+.example {
+    counter-increment: example;
+}
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example" counter(example);
+}
+
+figcaption {
+    counter-increment: figure;
+}
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}</style>
+<style>/* style-dfn-panel */
+
+        .dfn-panel {
+            position: absolute;
+            z-index: 35;
+            height: auto;
+            width: -webkit-fit-content;
+            width: fit-content;
+            max-width: 300px;
+            max-height: 500px;
+            overflow: auto;
+            padding: 0.5em 0.75em;
+            font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+            background: #DDDDDD;
+            color: black;
+            border: outset 0.2em;
+        }
+        .dfn-panel:not(.on) { display: none; }
+        .dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+        .dfn-panel > b { display: block; }
+        .dfn-panel a { color: black; }
+        .dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+        .dfn-panel > b + b { margin-top: 0.25em; }
+        .dfn-panel ul { padding: 0; }
+        .dfn-panel li { list-style: inside; }
+        .dfn-panel.activated {
+            display: inline-block;
+            position: fixed;
+            left: .5em;
+            bottom: 2em;
+            margin: 0 auto;
+            max-width: calc(100vw - 1.5em - .4em - .5em);
+            max-height: 30vh;
+        }
+
+        .dfn-paneled { cursor: pointer; }
+        </style>
+<style>/* style-selflinks */
+
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
+}
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: gray;
+    color: white;
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: black;
+}
+
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }</style>
+<style>/* style-autolinks */
+
+.css.css, .property.property, .descriptor.descriptor {
+    color: #005a9c;
+    font-size: inherit;
+    font-family: inherit;
+}
+.css::before, .property::before, .descriptor::before {
+    content: "‘";
+}
+.css::after, .property::after, .descriptor::after {
+    content: "’";
+}
+.property, .descriptor {
+    /* Don't wrap property and descriptor names */
+    white-space: nowrap;
+}
+.type { /* CSS value <type> */
+    font-style: italic;
+}
+pre .property::before, pre .property::after {
+    content: "";
+}
+[data-link-type="property"]::before,
+[data-link-type="propdesc"]::before,
+[data-link-type="descriptor"]::before,
+[data-link-type="value"]::before,
+[data-link-type="function"]::before,
+[data-link-type="at-rule"]::before,
+[data-link-type="selector"]::before,
+[data-link-type="maybe"]::before {
+    content: "‘";
+}
+[data-link-type="property"]::after,
+[data-link-type="propdesc"]::after,
+[data-link-type="descriptor"]::after,
+[data-link-type="value"]::after,
+[data-link-type="function"]::after,
+[data-link-type="at-rule"]::after,
+[data-link-type="selector"]::after,
+[data-link-type="maybe"]::after {
+    content: "’";
+}
+
+[data-link-type].production::before,
+[data-link-type].production::after,
+.prod [data-link-type]::before,
+.prod [data-link-type]::after {
+    content: "";
+}
+
+[data-link-type=element],
+[data-link-type=element-attr] {
+    font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    font-size: .9em;
+}
+[data-link-type=element]::before { content: "<" }
+[data-link-type=element]::after  { content: ">" }
+
+[data-link-type=biblio] {
+    white-space: pre;
+}</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">CSS Filter Rule</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-02-24">24 February 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">, <time class="dt-updated" datetime="2018-04-29">29 April 2018</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
      <dd><a class="u-url" href="http://tabatkins.github.io/specs/css-filter-rule/">http://tabatkins.github.io/specs/css-filter-rule/</a>
      <dt>Issue Tracking:
-     <dd><a href="https://github.com/tabatkins/specs/issues/">GitHub</a>
+     <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editor:
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="http://xanthir.com/contact/">Tab Atkins-Bittner</a> (<span class="p-org org">Google</span>)
     </dl>
@@ -1249,15 +1381,15 @@
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 24 February 2016,
+In addition, as of 29 April 2018,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
    <hr title="Separator for header">
   </div>
-  <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
   <div class="p-summary" data-fill-with="abstract">
-   <p>The CSS <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filters-1/#propdef-filter">filter</a> property allows an author to apply a number of useful visual filters to an element. Unfortunately, CSS only provides a few built-in filters for direct use; for anything more advanced, an author has to write an SVG document to define a <code><a data-link-type="element" href="https://drafts.fxtf.org/filters-1/#elementdef-filter">filter</a></code> element and then reference it via URL. This specification defines the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule, which allows complex filters to be defined in a CSS stylesheet, avoiding the need to write a separate document in a different language.</p>
+   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <p>The CSS <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filter-effects-1/#propdef-filter" id="ref-for-propdef-filter">filter</a> property allows an author to apply a number of useful visual filters to an element. Unfortunately, CSS only provides a few built-in filters for direct use; for anything more advanced, an author has to write an SVG document to define a <code><a data-link-type="element" href="https://drafts.fxtf.org/filter-effects-1/#elementdef-filter" id="ref-for-elementdef-filter">filter</a></code> element and then reference it via URL. This specification defines the <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter">@filter</a> rule, which allows complex filters to be defined in a CSS stylesheet, avoiding the need to write a separate document in a different language.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -1303,43 +1435,43 @@ Parts of this work may be from another specification document.  If so, those par
   <main>
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p>This spec is a <em>very</em> rough draft. I’m not gonna try for precise wording here; you’ll get the gist. Details can be nailed down when we take this seriously.</p>
-   <h2 class="heading settled" data-level="2" id="filter-rule"><span class="secno">2. </span><span class="content">Defining Complex Filters in CSS: the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule</span><a class="self-link" href="#filter-rule"></a></h2>
-   <p>The syntax of an <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule is:</p>
-<pre class="prod"><dfn data-dfn-type="at-rule" data-export="" id="at-ruledef-filter">@filter<a class="self-link" href="#at-ruledef-filter"></a></dfn> = @filter <custom-ident> { <declaration-list> }
+   <h2 class="heading settled" data-level="2" id="filter-rule"><span class="secno">2. </span><span class="content">Defining Complex Filters in CSS: the <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①">@filter</a> rule</span><a class="self-link" href="#filter-rule"></a></h2>
+   <p>The syntax of an <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter②">@filter</a> rule is:</p>
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="at-rule" data-export="" id="at-ruledef-filter">@filter</dfn> = @filter <custom-ident> { <declaration-list> }
 </declaration-list></custom-ident></pre>
-   <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule accepts a handful of descriptors,
+   <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter③">@filter</a> rule accepts a handful of descriptors,
 described in later subsections,
-but is mostly filled by other <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rules</a>,
-such as <a class="css" data-link-type="maybe" href="#at-ruledef-blend">@blend</a>.
+but is mostly filled by other <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules">filter primitive rules</a>,
+such as <span class="css">@blend</span>.
 The presense of unknown descriptors,
-or at-rules other than <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rules</a>,
+or at-rules other than <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules①">filter primitive rules</a>,
 are invalid and cause those descriptors/rules to be ignored,
-but do not make the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule invalid.</p>
-   <p class="note" role="note">Note: Equivalents of filterUnits and primitiveUnits are intentionally not included.
+but do not make the <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter④">@filter</a> rule invalid.</p>
+   <p class="note" role="note"><span>Note:</span> Equivalents of filterUnits and primitiveUnits are intentionally not included.
 The *Units properties are a weird SVG-ism caused by the fact that they only have two units - integers and percentages.
 CSS doesn’t need this.</p>
    <h3 class="heading settled" data-level="2.1" id="filter-errors"><span class="secno">2.1. </span><span class="content">Filter Errors</span><a class="self-link" href="#filter-errors"></a></h3>
-   <p>Some mistakes in defining a <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule or its contents can cause a <dfn data-dfn-type="dfn" data-export="" id="filter-error">filter error<a class="self-link" href="#filter-error"></a></dfn>.
-When a <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule or its contents cause a <a data-link-type="dfn" href="#filter-error">filter error</a>,
-the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule represents the <a data-link-type="dfn" href="#null-filter">null filter</a>,
+   <p>Some mistakes in defining a <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter⑤">@filter</a> rule or its contents can cause a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="filter-error">filter error</dfn>.
+When a <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter⑥">@filter</a> rule or its contents cause a <a data-link-type="dfn" href="#filter-error" id="ref-for-filter-error">filter error</a>,
+the <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter⑦">@filter</a> rule represents the <a data-link-type="dfn" href="#null-filter" id="ref-for-null-filter">null filter</a>,
 regardless of what else it specifies.</p>
-   <p>The <dfn data-dfn-type="dfn" data-export="" id="null-filter">null filter<a class="self-link" href="#null-filter"></a></dfn> has no effect—<wbr>its output is exactly equivalent to its input.</p>
-   <h3 class="heading settled" data-level="2.2" id="refs"><span class="secno">2.2. </span><span class="content">Referring to <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> Rules</span><a class="self-link" href="#refs"></a></h3>
-   <p class="issue" id="issue-ed7e2870"><a class="self-link" href="#issue-ed7e2870"></a> I’m currently requiring filter names to be <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#identifier-value">&lt;custom-ident></a>s - can we just accept that as an ident in the <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filters-1/#propdef-filter">filter</a> property?
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="null-filter">null filter</dfn> has no effect—<wbr>its output is exactly equivalent to its input.</p>
+   <h3 class="heading settled" data-level="2.2" id="refs"><span class="secno">2.2. </span><span class="content">Referring to <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter⑧">@filter</a> Rules</span><a class="self-link" href="#refs"></a></h3>
+   <p class="issue" id="issue-0ebb6d0d"><a class="self-link" href="#issue-0ebb6d0d"></a> I’m currently requiring filter names to be <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value">&lt;custom-ident></a>s - can we just accept that as an ident in the <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filter-effects-1/#propdef-filter" id="ref-for-propdef-filter①">filter</a> property?
 Or maybe we can relax that and just prevent filter names from being "none" or the global keywords,
-like <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style">@counter-style</a> does, ugh.</p>
-   <h3 class="heading settled" data-level="2.3" id="filter-size"><span class="secno">2.3. </span><span class="content">Sizing the Filter Region: the <a class="property" data-link-type="propdesc" href="#descdef-filter-position">position</a> and <a class="property" data-link-type="propdesc" href="#descdef-filter-size">size</a> descriptors</span><a class="self-link" href="#filter-size"></a></h3>
+like <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style" id="ref-for-at-ruledef-counter-style">@counter-style</a> does, ugh.</p>
+   <h3 class="heading settled" data-level="2.3" id="filter-size"><span class="secno">2.3. </span><span class="content">Sizing the Filter Region: the <a class="property" data-link-type="propdesc" href="#descdef-filter-position" id="ref-for-descdef-filter-position">position</a> and <a class="property" data-link-type="propdesc" href="#descdef-filter-size" id="ref-for-descdef-filter-size">size</a> descriptors</span><a class="self-link" href="#filter-size"></a></h3>
    <table class="def descdef">
     <tbody>
      <tr>
       <th>Name:
-      <td><dfn class="css" data-dfn-for="@filter" data-dfn-type="descriptor" data-export="" id="descdef-filter-position">position<a class="self-link" href="#descdef-filter-position"></a></dfn>
+      <td><dfn class="dfn-paneled css" data-dfn-for="@filter" data-dfn-type="descriptor" data-export="" id="descdef-filter-position">position</dfn>
      <tr>
       <th>For:
-      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-filter">@filter</a>
+      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter⑨">@filter</a>
      <tr>
       <th>Value:
-      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-backgrounds-3/#position">&lt;position></a>
+      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-position" id="ref-for-typedef-position">&lt;position></a>
      <tr>
       <th>Initial:
       <td>-10% -10%
@@ -1348,53 +1480,53 @@ like <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-co
     <tbody>
      <tr>
       <th>Name:
-      <td><dfn class="css" data-dfn-for="@filter" data-dfn-type="descriptor" data-export="" id="descdef-filter-size">size<a class="self-link" href="#descdef-filter-size"></a></dfn>
+      <td><dfn class="dfn-paneled css" data-dfn-for="@filter" data-dfn-type="descriptor" data-export="" id="descdef-filter-size">size</dfn>
      <tr>
       <th>For:
-      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-filter">@filter</a>
+      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①⓪">@filter</a>
      <tr>
       <th>Value:
-      <td class="prod"><a class="production" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#background-size">&lt;‘background-size’></a>
+      <td class="prod"><a class="production" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-background-size" id="ref-for-propdef-background-size">&lt;‘background-size’></a>
      <tr>
       <th>Initial:
       <td>120% 120%
    </table>
-   <h3 class="heading settled" data-level="2.4" id="filter-resolution"><span class="secno">2.4. </span><span class="content">Controlling the Resolution of a Filter: the <a class="property" data-link-type="propdesc" href="#descdef-filter-resolution">resolution</a> descriptor</span><a class="self-link" href="#filter-resolution"></a></h3>
+   <h3 class="heading settled" data-level="2.4" id="filter-resolution"><span class="secno">2.4. </span><span class="content">Controlling the Resolution of a Filter: the <a class="property" data-link-type="propdesc" href="#descdef-filter-resolution" id="ref-for-descdef-filter-resolution">resolution</a> descriptor</span><a class="self-link" href="#filter-resolution"></a></h3>
    <table class="def descdef">
     <tbody>
      <tr>
       <th>Name:
-      <td><dfn class="css" data-dfn-for="@filter" data-dfn-type="descriptor" data-export="" id="descdef-filter-resolution">resolution<a class="self-link" href="#descdef-filter-resolution"></a></dfn>
+      <td><dfn class="dfn-paneled css" data-dfn-for="@filter" data-dfn-type="descriptor" data-export="" id="descdef-filter-resolution">resolution</dfn>
      <tr>
       <th>For:
-      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-filter">@filter</a>
+      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①①">@filter</a>
      <tr>
       <th>Value:
-      <td class="prod">auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#resolution-value">&lt;resolution></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#mult-num-range">{1,2}</a>
+      <td class="prod">auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#resolution-value" id="ref-for-resolution-value" title="Expands to: dppx | x | dpcm | dpi">&lt;resolution></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-num-range" id="ref-for-mult-num-range">{1,2}</a>
      <tr>
       <th>Initial:
       <td>auto
    </table>
-   <h2 class="heading settled" data-level="3" id="vars"><span class="secno">3. </span><span class="content">Using Variable References in <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> Descriptors</span><a class="self-link" href="#vars"></a></h2>
-   <p>All of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#at-rule">at-rules</a> defined in this specification allow variable references
-(the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-variables-1/#funcdef-var">var()</a> function)
+   <h2 class="heading settled" data-level="3" id="vars"><span class="secno">3. </span><span class="content">Using Variable References in <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①②">@filter</a> Descriptors</span><a class="self-link" href="#vars"></a></h2>
+   <p>All of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#at-rule" id="ref-for-at-rule">at-rules</a> defined in this specification allow variable references
+(the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-variables-1/#funcdef-var" id="ref-for-funcdef-var">var()</a> function)
 in their descriptors,
 in addition to whatever else their syntax states.
-During parsing, these are interpreted identically to the use of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-variables-1/#funcdef-var">var()</a> in CSS properties—<wbr>they "turn off" syntax validation during parsing,
+During parsing, these are interpreted identically to the use of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-variables-1/#funcdef-var" id="ref-for-funcdef-var①">var()</a> in CSS properties—<wbr>they "turn off" syntax validation during parsing,
 reverting the descriptor to containing an arbitrary token stream.</p>
    <p>Variables are substituted at time-of-use,
-based on the values of <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property">custom properties</a> on the element referencing the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule.</p>
-   <p class="note" role="note">Note: Thus, a single <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule can have its variables filled in with multiple different values,
+based on the values of <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-1/#custom-property" id="ref-for-custom-property">custom properties</a> on the element referencing the <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①③">@filter</a> rule.</p>
+   <p class="note" role="note"><span>Note:</span> Thus, a single <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①④">@filter</a> rule can have its variables filled in with multiple different values,
 if it’s referenced by multiple different elements.
 Each reference is a separate "instance" for this purpose.</p>
-   <p class="note" role="note">Note: This should also work for <span class="css">@apply</span> in the same way.
+   <p class="note" role="note"><span>Note:</span> This should also work for <span class="css">@apply</span> in the same way.
 Need to generalize/define the concept of "variable reference" to include that.</p>
    <h2 class="heading settled" data-level="4" id="filter-primitive"><span class="secno">4. </span><span class="content">Filter Primitive Rules</span><a class="self-link" href="#filter-primitive"></a></h2>
-   <p>The <dfn data-dfn-type="dfn" data-export="" id="filter-primitive-rules">filter primitive rules<a class="self-link" href="#filter-primitive-rules"></a></dfn> are a set of at-rules that define the behavior of a filter.
-They’re only valid within the top-level of an <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule;
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="filter-primitive-rules">filter primitive rules</dfn> are a set of at-rules that define the behavior of a filter.
+They’re only valid within the top-level of an <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①⑤">@filter</a> rule;
 if found anywhere else, they’re invalid and must be ignored.</p>
    <h3 class="heading settled" data-level="4.1" id="common"><span class="secno">4.1. </span><span class="content">Common Descriptors</span><a class="self-link" href="#common"></a></h3>
-   <p>All <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rules</a> accept the following descriptors,
+   <p>All <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules②">filter primitive rules</a> accept the following descriptors,
 and interpret them in the same way:</p>
    <table class="def descdef">
     <tbody>
@@ -1403,10 +1535,10 @@ and interpret them in the same way:</p>
       <td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-position">position<a class="self-link" href="#descdef-blend-position"></a></dfn>
      <tr>
       <th>For:
-      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a>
+      <td><a class="css" data-link-type="at-rule">@blend</a>
      <tr>
       <th>Value:
-      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-backgrounds-3/#position">&lt;position></a>
+      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-position" id="ref-for-typedef-position①">&lt;position></a>
      <tr>
       <th>Initial:
       <td>-10% -10%
@@ -1418,49 +1550,49 @@ and interpret them in the same way:</p>
       <td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-size">size<a class="self-link" href="#descdef-blend-size"></a></dfn>
      <tr>
       <th>For:
-      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a>
+      <td><a class="css" data-link-type="at-rule">@blend</a>
      <tr>
       <th>Value:
-      <td class="prod"><a class="production" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#background-size">&lt;‘background-size’></a>
+      <td class="prod"><a class="production" data-link-type="propdesc" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-background-size" id="ref-for-propdef-background-size①">&lt;‘background-size’></a>
      <tr>
       <th>Initial:
       <td>120% 120%
    </table>
-   <p>These two are interpreted the same as for <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a>.</p>
+   <p>These two are interpreted the same as for <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①⑥">@filter</a>.</p>
    <table class="def descdef">
     <tbody>
      <tr>
       <th>Name:
-      <td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-in">in<a class="self-link" href="#descdef-blend-in"></a></dfn>
+      <td><dfn class="dfn-paneled css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-in">in</dfn>
      <tr>
       <th>For:
-      <td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a>
+      <td><a class="css" data-link-type="at-rule">@blend</a>
      <tr>
       <th>Value:
-      <td class="prod">auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> source-graphic <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> source-alpha <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> background-image <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> background-alpha <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> fill-paint <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> stroke-paint <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#string-value">&lt;string></a>
+      <td class="prod">auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> source-graphic <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> source-alpha <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> background-image <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> background-alpha <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤">|</a> fill-paint <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥">|</a> stroke-paint <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑦">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#string-value" id="ref-for-string-value">&lt;string></a>
      <tr>
       <th>Initial:
       <td>auto
    </table>
-   <p>The <a class="property" data-link-type="propdesc" href="#descdef-blend-in">in</a> descriptor specifies what the input to the filter is.
+   <p>The <a class="property" data-link-type="propdesc" href="#descdef-blend-in" id="ref-for-descdef-blend-in">in</a> descriptor specifies what the input to the filter is.
 Values are defined as follows:</p>
    <dl>
     <dt><dfn class="css" data-dfn-for="@blend/in" data-dfn-type="value" data-export="" id="valdef-blend-in-auto">auto<a class="self-link" href="#valdef-blend-in-auto"></a></dfn> 
     <dd>
-      If this is specified on the first <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> in a <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule,
+      If this is specified on the first <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules③">filter primitive rule</a> in a <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①⑦">@filter</a> rule,
 		it behaves as <span class="css">source-graphic</span>. 
-     <p>Otherwise, the input is the output of the <em>previous <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> in the <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule.</em></p>
+     <p>Otherwise, the input is the output of the <em>previous <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules④">filter primitive rule</a> in the <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①⑧">@filter</a> rule.</em></p>
      <em> </em>
-    <dt><em><dfn class="css" data-dfn-for="@blend/in" data-dfn-type="value" data-export="" id="valdef-blend-in-string"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#string-value">&lt;string></a><a class="self-link" href="#valdef-blend-in-string"></a></dfn> </em>
-    <dd><em> Refers to the nearest preceding <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> which specified the same string as its <a class="property" data-link-type="propdesc" href="#descdef-blend-result">result</a> descriptor. <p>If there is no such preceding <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a>,
-		this causes a <a data-link-type="dfn" href="#filter-error">filter error</a>.</p> </em>
+    <dt><em><dfn class="css" data-dfn-for="@blend/in" data-dfn-type="value" data-export="" id="valdef-blend-in-string"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#string-value" id="ref-for-string-value①">&lt;string></a><a class="self-link" href="#valdef-blend-in-string"></a></dfn> </em>
+    <dd><em> Refers to the nearest preceding <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules⑤">filter primitive rule</a> which specified the same string as its <a class="property" data-link-type="propdesc" href="#descdef-blend-result" id="ref-for-descdef-blend-result">result</a> descriptor. <p>If there is no such preceding <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules⑥">filter primitive rule</a>,
+		this causes a <a data-link-type="dfn" href="#filter-error" id="ref-for-filter-error①">filter error</a>.</p> </em>
     <dt><em>etc </em>
     <dd><em> Same as SVG. </em>
    </dl>
-   <em> <table class="def descdef"><tbody><tr><th>Name:</th><td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-result">result<a class="self-link" href="#descdef-blend-result"></a></dfn></td></tr><tr><th>For:</th><td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a></td></tr><tr><th>Value:</th><td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#string-value">&lt;string></a></td></tr><tr><th>Initial:</th><td>none</td></tr></tbody></table> <p>The <a class="property" data-link-type="propdesc" href="#descdef-blend-result">result</a> descriptor gives the output of a <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> a name,
-so it can be referred to by later <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rules</a> in the same <a class="css" data-link-type="maybe" href="#at-ruledef-filter">@filter</a> rule.</p> <p class="note" role="note">Note: In most common cases it is not necessary to specify this,
-as the value of one <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> is fed directly into the following <a data-link-type="dfn" href="#filter-primitive-rules">filter primitive rule</a> by default.</p> <h2 class="heading settled" data-level="5" id="at-blend"><span class="secno">5. </span><span class="content">Compositing Two Images: the <a class="css" data-link-type="maybe" href="#at-ruledef-blend">@blend</a> filter primitive rule</span><a class="self-link" href="#at-blend"></a></h2> <p>The <dfn class="css" data-dfn-type="at-rule" data-export="" id="at-ruledef-blend">@blend<a class="self-link" href="#at-ruledef-blend"></a></dfn> rule composites two inputs together into a single output.</p> <table class="def descdef"><tbody><tr><th>Name:</th><td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-in2">in2<a class="self-link" href="#descdef-blend-in2"></a></dfn></td></tr><tr><th>For:</th><td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a></td></tr><tr><th>Value:</th><td class="prod"><a class="production" data-link-type="propdesc" href="#descdef-blend-in">&lt;‘in’></a></td></tr><tr><th>Initial:</th><td>auto</td></tr></tbody></table> <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-blend">@blend</a> rule requires two inputs.
-The <a class="property" data-link-type="propdesc" href="#descdef-blend-in2">in2</a> descriptor specifies the second input.</p> <table class="def descdef"><tbody><tr><th>Name:</th><td><dfn class="css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-mode">mode<a class="self-link" href="#descdef-blend-mode"></a></dfn></td></tr><tr><th>For:</th><td><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a></td></tr><tr><th>Value:</th><td class="prod">normal <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> multiply <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> screen <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> darken <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one">|</a> lighten</td></tr><tr><th>Initial:</th><td>normal</td></tr></tbody></table> <p>The <a class="property" data-link-type="propdesc" href="#descdef-blend-mode">mode</a> descriptor specifies how the two inputs are to be blended together.
+   <em> <table class="def descdef"><tbody><tr><th>Name:</th><td><dfn class="dfn-paneled css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-result">result</dfn></td></tr><tr><th>For:</th><td><a class="css" data-link-type="at-rule">@blend</a></td></tr><tr><th>Value:</th><td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑧">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#string-value" id="ref-for-string-value②">&lt;string></a></td></tr><tr><th>Initial:</th><td>none</td></tr></tbody></table> <p>The <a class="property" data-link-type="propdesc" href="#descdef-blend-result" id="ref-for-descdef-blend-result①">result</a> descriptor gives the output of a <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules⑦">filter primitive rule</a> a name,
+so it can be referred to by later <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules⑧">filter primitive rules</a> in the same <a class="css" data-link-type="maybe" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter①⑨">@filter</a> rule.</p> <p class="note" role="note"><span>Note:</span> In most common cases it is not necessary to specify this,
+as the value of one <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules⑨">filter primitive rule</a> is fed directly into the following <a data-link-type="dfn" href="#filter-primitive-rules" id="ref-for-filter-primitive-rules①⓪">filter primitive rule</a> by default.</p> <h2 class="heading settled" data-level="5" id="at-blend"><span class="secno">5. </span><span class="content">Compositing Two Images: the <span class="css">@blend</span> filter primitive rule</span><a class="self-link" href="#at-blend"></a></h2> <p>The <dfn data-dfn-type="dfn" data-noexport="" id="blend">@blend<a class="self-link" href="#blend"></a></dfn> rule composites two inputs together into a single output.</p> <table class="def descdef"><tbody><tr><th>Name:</th><td><dfn class="dfn-paneled css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-in2">in2</dfn></td></tr><tr><th>For:</th><td><a class="css" data-link-type="at-rule">@blend</a></td></tr><tr><th>Value:</th><td class="prod"><a class="production" data-link-type="propdesc" href="#descdef-blend-in" id="ref-for-descdef-blend-in①">&lt;‘in’></a></td></tr><tr><th>Initial:</th><td>auto</td></tr></tbody></table> <p>The <span class="css">@blend</span> rule requires two inputs.
+The <a class="property" data-link-type="propdesc" href="#descdef-blend-in2" id="ref-for-descdef-blend-in2">in2</a> descriptor specifies the second input.</p> <table class="def descdef"><tbody><tr><th>Name:</th><td><dfn class="dfn-paneled css" data-dfn-for="@blend" data-dfn-type="descriptor" data-export="" id="descdef-blend-mode">mode</dfn></td></tr><tr><th>For:</th><td><a class="css" data-link-type="at-rule">@blend</a></td></tr><tr><th>Value:</th><td class="prod">normal <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> multiply <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⓪">|</a> screen <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①①">|</a> darken <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①②">|</a> lighten</td></tr><tr><th>Initial:</th><td>normal</td></tr></tbody></table> <p>The <a class="property" data-link-type="propdesc" href="#descdef-blend-mode" id="ref-for-descdef-blend-mode">mode</a> descriptor specifies how the two inputs are to be blended together.
 The values are defined in the SVG spec.</p> </em>
   </main>
   <em> <div data-fill-with="conformance"> <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2> <p> Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
@@ -1470,13 +1602,141 @@ The values are defined in the SVG spec.</p> </em>
             However, for readability,
             these words do not appear in all uppercase letters in this specification. </p><p> All of the text of this specification is normative
             except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p><p> Examples in this specification are introduced with the words “for example”
-            or are set apart from the normative text with <code>class="example"</code>, like this: </p><div class="example" id="example-ae2b6bc0"><a class="self-link" href="#example-ae2b6bc0"></a> This is an example of an informative example. </div> <p> Informative notes begin with the word “Note”
-            and are set apart from the normative text with <code>class="note"</code>, like this: </p><p class="note" role="note"> Note, this is an informative note. </p></div> </em>
+            or are set apart from the normative text with <code>class="example"</code>, like this: </p><div class="example" id="example-example"><a class="self-link" href="#example-example"></a> This is an example of an informative example. </div> <p> Informative notes begin with the word “Note”
+            and are set apart from the normative text with <code>class="note"</code>, like this: </p><p class="note" role="note"> Note, this is an informative note. </p></div> <script>
+(function() {
+  "use strict";
+  var collapseSidebarText = '<span aria-hidden="true">←</span> '
+                          + '<span>Collapse Sidebar</span>';
+  var expandSidebarText   = '<span aria-hidden="true">→</span> '
+                          + '<span>Pop Out Sidebar</span>';
+  var tocJumpText         = '<span aria-hidden="true">↑</span> '
+                          + '<span>Jump to Table of Contents</span>';
+
+  var sidebarMedia = window.matchMedia('screen and (min-width: 78em)');
+  var autoToggle   = function(e){ toggleSidebar(e.matches) };
+  if(sidebarMedia.addListener) {
+    sidebarMedia.addListener(autoToggle);
+  }
+
+  function toggleSidebar(on) {
+    if (on == undefined) {
+      on = !document.body.classList.contains('toc-sidebar');
+    }
+
+    /* Don’t scroll to compensate for the ToC if we’re above it already. */
+    var headY = 0;
+    var head = document.querySelector('.head');
+    if (head) {
+      // terrible approx of "top of ToC"
+      headY += head.offsetTop + head.offsetHeight;
+    }
+    var skipScroll = window.scrollY < headY;
+
+    var toggle = document.getElementById('toc-toggle');
+    var tocNav = document.getElementById('toc');
+    if (on) {
+      var tocHeight = tocNav.offsetHeight;
+      document.body.classList.add('toc-sidebar');
+      document.body.classList.remove('toc-inline');
+      toggle.innerHTML = collapseSidebarText;
+      if (!skipScroll) {
+        window.scrollBy(0, 0 - tocHeight);
+      }
+      tocNav.focus();
+      sidebarMedia.addListener(autoToggle); // auto-collapse when out of room
+    }
+    else {
+      document.body.classList.add('toc-inline');
+      document.body.classList.remove('toc-sidebar');
+      toggle.innerHTML = expandSidebarText;
+      if (!skipScroll) {
+        window.scrollBy(0, tocNav.offsetHeight);
+      }
+      if (toggle.matches(':hover')) {
+        /* Unfocus button when not using keyboard navigation,
+           because I don’t know where else to send the focus. */
+        toggle.blur();
+      }
+    }
+  }
+
+  function createSidebarToggle() {
+    /* Create the sidebar toggle in JS; it shouldn’t exist when JS is off. */
+    var toggle = document.createElement('a');
+      /* This should probably be a button, but appearance isn’t standards-track.*/
+    toggle.id = 'toc-toggle';
+    toggle.class = 'toc-toggle';
+    toggle.href = '#toc';
+    toggle.innerHTML = collapseSidebarText;
+
+    sidebarMedia.addListener(autoToggle);
+    var toggler = function(e) {
+      e.preventDefault();
+      sidebarMedia.removeListener(autoToggle); // persist explicit off states
+      toggleSidebar();
+      return false;
+    }
+    toggle.addEventListener('click', toggler, false);
+
+
+    /* Get <nav id=toc-nav>, or make it if we don’t have one. */
+    var tocNav = document.getElementById('toc-nav');
+    if (!tocNav) {
+      tocNav = document.createElement('p');
+      tocNav.id = 'toc-nav';
+      /* Prepend for better keyboard navigation */
+      document.body.insertBefore(tocNav, document.body.firstChild);
+    }
+    /* While we’re at it, make sure we have a Jump to Toc link. */
+    var tocJump = document.getElementById('toc-jump');
+    if (!tocJump) {
+      tocJump = document.createElement('a');
+      tocJump.id = 'toc-jump';
+      tocJump.href = '#toc';
+      tocJump.innerHTML = tocJumpText;
+      tocNav.appendChild(tocJump);
+    }
+
+    tocNav.appendChild(toggle);
+  }
+
+  var toc = document.getElementById('toc');
+  if (toc) {
+    createSidebarToggle();
+    toggleSidebar(sidebarMedia.matches);
+
+    /* If the sidebar has been manually opened and is currently overlaying the text
+       (window too small for the MQ to add the margin to body),
+       then auto-close the sidebar once you click on something in there. */
+    toc.addEventListener('click', function(e) {
+      if(e.target.tagName.toLowerCase() == "a" && document.body.classList.contains('toc-sidebar') && !sidebarMedia.matches) {
+        toggleSidebar(false);
+      }
+    }, false);
+  }
+  else {
+    console.warn("Can’t find Table of Contents. Please use <nav id='toc'> around the ToC.");
+  }
+
+  /* Wrap tables in case they overflow */
+  var tables = document.querySelectorAll(':not(.overlarge) > table.data, :not(.overlarge) > table.index');
+  var numTables = tables.length;
+  for (var i = 0; i < numTables; i++) {
+    var table = tables[i];
+    var wrapper = document.createElement('div');
+    wrapper.className = 'overlarge';
+    table.parentNode.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+  }
+
+})();
+</script> </em>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#valdef-blend-in-auto">auto</a><span>, in §4.1</span>
-   <li><a href="#at-ruledef-blend">@blend</a><span>, in §5</span>
+   <li><a href="#blend">@blend</a><span>, in §5</span>
    <li><a href="#at-ruledef-filter">@filter</a><span>, in §2</span>
    <li><a href="#filter-error">filter error</a><span>, in §2.1</span>
    <li><a href="#filter-primitive-rules">filter primitive rules</a><span>, in §4</span>
@@ -1487,79 +1747,85 @@ The values are defined in the SVG spec.</p> </em>
    <li>
     position
     <ul>
-     <li><a href="#descdef-filter-position">descriptor for @filter</a><span>, in §2.3</span>
      <li><a href="#descdef-blend-position">descriptor for @blend</a><span>, in §4.1</span>
+     <li><a href="#descdef-filter-position">descriptor for @filter</a><span>, in §2.3</span>
     </ul>
    <li><a href="#descdef-filter-resolution">resolution</a><span>, in §2.4</span>
    <li><a href="#descdef-blend-result">result</a><span>, in §4.1</span>
    <li>
     size
     <ul>
-     <li><a href="#descdef-filter-size">descriptor for @filter</a><span>, in §2.3</span>
      <li><a href="#descdef-blend-size">descriptor for @blend</a><span>, in §4.1</span>
+     <li><a href="#descdef-filter-size">descriptor for @filter</a><span>, in §2.3</span>
     </ul>
    <li><a href="#valdef-blend-in-string">&lt;string></a><span>, in §4.1</span>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
-    <a data-link-type="biblio" href="#biblio-css-backgrounds-3">[css-backgrounds-3]</a> defines the following terms:
+    <a data-link-type="biblio">[css-backgrounds-3]</a> defines the following terms:
     <ul>
-     <li><a href="https://drafts.csswg.org/css-backgrounds-3/#position">&lt;position></a>
-     <li><a href="https://drafts.csswg.org/css-backgrounds-3/#background-size">background-size</a>
+     <li><a href="https://drafts.csswg.org/css-backgrounds-3/#propdef-background-size">background-size</a>
     </ul>
    <li>
-    <a data-link-type="biblio" href="#biblio-css-counter-styles-3">[css-counter-styles-3]</a> defines the following terms:
+    <a data-link-type="biblio">[css-counter-styles-3]</a> defines the following terms:
     <ul>
      <li><a href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style">@counter-style</a>
     </ul>
    <li>
-    <a data-link-type="biblio" href="#biblio-css-syntax-3">[css-syntax-3]</a> defines the following terms:
+    <a data-link-type="biblio">[css-syntax-3]</a> defines the following terms:
     <ul>
      <li><a href="https://drafts.csswg.org/css-syntax-3/#at-rule">at-rule</a>
     </ul>
    <li>
-    <a data-link-type="biblio" href="#biblio-css-values-3">[css-values]</a> defines the following terms:
+    <a data-link-type="biblio">[css-values-3]</a> defines the following terms:
     <ul>
-     <li><a href="https://drafts.csswg.org/css-values-3/#identifier-value">&lt;custom-ident></a>
      <li><a href="https://drafts.csswg.org/css-values-3/#resolution-value">&lt;resolution></a>
      <li><a href="https://drafts.csswg.org/css-values-3/#string-value">&lt;string></a>
-     <li><a href="https://drafts.csswg.org/css-values-3/#mult-num-range">{a,b}</a>
-     <li><a href="https://drafts.csswg.org/css-values-3/#comb-one">|</a>
     </ul>
    <li>
-    <a data-link-type="biblio" href="#biblio-css-variables-1">[css-variables-1]</a> defines the following terms:
+    <a data-link-type="biblio">[css-values-4]</a> defines the following terms:
+    <ul>
+     <li><a href="https://drafts.csswg.org/css-values-4/#identifier-value">&lt;custom-ident></a>
+     <li><a href="https://drafts.csswg.org/css-values-4/#typedef-position">&lt;position></a>
+     <li><a href="https://drafts.csswg.org/css-values-4/#mult-num-range">{a,b}</a>
+     <li><a href="https://drafts.csswg.org/css-values-4/#comb-one">|</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-variables-1]</a> defines the following terms:
     <ul>
      <li><a href="https://drafts.csswg.org/css-variables-1/#custom-property">custom property</a>
      <li><a href="https://drafts.csswg.org/css-variables-1/#funcdef-var">var()</a>
     </ul>
    <li>
-    <a data-link-type="biblio" href="#biblio-filters-1">[filters-1]</a> defines the following terms:
+    <a data-link-type="biblio">[filter-effects-1]</a> defines the following terms:
     <ul>
-     <li><a href="https://drafts.fxtf.org/filters-1/#propdef-filter">filter</a>
+     <li><a href="https://drafts.fxtf.org/filter-effects-1/#propdef-filter">filter</a>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
-   <dt id="biblio-css-backgrounds-3"><a class="self-link" href="#biblio-css-backgrounds-3"></a>[CSS-BACKGROUNDS-3]
-   <dd>CSS Backgrounds and Borders Module Level 3 URL: <a href="https://drafts.csswg.org/css-backgrounds-3/">https://drafts.csswg.org/css-backgrounds-3/</a>
-   <dt id="biblio-css-counter-styles-3"><a class="self-link" href="#biblio-css-counter-styles-3"></a>[CSS-COUNTER-STYLES-3]
-   <dd>Tab Atkins Jr.. <a href="http://dev.w3.org/csswg/css-counter-styles/">CSS Counter Styles Level 3</a>. 11 June 2015. CR. URL: <a href="http://dev.w3.org/csswg/css-counter-styles/">http://dev.w3.org/csswg/css-counter-styles/</a>
-   <dt id="biblio-css-syntax-3"><a class="self-link" href="#biblio-css-syntax-3"></a>[CSS-SYNTAX-3]
-   <dd>Tab Atkins Jr.; Simon Sapin. <a href="http://dev.w3.org/csswg/css-syntax/">CSS Syntax Module Level 3</a>. 20 February 2014. CR. URL: <a href="http://dev.w3.org/csswg/css-syntax/">http://dev.w3.org/csswg/css-syntax/</a>
-   <dt id="biblio-css-values"><a class="self-link" href="#biblio-css-values"></a>[CSS-VALUES]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="http://dev.w3.org/csswg/css-values/">CSS Values and Units Module Level 3</a>. 11 June 2015. CR. URL: <a href="http://dev.w3.org/csswg/css-values/">http://dev.w3.org/csswg/css-values/</a>
-   <dt id="biblio-css-variables-1"><a class="self-link" href="#biblio-css-variables-1"></a>[CSS-VARIABLES-1]
-   <dd>Tab Atkins Jr.. <a href="http://dev.w3.org/csswg/css-variables/">CSS Custom Properties for Cascading Variables Module Level 1</a>. 3 December 2015. CR. URL: <a href="http://dev.w3.org/csswg/css-variables/">http://dev.w3.org/csswg/css-variables/</a>
-   <dt id="biblio-filters-1"><a class="self-link" href="#biblio-filters-1"></a>[FILTERS-1]
-   <dd>Filter Effects Level 1 URL: <a href="https://drafts.fxtf.org/filters-1/">https://drafts.fxtf.org/filters-1/</a>
-   <dt id="biblio-rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[RFC2119]
+   <dt id="biblio-css-backgrounds-3">[CSS-BACKGROUNDS-3]
+   <dd>Bert Bos; Elika Etemad; Brad Kemper. <a href="https://www.w3.org/TR/css-backgrounds-3/">CSS Backgrounds and Borders Module Level 3</a>. 17 October 2017. CR. URL: <a href="https://www.w3.org/TR/css-backgrounds-3/">https://www.w3.org/TR/css-backgrounds-3/</a>
+   <dt id="biblio-css-counter-styles-3">[CSS-COUNTER-STYLES-3]
+   <dd>Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-counter-styles-3/">CSS Counter Styles Level 3</a>. 14 December 2017. CR. URL: <a href="https://www.w3.org/TR/css-counter-styles-3/">https://www.w3.org/TR/css-counter-styles-3/</a>
+   <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
+   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://www.w3.org/TR/css-syntax-3/">CSS Syntax Module Level 3</a>. 20 February 2014. CR. URL: <a href="https://www.w3.org/TR/css-syntax-3/">https://www.w3.org/TR/css-syntax-3/</a>
+   <dt id="biblio-css-values-3">[CSS-VALUES-3]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-3/">CSS Values and Units Module Level 3</a>. 29 September 2016. CR. URL: <a href="https://www.w3.org/TR/css-values-3/">https://www.w3.org/TR/css-values-3/</a>
+   <dt id="biblio-css-values-4">[CSS-VALUES-4]
+   <dd>CSS Values and Units Module Level 4 URL: <a href="https://drafts.csswg.org/css-values-4/">https://drafts.csswg.org/css-values-4/</a>
+   <dt id="biblio-css-variables-1">[CSS-VARIABLES-1]
+   <dd>Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-variables-1/">CSS Custom Properties for Cascading Variables Module Level 1</a>. 3 December 2015. CR. URL: <a href="https://www.w3.org/TR/css-variables-1/">https://www.w3.org/TR/css-variables-1/</a>
+   <dt id="biblio-filter-effects-1">[FILTER-EFFECTS-1]
+   <dd>Dean Jackson; Erik Dahlström; Dirk Schulze. <a href="https://www.w3.org/TR/filter-effects-1/">Filter Effects Module Level 1</a>. 25 November 2014. WD. URL: <a href="https://www.w3.org/TR/filter-effects-1/">https://www.w3.org/TR/filter-effects-1/</a>
+   <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <p>No properties defined.</p>
-  <h3 class="no-num no-ref heading settled" id="blend-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="#at-ruledef-blend">@blend</a> Descriptors</span><a class="self-link" href="#blend-descriptor-table"></a></h3>
+  <h3 class="no-num no-ref heading settled" id="blend-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule">@blend</a> Descriptors</span><a class="self-link" href="#blend-descriptor-table"></a></h3>
   <div class="big-element-wrapper">
    <table class="index">
     <thead>
@@ -1569,32 +1835,32 @@ The values are defined in the SVG spec.</p> </em>
       <th scope="col">Initial
     <tbody>
      <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-position">position</a>
-      <td>&lt;position>
-      <td>-10% -10%
-     <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-size">size</a>
-      <td>&lt;‘background-size’>
-      <td>120% 120%
-     <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-in">in</a>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-in" id="ref-for-descdef-blend-in②">in</a>
       <td>auto | source-graphic | source-alpha | background-image | background-alpha | fill-paint | stroke-paint | &lt;string>
       <td>auto
      <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-result">result</a>
-      <td>none | &lt;string>
-      <td>none
-     <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-in2">in2</a>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-in2" id="ref-for-descdef-blend-in2①">in2</a>
       <td>&lt;‘in’>
       <td>auto
      <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-mode">mode</a>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-mode" id="ref-for-descdef-blend-mode①">mode</a>
       <td>normal | multiply | screen | darken | lighten
       <td>normal
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-position" id="ref-for-descdef-filter-position①">position</a>
+      <td>&lt;position>
+      <td>-10% -10%
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-blend-result" id="ref-for-descdef-blend-result②">result</a>
+      <td>none | &lt;string>
+      <td>none
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-size" id="ref-for-descdef-filter-size①">size</a>
+      <td>&lt;‘background-size’>
+      <td>120% 120%
    </table>
   </div>
-  <h3 class="no-num no-ref heading settled" id="filter-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="#at-ruledef-filter">@filter</a> Descriptors</span><a class="self-link" href="#filter-descriptor-table"></a></h3>
+  <h3 class="no-num no-ref heading settled" id="filter-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="#at-ruledef-filter" id="ref-for-at-ruledef-filter②⓪">@filter</a> Descriptors</span><a class="self-link" href="#filter-descriptor-table"></a></h3>
   <div class="big-element-wrapper">
    <table class="index">
     <thead>
@@ -1604,22 +1870,154 @@ The values are defined in the SVG spec.</p> </em>
       <th scope="col">Initial
     <tbody>
      <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-position">position</a>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-position" id="ref-for-descdef-filter-position②">position</a>
       <td>&lt;position>
       <td>-10% -10%
      <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-size">size</a>
-      <td>&lt;‘background-size’>
-      <td>120% 120%
-     <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-resolution">resolution</a>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-resolution" id="ref-for-descdef-filter-resolution①">resolution</a>
       <td>auto | &lt;resolution>{1,2}
       <td>auto
+     <tr>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-filter-size" id="ref-for-descdef-filter-size②">size</a>
+      <td>&lt;‘background-size’>
+      <td>120% 120%
    </table>
   </div>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> I’m currently requiring filter names to be <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#identifier-value">&lt;custom-ident></a>s - can we just accept that as an ident in the <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filters-1/#propdef-filter">filter</a> property?
+   <div class="issue"> I’m currently requiring filter names to be <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value">&lt;custom-ident></a>s - can we just accept that as an ident in the <a class="property" data-link-type="propdesc" href="https://drafts.fxtf.org/filter-effects-1/#propdef-filter">filter</a> property?
 Or maybe we can relax that and just prevent filter names from being "none" or the global keywords,
-like <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style">@counter-style</a> does, ugh.<a href="#issue-ed7e2870"> ↵ </a></div>
+like <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style">@counter-style</a> does, ugh.<a href="#issue-0ebb6d0d"> ↵ </a></div>
   </div>
+  <aside class="dfn-panel" data-for="at-ruledef-filter">
+   <b><a href="#at-ruledef-filter">#at-ruledef-filter</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-at-ruledef-filter①">2. Defining Complex Filters in CSS: the @filter rule</a> <a href="#ref-for-at-ruledef-filter②">(2)</a> <a href="#ref-for-at-ruledef-filter③">(3)</a> <a href="#ref-for-at-ruledef-filter④">(4)</a>
+    <li><a href="#ref-for-at-ruledef-filter⑤">2.1. Filter Errors</a> <a href="#ref-for-at-ruledef-filter⑥">(2)</a> <a href="#ref-for-at-ruledef-filter⑦">(3)</a>
+    <li><a href="#ref-for-at-ruledef-filter⑧">2.2. Referring to @filter Rules</a>
+    <li><a href="#ref-for-at-ruledef-filter⑨">2.3. Sizing the Filter Region: the position and size descriptors</a> <a href="#ref-for-at-ruledef-filter①⓪">(2)</a>
+    <li><a href="#ref-for-at-ruledef-filter①①">2.4. Controlling the Resolution of a Filter: the resolution descriptor</a>
+    <li><a href="#ref-for-at-ruledef-filter①②">3. Using Variable References in @filter Descriptors</a> <a href="#ref-for-at-ruledef-filter①③">(2)</a> <a href="#ref-for-at-ruledef-filter①④">(3)</a>
+    <li><a href="#ref-for-at-ruledef-filter①⑤">4. Filter Primitive Rules</a>
+    <li><a href="#ref-for-at-ruledef-filter①⑥">4.1. Common Descriptors</a> <a href="#ref-for-at-ruledef-filter①⑦">(2)</a> <a href="#ref-for-at-ruledef-filter①⑧">(3)</a> <a href="#ref-for-at-ruledef-filter①⑨">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="filter-error">
+   <b><a href="#filter-error">#filter-error</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-filter-error">2.1. Filter Errors</a>
+    <li><a href="#ref-for-filter-error①">4.1. Common Descriptors</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="null-filter">
+   <b><a href="#null-filter">#null-filter</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-null-filter">2.1. Filter Errors</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="descdef-filter-position">
+   <b><a href="#descdef-filter-position">#descdef-filter-position</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-descdef-filter-position">2.3. Sizing the Filter Region: the position and size descriptors</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="descdef-filter-size">
+   <b><a href="#descdef-filter-size">#descdef-filter-size</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-descdef-filter-size">2.3. Sizing the Filter Region: the position and size descriptors</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="descdef-filter-resolution">
+   <b><a href="#descdef-filter-resolution">#descdef-filter-resolution</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-descdef-filter-resolution">2.4. Controlling the Resolution of a Filter: the resolution descriptor</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="filter-primitive-rules">
+   <b><a href="#filter-primitive-rules">#filter-primitive-rules</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-filter-primitive-rules">2. Defining Complex Filters in CSS: the @filter rule</a> <a href="#ref-for-filter-primitive-rules①">(2)</a>
+    <li><a href="#ref-for-filter-primitive-rules②">4.1. Common Descriptors</a> <a href="#ref-for-filter-primitive-rules③">(2)</a> <a href="#ref-for-filter-primitive-rules④">(3)</a> <a href="#ref-for-filter-primitive-rules⑤">(4)</a> <a href="#ref-for-filter-primitive-rules⑥">(5)</a> <a href="#ref-for-filter-primitive-rules⑦">(6)</a> <a href="#ref-for-filter-primitive-rules⑧">(7)</a> <a href="#ref-for-filter-primitive-rules⑨">(8)</a> <a href="#ref-for-filter-primitive-rules①⓪">(9)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="descdef-blend-in">
+   <b><a href="#descdef-blend-in">#descdef-blend-in</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-descdef-blend-in">4.1. Common Descriptors</a>
+    <li><a href="#ref-for-descdef-blend-in①">5. Compositing Two Images: the @blend filter primitive rule</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="descdef-blend-result">
+   <b><a href="#descdef-blend-result">#descdef-blend-result</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-descdef-blend-result">4.1. Common Descriptors</a> <a href="#ref-for-descdef-blend-result①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="descdef-blend-in2">
+   <b><a href="#descdef-blend-in2">#descdef-blend-in2</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-descdef-blend-in2">5. Compositing Two Images: the @blend filter primitive rule</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="descdef-blend-mode">
+   <b><a href="#descdef-blend-mode">#descdef-blend-mode</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-descdef-blend-mode">5. Compositing Two Images: the @blend filter primitive rule</a>
+   </ul>
+  </aside>
+<script>/* script-dfn-panel */
+
+        document.body.addEventListener("click", function(e) {
+            var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
+            // Find the dfn element or panel, if any, that was clicked on.
+            var el = e.target;
+            var target;
+            var hitALink = false;
+            while(el.parentElement) {
+                if(el.tagName == "A") {
+                    // Clicking on a link in a <dfn> shouldn't summon the panel
+                    hitALink = true;
+                }
+                if(el.classList.contains("dfn-paneled")) {
+                    target = "dfn";
+                    break;
+                }
+                if(el.classList.contains("dfn-panel")) {
+                    target = "dfn-panel";
+                    break;
+                }
+                el = el.parentElement;
+            }
+            if(target != "dfn-panel") {
+                // Turn off any currently "on" or "activated" panels.
+                queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
+                    el.classList.remove("on");
+                    el.classList.remove("activated");
+                });
+            }
+            if(target == "dfn" && !hitALink) {
+                // open the panel
+                var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
+                if(dfnPanel) {
+                    dfnPanel.classList.add("on");
+                    var rect = el.getBoundingClientRect();
+                    dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
+                    dfnPanel.style.top = window.scrollY + rect.top + "px";
+                    var panelRect = dfnPanel.getBoundingClientRect();
+                    var panelWidth = panelRect.right - panelRect.left;
+                    if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
+                        // Reposition, because the panel is overflowing
+                        dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
+                    }
+                } else {
+                    console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
+                }
+            } else if(target == "dfn-panel") {
+                // Switch it to "activated" state, which pins it.
+                el.classList.add("activated");
+                el.style.left = null;
+                el.style.top = null;
+            }
+
+        });
+        </script>
