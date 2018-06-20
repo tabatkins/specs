@@ -1533,7 +1533,7 @@ regardless of what they contain.</p>
     <a class="self-link" href="#example-a3ad87c9"></a> For example, here’s a (somewhat silly) conditional chain: 
 <pre class="lang-css highlight"><span class="n">@when</span> <span class="nf">media</span><span class="p">(</span>width <span class="nt">>= 400px) and media(pointer: fine) and supports(display: flex) </span><span class="p">{</span>
   <span class="c">/* A */</span>
-<span class="p">}</span> <span class="n">@else</span> <span class="nf">supports</span><span class="p">(</span>caret-color<span class="nt">: pink) or supports(background: double-rainbow()) </span><span class="p">{</span>
+<span class="p">}</span> <span class="n">@else</span> <span class="nf">supports</span><span class="p">(</span>caret-color<span class="nt">: pink) and supports(background: double-rainbow()) </span><span class="p">{</span>
   <span class="c">/* B */</span>
 <span class="p">}</span> <span class="n">@else</span> <span class="err">{</span>
   <span class="c">/* C */</span>
