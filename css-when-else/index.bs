@@ -134,7 +134,7 @@ An ''@else'' rule that is not part of a <a>conditional rule chain</a> is invalid
 	<pre class="lang-css">
 		@when media(width >= 400px) and media(pointer: fine) and supports(display: flex) {
 			/* A */
-		} @else supports(caret-color: pink) or supports(background: double-rainbow()) {
+		} @else supports(caret-color: pink) and supports(background: double-rainbow()) {
 			/* B */
 		} @else {
 			/* C */
