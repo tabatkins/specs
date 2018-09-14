@@ -1,8 +1,6 @@
-<h1>Proposal for RespImg Syntax</h1>
-
 <pre class='metadata'>
-Group: personal
-Status: UD
+Title: Proposal for RespImg Syntax
+Status: w3c/UD
 ED: http://tabatkins.github.io/specs/respimg/Overview.html
 Shortname: respimg
 Level: 1

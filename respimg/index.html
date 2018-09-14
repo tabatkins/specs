@@ -1,171 +1,1561 @@
-<!DOCTYPE html><html lang=en><head>
-	<meta content="text/html; charset=utf-8" http-equiv=Content-Type>
-	<title>Proposal for RespImg Syntax</title>
-	<link href=../common/default.css rel=stylesheet type=text/css>
-	<link href=http://dev.w3.org/csslogo.ico rel="shortcut icon" type=image/x-icon>
-	<meta content=summary name=twitter:card>
-	<meta content="Proposal for RespImg Syntax" name=twitter:title>
-	<meta content='This document describes a proposed syntax for "responsive images", which allows a user agent to choose an appropriate version of an image from several candidates.' name=twitter:description>
-	<meta content=@tabatkins name=twitter:creator>
-	<script src=../common/prism.js></script>
-	<script>
-	window.findAll = window.findAll || function(sel){ return [].slice.call(document.querySelectorAll(sel)) };
-	Function.prototype.aritize = function(numArgs) {
-		var fn = this;
-		return function() {
-			var args = [].slice.call(arguments, 0, numArgs);
-			return fn.apply(this, args);
+<!doctype html><html lang="en">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <title>Proposal for RespImg Syntax</title>
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+<style data-fill-with="stylesheet">/******************************************************************************
+ *                   Style sheet for the W3C specifications                   *
+ *
+ * Special classes handled by this style sheet include:
+ *
+ * Indices
+ *   - .toc for the Table of Contents (<ol class="toc">)
+ *     + <span class="secno"> for the section numbers
+ *   - #toc for the Table of Contents (<nav id="toc">)
+ *   - ul.index for Indices (<a href="#ref">term</a><span>, in §N.M</span>)
+ *   - table.index for Index Tables (e.g. for properties or elements)
+ *
+ * Structural Markup
+ *   - table.data for general data tables
+ *     -> use 'scope' attribute, <colgroup>, <thead>, and <tbody> for best results !
+ *     -> use <table class='complex data'> for extra-complex tables
+ *     -> use <td class='long'> for paragraph-length cell content
+ *     -> use <td class='pre'> when manual line breaks/indentation would help readability
+ *   - dl.switch for switch statements
+ *   - ol.algorithm for algorithms (helps to visualize nesting)
+ *   - .figure and .caption (HTML4) and figure and figcaption (HTML5)
+ *     -> .sidefigure for right-floated figures
+ *   - ins/del
+ *
+ * Code
+ *   - pre and code
+ *
+ * Special Sections
+ *   - .note       for informative notes             (div, p, span, aside, details)
+ *   - .example    for informative examples          (div, p, pre, span)
+ *   - .issue      for issues                        (div, p, span)
+ *   - .assertion  for assertions                    (div, p, span)
+ *   - .advisement for loud normative statements     (div, p, strong)
+ *   - .annoying-warning for spec obsoletion notices (div, aside, details)
+ *
+ * Definition Boxes
+ *   - pre.def   for WebIDL definitions
+ *   - table.def for tables that define other entities (e.g. CSS properties)
+ *   - dl.def    for definition lists that define other entitles (e.g. HTML elements)
+ *
+ * Numbering
+ *   - .secno for section numbers in .toc and headings (<span class='secno'>3.2</span>)
+ *   - .marker for source-inserted example/figure/issue numbers (<span class='marker'>Issue 4</span>)
+ *   - ::before styled for CSS-generated issue/example/figure numbers:
+ *     -> Documents wishing to use this only need to add
+ *        figcaption::before,
+ *        .caption::before { content: "Figure "  counter(figure) " ";  }
+ *        .example::before { content: "Example " counter(example) " "; }
+ *        .issue::before   { content: "Issue "   counter(issue) " ";   }
+ *
+ * Header Stuff (ignore, just don't conflict with these classes)
+ *   - .head for the header
+ *   - .copyright for the copyright
+ *
+ * Miscellaneous
+ *   - .overlarge for things that should be as wide as possible, even if
+ *     that overflows the body text area. This can be used on an item or
+ *     on its container, depending on the effect desired.
+ *     Note that this styling basically doesn't help at all when printing,
+ *     since A4 paper isn't much wider than the max-width here.
+ *     It's better to design things to fit into a narrower measure if possible.
+ *   - js-added ToC jump links (see fixup.js)
+ *
+ ******************************************************************************/
+
+/******************************************************************************/
+/*                                   Body                                     */
+/******************************************************************************/
+
+	body {
+		counter-reset: example figure issue;
+
+		/* Layout */
+		max-width: 50em;               /* limit line length to 50em for readability   */
+		margin: 0 auto;                /* center text within page                     */
+		padding: 1.6em 1.5em 2em 50px; /* assume 16px font size for downlevel clients */
+		padding: 1.6em 1.5em 2em calc(26px + 1.5em); /* leave space for status flag     */
+
+		/* Typography */
+		line-height: 1.5;
+		font-family: sans-serif;
+		widows: 2;
+		orphans: 2;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		hyphens: auto;
+
+		/* Colors */
+		color: black;
+		background: white top left fixed no-repeat;
+		background-size: 25px auto;
+	}
+
+
+/******************************************************************************/
+/*                         Front Matter & Navigation                          */
+/******************************************************************************/
+
+/** Header ********************************************************************/
+
+	div.head { margin-bottom: 1em }
+	div.head hr { border-style: solid; }
+
+	div.head h1 {
+		font-weight: bold;
+		margin: 0 0 .1em;
+		font-size: 220%;
+	}
+
+	div.head h2 { margin-bottom: 1.5em;}
+
+/** W3C Logo ******************************************************************/
+
+	.head .logo {
+		float: right;
+		margin: 0.4rem 0 0.2rem .4rem;
+	}
+
+	.head img[src*="logos/W3C"] {
+		display: block;
+		border: solid #1a5e9a;
+		border-width: .65rem .7rem .6rem;
+		border-radius: .4rem;
+		background: #1a5e9a;
+		color: white;
+		font-weight: bold;
+	}
+
+	.head a:hover > img[src*="logos/W3C"],
+	.head a:focus > img[src*="logos/W3C"] {
+		opacity: .8;
+	}
+
+	.head a:active > img[src*="logos/W3C"] {
+		background: #c00;
+		border-color: #c00;
+	}
+
+	/* see also additional rules in Link Styling section */
+
+/** Copyright *****************************************************************/
+
+	p.copyright,
+	p.copyright small { font-size: small }
+
+/** Back to Top / ToC Toggle **************************************************/
+
+	@media print {
+		#toc-nav {
+			display: none;
 		}
-	};
-	window.addEventListener('load', function() {
-		findAll(".example pre:not(.literal), pre[class*='lang-'], pre[class*='language-']")
-			.map(Prism.highlightElement.aritize(1));
-	}, false);
-	</script>
-	<link href=../common/prism.css rel=stylesheet type=text/css>
-	<style>
-body { 
-	background: white url(http://www.w3.org/StyleSheets/TR/logo-unofficial.png) top left no-repeat fixed; 
-	font-family: sans-serif;
-	color: black;
+	}
+	@media not print {
+		#toc-nav {
+			position: fixed;
+			z-index: 2;
+			bottom: 0; left: 0;
+			margin: 0;
+			min-width: 1.33em;
+			border-top-right-radius: 2rem;
+			box-shadow: 0 0 2px;
+			font-size: 1.5em;
+			color: black;
+		}
+		#toc-nav > a {
+			display: block;
+			white-space: nowrap;
+
+			height: 1.33em;
+			padding: .1em 0.3em;
+			margin: 0;
+
+			background: white;
+			box-shadow: 0 0 2px;
+			border: none;
+			border-top-right-radius: 1.33em;
+			background: white;
+		}
+		#toc-nav > #toc-jump {
+			padding-bottom: 2em;
+			margin-bottom: -1.9em;
+		}
+
+		#toc-nav > a:hover,
+		#toc-nav > a:focus {
+			background: #f8f8f8;
+		}
+		#toc-nav > a:not(:hover):not(:focus) {
+			color: #707070;
+		}
+
+		/* statusbar gets in the way on keyboard focus; remove once browsers fix */
+		#toc-nav > a[href="#toc"]:not(:hover):focus:last-child {
+			padding-bottom: 1.5rem;
+		}
+
+		#toc-nav:not(:hover) > a:not(:focus) > span + span {
+			/* Ideally this uses :focus-within on #toc-nav */
+			display: none;
+		}
+		#toc-nav > a > span + span {
+			padding-right: 0.2em;
+		}
+
+		#toc-toggle-inline {
+			vertical-align: 0.05em;
+			font-size: 80%;
+			color: gray;
+			color: hsla(203,20%,40%,.7);
+			border-style: none;
+			background: transparent;
+			position: relative;
+		}
+		#toc-toggle-inline:hover:not(:active),
+		#toc-toggle-inline:focus:not(:active) {
+			text-shadow: 1px 1px silver;
+			top: -1px;
+			left: -1px;
+		}
+
+		#toc-nav :active {
+			color: #C00;
+		}
+	}
+
+/** ToC Sidebar ***************************************************************/
+
+	/* Floating sidebar */
+	@media screen {
+		body.toc-sidebar #toc {
+			position: fixed;
+			top: 0; bottom: 0;
+			left: 0;
+			width: 23.5em;
+			max-width: 80%;
+			max-width: calc(100% - 2em - 26px);
+			overflow: auto;
+			padding: 0 1em;
+			padding-left: 42px;
+			padding-left: calc(1em + 26px);
+			background: inherit;
+			background-color: #f7f8f9;
+			z-index: 1;
+			box-shadow: -.1em 0 .25em rgba(0,0,0,.1) inset;
+		}
+		body.toc-sidebar #toc h2 {
+			margin-top: .8rem;
+			font-variant: small-caps;
+			font-variant: all-small-caps;
+			text-transform: lowercase;
+			font-weight: bold;
+			color: gray;
+			color: hsla(203,20%,40%,.7);
+		}
+		body.toc-sidebar #toc-jump:not(:focus) {
+			width: 0;
+			height: 0;
+			padding: 0;
+			position: absolute;
+			overflow: hidden;
+		}
+	}
+	/* Hide main scroller when only the ToC is visible anyway */
+	@media screen and (max-width: 28em) {
+		body.toc-sidebar {
+			overflow: hidden;
+		}
+	}
+
+	/* Sidebar with its own space */
+	@media screen and (min-width: 78em) {
+		body:not(.toc-inline) #toc {
+			position: fixed;
+			top: 0; bottom: 0;
+			left: 0;
+			width: 23.5em;
+			overflow: auto;
+			padding: 0 1em;
+			padding-left: 42px;
+			padding-left: calc(1em + 26px);
+			background: inherit;
+			background-color: #f7f8f9;
+			z-index: 1;
+			box-shadow: -.1em 0 .25em rgba(0,0,0,.1) inset;
+		}
+		body:not(.toc-inline) #toc h2 {
+			margin-top: .8rem;
+			font-variant: small-caps;
+			font-variant: all-small-caps;
+			text-transform: lowercase;
+			font-weight: bold;
+			color: gray;
+			color: hsla(203,20%,40%,.7);
+		}
+
+		body:not(.toc-inline) {
+			padding-left: 29em;
+		}
+		/* See also Overflow section at the bottom */
+
+		body:not(.toc-inline) #toc-jump:not(:focus) {
+			width: 0;
+			height: 0;
+			padding: 0;
+			position: absolute;
+			overflow: hidden;
+		}
+	}
+	@media screen and (min-width: 90em) {
+		body:not(.toc-inline) {
+			margin: 0 4em;
+		}
+	}
+
+/******************************************************************************/
+/*                                Sectioning                                  */
+/******************************************************************************/
+
+/** Headings ******************************************************************/
+
+	h1, h2, h3, h4, h5, h6, dt {
+		page-break-after: avoid;
+		page-break-inside: avoid;
+		font: 100% sans-serif;   /* Reset all font styling to clear out UA styles */
+		font-family: inherit;    /* Inherit the font family. */
+		line-height: 1.2;        /* Keep wrapped headings compact */
+		hyphens: manual;         /* Hyphenated headings look weird */
+	}
+
+	h2, h3, h4, h5, h6 {
+		margin-top: 3rem;
+	}
+
+	h1, h2, h3 {
+		color: #005A9C;
+		background: transparent;
+	}
+
+	h1 { font-size: 170%; }
+	h2 { font-size: 140%; }
+	h3 { font-size: 120%; }
+	h4 { font-weight: bold; }
+	h5 { font-style: italic; }
+	h6 { font-variant: small-caps; }
+	dt { font-weight: bold; }
+
+/** Subheadings ***************************************************************/
+
+	h1 + h2,
+	#subtitle {
+		/* #subtitle is a subtitle in an H2 under the H1 */
+		margin-top: 0;
+	}
+	h2 + h3,
+	h3 + h4,
+	h4 + h5,
+	h5 + h6 {
+		margin-top: 1.2em; /* = 1 x line-height */
+	}
+
+/** Section divider ***********************************************************/
+
+	:not(.head) > hr {
+		font-size: 1.5em;
+		text-align: center;
+		margin: 1em auto;
+		height: auto;
+		border: transparent solid 0;
+		background: transparent;
+	}
+	:not(.head) > hr::before {
+		content: "\2727\2003\2003\2727\2003\2003\2727";
+	}
+
+/******************************************************************************/
+/*                            Paragraphs and Lists                            */
+/******************************************************************************/
+
+	p {
+		margin: 1em 0;
+	}
+
+	dd > p:first-child,
+	li > p:first-child {
+		margin-top: 0;
+	}
+
+	ul, ol {
+		margin-left: 0;
+		padding-left: 2em;
+	}
+
+	li {
+		margin: 0.25em 0 0.5em;
+		padding: 0;
+	}
+
+	dl dd {
+		margin: 0 0 .5em 2em;
+	}
+
+	.head dd + dd { /* compact for header */
+		margin-top: -.5em;
+	}
+
+	/* Style for algorithms */
+	ol.algorithm ol:not(.algorithm),
+	.algorithm > ol ol:not(.algorithm) {
+	 border-left: 0.5em solid #DEF;
+	}
+
+	/* Put nice boxes around each algorithm. */
+	[data-algorithm]:not(.heading) {
+	  padding: .5em;
+	  border: thin solid #ddd; border-radius: .5em;
+	  margin: .5em calc(-0.5em - 1px);
+	}
+	[data-algorithm]:not(.heading) > :first-child {
+	  margin-top: 0;
+	}
+	[data-algorithm]:not(.heading) > :last-child {
+	  margin-bottom: 0;
+	}
+
+	/* Style for switch/case <dl>s */
+	dl.switch > dd > ol.only,
+	dl.switch > dd > .only > ol {
+	 margin-left: 0;
+	}
+	dl.switch > dd > ol.algorithm,
+	dl.switch > dd > .algorithm > ol {
+	 margin-left: -2em;
+	}
+	dl.switch {
+	 padding-left: 2em;
+	}
+	dl.switch > dt {
+	 text-indent: -1.5em;
+	 margin-top: 1em;
+	}
+	dl.switch > dt + dt {
+	 margin-top: 0;
+	}
+	dl.switch > dt::before {
+	 content: '\21AA';
+	 padding: 0 0.5em 0 0;
+	 display: inline-block;
+	 width: 1em;
+	 text-align: right;
+	 line-height: 0.5em;
+	}
+
+/** Terminology Markup ********************************************************/
+
+
+/******************************************************************************/
+/*                                 Inline Markup                              */
+/******************************************************************************/
+
+/** Terminology Markup ********************************************************/
+	dfn   { /* Defining instance */
+		font-weight: bolder;
+	}
+	a > i { /* Instance of term */
+		font-style: normal;
+	}
+	dt dfn code, code.idl {
+		font-size: medium;
+	}
+	dfn var {
+		font-style: normal;
+	}
+
+/** Change Marking ************************************************************/
+
+	del { color: red;  text-decoration: line-through; }
+	ins { color: #080; text-decoration: underline;    }
+
+/** Miscellaneous improvements to inline formatting ***************************/
+
+	sup {
+		vertical-align: super;
+		font-size: 80%
+	}
+
+/******************************************************************************/
+/*                                    Code                                    */
+/******************************************************************************/
+
+/** General monospace/pre rules ***********************************************/
+
+	pre, code, samp {
+		font-family: Menlo, Consolas, "DejaVu Sans Mono", Monaco, monospace;
+		font-size: .9em;
+		page-break-inside: avoid;
+		hyphens: none;
+		text-transform: none;
+	}
+	pre code,
+	code code {
+		font-size: 100%;
+	}
+
+	pre {
+		margin-top: 1em;
+		margin-bottom: 1em;
+		overflow: auto;
+	}
+
+/** Inline Code fragments *****************************************************/
+
+  /* Do something nice. */
+
+/******************************************************************************/
+/*                                    Links                                   */
+/******************************************************************************/
+
+/** General Hyperlinks ********************************************************/
+
+	/* We hyperlink a lot, so make it less intrusive */
+	a[href] {
+		color: #034575;
+		text-decoration: none;
+		border-bottom: 1px solid #707070;
+		/* Need a bit of extending for it to look okay */
+		padding: 0 1px 0;
+		margin: 0 -1px 0;
+	}
+	a:visited {
+		border-bottom-color: #BBB;
+	}
+
+	/* Use distinguishing colors when user is interacting with the link */
+	a[href]:focus,
+	a[href]:hover {
+		background: #f8f8f8;
+		background: rgba(75%, 75%, 75%, .25);
+		border-bottom-width: 3px;
+		margin-bottom: -2px;
+	}
+	a[href]:active {
+		color: #C00;
+		border-color: #C00;
+	}
+
+	/* Backout above styling for W3C logo */
+	.head .logo,
+	.head .logo a {
+		border: none;
+		text-decoration: none;
+		background: transparent;
+	}
+
+/******************************************************************************/
+/*                                    Images                                  */
+/******************************************************************************/
+
+	img {
+		border-style: none;
+	}
+
+	/* For autogen numbers, add
+	   .caption::before, figcaption::before { content: "Figure " counter(figure) ". "; }
+	*/
+
+	figure, .figure, .sidefigure {
+		page-break-inside: avoid;
+		text-align: center;
+		margin: 2.5em 0;
+	}
+	.figure img,    .sidefigure img,    figure img,
+	.figure object, .sidefigure object, figure object {
+		max-width: 100%;
+		margin: auto;
+	}
+	.figure pre, .sidefigure pre, figure pre {
+		text-align: left;
+		display: table;
+		margin: 1em auto;
+	}
+	.figure table, figure table {
+		margin: auto;
+	}
+	@media screen and (min-width: 20em) {
+		.sidefigure {
+			float: right;
+			width: 50%;
+			margin: 0 0 0.5em 0.5em
+		}
+	}
+	.caption, figcaption, caption {
+		font-style: italic;
+		font-size: 90%;
+	}
+	.caption::before, figcaption::before, figcaption > .marker {
+		font-weight: bold;
+	}
+	.caption, figcaption {
+		counter-increment: figure;
+	}
+
+	/* DL list is indented 2em, but figure inside it is not */
+	dd > .figure, dd > figure { margin-left: -2em }
+
+/******************************************************************************/
+/*                             Colored Boxes                                  */
+/******************************************************************************/
+
+	.issue, .note, .example, .assertion, .advisement, blockquote {
+		padding: .5em;
+		border: .5em;
+		border-left-style: solid;
+		page-break-inside: avoid;
+	}
+	span.issue, span.note {
+		padding: .1em .5em .15em;
+		border-right-style: solid;
+	}
+
+	.issue,
+	.note,
+	.example,
+	.advisement,
+	.assertion,
+	blockquote {
+		margin: 1em auto;
+	}
+	.note  > p:first-child,
+	.issue > p:first-child,
+	blockquote > :first-child {
+		margin-top: 0;
+	}
+	blockquote > :last-child {
+		margin-bottom: 0;
+	}
+
+/** Blockquotes ***************************************************************/
+
+	blockquote {
+		border-color: silver;
+	}
+
+/** Open issue ****************************************************************/
+
+	.issue {
+		border-color: #E05252;
+		background: #FBE9E9;
+		counter-increment: issue;
+		overflow: auto;
+	}
+	.issue::before, .issue > .marker {
+		text-transform: uppercase;
+		color: #AE1E1E;
+		padding-right: 1em;
+		text-transform: uppercase;
+	}
+	/* Add .issue::before { content: "Issue " counter(issue) " "; } for autogen numbers,
+	   or use class="marker" to mark up the issue number in source. */
+
+/** Example *******************************************************************/
+
+	.example {
+		border-color: #E0CB52;
+		background: #FCFAEE;
+		counter-increment: example;
+		overflow: auto;
+		clear: both;
+	}
+	.example::before, .example > .marker {
+		text-transform: uppercase;
+		color: #827017;
+		min-width: 7.5em;
+		display: block;
+	}
+	/* Add .example::before { content: "Example " counter(example) " "; } for autogen numbers,
+	   or use class="marker" to mark up the example number in source. */
+
+/** Non-normative Note ********************************************************/
+
+	.note {
+		border-color: #52E052;
+		background: #E9FBE9;
+		overflow: auto;
+	}
+
+	.note::before, .note > .marker,
+	details.note > summary::before,
+	details.note > summary > .marker {
+		text-transform: uppercase;
+		display: block;
+		color: hsl(120, 70%, 30%);
+	}
+	/* Add .note::before { content: "Note"; } for autogen label,
+	   or use class="marker" to mark up the label in source. */
+
+	details.note > summary {
+		display: block;
+		color: hsl(120, 70%, 30%);
+	}
+	details.note[open] > summary {
+		border-bottom: 1px silver solid;
+	}
+
+/** Assertion Box *************************************************************/
+	/*  for assertions in algorithms */
+
+	.assertion {
+		border-color: #AAA;
+		background: #EEE;
+	}
+
+/** Advisement Box ************************************************************/
+	/*  for attention-grabbing normative statements */
+
+	.advisement {
+		border-color: orange;
+		border-style: none solid;
+		background: #FFEECC;
+	}
+	strong.advisement {
+		display: block;
+		text-align: center;
+	}
+	.advisement > .marker {
+		color: #B35F00;
+	}
+
+/** Spec Obsoletion Notice ****************************************************/
+	/* obnoxious obsoletion notice for older/abandoned specs. */
+
+	details {
+		display: block;
+	}
+	summary {
+		font-weight: bolder;
+	}
+
+	.annoying-warning:not(details),
+	details.annoying-warning:not([open]) > summary,
+	details.annoying-warning[open] {
+		background: #fdd;
+		color: red;
+		font-weight: bold;
+		padding: .75em 1em;
+		border: thick red;
+		border-style: solid;
+		border-radius: 1em;
+	}
+	.annoying-warning :last-child {
+		margin-bottom: 0;
+	}
+
+@media not print {
+	details.annoying-warning[open] {
+		position: fixed;
+		left: 1em;
+		right: 1em;
+		bottom: 1em;
+		z-index: 1000;
+	}
 }
 
-:link { color: #00C; }
-:visited { color: #609; }
-a[href]:active { color: #C00; }
-a[href]:hover { background: #ffa; }
-a img { border: none; }
+	details.annoying-warning:not([open]) > summary {
+		text-align: center;
+	}
 
-h1, h2, h3 { color: #005A9C; }
-h1 { font: 170% sans-serif }
-h2 { font: 140% sans-serif }
-h3 { font: 120% sans-serif }
-h4 { font: bold 100% sans-serif }
-h5 { font: italic 100% sans-serif }
-h6 { font: small-caps 100% sans-serif }
+/** Entity Definition Boxes ***************************************************/
 
-div.head { margin-bottom: 1em }
-div.head h1 { margin-top: 2em; clear: both }
-div.head table { margin-left: 2em; margin-top: 2em }
+	.def {
+		padding: .5em 1em;
+		background: #DEF;
+		margin: 1.2em 0;
+		border-left: 0.5em solid #8CCBF2;
+	}
 
-p.copyright { font-size: small }
-p.copyright small { font-size: small }
+/******************************************************************************/
+/*                                    Tables                                  */
+/******************************************************************************/
 
-ul.toc, ol.toc {
-	list-style: none;
+	th, td {
+		text-align: left;
+		text-align: start;
+	}
+
+/** Property/Descriptor Definition Tables *************************************/
+
+	table.def {
+		/* inherits .def box styling, see above */
+		width: 100%;
+		border-spacing: 0;
+	}
+
+	table.def td,
+	table.def th {
+		padding: 0.5em;
+		vertical-align: baseline;
+		border-bottom: 1px solid #bbd7e9;
+	}
+
+	table.def > tbody > tr:last-child th,
+	table.def > tbody > tr:last-child td {
+		border-bottom: 0;
+	}
+
+	table.def th {
+		font-style: italic;
+		font-weight: normal;
+		padding-left: 1em;
+		width: 3em;
+	}
+
+	/* For when values are extra-complex and need formatting for readability */
+	table td.pre {
+		white-space: pre-wrap;
+	}
+
+	/* A footnote at the bottom of a def table */
+	table.def           td.footnote {
+		padding-top: 0.6em;
+	}
+	table.def           td.footnote::before {
+		content: " ";
+		display: block;
+		height: 0.6em;
+		width: 4em;
+		border-top: thin solid;
+	}
+
+/** Data tables (and properly marked-up index tables) *************************/
+	/*
+		 <table class="data"> highlights structural relationships in a table
+		 when correct markup is used (e.g. thead/tbody, th vs. td, scope attribute)
+
+		 Use class="complex data" for particularly complicated tables --
+		 (This will draw more lines: busier, but clearer.)
+
+		 Use class="long" on table cells with paragraph-like contents
+		 (This will adjust text alignment accordingly.)
+		 Alternately use class="longlastcol" on tables, to have the last column assume "long".
+	*/
+
+	table {
+		word-wrap: normal;
+		overflow-wrap: normal;
+		hyphens: manual;
+	}
+
+	table.data,
+	table.index {
+		margin: 1em auto;
+		border-collapse: collapse;
+		border: hidden;
+		width: 100%;
+	}
+	table.data caption,
+	table.index caption {
+		max-width: 50em;
+		margin: 0 auto 1em;
+	}
+
+	table.data td,  table.data th,
+	table.index td, table.index th {
+		padding: 0.5em 1em;
+		border-width: 1px;
+		border-color: silver;
+		border-top-style: solid;
+	}
+
+	table.data thead td:empty {
+		padding: 0;
+		border: 0;
+	}
+
+	table.data  thead,
+	table.index thead,
+	table.data  tbody,
+	table.index tbody {
+		border-bottom: 2px solid;
+	}
+
+	table.data colgroup,
+	table.index colgroup {
+		border-left: 2px solid;
+	}
+
+	table.data  tbody th:first-child,
+	table.index tbody th:first-child  {
+		border-right: 2px solid;
+		border-top: 1px solid silver;
+		padding-right: 1em;
+	}
+
+	table.data th[colspan],
+	table.data td[colspan] {
+		text-align: center;
+	}
+
+	table.complex.data th,
+	table.complex.data td {
+		border: 1px solid silver;
+		text-align: center;
+	}
+
+	table.data.longlastcol td:last-child,
+	table.data td.long {
+	 vertical-align: baseline;
+	 text-align: left;
+	}
+
+	table.data img {
+		vertical-align: middle;
+	}
+
+
+/*
+Alternate table alignment rules
+
+	table.data,
+	table.index {
+		text-align: center;
+	}
+
+	table.data  thead th[scope="row"],
+	table.index thead th[scope="row"] {
+		text-align: right;
+	}
+
+	table.data  tbody th:first-child,
+	table.index tbody th:first-child  {
+		text-align: right;
+	}
+
+Possible extra rowspan handling
+
+	table.data  tbody th[rowspan]:not([rowspan='1']),
+	table.index tbody th[rowspan]:not([rowspan='1']),
+	table.data  tbody td[rowspan]:not([rowspan='1']),
+	table.index tbody td[rowspan]:not([rowspan='1']) {
+		border-left: 1px solid silver;
+	}
+
+	table.data  tbody th[rowspan]:first-child,
+	table.index tbody th[rowspan]:first-child,
+	table.data  tbody td[rowspan]:first-child,
+	table.index tbody td[rowspan]:first-child{
+		border-left: 0;
+		border-right: 1px solid silver;
+	}
+*/
+
+/******************************************************************************/
+/*                                  Indices                                   */
+/******************************************************************************/
+
+
+/** Table of Contents *********************************************************/
+
+	.toc a {
+		/* More spacing; use padding to make it part of the click target. */
+		padding-top: 0.1rem;
+		/* Larger, more consistently-sized click target */
+		display: block;
+		/* Reverse color scheme */
+		color: black;
+		border-color: #3980B5;
+		border-bottom-width: 3px !important;
+		margin-bottom: 0px !important;
+	}
+	.toc a:visited {
+		border-color: #054572;
+	}
+	.toc a:not(:focus):not(:hover) {
+		/* Allow colors to cascade through from link styling */
+		border-bottom-color: transparent;
+	}
+
+	.toc, .toc ol, .toc ul, .toc li {
+		list-style: none; /* Numbers must be inlined into source */
+		/* because generated content isn't search/selectable and markers can't do multilevel yet */
+		margin:  0;
+		padding: 0;
+		line-height: 1.1rem; /* consistent spacing */
+	}
+
+	/* ToC not indented until third level, but font style & margins show hierarchy */
+	.toc > li             { font-weight: bold;   }
+	.toc > li li          { font-weight: normal; }
+	.toc > li li li       { font-size:   95%;    }
+	.toc > li li li li    { font-size:   90%;    }
+	.toc > li li li li .secno { font-size: 85%; }
+	.toc > li li li li li { font-size:   85%;    }
+	.toc > li li li li li .secno { font-size: 100%; }
+
+	/* @supports not (display:grid) { */
+		.toc > li             { margin: 1.5rem 0;    }
+		.toc > li li          { margin: 0.3rem 0;    }
+		.toc > li li li       { margin-left: 2rem;   }
+
+		/* Section numbers in a column of their own */
+		.toc .secno {
+			float: left;
+			width: 4rem;
+			white-space: nowrap;
+		}
+
+		.toc li {
+			clear: both;
+		}
+
+		:not(li) > .toc              { margin-left:  5rem; }
+		.toc .secno                  { margin-left: -5rem; }
+		.toc > li li li .secno       { margin-left: -7rem; }
+		.toc > li li li li .secno    { margin-left: -9rem; }
+		.toc > li li li li li .secno { margin-left: -11rem; }
+
+		/* Tighten up indentation in narrow ToCs */
+		@media (max-width: 30em) {
+			:not(li) > .toc              { margin-left:  4rem; }
+			.toc .secno                  { margin-left: -4rem; }
+			.toc > li li li              { margin-left:  1rem; }
+			.toc > li li li .secno       { margin-left: -5rem; }
+			.toc > li li li li .secno    { margin-left: -6rem; }
+			.toc > li li li li li .secno { margin-left: -7rem; }
+		}
+	/* } */
+
+	@supports (display:grid) {
+		/* Use #toc over .toc to override non-@supports rules. */
+		#toc {
+			display: grid;
+			align-content: start;
+			grid-template-columns: auto 1fr;
+			grid-column-gap: 1rem;
+			column-gap: 1rem;
+			grid-row-gap: .6rem;
+			row-gap: .6rem;
+		}
+		#toc h2 {
+			grid-column: 1 / -1;
+			margin-bottom: 0;
+		}
+		#toc ol,
+		#toc li,
+		#toc a {
+			display: contents;
+			/* Switch <a> to subgrid when supported */
+		}
+		#toc span {
+			margin: 0;
+		}
+		#toc > .toc > li > a > span {
+			/* The spans of the top-level list,
+			   comprising the first items of each top-level section. */
+			margin-top: 1.1rem;
+		}
+		#toc#toc .secno { /* Ugh, need more specificity to override base.css */
+			grid-column: 1;
+			width: auto;
+			margin-left: 0;
+		}
+		#toc .content {
+			grid-column: 2;
+			width: auto;
+			margin-right: 1rem;
+		}
+		#toc .content:hover {
+			background: rgba(75%, 75%, 75%, .25);
+			border-bottom: 3px solid #054572;
+			margin-bottom: -3px;
+		}
+		#toc li li li .content {
+			margin-left: 1rem;
+		}
+		#toc li li li li .content {
+			margin-left: 2rem;
+		}
+	}
+
+
+/** Index *********************************************************************/
+
+	/* Index Lists: Layout */
+	ul.index       { margin-left: 0; columns: 15em; text-indent: 1em hanging; }
+	ul.index li    { margin-left: 0; list-style: none; break-inside: avoid; }
+	ul.index li li { margin-left: 1em }
+	ul.index dl    { margin-top: 0; }
+	ul.index dt    { margin: .2em 0 .2em 20px;}
+	ul.index dd    { margin: .2em 0 .2em 40px;}
+	/* Index Lists: Typography */
+	ul.index ul,
+	ul.index dl { font-size: smaller; }
+	@media not print {
+		ul.index li span {
+			white-space: nowrap;
+			color: transparent; }
+		ul.index li a:hover + span,
+		ul.index li a:focus + span {
+			color: #707070;
+		}
+	}
+
+/** Index Tables *****************************************************/
+	/* See also the data table styling section, which this effectively subclasses */
+
+	table.index {
+		font-size: small;
+		border-collapse: collapse;
+		border-spacing: 0;
+		text-align: left;
+		margin: 1em 0;
+	}
+
+	table.index td,
+	table.index th {
+		padding: 0.4em;
+	}
+
+	table.index tr:hover td:not([rowspan]),
+	table.index tr:hover th:not([rowspan]) {
+		background: #f7f8f9;
+	}
+
+	/* The link in the first column in the property table (formerly a TD) */
+	table.index th:first-child a {
+		font-weight: bold;
+	}
+
+/******************************************************************************/
+/*                                    Print                                   */
+/******************************************************************************/
+
+	@media print {
+		/* Pages have their own margins. */
+		html {
+			margin: 0;
+		}
+		/* Serif for print. */
+		body {
+			font-family: serif;
+		}
+	}
+	@page {
+		margin: 1.5cm 1.1cm;
+	}
+
+/******************************************************************************/
+/*                                    Legacy                                  */
+/******************************************************************************/
+
+	/* This rule is inherited from past style sheets. No idea what it's for. */
+	.hide { display: none }
+
+
+
+/******************************************************************************/
+/*                             Overflow Control                               */
+/******************************************************************************/
+
+	.figure .caption, .sidefigure .caption, figcaption {
+		/* in case figure is overlarge, limit caption to 50em */
+		max-width: 50rem;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.overlarge > table {
+		/* limit preferred width of table */
+		max-width: 50em;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	@media (min-width: 55em) {
+		.overlarge {
+			margin-left: calc(13px + 26.5rem - 50vw);
+			margin-right: calc(13px + 26.5rem - 50vw);
+			max-width: none;
+		}
+	}
+	@media screen and (min-width: 78em) {
+		body:not(.toc-inline) .overlarge {
+			/* 30.5em body padding 50em content area */
+			margin-left: calc(40em - 50vw) !important;
+			margin-right: calc(40em - 50vw) !important;
+		}
+	}
+	@media screen and (min-width: 90em) {
+		body:not(.toc-inline) .overlarge {
+			/* 4em html margin 30.5em body padding 50em content area */
+			margin-left: 0 !important;
+			margin-right: calc(84.5em - 100vw) !important;
+		}
+	}
+
+	@media not print {
+		.overlarge {
+			overflow-x: auto;
+			/* See Lea Verou's explanation background-attachment:
+			 * http://lea.verou.me/2012/04/background-attachment-local/
+			 *
+			background: top left  / 4em 100% linear-gradient(to right,  #ffffff, rgba(255, 255, 255, 0)) local,
+			            top right / 4em 100% linear-gradient(to left, #ffffff, rgba(255, 255, 255, 0)) local,
+			            top left  / 1em 100% linear-gradient(to right,  #c3c3c5, rgba(195, 195, 197, 0)) scroll,
+			            top right / 1em 100% linear-gradient(to left, #c3c3c5, rgba(195, 195, 197, 0)) scroll,
+			            white;
+			background-repeat: no-repeat;
+			*/
+		}
+	}
+</style>
+  <meta content="Bikeshed version 090ef96cbce74475c89e94394cc8fa4fbc08b477" name="generator">
+  <link href="http://tabatkins.github.io/specs/respimg/Overview.html" rel="canonical">
+  <meta content="ca107d9a42810c81542b0ac14a9680ece433972a" name="document-revision">
+<style>/* style-md-lists */
+
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
+}
+[data-md] > :last-child {
+    margin-bottom: 0;
+}</style>
+<style>/* style-selflinks */
+
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
+}
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: gray;
+    color: white;
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: black;
 }
 
-pre { margin-left: 2em }
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }</style>
+<style>/* style-counters */
 
-dt { font-weight: bold }
-
-[data-autolink="property"]::before, [data-autolink="maybe"]::before {content: "\2018";}
-[data-autolink="property"]::after, [data-autolink="maybe"]::after {content: "\2019";}
-
-.example .language-css, .example .language-markup {
-	background: transparent;
+body {
+    counter-reset: example figure issue;
 }
-	</style>
-</head>
-<body class="h-entry lang-css">
-<div class=head>
-	<p data-fill-with=logo></p>
-	<h1 class="p-name no-ref" id=title>Proposal for RespImg Syntax</h1>
-	<h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Unofficial Proposal Draft,
-		<span class=dt-updated><span class=value-title title=20140211>11 February 2014</span></span></span></h2>
-	<div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://www.w3.org/TR/2014/UD-respimg-1-20140211/>http://www.w3.org/TR/2014/UD-respimg-1-20140211/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/respimg/Overview.html>http://tabatkins.github.io/specs/respimg/Overview.html</a>
-    <dt>Feedback:</dt>
-        <dd><a href="mailto:public-respimg@w3.org?subject=%5Brespimg%5D%20feedback">public-respimg@w3.org</a>
-            with subject line
-            “<kbd>[respimg] <var>… message topic …</var></kbd>”(<a href=http://lists.w3.org/Archives/Public/public-respimg/ rel=discussion>archives</a>)<dt>Test Suite:<dd>None Yet<dt>Editors:
-<dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins</a> (<span class="p-org org">Google</span>)</dl></div>
-	<div data-fill-with=warning><details class=annoying-warning open>
-	<summary>This Document Is Obsolete and Has Been Replaced</summary>
-	<p>
-		This specification is obsolete and has been replaced by the document at <a href=http://picture.responsiveimages.org/>http://picture.responsiveimages.org/</a>.
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
+}
+
+.example {
+    counter-increment: example;
+}
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example" counter(example);
+}
+
+figcaption {
+    counter-increment: figure;
+}
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}</style>
+<style>/* style-autolinks */
+
+.css.css, .property.property, .descriptor.descriptor {
+    color: #005a9c;
+    font-size: inherit;
+    font-family: inherit;
+}
+.css::before, .property::before, .descriptor::before {
+    content: "‘";
+}
+.css::after, .property::after, .descriptor::after {
+    content: "’";
+}
+.property, .descriptor {
+    /* Don't wrap property and descriptor names */
+    white-space: nowrap;
+}
+.type { /* CSS value <type> */
+    font-style: italic;
+}
+pre .property::before, pre .property::after {
+    content: "";
+}
+[data-link-type="property"]::before,
+[data-link-type="propdesc"]::before,
+[data-link-type="descriptor"]::before,
+[data-link-type="value"]::before,
+[data-link-type="function"]::before,
+[data-link-type="at-rule"]::before,
+[data-link-type="selector"]::before,
+[data-link-type="maybe"]::before {
+    content: "‘";
+}
+[data-link-type="property"]::after,
+[data-link-type="propdesc"]::after,
+[data-link-type="descriptor"]::after,
+[data-link-type="value"]::after,
+[data-link-type="function"]::after,
+[data-link-type="at-rule"]::after,
+[data-link-type="selector"]::after,
+[data-link-type="maybe"]::after {
+    content: "’";
+}
+
+[data-link-type].production::before,
+[data-link-type].production::after,
+.prod [data-link-type]::before,
+.prod [data-link-type]::after {
+    content: "";
+}
+
+[data-link-type=element],
+[data-link-type=element-attr] {
+    font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    font-size: .9em;
+}
+[data-link-type=element]::before { content: "<" }
+[data-link-type=element]::after  { content: ">" }
+
+[data-link-type=biblio] {
+    white-space: pre;
+}</style>
+<style>/* style-dfn-panel */
+
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    height: auto;
+    width: -webkit-fit-content;
+    width: fit-content;
+    max-width: 300px;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: #DDDDDD;
+    color: black;
+    border: outset 0.2em;
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: black; }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0; }
+.dfn-panel li { list-style: inside; }
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: .5em;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+}
+
+.dfn-paneled { cursor: pointer; }
+</style>
+<style>/* style-syntax-highlighting */
+
+.highlight:not(.idl) { background: hsl(24, 20%, 95%); }
+code.highlight { padding: .1em; border-radius: .3em; }
+pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
+c-[a] { color: #990055 } /* Keyword.Declaration */
+c-[b] { color: #990055 } /* Keyword.Type */
+c-[c] { color: #708090 } /* Comment */
+c-[d] { color: #708090 } /* Comment.Multiline */
+c-[e] { color: #0077aa } /* Name.Attribute */
+c-[f] { color: #669900 } /* Name.Tag */
+c-[g] { color: #222222 } /* Name.Variable */
+c-[k] { color: #990055 } /* Keyword */
+c-[l] { color: #000000 } /* Literal */
+c-[m] { color: #000000 } /* Literal.Number */
+c-[n] { color: #0077aa } /* Name */
+c-[o] { color: #999999 } /* Operator */
+c-[p] { color: #999999 } /* Punctuation */
+c-[s] { color: #a67f59 } /* Literal.String */
+c-[t] { color: #a67f59 } /* Literal.String.Single */
+c-[u] { color: #a67f59 } /* Literal.String.Double */
+c-[cp] { color: #708090 } /* Comment.Preproc */
+c-[c1] { color: #708090 } /* Comment.Single */
+c-[cs] { color: #708090 } /* Comment.Special */
+c-[kc] { color: #990055 } /* Keyword.Constant */
+c-[kn] { color: #990055 } /* Keyword.Namespace */
+c-[kp] { color: #990055 } /* Keyword.Pseudo */
+c-[kr] { color: #990055 } /* Keyword.Reserved */
+c-[ld] { color: #000000 } /* Literal.Date */
+c-[nc] { color: #0077aa } /* Name.Class */
+c-[no] { color: #0077aa } /* Name.Constant */
+c-[nd] { color: #0077aa } /* Name.Decorator */
+c-[ni] { color: #0077aa } /* Name.Entity */
+c-[ne] { color: #0077aa } /* Name.Exception */
+c-[nf] { color: #0077aa } /* Name.Function */
+c-[nl] { color: #0077aa } /* Name.Label */
+c-[nn] { color: #0077aa } /* Name.Namespace */
+c-[py] { color: #0077aa } /* Name.Property */
+c-[ow] { color: #999999 } /* Operator.Word */
+c-[mb] { color: #000000 } /* Literal.Number.Bin */
+c-[mf] { color: #000000 } /* Literal.Number.Float */
+c-[mh] { color: #000000 } /* Literal.Number.Hex */
+c-[mi] { color: #000000 } /* Literal.Number.Integer */
+c-[mo] { color: #000000 } /* Literal.Number.Oct */
+c-[sb] { color: #a67f59 } /* Literal.String.Backtick */
+c-[sc] { color: #a67f59 } /* Literal.String.Char */
+c-[sd] { color: #a67f59 } /* Literal.String.Doc */
+c-[se] { color: #a67f59 } /* Literal.String.Escape */
+c-[sh] { color: #a67f59 } /* Literal.String.Heredoc */
+c-[si] { color: #a67f59 } /* Literal.String.Interpol */
+c-[sx] { color: #a67f59 } /* Literal.String.Other */
+c-[sr] { color: #a67f59 } /* Literal.String.Regex */
+c-[ss] { color: #a67f59 } /* Literal.String.Symbol */
+c-[vc] { color: #0077aa } /* Name.Variable.Class */
+c-[vg] { color: #0077aa } /* Name.Variable.Global */
+c-[vi] { color: #0077aa } /* Name.Variable.Instance */
+c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
+</style>
+ <body class="h-entry">
+  <div class="head">
+   <p data-fill-with="logo"></p>
+   <h1 class="p-name no-ref" id="title">Proposal for RespImg Syntax</h1>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Unofficial Proposal Draft, <time class="dt-updated" datetime="2018-09-14">14 September 2018</time></span></h2>
+   <div data-fill-with="spec-metadata">
+    <dl>
+     <dt>This version:
+     <dd><a class="u-url" href="http://tabatkins.github.io/specs/respimg/Overview.html">http://tabatkins.github.io/specs/respimg/Overview.html</a>
+     <dt>Feedback:
+     <dd><span><a href="mailto:public-respimg@w3.org?subject=%5Brespimg%5D%20YOUR%20TOPIC%20HERE">public-respimg@w3.org</a> with subject line “<kbd>[respimg] <i data-lt>… message topic …</i></kbd>” (<a href="http://lists.w3.org/Archives/Public/public-respimg/" rel="discussion">archives</a>)</span>
+     <dt>Issue Tracking:
+     <dd><a href="https://github.com/tabatkins/specs/issues/">GitHub</a>
+     <dd><a href="#issues-index">Inline In Spec</a>
+     <dt class="editor">Editor:
+     <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="http://xanthir.com/contact/">Tab Atkins</a> (<span class="p-org org">Google</span>)
+    </dl>
+   </div>
+   <div data-fill-with="warning">
+    <details class="annoying-warning" open>
+     <summary>This Document Is Obsolete and Has Been Replaced</summary>
+     <p> This specification is obsolete and has been replaced by the document at <a href="http://picture.responsiveimages.org/">http://picture.responsiveimages.org/</a>.
 		Do not attempt to implement this specification.
-		Do not refer to this specification except as a historical artifact.
-</details>
-</div>
-	<p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
-To the extent possible under law, the editors have waived all copyright 
-and related or neighboring rights to this work. 
-In addition, as of 11 February 2014, 
-the editors have made this specification available under the
-<a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
+		Do not refer to this specification except as a historical artifact. </p>
+    </details>
+   </div>
+   <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
+and related or neighboring rights to this work.
+In addition, as of 14 September 2018,
+the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
-Parts of this work may be from an existing specification document.  If so, those parts are instead covered by the license of the existing specification document.</p>
-	<hr title="Separator for header">
-</div>
-
-<h2 class="no-num no-toc no-ref heading settled heading" id=abstract><span class=content>Abstract</span></h2>
-<p class=p-summary data-fill-with=abstract>This document describes a proposed syntax for "responsive images", which allows a user agent to choose an appropriate version of an image from several candidates.</p>
-
-<h2 class="no-num no-toc no-ref heading settled heading" id=status><span class=content>Status of this document</span></h2>
-<div data-fill-with=status><p>
-	This is an unofficial draft.
-	It is provided for discussion only and may change at any moment.
-	Its publication here does not imply endorsement of its contents by W3C. 
-	Don’t cite this document other than as work in progress.</div>
-<div data-fill-with=at-risk></div>
-
-<h2 class="no-num no-toc no-ref heading settled heading" id=contents><span class=content>Table of contents</span></h2>
-<div data-fill-with=table-of-contents><ul class=toc><li><a href=#intro><span class=secno>1</span>
-Introduction</a><li><a href=#problem><span class=secno>2</span>
-The Problem Statement</a><li><a href=#syntax><span class=secno>3</span>
-The Syntax Proposal</a><ul class=toc><li><a href=#media-queries><span class=secno>3.1</span>
-Art Direction</a><li><a href=#resolution><span class=secno>3.2</span>
-Resolution</a><li><a href=#variable-size><span class=secno>3.3</span>
-Variable-Sized Images</a></ul><li><a href=#model><span class=secno>4</span>
-Processing Model</a><ul class=toc><li><a href=#obtain-candidates><span class=secno>4.1</span>
-Obtaining the Image Candidates</a></ul><li><a href=#references><span class=secno></span>
-References</a><ul class=toc><li><a href=#normative><span class=secno></span>
-Normative References</a><li><a href=#informative><span class=secno></span>
-Informative References</a></ul><li><a href=#index><span class=secno></span>
-Index</a><li><a href=#property-index><span class=secno></span>
-Property index</a><li><a href=#issues-index><span class=secno></span>Issues Index</a></ul></div>
-
-
-
-<h2 class="heading settled heading" data-level=1 id=intro><span class=secno>1 </span><span class=content>
-Introduction</span><a class=self-link href=#intro></a></h2>
-
-<p>	The Responsive Images community has been trying for some time to come up with a syntax for specifying responsive images
+Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
+   <hr title="Separator for header">
+  </div>
+  <div class="p-summary" data-fill-with="abstract">
+   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <p>This document describes a proposed syntax for "responsive images", which allows a user agent to choose an appropriate version of an image from several candidates.</p>
+  </div>
+  <div data-fill-with="at-risk"></div>
+  <nav data-fill-with="table-of-contents" id="toc">
+   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
+   <ol class="toc" role="directory">
+    <li><a href="#intro"><span class="secno">1</span> <span class="content"> Introduction</span></a>
+    <li><a href="#problem"><span class="secno">2</span> <span class="content"> The Problem Statement</span></a>
+    <li>
+     <a href="#syntax"><span class="secno">3</span> <span class="content"> The Syntax Proposal</span></a>
+     <ol class="toc">
+      <li><a href="#media-queries"><span class="secno">3.1</span> <span class="content"> Art Direction</span></a>
+      <li><a href="#resolution"><span class="secno">3.2</span> <span class="content"> Resolution</span></a>
+      <li><a href="#variable-size"><span class="secno">3.3</span> <span class="content"> Variable-Sized Images</span></a>
+     </ol>
+    <li>
+     <a href="#model"><span class="secno">4</span> <span class="content"> Processing Model</span></a>
+     <ol class="toc">
+      <li><a href="#obtain-candidates"><span class="secno">4.1</span> <span class="content"> Obtaining the Image Candidates</span></a>
+     </ol>
+    <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ol>
+    <li>
+     <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+     <ol class="toc">
+      <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+     </ol>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
+   </ol>
+  </nav>
+  <main>
+   <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content"> Introduction</span><a class="self-link" href="#intro"></a></h2>
+   <p>The Responsive Images community has been trying for some time to come up with a syntax for specifying responsive images
 	that satisfies multiple use-cases.
 	Their most popular attempt so far,
-	the <code>&lt;picture&gt;</code> element,
+	the <code>&lt;picture></code> element,
 	only hits 2 of the 3 major use-cases,
-	and has certain aspects that implementors seem to be rather unhappy with.
-
-<p>	This document defines a new attempt at the problem,
+	and has certain aspects that implementors seem to be rather unhappy with.</p>
+   <p>This document defines a new attempt at the problem,
 	sketched out in collaboration between me and John Mellor,
 	which solves all three of the major use-cases,
 	while avoiding implementor concerns,
-	and hopefully being very easily usable.
-
-<h2 class="heading settled heading" data-level=2 id=problem><span class=secno>2 </span><span class=content>
-The Problem Statement</span><a class=self-link href=#problem></a></h2>
-
-<p>	To make things somewhat clearer,
-	I’ll outline here the three use-cases that the responsive images community has been attempting to address.
-
-	<ol>
-		<li>
-			<dfn data-dfn-type=dfn data-noexport="" id=resolution0 title=resolution>Resolution-based discrimination<a class=self-link href=#resolution0></a></dfn> - providing the same image in multiple resolutions,
+	and hopefully being very easily usable.</p>
+   <h2 class="heading settled" data-level="2" id="problem"><span class="secno">2. </span><span class="content"> The Problem Statement</span><a class="self-link" href="#problem"></a></h2>
+   <p>To make things somewhat clearer,
+	I’ll outline here the three use-cases that the responsive images community has been attempting to address.</p>
+   <ol>
+    <li> <dfn data-dfn-type="dfn" data-noexport id="resolution-based-discrimination" title="resolution">Resolution-based discrimination<a class="self-link" href="#resolution-based-discrimination"></a></dfn> - providing the same image in multiple resolutions,
 			so that high-res devices can get the prettiest picture,
 			while low-res or low-bandwidth devices can avoid wasting time and bandwidth with overly-large files.
-
-		<li>
-			<dfn data-dfn-type=dfn data-noexport="" id=art-direction title=art-direction>Art-direction discrimination<a class=self-link href=#art-direction></a></dfn> - as the screen size changes,
+    <li> <dfn data-dfn-type="dfn" data-noexport id="art-direction-discrimination" title="art-direction">Art-direction discrimination<a class="self-link" href="#art-direction-discrimination"></a></dfn> - as the screen size changes,
 			so might your page’s design.
 			A large, detailed image might be appropriate for the desktop design,
 			but just scaling it down for a small phone’s screen results in a tiny, cluttered image.
 			Instead, you may want to provide alternate images,
 			cropped differently to better fit the small screen
 			and still show the most important parts of the image at an appropriate size.
-
-		<li>
-			<dfn data-dfn-type=dfn data-noexport="" id=viewport title=viewport>Variable-size resolution discrimination<a class=self-link href=#viewport></a></dfn> -
+    <li> <dfn data-dfn-type="dfn" data-noexport id="variable-size-resolution-discrimination" title="viewport">Variable-size resolution discrimination<a class="self-link" href="#variable-size-resolution-discrimination"></a></dfn> -
 			sometimes the image you’re serving is variable-sized:
 			either based on the size of the viewport
 			or just different sizes at different breakpoints.
@@ -178,118 +1568,87 @@ The Problem Statement</span><a class=self-link href=#problem></a></h2>
 			when used to fill the background of the page on a desktop screen,
 			but it’s far too large to use for the same purpose on a 320px wide screen.
 			On a screen that small, it’s more like a 2x or 3x image.
-	</ol>
-
-<p>	In addition, there’s a strong requirement that the solution be friendly to the browser’s preloader,
+   </ol>
+   <p>In addition, there’s a strong requirement that the solution be friendly to the browser’s preloader,
 	which scans the document for urls to start downloading quickly,
 	as the connection delay is a huge factor in the feeling of "slow" sites on mobile devices,
 	and so starting the connection as early as possible is a big win in perceived performance.
 	This limits what kind of information you can rely on,
-	as the preloader only has access to a small amount of data from the page.
-
-<h2 class="heading settled heading" data-level=3 id=syntax><span class=secno>3 </span><span class=content>
-The Syntax Proposal</span><a class=self-link href=#syntax></a></h2>
-
-<p>	Add a set of attributes to <code>&lt;img&gt;</code>,
+	as the preloader only has access to a small amount of data from the page.</p>
+   <h2 class="heading settled" data-level="3" id="syntax"><span class="secno">3. </span><span class="content"> The Syntax Proposal</span><a class="self-link" href="#syntax"></a></h2>
+   <p>Add a set of attributes to <code>&lt;img></code>,
 	named <code>src-1</code>, <code>src-2</code>, etc.
 	Collectively,
-	these are the <dfn data-dfn-type=dfn data-export="" id=src-n- title="src-N | src-N attribute">src-N attributes<a class=self-link href=#src-n-></a></dfn>
-
-<p>	When loading an image,
+	these are the <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="src-n-attributes" title="src-N | src-N attribute">src-N attributes</dfn></p>
+   <p>When loading an image,
 	these attributes are consulted first,
 	in numerical order.
 	If none of them are valid or match,
-	then the plain <code>src</code> attribute is used to load the image.
-
-<p class=note>	Note: It’s possible to integrate <code>srcset</code> into this if necessary,
+	then the plain <code>src</code> attribute is used to load the image.</p>
+   <p class="note" role="note"><span>Note:</span> It’s possible to integrate <code>srcset</code> into this if necessary,
 	but it would be nice to avoid doing that.
-	This completely replaces the <code>srcset</code> funtionality.
+	This completely replaces the <code>srcset</code> funtionality.</p>
+   <p>The grammar for the attributes is:</p>
+<pre><dfn data-dfn-type="dfn" data-noexport id="src-n-attribute">&lt;src-n-attribute><a class="self-link" href="#src-n-attribute"></a></dfn> = <a class="production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-4/#typedef-media-query" id="ref-for-typedef-media-query">&lt;media-query></a>? [ <a class="production" data-link-type="type">&lt;x-based-urls></a> | <a class="production" data-link-type="type">&lt;viewport-urls></a> ]
+<dfn data-dfn-type="dfn" data-noexport id="x-based-urls">&lt;x-based-urls><a class="self-link" href="#x-based-urls"></a></dfn> = [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#url-value" id="ref-for-url-value">&lt;url></a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#resolution-value" id="ref-for-resolution-value" title="Expands to: dppx | x | dpcm | dpi">&lt;resolution></a>? ]#
 
-<p>	The grammar for the attributes is:
-
-	<pre>  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-src-n-attribute>&lt;src-n-attribute&gt;<a class=self-link href=#typedef-src-n-attribute></a></dfn> = <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/mediaqueries-4/#typedef-media-query title="<media-query>">&lt;media-query&gt;</a>? [ <a class="production css-code" data-link-type=type href=#typedef-x-based-urls title="<x-based-urls>">&lt;x-based-urls&gt;</a> | <a class="production css-code" data-link-type=type href=#typedef-viewport-urls title="<viewport-urls>">&lt;viewport-urls&gt;</a> ]
-  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-x-based-urls>&lt;x-based-urls&gt;<a class=self-link href=#typedef-x-based-urls></a></dfn> = [ <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#url-value title="<url>">&lt;url&gt;</a> <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#resolution-value title="<resolution>">&lt;resolution&gt;</a>? ]#
-
-  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-viewport-urls>&lt;viewport-urls&gt;<a class=self-link href=#typedef-viewport-urls></a></dfn> = <a class="production css-code" data-link-type=type href=#typedef-size-viewport-list title="<size-viewport-list>">&lt;size-viewport-list&gt;</a> ; <a class="production css-code" data-link-type=type href=#typedef-size-based-urls title="<size-based-urls>">&lt;size-based-urls&gt;</a>
-  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-size-viewport-list>&lt;size-viewport-list&gt;<a class=self-link href=#typedef-size-viewport-list></a></dfn> = <a class="production css-code" data-link-type=type href=#typedef-image-size title="<image-size>">&lt;image-size&gt;</a> [ ( <a class="production css-code" data-link-type=type href=#typedef-viewport-size title="<viewport-size>">&lt;viewport-size&gt;</a> ) <a class="production css-code" data-link-type=type href=#typedef-image-size title="<image-size>">&lt;image-size&gt;</a> ]*
-  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-image-size>&lt;image-size&gt;<a class=self-link href=#typedef-image-size></a></dfn> = <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a> | <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#percentage-value title="<percentage>">&lt;percentage&gt;</a>
-  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-viewport-size>&lt;viewport-size&gt;<a class=self-link href=#typedef-viewport-size></a></dfn> = <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a>
-  <dfn class=css-code data-dfn-type=type data-export="" id=typedef-size-based-urls>&lt;size-based-urls&gt;<a class=self-link href=#typedef-size-based-urls></a></dfn> = [ <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#url-value title="<url>">&lt;url&gt;</a> <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-syntax-3/#typedef-integer title="<integer>">&lt;integer&gt;</a> ]#
+<dfn data-dfn-type="dfn" data-noexport id="viewport-urls">&lt;viewport-urls><a class="self-link" href="#viewport-urls"></a></dfn> = <a class="production" data-link-type="type">&lt;size-viewport-list></a> ; <a class="production" data-link-type="type">&lt;size-based-urls></a>
+<dfn data-dfn-type="dfn" data-noexport id="size-viewport-list">&lt;size-viewport-list><a class="self-link" href="#size-viewport-list"></a></dfn> = <a class="production" data-link-type="type">&lt;image-size></a> [ ( <a class="production" data-link-type="type">&lt;viewport-size></a> ) <a class="production" data-link-type="type">&lt;image-size></a> ]*
+<dfn data-dfn-type="dfn" data-noexport id="image-size">&lt;image-size><a class="self-link" href="#image-size"></a></dfn> = <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#length-value" id="ref-for-length-value" title="Expands to: em | vb | ch | cm | vh | vi | in | ex | vw | ic | pt | px | lh | pc | rem | rlh | vmax | advance measure | vmin | mm | cap | q">&lt;length></a> | <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#percentage-value" id="ref-for-percentage-value">&lt;percentage></a>
+<dfn data-dfn-type="dfn" data-noexport id="viewport-size">&lt;viewport-size><a class="self-link" href="#viewport-size"></a></dfn> = <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#length-value" id="ref-for-length-value①" title="Expands to: em | vb | ch | cm | vh | vi | in | ex | vw | ic | pt | px | lh | pc | rem | rlh | vmax | advance measure | vmin | mm | cap | q">&lt;length></a>
+<dfn data-dfn-type="dfn" data-noexport id="size-based-urls">&lt;size-based-urls><a class="self-link" href="#size-based-urls"></a></dfn> = [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#url-value" id="ref-for-url-value①">&lt;url></a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#integer-value" id="ref-for-integer-value">&lt;integer></a> ]#
 </pre>
-<p>	The above grammar must be interpreted per the grammar definition in <a data-biblio-type=normative data-link-type=biblio href=#css3val title=css3val>[CSS3VAL]</a>.
+   <p>The above grammar must be interpreted per the grammar definition in <a data-link-type="biblio" href="#biblio-css3val">[CSS3VAL]</a>.
 	For the purposes of the above grammar,
-	the <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#url-value title="<url>">&lt;url&gt;</a> production is simply any sequence of non-<a data-link-spec=css-syntax data-link-type=dfn href=http://dev.w3.org/csswg/css-syntax-3/#whitespace title=whitespace>whitespace</a> characters
+	the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#url-value" id="ref-for-url-value②">&lt;url></a> production is simply any sequence of non-<a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#whitespace" id="ref-for-whitespace">whitespace</a> characters
 	that does not end in a comma or semicolon.
-	All other terminal productions are defined as per CSS.
-
-<p>	The terms and use of this grammar are explained further in the following sections.
-
-<p class=note>	Note: Any explanations of how the attributes and their values are processed that appear in this section are <em>non-normative</em>.
-	The normative definition of the processing model is in the "Processing" section.
-
-<h3 class="heading settled heading" data-level=3.1 id=media-queries><span class=secno>3.1 </span><span class=content>
-Art Direction</span><a class=self-link href=#media-queries></a></h3>
-
-<p>	To solve the basic <a data-link-type=dfn href=#art-direction title=art-direction>art-direction</a> use-case,
-	the <a data-link-type=dfn href=#src-n- title="src-n attributes">src-N attributes</a> allow a media query to be provided at the beginning of their value.
-
-	<p class=issue id=issue-c4f912a2><a class=self-link href=#issue-c4f912a2></a>
-		I want just the second clause of the <code>media_query</code> grammar in Media Queries 4,
+	All other terminal productions are defined as per CSS.</p>
+   <p>The terms and use of this grammar are explained further in the following sections.</p>
+   <p class="note" role="note"><span>Note:</span> Any explanations of how the attributes and their values are processed that appear in this section are <em>non-normative</em>.
+	The normative definition of the processing model is in the "Processing" section.</p>
+   <h3 class="heading settled" data-level="3.1" id="media-queries"><span class="secno">3.1. </span><span class="content"> Art Direction</span><a class="self-link" href="#media-queries"></a></h3>
+   <p>To solve the basic <a data-link-type="dfn">art-direction</a> use-case,
+	the <a data-link-type="dfn" href="#src-n-attributes" id="ref-for-src-n-attributes">src-N attributes</a> allow a media query to be provided at the beginning of their value.</p>
+   <p class="issue" id="issue-b26aeb5d"><a class="self-link" href="#issue-b26aeb5d"></a> I want just the second clause of the <code>media_query</code> grammar in Media Queries 4,
 		where you have "(foo:bar) and (baz:qux)" and that’s it.
-		I should go fix the grammar section there to expose this more cleanly.
-
-<p>	Each valid <a data-link-type=dfn href=#src-n- title="src-n attribute">src-N attribute</a> is checked in numerical order,
+		I should go fix the grammar section there to expose this more cleanly. </p>
+   <p>Each valid <a data-link-type="dfn" href="#src-n-attributes" id="ref-for-src-n-attributes①">src-N attribute</a> is checked in numerical order,
 	and the first one to have a matching media query
 	(or no media query at all)
-	is chosen as the source of candidate urls for this <code>&lt;img&gt;</code>.
-
-	<div class=example>
-		The following three crops of the same image can be used on various screen sizes,
+	is chosen as the source of candidate urls for this <code>&lt;img></code>.</p>
+   <div class="example" id="example-9c61bbb1">
+    <a class="self-link" href="#example-9c61bbb1"></a> The following three crops of the same image can be used on various screen sizes,
 		where different designs call for different image shapes and sizes:
-
-		<figure>
-			<img alt="Three crops of the same image. The first shows President Obama talking to a soldier in hospital scrubs. The second is zoomed out, showing more soldiers standing around them.  The third is zoomed out even further, showing even more soldiers and more of the hospital room." src=images/difimages.jpg>
-		</figure>
-
-<p>		These could be referenced like:
-
-		<pre class=lang-markup>  &lt;img src-1="(max-width: 400px) pic-small.jpg"
-       src-2="(max-width: 1000px) pic-medium.jpg"
-       src="pic-large.jpg"
-       alt="Obama talking to a soldier in hospital scrubs."&gt;
+    <figure> <img alt="Three crops of the same image. The first shows President Obama talking to a soldier in hospital scrubs. The second is zoomed out, showing more soldiers standing around them.  The third is zoomed out even further, showing even more soldiers and more of the hospital room." src="images/difimages.jpg"> </figure>
+    <p>These could be referenced like:</p>
+<pre class="lang-markup highlight"><c- p>&lt;</c-><c- f>img</c-> <c- e>src-1</c-><c- o>=</c-><c- s>"(max-width: 400px) pic-small.jpg"</c->
+     <c- e>src-2</c-><c- o>=</c-><c- s>"(max-width: 1000px) pic-medium.jpg"</c->
+     <c- e>src</c-><c- o>=</c-><c- s>"pic-large.jpg"</c->
+     <c- e>alt</c-><c- o>=</c-><c- s>"Obama talking to a soldier in hospital scrubs."</c-><c- p>></c->
 </pre>
-<p class=note>		Note: Putting the final url into a <code>src</code> attribute like that isn’t required;
+    <p class="note" role="note"><span>Note:</span> Putting the final url into a <code>src</code> attribute like that isn’t required;
 		in fact, if using any of the more advanced pieces of this feature,
 		like multiple resolutions,
-		it would <em>have</em> to be in a <a data-link-type=dfn href=#src-n- title="src-n attribute">src-N attribute</a>
-		(using <code>src-3</code> would be most appropriate here).
+		it would <em>have</em> to be in a <a data-link-type="dfn" href="#src-n-attributes" id="ref-for-src-n-attributes②">src-N attribute</a> (using <code>src-3</code> would be most appropriate here).
 		Still, having a final fallback in <code>src</code> is a good idea,
-		as it means that down-level browsers will still be able to correctly download the image.
-	</div>
-
-<p class=note>	Note: This feature is intended to be used with <em>distinct</em> images.
+		as it means that down-level browsers will still be able to correctly download the image.</p>
+   </div>
+   <p class="note" role="note"><span>Note:</span> This feature is intended to be used with <em>distinct</em> images.
 	Look at the "Viewport" subsection about choosing among multiple copies of the <em>same</em> image
-	based on viewport size.
-
-<h3 class="heading settled heading" data-level=3.2 id=resolution><span class=secno>3.2 </span><span class=content>
-Resolution</span><a class=self-link href=#resolution></a></h3>
-
-<p>	To solve the <a data-link-type=dfn href=#resolution0 title=resolution>resolution</a> use-case,
-	the <a data-link-type=dfn href=#src-n- title="src-n attributes">src-N attributes</a> allow multiple urls to be provided,
+	based on viewport size.</p>
+   <h3 class="heading settled" data-level="3.2" id="resolution"><span class="secno">3.2. </span><span class="content"> Resolution</span><a class="self-link" href="#resolution"></a></h3>
+   <p>To solve the <a data-link-type="dfn">resolution</a> use-case,
+	the <a data-link-type="dfn" href="#src-n-attributes" id="ref-for-src-n-attributes③">src-N attributes</a> allow multiple urls to be provided,
 	each with an indicator of their resolution
-	(the ratio of image pixels to CSS pixels).
-
-<p>	Instead of a single url,
+	(the ratio of image pixels to CSS pixels).</p>
+   <p>Instead of a single url,
 	simply provide a comma-separated list of urls/resolution pairs,
-	where each pair is a url, followed by whitespace, followed by a CSS <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#resolution-value title="<resolution>">&lt;resolution&gt;</a> value.
-	A url provided without a <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#resolution-value title="<resolution>">&lt;resolution&gt;</a> is assumed to be at <span class=css data-link-type=maybe title=1x>1x</span> resolution.
-
-	<p class=issue id=issue-507e8b4c><a class=self-link href=#issue-507e8b4c></a>
-		Assume that I’ve already edited Images 4 appropriately so that <span class=css data-link-type=maybe title=x>x</span> is a valid resolution unit,
-		equivalent to <span class=css data-link-type=maybe title=dppx>dppx</span>.
-
-	<div class=example>
-		For example, the following code provides the same image at three different resolutions:
+	where each pair is a url, followed by whitespace, followed by a CSS <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#resolution-value" id="ref-for-resolution-value①" title="Expands to: dppx | x | dpcm | dpi">&lt;resolution></a> value.
+	A url provided without a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#resolution-value" id="ref-for-resolution-value②" title="Expands to: dppx | x | dpcm | dpi">&lt;resolution></a> is assumed to be at <span class="css">1x</span> resolution.</p>
+   <p class="issue" id="issue-86fd3ad9"><a class="self-link" href="#issue-86fd3ad9"></a> Assume that I’ve already edited Images 4 appropriately so that <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-scroll-snap-1/#valdef-scroll-snap-type-x" id="ref-for-valdef-scroll-snap-type-x">x</a> is a valid resolution unit,
+		equivalent to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#dppx" id="ref-for-dppx">dppx</a>. </p>
+   <div class="example" id="example-181813d2">
+    <a class="self-link" href="#example-181813d2"></a> For example, the following code provides the same image at three different resolutions:
 		one at "normal size",
 		where each image pixel maps to one CSS pixel;
 		one "high-res",
@@ -297,178 +1656,143 @@ Resolution</span><a class=self-link href=#resolution></a></h3>
 		and one "low-res",
 		which is half the size,
 		intended for low-bandwidth situations.
-
-		<pre class=lang-markup>  &lt;img src-1="pic.png, picHigh.png 2x, picLow.png .5x"&gt;
-</pre>	</div>
-
-<p>	The choice of which image to load is left to the user agent,
+<pre class="lang-markup highlight"><c- p>&lt;</c-><c- f>img</c-> <c- e>src-1</c-><c- o>=</c-><c- s>"pic.png, picHigh.png 2x, picLow.png .5x"</c-><c- p>></c->
+</pre>
+   </div>
+   <p>The choice of which image to load is left to the user agent,
 	based on its knowledge of the screen’s pixel density,
 	the device’s bandwidth,
-	and whatever other factors it deems relevant to the decision.
-
-<p>	The intrinsic size of the chosen image is equal to the actual number of image pixels in each dimension,
+	and whatever other factors it deems relevant to the decision.</p>
+   <p>The intrinsic size of the chosen image is equal to the actual number of image pixels in each dimension,
 	divided by the chosen resolution multiplier,
 	in CSS px units.
 	For example, if "pic1.png 2x" is chosen, and is 100 pixels wide,
-	its intrinsic size is <span class=css data-link-type=maybe title=50px>50px</span>.
-
-<h3 class="heading settled heading" data-level=3.3 id=variable-size><span class=secno>3.3 </span><span class=content>
-Variable-Sized Images</span><a class=self-link href=#variable-size></a></h3>
-
-<p>	The previous section on resolution discrimination had a hidden assumption which may not always be true:
+	its intrinsic size is <span class="css">50px</span>.</p>
+   <h3 class="heading settled" data-level="3.3" id="variable-size"><span class="secno">3.3. </span><span class="content"> Variable-Sized Images</span><a class="self-link" href="#variable-size"></a></h3>
+   <p>The previous section on resolution discrimination had a hidden assumption which may not always be true:
 	that the image being presented is meant to be a single, static size.
-	That is, regardless of the size of the screen, the image will always be, say, 400px wide.
-
-<p>	This assumption is not always true.
-	There are two major reasons why this may be so:
-
-<p>	<ul>
-		<li>
-			The image’s size may be specified as a percentage of the viewport’s width.
+	That is, regardless of the size of the screen, the image will always be, say, 400px wide.</p>
+   <p>This assumption is not always true.
+	There are two major reasons why this may be so:</p>
+   <ul>
+    <li> The image’s size may be specified as a percentage of the viewport’s width.
 			For example, it may be screen-filling (100%),
 			or it may fill a column in a two-column layout (50%).
-
-		<li>
-			The image’s size may vary with your page’s breakpoints,
+    <li> The image’s size may vary with your page’s breakpoints,
 			as it gets placed in different layouts.
 			For example,
 			you may have a single-column layout on small screens,
 			having the image fill that column (100%),
 			but switch to a grid with fixed-size items in it on larger screens (400px).
-	</ul>
-
-<p>	Either of these issues can be addressed with Media Queries,
+   </ul>
+   <p>Either of these issues can be addressed with Media Queries,
 	but it gets complicated when resolution discrimination is mixed in -
 	if you’re displaying the same image at a variety of sizes,
-	a particular image file may be appropriate as a <span class=css data-link-type=maybe title=1x>1x</span> image on large screens,
-	but would also serve perfectly well as a <span class=css data-link-type=maybe title=2x>2x</span> image on smaller screens.
+	a particular image file may be appropriate as a <span class="css">1x</span> image on large screens,
+	but would also serve perfectly well as a <span class="css">2x</span> image on smaller screens.
 	Dealing with this requires you to repeat urls multiple times,
 	and can require some non-trivial math.
-	(See <a href=#bad-example-multisize>the next example</a> for a simple demonstration of the code bloat.)
+	(See <a href="#bad-example-multisize">the next example</a> for a simple demonstration of the code bloat.)
 	Further, the code so produced is not actually forward-compatible, either -
 	it’ll act badly when even higher-density screens arrive,
-	unless you further bloat the syntax by pre-emptively writing out higher-density versions.
-
-<p>	To avoid these issues,
-	this specification defines a <strong>shortcut syntax</strong>
-	to address the case of a variable-sized image.
-
-<p>	For the first case,
+	unless you further bloat the syntax by pre-emptively writing out higher-density versions.</p>
+   <p>To avoid these issues,
+	this specification defines a <strong>shortcut syntax</strong> to address the case of a variable-sized image.</p>
+   <p>For the first case,
 	of an image that is sized as a fraction of the viewport,
-	simply provide the target <code>&lt;img&gt;</code> size as a percentage,
+	simply provide the target <code>&lt;img></code> size as a percentage,
 	followed by a semicolon,
-	followed by a comma-separated list of image urls
-	<em>and the widths of the images in image pixels</em>.
-	Using this information, the browser can determine how wide the <code>&lt;img&gt;</code> will end up being,
-	and convert the image widths into <em>effective densities</em>.
-
-	<div class=example>
-		For example, say you have an image in two sizes, one 400 pixels wide and one 800 pixels wide.
-		If you specified <code class=lang-markup>&lt;img src-1="100%; url1 400, url2 800"&gt;</code>,
+	followed by a comma-separated list of image urls <em>and the widths of the images in image pixels</em>.
+	Using this information, the browser can determine how wide the <code>&lt;img></code> will end up being,
+	and convert the image widths into <em>effective densities</em>.</p>
+   <div class="example" id="example-3cf605c8">
+    <a class="self-link" href="#example-3cf605c8"></a> For example, say you have an image in two sizes, one 400 pixels wide and one 800 pixels wide.
+		If you specified <code class="lang-markup highlight"><c- p>&lt;</c-><c- f>img</c-> <c- e>src-1</c-><c- o>=</c-><c- s>"100%; url1 400, url2 800"</c-><c- p>></c-></code>,
 		and the viewport’s width was 320px,
-		this is equivalent to specifying <code class=lang-markup>&lt;img src-1="url1 1.25x, url2 2.5x"&gt;</code>.
-
-<p>		On the other hand, if the viewport’s width was 800px,
-		it would be equivalent to specifying <code class=lang-markup>&lt;img src-1="url1 .5x, url2 1x"&gt;</code>.
-
-<p>		Regardless of the viewport’s size,
+		this is equivalent to specifying <code class="lang-markup highlight"><c- p>&lt;</c-><c- f>img</c-> <c- e>src-1</c-><c- o>=</c-><c- s>"url1 1.25x, url2 2.5x"</c-><c- p>></c-></code>.
+    <p>On the other hand, if the viewport’s width was 800px,
+		it would be equivalent to specifying <code class="lang-markup highlight"><c- p>&lt;</c-><c- f>img</c-> <c- e>src-1</c-><c- o>=</c-><c- s>"url1 .5x, url2 1x"</c-><c- p>></c-></code>.</p>
+    <p>Regardless of the viewport’s size,
 		the browser will understand which url is appropriate to download
-		without you having to do any of the math yourself.
-	</div>
-
-	<div class=example>
-		Here’s a more complete example,
+		without you having to do any of the math yourself.</p>
+   </div>
+   <div class="example" id="example-d482a121">
+    <a class="self-link" href="#example-d482a121"></a> Here’s a more complete example,
 		with image sizes spanning the full range of appropriate values
 		for screens from small phones to large desktop monitors.
-
-		<pre class=lang-markup>  &lt;img src-1="100%; pic1.png 160, pic2.png 320, pic3.png 640,
-                   pic4.png 1280, pic5.png 2560"&gt;
+<pre class="lang-markup highlight"><c- p>&lt;</c-><c- f>img</c-> <c- e>src-1</c-><c- o>=</c-><c- s>"100%; pic1.png 160, pic2.png 320, pic3.png 640,</c->
+<c- s>                 pic4.png 1280, pic5.png 2560"</c-><c- p>></c->
 </pre>
-<p>		With this one declaration,
+    <p>With this one declaration,
 		a high-res phone 320px wide can correctly choose to download <code>pic3.png</code> (an effective 2x resolution),
 		while a large desktop screen with 96dpi will correctly choose to download <code>pic4.png</code> (approximately a 1x resolution).
 		Anything at higher, lower, or in-between sizes and resolutions will also be appropriately catered for,
 		without the author having to explicitly figure out reasonable breakpoints
-		and categorize each image appropriately for each.
-
-<p>		Using just Media Queries,
-		the markup would instead look something like:
-
-		<pre class=lang-markup id=bad-example-multisize>  &lt;img src-1="(max-width: 400px) pic1.png .5x, pic2.png 1x, pic3.png 2x"
-       src-2="(max-width: 800px) pic2.png .5x, pic3.png 1x, pic4.png 2x"
-       src-3="(max-width: 1600px) pic3.png .5x, pic4.png 1x, pic5.png 2x"
-       src-4="pic4.png .5x, pic5.png 1x"&gt;
+		and categorize each image appropriately for each.</p>
+    <p>Using just Media Queries,
+		the markup would instead look something like:</p>
+<pre class="lang-markup highlight" id="bad-example-multisize"><c- p>&lt;</c-><c- f>img</c-> <c- e>src-1</c-><c- o>=</c-><c- s>"(max-width: 400px) pic1.png .5x, pic2.png 1x, pic3.png 2x"</c->
+     <c- e>src-2</c-><c- o>=</c-><c- s>"(max-width: 800px) pic2.png .5x, pic3.png 1x, pic4.png 2x"</c->
+     <c- e>src-3</c-><c- o>=</c-><c- s>"(max-width: 1600px) pic3.png .5x, pic4.png 1x, pic5.png 2x"</c->
+     <c- e>src-4</c-><c- o>=</c-><c- s>"pic4.png .5x, pic5.png 1x"</c-><c- p>></c->
 </pre>
-<p>		This example is obviouslly substantially more verbose,
+    <p>This example is obviouslly substantially more verbose,
 		and also less powerful.
 		For example, when screens reach 3x or 4x density,
 		those devices will still be stuck downloading 2x resources,
 		even though a 3x or 4x version exists for most screen sizes,
-		unless the author comes back and updates every <code>&lt;img&gt;</code> element in their page.
-
-<p>		Further, the breakpoints chosen above were simply guessed at,
+		unless the author comes back and updates every <code>&lt;img></code> element in their page.</p>
+    <p>Further, the breakpoints chosen above were simply guessed at,
 		and are likely not optimal.
-		Doing the math to find the optimal breakpoints isn’t hard, but is definitely non-trivial.
-	</div>
-
-<p>	For the second case, when the size of the image varies based on breakpoints in your layout,
+		Doing the math to find the optimal breakpoints isn’t hard, but is definitely non-trivial.</p>
+   </div>
+   <p>For the second case, when the size of the image varies based on breakpoints in your layout,
 	the syntax is slightly more complicated.
 	The first and second parts are still separated by a semicolon,
-	and the second part is still a list of urls and image sizes.
-
-<p>	The syntax of the first part, though, is slightly expanded.
+	and the second part is still a list of urls and image sizes.</p>
+   <p>The syntax of the first part, though, is slightly expanded.
 	Rather than being simply an image size,
 	it’s an alternating list of image sizes and viewport breakpoints,
 	with the breakpoints in parentheses to help separate them visually.
 	The breakpoints must be in ascending order,
 	as the image size is chosen by finding which two breakpoints the viewport’s size sits between,
-	and selecting the image size between those two.
-
-	<div class=example>
-		For example, say your site had three basic layouts:
-
-		<figure>
-			<img src=images/viewport_selection_mob_first.jpg>
-			<figcaption>
-				Single-column (100%) on small screens,
+	and selecting the image size between those two.</p>
+   <div class="example" id="example-6a6fc9d3">
+    <a class="self-link" href="#example-6a6fc9d3"></a> For example, say your site had three basic layouts:
+    <figure>
+      <img src="images/viewport_selection_mob_first.jpg">
+     <figcaption> Single-column (100%) on small screens,
 				two-column (50%) on medium screens,
-				and three-column (approximately 33%) on large screens.
-			</figcaption>
-		</figure>
-
-<p>		Assuming that the same image is supposed to be used at all of these layouts
-		(that is, you aren’t doing <a data-link-type=dfn href=#art-direction title=art-direction>art-direction</a> cropping to optimize the display of the image for a given size),
+				and three-column (approximately 33%) on large screens. </figcaption>
+    </figure>
+    <p>Assuming that the same image is supposed to be used at all of these layouts
+		(that is, you aren’t doing <a data-link-type="dfn">art-direction</a> cropping to optimize the display of the image for a given size),
 		then all of these cases can be addressed by a handful of images at various sizes,
-		and the following code:
-
-		<pre class=lang-markup>  &lt;img src-1="100% (30em) 50% (50em) calc(33% - 100px);
-             pic100.png 100, pic200.png 200, pic400.png 400,
-             pic800.png 800, pic1600.png 1600, pic3200.png 3200"&gt;
+		and the following code:</p>
+<pre class="lang-markup highlight"><c- p>&lt;</c-><c- f>img</c-> <c- e>src-1</c-><c- o>=</c-><c- s>"100% (30em) 50% (50em) calc(33% - 100px);</c->
+<c- s>           pic100.png 100, pic200.png 200, pic400.png 400,</c->
+<c- s>           pic800.png 800, pic1600.png 1600, pic3200.png 3200"</c-><c- p>></c->
 </pre>
-<p>		The first part of this attribute sets up the layout breakpoints at <span class=css data-link-type=maybe title=30em>30em</span> and <span class=css data-link-type=maybe title=50em>50em</span>,
-		and declares the image sizes between and around these breakpoints to be <span class=css data-link-type=maybe title=100%>100%</span>, <span class=css data-link-type=maybe title=50%>50%</span>, or <span class=css data-link-type=maybe title="calc(33% - 100px)">calc(33% - 100px)</span>.
-
-<p>		The six images automatically cover every reasonable possibility.
+    <p>The first part of this attribute sets up the layout breakpoints at <span class="css">30em</span> and <span class="css">50em</span>,
+		and declares the image sizes between and around these breakpoints to be <span class="css">100%</span>, <span class="css">50%</span>, or <span class="css">calc(33% - 100px)</span>.</p>
+    <p>The six images automatically cover every reasonable possibility.
 		For small screens (phone size, or even smaller, like watches),
 		anything from the 100 pixel wide image to the 800 pixel wide image may be downloaded,
 		depending on screen size and density.
 		For medium and large screens,
 		anything from the 400 pixel wide image and up may be chosen.
 		The author doesn’t have to do any math or complex figuring,
-		just provide the image in enough sizes to cover everything they believe reasonable.
-
-<p>		Again, doing the same thing just with Media Queries is much more verbose.
-	</div>
-
-<p class=note>	Note: Notice that the full set of CSS <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a> values are actually available for image sizes,
-	including things like <a class=css data-link-type=maybe href=http://dev.w3.org/csswg/css-values-3/#calc title=calc()>calc()</a>.
-	Using this, you can get as close to the precise size that the <code>&lt;img&gt;</code> element will be as you wish,
+		just provide the image in enough sizes to cover everything they believe reasonable.</p>
+    <p>Again, doing the same thing just with Media Queries is much more verbose.</p>
+   </div>
+   <p class="note" role="note"><span>Note:</span> Notice that the full set of CSS <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#length-value" id="ref-for-length-value②" title="Expands to: em | vb | ch | cm | vh | vi | in | ex | vw | ic | pt | px | lh | pc | rem | rlh | vmax | advance measure | vmin | mm | cap | q">&lt;length></a> values are actually available for image sizes,
+	including things like <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-calc" id="ref-for-funcdef-calc">calc()</a>.
+	Using this, you can get as close to the precise size that the <code>&lt;img></code> element will be as you wish,
 	though just getting “close enough” as I did in these examples is more than sufficient in most cases.
-	Similarly, viewport sizes can be specified with the full set of <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a> values,
-	which are interpreted in the same way that they would be in a Media Query like <span class=css data-link-type=maybe title=min-width>min-width</span>.
-	For example, <span class=css data-link-type=maybe title=em>em</span> units are interpreted relative to the user’s default font size, etc.
-
-<p class=note>	Note: Also, all of the examples given here size the various images as powers of 2,
+	Similarly, viewport sizes can be specified with the full set of <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#length-value" id="ref-for-length-value③" title="Expands to: em | vb | ch | cm | vh | vi | in | ex | vw | ic | pt | px | lh | pc | rem | rlh | vmax | advance measure | vmin | mm | cap | q">&lt;length></a> values,
+	which are interpreted in the same way that they would be in a Media Query like <span class="css">min-width</span>.
+	For example, <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#em" id="ref-for-em">em</a> units are interpreted relative to the user’s default font size, etc.</p>
+   <p class="note" role="note"><span>Note:</span> Also, all of the examples given here size the various images as powers of 2,
 	doubling in size as they get larger.
 	This is merely for convenience, as it’s easy to downsample an image by powers of 2,
 	but is not a limitation -
@@ -476,261 +1800,541 @@ Variable-Sized Images</span><a class=self-link href=#variable-size></a></h3>
 	This will become more important in time,
 	as 3x screens come into use
 	and you wish to give them a well-targeted image to download,
-	rather than having to decide between the 2x and 4x versions.
-
-<p>	The intrinsic width of the image is equal to the image size chosen from the provided list.
+	rather than having to decide between the 2x and 4x versions.</p>
+   <p>The intrinsic width of the image is equal to the image size chosen from the provided list.
 	If the image has an intrinsic ratio, the intrinsic height of the image is its intrinsic width multiplied by the ratio.
-	Otherwise, it has no intrinsic height.
-
-<h2 class="heading settled heading" data-level=4 id=model><span class=secno>4 </span><span class=content>
-Processing Model</span><a class=self-link href=#model></a></h2>
-
-<p>	This section describes the processing model for images.
-
-<p>	As each <code>&lt;img&gt;</code> element is encountered on the page,
-	run the following steps for it:
-
-	<ol>
-		<li>
-			Let <var>candidates</var> be the result of <a data-link-type=dfn href=#obtain-the-image-candidates title="obtaining the image candidates">obtaining the image candidates</a> from the element.
-
-		<li>
-			If <var>candidates</var> is empty,
+	Otherwise, it has no intrinsic height.</p>
+   <h2 class="heading settled" data-level="4" id="model"><span class="secno">4. </span><span class="content"> Processing Model</span><a class="self-link" href="#model"></a></h2>
+   <p>This section describes the processing model for images.</p>
+   <p>As each <code>&lt;img></code> element is encountered on the page,
+	run the following steps for it:</p>
+   <ol>
+    <li> Let <var>candidates</var> be the result of <a data-link-type="dfn">obtaining the image candidates</a> from the element.
+    <li>
+      If <var>candidates</var> is empty,
 			abort this algorithm.
-			<p class=issue id=issue-1b127cd1><a class=self-link href=#issue-1b127cd1></a>
-				Is this the right place to say "fire a load error" or whatever?
-
-		<li>
-			<p class=issue id=issue-0530be2c><a class=self-link href=#issue-0530be2c></a>
-				Update the image data, choose the right candidate, etc, etc, hook up to the right terms in HTML.
-				The actual choice is UA-specific.
-	</ol>
-
-<h3 class="heading settled heading" data-level=4.1 id=obtain-candidates><span class=secno>4.1 </span><span class=content>
-Obtaining the Image Candidates</span><a class=self-link href=#obtain-candidates></a></h3>
-
-<p>	This section describes how to <dfn data-dfn-type=dfn data-noexport="" id=obtain-the-image-candidates title="obtain the image candidates|obtaining the image candidates">obtain the image candidates<a class=self-link href=#obtain-the-image-candidates></a></dfn>
-	from an HTML <code>&lt;img&gt;</code> element.
-
-<p>	The input to this algorithm is an HTML <code>&lt;img&gt;</code> element.
-	The output of this algorithm is a (possibly empty) list of <dfn data-dfn-type=dfn data-noexport="" id=image-candidate title="image candidate">image candidates<a class=self-link href=#image-candidate></a></dfn>,
-	where each candidate is a pair composed of a url and a resolution.
-
-	<ol>
-		<li>
-			Let <var>candidate attributes</var> be the list of attributes on the element who satisfy the following conditions:
-
-<p>			<ul>
-				<li>The attribute name is at least 5 characters long.
-
-				<li>The first four characters of the attribute name are an <a data-link-spec=css-syntax data-link-type=dfn href=http://dev.w3.org/csswg/css-syntax-3/#ascii-case-insensitive title="ascii case-insensitive">ASCII case-insensitive</a> match for "src-".
-
-				<li>The fifth character of the attribute name is a non-zero <a data-link-spec=css-syntax data-link-type=dfn href=http://dev.w3.org/csswg/css-syntax-3/#digit title=digit>digit</a> (1-9).
-
-				<li>The remaining characters of the attribute name are <a data-link-spec=css-syntax data-link-type=dfn href=http://dev.w3.org/csswg/css-syntax-3/#digit title=digits>digits</a> (0-9).
-
-				<li>The attribute value matches the <a class="production css-code" data-link-type=type href=#typedef-src-n-attribute title="<src-n-attribute>">&lt;src-n-attribute&gt;</a> production.
-			</ul>
-
-		<li>
-			If <var>candidate attributes</var> is empty,
-			return the result of <a data-link-type=dfn href=#obtain-a-candidate-from-src title="obtaining a candidate from src">obtaining a candidate from src</a> from the element
+     <p class="issue" id="issue-1b127cd1"><a class="self-link" href="#issue-1b127cd1"></a> Is this the right place to say "fire a load error" or whatever? </p>
+    <li>
+     <p class="issue" id="issue-f76ba148"><a class="self-link" href="#issue-f76ba148"></a> Update the image data, choose the right candidate, etc, etc, hook up to the right terms in HTML.
+				The actual choice is UA-specific. </p>
+   </ol>
+   <h3 class="heading settled" data-level="4.1" id="obtain-candidates"><span class="secno">4.1. </span><span class="content"> Obtaining the Image Candidates</span><a class="self-link" href="#obtain-candidates"></a></h3>
+   <p>This section describes how to <dfn data-dfn-type="dfn" data-noexport id="obtain-the-image-candidates" title="obtain the image candidates|obtaining the image candidates">obtain the image candidates<a class="self-link" href="#obtain-the-image-candidates"></a></dfn> from an HTML <code>&lt;img></code> element.</p>
+   <p>The input to this algorithm is an HTML <code>&lt;img></code> element.
+	The output of this algorithm is a (possibly empty) list of <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="image-candidates" title="image candidate">image candidates</dfn>,
+	where each candidate is a pair composed of a url and a resolution.</p>
+   <ol>
+    <li>
+      Let <var>candidate attributes</var> be the list of attributes on the element who satisfy the following conditions:
+     <ul>
+      <li>The attribute name is at least 5 characters long.
+      <li>The first four characters of the attribute name are an <a data-link-type="dfn" href="https://www.w3.org/TR/css-syntax-3/#ascii-case-insensitive" id="ref-for-ascii-case-insensitive">ASCII case-insensitive</a> match for "src-".
+      <li>The fifth character of the attribute name is a non-zero <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#digit" id="ref-for-digit">digit</a> (1-9).
+      <li>The remaining characters of the attribute name are <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#digit" id="ref-for-digit①">digits</a> (0-9).
+      <li>The attribute value matches the <a class="production css" data-link-type="type">&lt;src-n-attribute></a> production.
+     </ul>
+    <li> If <var>candidate attributes</var> is empty,
+			return the result of <a data-link-type="dfn">obtaining a candidate from src</a> from the element
 			and abort this algorithm.
-
-		<li>
-			For each <var>candidate attribute</var>,
+    <li> For each <var>candidate attribute</var>,
 			let its <var>index</var> be the result of removing the first four characters from the attribute name,
 			and interpreting the remaining characters as a base-10 number.
-
-		<li>
-			Sort the <var>candidate attributes</var> by their <var>index</var> in ascending order.
-
-		<li>
-			For each <var>candidate attribute</var>:
-
-			<ol>
-				<li>
-					If the attribute’s value contains a media query,
+    <li> Sort the <var>candidate attributes</var> by their <var>index</var> in ascending order.
+    <li>
+      For each <var>candidate attribute</var>:
+     <ol>
+      <li> If the attribute’s value contains a media query,
 					evaluate that query.
 					If it returns true,
 					let <var>winning value</var> be the value of this attribute following the media query
 					and abort this sub-algorithm.
 					Otherwise, if it returns false,
 					abort this sub-algorithm.
-
-				<li>
-					Otherwise, let <var>winning value</var> be this attribute’s value
+      <li> Otherwise, let <var>winning value</var> be this attribute’s value
 					and abort this sub-algorithm.
-			</ol>
-
-		<li>
-			If there is no <var>winning value</var>,
-			return the result of <a data-link-type=dfn href=#obtain-a-candidate-from-src title="obtaining a candidate from src">obtaining a candidate from src</a> from the element
+     </ol>
+    <li> If there is no <var>winning value</var>,
+			return the result of <a data-link-type="dfn">obtaining a candidate from src</a> from the element
 			and abort this algorithm.
-
-		<li>
-			Let <var>image candidates</var> be an initially empty list.
-
-		<li>
-			If the <var>winning value</var> conforms to the <a class="production css-code" data-link-type=type href=#typedef-x-based-urls title="<x-based-urls>">&lt;x-based-urls&gt;</a> production,
+    <li> Let <var>image candidates</var> be an initially empty list.
+    <li>
+      If the <var>winning value</var> conforms to the <a class="production css" data-link-type="type">&lt;x-based-urls></a> production,
 			then for each set of values between commas:
-
-			<ol>
-				<li>
-					Let <var>candidate</var> be an <a data-link-type=dfn href=#image-candidate title="image candidate">image candidate</a> with its url being the <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#url-value title="<url>">&lt;url&gt;</a> from the current set of values.
-
-				<li>
-					If the current set of values contains a <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#resolution-value title="<resolution>">&lt;resolution&gt;</a>,
+     <ol>
+      <li> Let <var>candidate</var> be an <a data-link-type="dfn" href="#image-candidates" id="ref-for-image-candidates">image candidate</a> with its url being the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#url-value" id="ref-for-url-value③">&lt;url></a> from the current set of values.
+      <li> If the current set of values contains a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#resolution-value" id="ref-for-resolution-value③" title="Expands to: dppx | x | dpcm | dpi">&lt;resolution></a>,
 					let <var>candidate’s</var> resolution be that resolution.
-
-				<li>
-					Otherwise, let <var>candidate’s</var> resolution be <span class=css data-link-type=maybe title=1x>1x</span>.
-
-				<li>
-					Append <var>candidate</var> to <var>image candidates</var>.
-			</ol>
-
-<p>			Return <var>image candidates</var>,
-			and abort this algorithm.
-
-		<li>
-			Otherwise,
-			the <var>winning value</var> conforms to the <a class="production css-code" data-link-type=type href=#typedef-viewport-urls title="<viewport-urls>">&lt;viewport-urls&gt;</a> production.
-
-		<li>
-			Let <var>viewport data</var> be the portion of <var>winning value</var> that conforms to the <a class="production css-code" data-link-type=type href=#typedef-size-viewport-list title="<size-viewport-list>">&lt;size-viewport-list&gt;</a> production.
-			Let <var>unprocessed candidates</var> be the portion of the <var>winning value</var> that conforms to the <a class="production css-code" data-link-type=type href=#typedef-size-based-urls title="<size-based-urls>">&lt;size-based-urls&gt;</a> production.
-
-		<li>
-			Divide <var>viewport data</var> into adjacent pairs of values,
+      <li> Otherwise, let <var>candidate’s</var> resolution be <span class="css">1x</span>.
+      <li> Append <var>candidate</var> to <var>image candidates</var>.
+     </ol>
+     <p>Return <var>image candidates</var>,
+			and abort this algorithm.</p>
+    <li> Otherwise,
+			the <var>winning value</var> conforms to the <a class="production css" data-link-type="type">&lt;viewport-urls></a> production.
+    <li> Let <var>viewport data</var> be the portion of <var>winning value</var> that conforms to the <a class="production css" data-link-type="type">&lt;size-viewport-list></a> production.
+			Let <var>unprocessed candidates</var> be the portion of the <var>winning value</var> that conforms to the <a class="production css" data-link-type="type">&lt;size-based-urls></a> production.
+    <li>
+      Divide <var>viewport data</var> into adjacent pairs of values,
 			and a final lone value.
-
-<p>			For each pair of values in <var>viewport data</var>:
-
-			<ol>
-				<li>
-					Let <var>candidate viewport width</var> be the result of intepreting the second value as a <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a>,
-					using the same rules as a <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#length-value title="<length>">&lt;length&gt;</a> in a <span class=css data-link-type=maybe title=min-width>min-width</span> media feature.
-
-				<li>
-					If the viewport’s width is less than <var>candidate viewport width</var>,
+     <p>For each pair of values in <var>viewport data</var>:</p>
+     <ol>
+      <li> Let <var>candidate viewport width</var> be the result of intepreting the second value as a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#length-value" id="ref-for-length-value④" title="Expands to: em | vb | ch | cm | vh | vi | in | ex | vw | ic | pt | px | lh | pc | rem | rlh | vmax | advance measure | vmin | mm | cap | q">&lt;length></a>,
+					using the same rules as a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#length-value" id="ref-for-length-value⑤" title="Expands to: em | vb | ch | cm | vh | vi | in | ex | vw | ic | pt | px | lh | pc | rem | rlh | vmax | advance measure | vmin | mm | cap | q">&lt;length></a> in a <span class="css">min-width</span> media feature.
+      <li>
+        If the viewport’s width is less than <var>candidate viewport width</var>,
 					then:
-
-<p>					<ul>
-						<li>
-							If the first value is a <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#number-value title="<number>">&lt;number&gt;</a>,
+       <ul>
+        <li> If the first value is a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#number-value" id="ref-for-number-value">&lt;number></a>,
 							let <var>winning image width</var> be a length equal to that number of pixels.
-
-						<li>
-							Otherwise, the first value is a <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#percentage-value title="<percentage>">&lt;percentage&gt;</a>.
+        <li> Otherwise, the first value is a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#percentage-value" id="ref-for-percentage-value①">&lt;percentage></a>.
 							Let <var>winning image width</var> be a length equal to the given percentage of the viewport’s width.
-					</ul>
-
-<p>					Abort this sub-algorithm.
-			</ol>
-
-		<li>
-			For each set of values between commas of <var>unprocessed candidates</var>:
-
-			<ol>
-				<li>
-					Let <var>candidate</var> be an <a data-link-type=dfn href=#image-candidate title="image candidate">image candidate</a> with its url being the <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-values-3/#url-value title="<url>">&lt;url&gt;</a> from the current set of values.
-
-				<li>
-					Let <var>candidate’s</var> resolution be the result of dividing the <a class="production css-code" data-link-type=type href=http://dev.w3.org/csswg/css-syntax-3/#typedef-integer title="<integer>">&lt;integer&gt;</a> from the current set of values
-					by the <var>winning image width</var>, as an <span class=css data-link-type=maybe title=x>x</span> unit.
-
-				<li>
-					Append <var>candidate</var> to <var>image candidates</var>.
-			</ol>
-
-<p>			Return <var>image candidates</var>.
-	</ol>
-
-<p>	To <dfn data-dfn-type=dfn data-noexport="" id=obtain-a-candidate-from-src title="obtain a candidate from src|obtaining a candidate from src">obtain a candidate from src<a class=self-link href=#obtain-a-candidate-from-src></a></dfn> from an element,
-	follow these steps:
-
-	<ol>
-		<li>
-			If the element has a <code>src</code> attribute,
-			return a list consisting of a single <a data-link-type=dfn href=#image-candidate title="image candidate">image candidate</a>,
+       </ul>
+       <p>Abort this sub-algorithm.</p>
+     </ol>
+    <li>
+      For each set of values between commas of <var>unprocessed candidates</var>:
+     <ol>
+      <li> Let <var>candidate</var> be an <a data-link-type="dfn" href="#image-candidates" id="ref-for-image-candidates①">image candidate</a> with its url being the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#url-value" id="ref-for-url-value④">&lt;url></a> from the current set of values.
+      <li> Let <var>candidate’s</var> resolution be the result of dividing the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#integer-value" id="ref-for-integer-value①">&lt;integer></a> from the current set of values
+					by the <var>winning image width</var>, as an <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-scroll-snap-1/#valdef-scroll-snap-type-x" id="ref-for-valdef-scroll-snap-type-x①">x</a> unit.
+      <li> Append <var>candidate</var> to <var>image candidates</var>.
+     </ol>
+     <p>Return <var>image candidates</var>.</p>
+   </ol>
+   <p>To <dfn data-dfn-type="dfn" data-noexport id="obtain-a-candidate-from-src" title="obtain a candidate from src|obtaining a candidate from src">obtain a candidate from src<a class="self-link" href="#obtain-a-candidate-from-src"></a></dfn> from an element,
+	follow these steps:</p>
+   <ol>
+    <li> If the element has a <code>src</code> attribute,
+			return a list consisting of a single <a data-link-type="dfn" href="#image-candidates" id="ref-for-image-candidates②">image candidate</a>,
 			where that candidate’s url is the value of the <code>src</code> attribute
-			and its resolution is <span class=css data-link-type=maybe title=1x>1x</span>.
-
-		<li>
-			Otherwise,
+			and its resolution is <span class="css">1x</span>.
+    <li> Otherwise,
 			return an empty list.
-	</ol>
-
-	<p class=issue id=issue-0b8de5e0><a class=self-link href=#issue-0b8de5e0></a>
-		In the event that this proposal "wins",
-		but browsers have already shipped "basic" <code>srcset</code>
-		(just support for resolution discrimination)
+   </ol>
+   <p class="issue" id="issue-2ab1f033"><a class="self-link" href="#issue-2ab1f033"></a> In the event that this proposal "wins",
+		but browsers have already shipped "basic" <code>srcset</code> (just support for resolution discrimination)
 		and uptake is high enough that they can’t take it back,
 		then we can easily integrate <code>srcset</code> into this fallback behavior.
 		In other words, <code>srcset</code> doesn’t hurt this proposal
-		(though it would be ideal if it didn’t exist alongside).
+		(though it would be ideal if it didn’t exist alongside). </p>
+  </main>
+  <div data-fill-with="conformance">
+   <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
+   <p> Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
+            The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”
+            in the normative parts of this document
+            are to be interpreted as described in RFC 2119.
+            However, for readability,
+            these words do not appear in all uppercase letters in this specification. </p>
+   <p> All of the text of this specification is normative
+            except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p>
+   <p> Examples in this specification are introduced with the words “for example”
+            or are set apart from the normative text with <code>class="example"</code>, like this: </p>
+   <div class="example" id="example-example"><a class="self-link" href="#example-example"></a> This is an example of an informative example. </div>
+   <p> Informative notes begin with the word “Note”
+            and are set apart from the normative text with <code>class="note"</code>, like this: </p>
+   <p class="note" role="note"> Note, this is an informative note. </p>
+  </div>
+<script>
+(function() {
+  "use strict";
+  var collapseSidebarText = '<span aria-hidden="true">←</span> '
+                          + '<span>Collapse Sidebar</span>';
+  var expandSidebarText   = '<span aria-hidden="true">→</span> '
+                          + '<span>Pop Out Sidebar</span>';
+  var tocJumpText         = '<span aria-hidden="true">↑</span> '
+                          + '<span>Jump to Table of Contents</span>';
 
-<h2 class="no-num no-ref heading settled heading" id=references><span class=content>
-References</span><a class=self-link href=#references></a></h2>
+  var sidebarMedia = window.matchMedia('screen and (min-width: 78em)');
+  var autoToggle   = function(e){ toggleSidebar(e.matches) };
+  if(sidebarMedia.addListener) {
+    sidebarMedia.addListener(autoToggle);
+  }
 
-<h3 class="no-num no-ref heading settled heading" id=normative><span class=content>
-Normative References</span><a class=self-link href=#normative></a></h3>
-<div data-fill-with=normative-references><dl><dt id=css3val title=CSS3VAL><a class=self-link href=#css3val></a>[CSS3VAL]<dd>Håkon Wium Lie; Tab Atkins; Elika J. Etemad. <a href=http://www.w3.org/TR/2013/CR-css3-values-20130730/>CSS Values and Units Module Level 3</a>. 30 July 2013. W3C Candidate Recommendation. (Work in progress.) URL: <a href=http://www.w3.org/TR/2013/CR-css3-values-20130730/>http://www.w3.org/TR/2013/CR-css3-values-20130730/</a></dl></div>
+  function toggleSidebar(on) {
+    if (on == undefined) {
+      on = !document.body.classList.contains('toc-sidebar');
+    }
 
-<h3 class="no-num no-ref heading settled heading" id=informative><span class=content>
-Informative References</span><a class=self-link href=#informative></a></h3>
-<div data-fill-with=informative-references><dl></dl></div>
+    /* Don’t scroll to compensate for the ToC if we’re above it already. */
+    var headY = 0;
+    var head = document.querySelector('.head');
+    if (head) {
+      // terrible approx of "top of ToC"
+      headY += head.offsetTop + head.offsetHeight;
+    }
+    var skipScroll = window.scrollY < headY;
 
-<h2 class="no-num no-ref heading settled heading" id=index><span class=content>
-Index</span><a class=self-link href=#index></a></h2>
-<div data-fill-with=index><ul class=indexlist>
-<li>art-direction, <a href=#art-direction title="section 2">2</a>
-<li>image candidate, <a href=#image-candidate title="section 4.1">4.1</a>
-<li>&lt;image-size&gt;, <a href=#typedef-image-size title="section 3">3</a>
-<li>obtain a candidate from src, <a href=#obtain-a-candidate-from-src title="section 4.1">4.1</a>
-<li>obtaining a candidate from src, <a href=#obtain-a-candidate-from-src title="section 4.1">4.1</a>
-<li>obtaining the image candidates, <a href=#obtain-the-image-candidates title="section 4.1">4.1</a>
-<li>obtain the image candidates, <a href=#obtain-the-image-candidates title="section 4.1">4.1</a>
-<li>resolution, <a href=#resolution0 title="section 2">2</a>
-<li>&lt;size-based-urls&gt;, <a href=#typedef-size-based-urls title="section 3">3</a>
-<li>&lt;size-viewport-list&gt;, <a href=#typedef-size-viewport-list title="section 3">3</a>
-<li>src-N, <a href=#src-n- title="section 3">3</a>
-<li>src-N attribute, <a href=#src-n- title="section 3">3</a>
-<li>&lt;src-n-attribute&gt;, <a href=#typedef-src-n-attribute title="section 3">3</a>
-<li>viewport, <a href=#viewport title="section 2">2</a>
-<li>&lt;viewport-size&gt;, <a href=#typedef-viewport-size title="section 3">3</a>
-<li>&lt;viewport-urls&gt;, <a href=#typedef-viewport-urls title="section 3">3</a>
-<li>&lt;x-based-urls&gt;, <a href=#typedef-x-based-urls title="section 3">3</a>
-</ul></div>
+    var toggle = document.getElementById('toc-toggle');
+    var tocNav = document.getElementById('toc');
+    if (on) {
+      var tocHeight = tocNav.offsetHeight;
+      document.body.classList.add('toc-sidebar');
+      document.body.classList.remove('toc-inline');
+      toggle.innerHTML = collapseSidebarText;
+      if (!skipScroll) {
+        window.scrollBy(0, 0 - tocHeight);
+      }
+      tocNav.focus();
+      sidebarMedia.addListener(autoToggle); // auto-collapse when out of room
+    }
+    else {
+      document.body.classList.add('toc-inline');
+      document.body.classList.remove('toc-sidebar');
+      toggle.innerHTML = expandSidebarText;
+      if (!skipScroll) {
+        window.scrollBy(0, tocNav.offsetHeight);
+      }
+      if (toggle.matches(':hover')) {
+        /* Unfocus button when not using keyboard navigation,
+           because I don’t know where else to send the focus. */
+        toggle.blur();
+      }
+    }
+  }
 
-<h2 class="no-num no-ref heading settled heading" id=property-index><span class=content>
-Property index</span><a class=self-link href=#property-index></a></h2>
-<div data-fill-with=property-index><p>No properties defined.</div>
+  function createSidebarToggle() {
+    /* Create the sidebar toggle in JS; it shouldn’t exist when JS is off. */
+    var toggle = document.createElement('a');
+      /* This should probably be a button, but appearance isn’t standards-track.*/
+    toggle.id = 'toc-toggle';
+    toggle.class = 'toc-toggle';
+    toggle.href = '#toc';
+    toggle.innerHTML = collapseSidebarText;
+
+    sidebarMedia.addListener(autoToggle);
+    var toggler = function(e) {
+      e.preventDefault();
+      sidebarMedia.removeListener(autoToggle); // persist explicit off states
+      toggleSidebar();
+      return false;
+    }
+    toggle.addEventListener('click', toggler, false);
 
 
-<h2 class="no-num heading settled" id=issues-index><span class=content>Issues Index</span><a class=self-link href=#issues-index></a></h2><div style="counter-reset: issue"><div class=issue>
-		I want just the second clause of the <code>media_query</code> grammar in Media Queries 4,
+    /* Get <nav id=toc-nav>, or make it if we don’t have one. */
+    var tocNav = document.getElementById('toc-nav');
+    if (!tocNav) {
+      tocNav = document.createElement('p');
+      tocNav.id = 'toc-nav';
+      /* Prepend for better keyboard navigation */
+      document.body.insertBefore(tocNav, document.body.firstChild);
+    }
+    /* While we’re at it, make sure we have a Jump to Toc link. */
+    var tocJump = document.getElementById('toc-jump');
+    if (!tocJump) {
+      tocJump = document.createElement('a');
+      tocJump.id = 'toc-jump';
+      tocJump.href = '#toc';
+      tocJump.innerHTML = tocJumpText;
+      tocNav.appendChild(tocJump);
+    }
+
+    tocNav.appendChild(toggle);
+  }
+
+  var toc = document.getElementById('toc');
+  if (toc) {
+    createSidebarToggle();
+    toggleSidebar(sidebarMedia.matches);
+
+    /* If the sidebar has been manually opened and is currently overlaying the text
+       (window too small for the MQ to add the margin to body),
+       then auto-close the sidebar once you click on something in there. */
+    toc.addEventListener('click', function(e) {
+      if(e.target.tagName.toLowerCase() == "a" && document.body.classList.contains('toc-sidebar') && !sidebarMedia.matches) {
+        toggleSidebar(false);
+      }
+    }, false);
+  }
+  else {
+    console.warn("Can’t find Table of Contents. Please use <nav id='toc'> around the ToC.");
+  }
+
+  /* Wrap tables in case they overflow */
+  var tables = document.querySelectorAll(':not(.overlarge) > table.data, :not(.overlarge) > table.index');
+  var numTables = tables.length;
+  for (var i = 0; i < numTables; i++) {
+    var table = tables[i];
+    var wrapper = document.createElement('div');
+    wrapper.className = 'overlarge';
+    table.parentNode.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+  }
+
+})();
+</script>
+  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="index">
+   <li><a href="#art-direction-discrimination">Art-direction discrimination</a><span>, in §2</span>
+   <li><a href="#image-candidates">image candidates</a><span>, in §4.1</span>
+   <li><a href="#image-size">&lt;image-size></a><span>, in §3</span>
+   <li><a href="#obtain-a-candidate-from-src">obtain a candidate from src</a><span>, in §4.1</span>
+   <li><a href="#obtain-the-image-candidates">obtain the image candidates</a><span>, in §4.1</span>
+   <li><a href="#resolution-based-discrimination">Resolution-based discrimination</a><span>, in §2</span>
+   <li><a href="#size-based-urls">&lt;size-based-urls></a><span>, in §3</span>
+   <li><a href="#size-viewport-list">&lt;size-viewport-list></a><span>, in §3</span>
+   <li><a href="#src-n-attribute">&lt;src-n-attribute></a><span>, in §3</span>
+   <li><a href="#src-n-attributes">src-N attributes</a><span>, in §3</span>
+   <li><a href="#variable-size-resolution-discrimination">Variable-size resolution discrimination</a><span>, in §2</span>
+   <li><a href="#viewport-size">&lt;viewport-size></a><span>, in §3</span>
+   <li><a href="#viewport-urls">&lt;viewport-urls></a><span>, in §3</span>
+   <li><a href="#x-based-urls">&lt;x-based-urls></a><span>, in §3</span>
+  </ul>
+  <aside class="dfn-panel" data-for="term-for-valdef-scroll-snap-type-x">
+   <a href="https://drafts.csswg.org/css-scroll-snap-1/#valdef-scroll-snap-type-x">https://drafts.csswg.org/css-scroll-snap-1/#valdef-scroll-snap-type-x</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-scroll-snap-type-x">3.2.
+Resolution</a>
+    <li><a href="#ref-for-valdef-scroll-snap-type-x①">4.1.
+Obtaining the Image Candidates</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-ascii-case-insensitive">
+   <a href="https://www.w3.org/TR/css-syntax-3/#ascii-case-insensitive">https://www.w3.org/TR/css-syntax-3/#ascii-case-insensitive</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-ascii-case-insensitive">4.1.
+Obtaining the Image Candidates</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-digit">
+   <a href="https://drafts.csswg.org/css-syntax-3/#digit">https://drafts.csswg.org/css-syntax-3/#digit</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-digit">4.1.
+Obtaining the Image Candidates</a> <a href="#ref-for-digit①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-whitespace">
+   <a href="https://drafts.csswg.org/css-syntax-3/#whitespace">https://drafts.csswg.org/css-syntax-3/#whitespace</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-whitespace">3.
+The Syntax Proposal</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-funcdef-calc">
+   <a href="https://drafts.csswg.org/css-values-4/#funcdef-calc">https://drafts.csswg.org/css-values-4/#funcdef-calc</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-funcdef-calc">3.3.
+Variable-Sized Images</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dppx">
+   <a href="https://drafts.csswg.org/css-values-4/#dppx">https://drafts.csswg.org/css-values-4/#dppx</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dppx">3.2.
+Resolution</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-em">
+   <a href="https://drafts.csswg.org/css-values-4/#em">https://drafts.csswg.org/css-values-4/#em</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-em">3.3.
+Variable-Sized Images</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-integer-value">
+   <a href="https://drafts.csswg.org/css-values-3/#integer-value">https://drafts.csswg.org/css-values-3/#integer-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-integer-value">3.
+The Syntax Proposal</a>
+    <li><a href="#ref-for-integer-value①">4.1.
+Obtaining the Image Candidates</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-length-value">
+   <a href="https://drafts.csswg.org/css-values-3/#length-value">https://drafts.csswg.org/css-values-3/#length-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-length-value">3.
+The Syntax Proposal</a> <a href="#ref-for-length-value①">(2)</a>
+    <li><a href="#ref-for-length-value②">3.3.
+Variable-Sized Images</a> <a href="#ref-for-length-value③">(2)</a>
+    <li><a href="#ref-for-length-value④">4.1.
+Obtaining the Image Candidates</a> <a href="#ref-for-length-value⑤">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-number-value">
+   <a href="https://drafts.csswg.org/css-values-3/#number-value">https://drafts.csswg.org/css-values-3/#number-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-number-value">4.1.
+Obtaining the Image Candidates</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-percentage-value">
+   <a href="https://drafts.csswg.org/css-values-3/#percentage-value">https://drafts.csswg.org/css-values-3/#percentage-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-percentage-value">3.
+The Syntax Proposal</a>
+    <li><a href="#ref-for-percentage-value①">4.1.
+Obtaining the Image Candidates</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-resolution-value">
+   <a href="https://drafts.csswg.org/css-values-3/#resolution-value">https://drafts.csswg.org/css-values-3/#resolution-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-resolution-value">3.
+The Syntax Proposal</a>
+    <li><a href="#ref-for-resolution-value①">3.2.
+Resolution</a> <a href="#ref-for-resolution-value②">(2)</a>
+    <li><a href="#ref-for-resolution-value③">4.1.
+Obtaining the Image Candidates</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-url-value">
+   <a href="https://drafts.csswg.org/css-values-3/#url-value">https://drafts.csswg.org/css-values-3/#url-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-url-value">3.
+The Syntax Proposal</a> <a href="#ref-for-url-value①">(2)</a> <a href="#ref-for-url-value②">(3)</a>
+    <li><a href="#ref-for-url-value③">4.1.
+Obtaining the Image Candidates</a> <a href="#ref-for-url-value④">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-typedef-media-query">
+   <a href="https://drafts.csswg.org/mediaqueries-4/#typedef-media-query">https://drafts.csswg.org/mediaqueries-4/#typedef-media-query</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-typedef-media-query">3.
+The Syntax Proposal</a>
+   </ul>
+  </aside>
+  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio">[css-scroll-snap-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-valdef-scroll-snap-type-x" style="color:initial">x</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-syntax-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-ascii-case-insensitive" style="color:initial">ascii case-insensitive</span>
+     <li><span class="dfn-paneled" id="term-for-digit" style="color:initial">digit</span>
+     <li><span class="dfn-paneled" id="term-for-whitespace" style="color:initial">whitespace</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-values-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-funcdef-calc" style="color:initial">calc()</span>
+     <li><span class="dfn-paneled" id="term-for-dppx" style="color:initial">dppx</span>
+     <li><span class="dfn-paneled" id="term-for-em" style="color:initial">em</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS3VAL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-integer-value" style="color:initial">&lt;integer></span>
+     <li><span class="dfn-paneled" id="term-for-length-value" style="color:initial">&lt;length></span>
+     <li><span class="dfn-paneled" id="term-for-number-value" style="color:initial">&lt;number></span>
+     <li><span class="dfn-paneled" id="term-for-percentage-value" style="color:initial">&lt;percentage></span>
+     <li><span class="dfn-paneled" id="term-for-resolution-value" style="color:initial">&lt;resolution></span>
+     <li><span class="dfn-paneled" id="term-for-url-value" style="color:initial">&lt;url></span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[mediaqueries-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-typedef-media-query" style="color:initial">&lt;media-query></span>
+    </ul>
+  </ul>
+  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <dl>
+   <dt id="biblio-css-scroll-snap-1">[CSS-SCROLL-SNAP-1]
+   <dd>Matt Rakow; et al. <a href="https://www.w3.org/TR/css-scroll-snap-1/">CSS Scroll Snap Module Level 1</a>. 14 August 2018. CR. URL: <a href="https://www.w3.org/TR/css-scroll-snap-1/">https://www.w3.org/TR/css-scroll-snap-1/</a>
+   <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
+   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://www.w3.org/TR/css-syntax-3/">CSS Syntax Module Level 3</a>. 20 February 2014. CR. URL: <a href="https://www.w3.org/TR/css-syntax-3/">https://www.w3.org/TR/css-syntax-3/</a>
+   <dt id="biblio-css-values-4">[CSS-VALUES-4]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/">CSS Values and Units Module Level 4</a>. 14 August 2018. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
+   <dt id="biblio-css3val">[CSS3VAL]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-3/">CSS Values and Units Module Level 3</a>. 14 August 2018. CR. URL: <a href="https://www.w3.org/TR/css-values-3/">https://www.w3.org/TR/css-values-3/</a>
+   <dt id="biblio-mediaqueries-4">[MEDIAQUERIES-4]
+   <dd>Florian Rivoal; Tab Atkins Jr.. <a href="https://www.w3.org/TR/mediaqueries-4/">Media Queries Level 4</a>. 5 September 2017. CR. URL: <a href="https://www.w3.org/TR/mediaqueries-4/">https://www.w3.org/TR/mediaqueries-4/</a>
+   <dt id="biblio-rfc2119">[RFC2119]
+   <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+  </dl>
+  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue"> I want just the second clause of the <code>media_query</code> grammar in Media Queries 4,
 		where you have "(foo:bar) and (baz:qux)" and that’s it.
-		I should go fix the grammar section there to expose this more cleanly.
-
-<a href=#issue-c4f912a2> ↵ </a></div><div class=issue>
-		Assume that I’ve already edited Images 4 appropriately so that <span class=css data-link-type=maybe title=x>x</span> is a valid resolution unit,
-		equivalent to <span class=css data-link-type=maybe title=dppx>dppx</span>.
-
-	<a href=#issue-507e8b4c> ↵ </a></div><div class=issue>
-				Is this the right place to say "fire a load error" or whatever?
-
-		<a href=#issue-1b127cd1> ↵ </a></div><div class=issue>
-				Update the image data, choose the right candidate, etc, etc, hook up to the right terms in HTML.
-				The actual choice is UA-specific.
-	<a href=#issue-0530be2c> ↵ </a></div><div class=issue>
-		In the event that this proposal "wins",
-		but browsers have already shipped "basic" <code>srcset</code>
-		(just support for resolution discrimination)
+		I should go fix the grammar section there to expose this more cleanly. <a href="#issue-b26aeb5d"> ↵ </a></div>
+   <div class="issue"> Assume that I’ve already edited Images 4 appropriately so that <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-scroll-snap-1/#valdef-scroll-snap-type-x">x</a> is a valid resolution unit,
+		equivalent to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#dppx">dppx</a>. <a href="#issue-86fd3ad9"> ↵ </a></div>
+   <div class="issue"> Is this the right place to say "fire a load error" or whatever? <a href="#issue-1b127cd1"> ↵ </a></div>
+   <div class="issue"> Update the image data, choose the right candidate, etc, etc, hook up to the right terms in HTML.
+				The actual choice is UA-specific. <a href="#issue-f76ba148"> ↵ </a></div>
+   <div class="issue"> In the event that this proposal "wins",
+		but browsers have already shipped "basic" <code>srcset</code> (just support for resolution discrimination)
 		and uptake is high enough that they can’t take it back,
 		then we can easily integrate <code>srcset</code> into this fallback behavior.
 		In other words, <code>srcset</code> doesn’t hurt this proposal
-		(though it would be ideal if it didn’t exist alongside).
+		(though it would be ideal if it didn’t exist alongside). <a href="#issue-2ab1f033"> ↵ </a></div>
+  </div>
+  <aside class="dfn-panel" data-for="src-n-attributes">
+   <b><a href="#src-n-attributes">#src-n-attributes</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-src-n-attributes">3.1.
+Art Direction</a> <a href="#ref-for-src-n-attributes①">(2)</a> <a href="#ref-for-src-n-attributes②">(3)</a>
+    <li><a href="#ref-for-src-n-attributes③">3.2.
+Resolution</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="image-candidates">
+   <b><a href="#image-candidates">#image-candidates</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-image-candidates">4.1.
+Obtaining the Image Candidates</a> <a href="#ref-for-image-candidates①">(2)</a> <a href="#ref-for-image-candidates②">(3)</a>
+   </ul>
+  </aside>
+<script>/* script-dfn-panel */
 
-<a href=#issue-0b8de5e0> ↵ </a></div></div>
+document.body.addEventListener("click", function(e) {
+    var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
+    // Find the dfn element or panel, if any, that was clicked on.
+    var el = e.target;
+    var target;
+    var hitALink = false;
+    while(el.parentElement) {
+        if(el.tagName == "A") {
+            // Clicking on a link in a <dfn> shouldn't summon the panel
+            hitALink = true;
+        }
+        if(el.classList.contains("dfn-paneled")) {
+            target = "dfn";
+            break;
+        }
+        if(el.classList.contains("dfn-panel")) {
+            target = "dfn-panel";
+            break;
+        }
+        el = el.parentElement;
+    }
+    if(target != "dfn-panel") {
+        // Turn off any currently "on" or "activated" panels.
+        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
+            el.classList.remove("on");
+            el.classList.remove("activated");
+        });
+    }
+    if(target == "dfn" && !hitALink) {
+        // open the panel
+        var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
+        if(dfnPanel) {
+            dfnPanel.classList.add("on");
+            var rect = el.getBoundingClientRect();
+            dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
+            dfnPanel.style.top = window.scrollY + rect.top + "px";
+            var panelRect = dfnPanel.getBoundingClientRect();
+            var panelWidth = panelRect.right - panelRect.left;
+            if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
+                // Reposition, because the panel is overflowing
+                dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
+            }
+        } else {
+            console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
+        }
+    } else if(target == "dfn-panel") {
+        // Switch it to "activated" state, which pins it.
+        el.classList.add("activated");
+        el.style.left = null;
+        el.style.top = null;
+    }
+
+});
+</script>
