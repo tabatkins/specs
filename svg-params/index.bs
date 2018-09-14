@@ -2,7 +2,9 @@
 Title: SVG Parameters
 Shortname: svg-params
 Level: 1
-Status: DREAM
+Status: UD
+Group: CSSWG
+Work Status: exploring
 URL: https://tabatkins.github.io/specs/svg-parameters/
 Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/
 Abstract: This introduces "parameters" to SVG, which are a method of setting CSS custom properties in an external SVG document via the fragment on the referencing URL.  This allows easy reuse of "templated" SVG images, which can be adapted to a site's theme color, etc. easily, without having to modify the source SVG.
@@ -14,6 +16,7 @@ spec:selectors-4; type:selector; text::hover
 spec:html; type:element
 	text: iframe
 	text: a
+spec:fill-stroke-3; type:property; text:fill
 </pre>
 
 Introduction {#intro}
