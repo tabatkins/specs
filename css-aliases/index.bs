@@ -2,10 +2,16 @@
 <pre class='metadata'>
 Shortname: css-extensions
 Level: 1
-Status: ED
+Status: UD
+Group: CSSWG
+Work Status: exploring
 ED: http://tabatkins.github.io/specs/css-aliases/
 Editor: Tab Atkins, Google, http://xanthir.com/contact/
 Abstract: This specification defines methods for authors to extend and enhance various CSS features.
+</pre>
+
+<pre class=link-defaults>
+spec:css-values-4; type:dfn; text:identifier
 </pre>
 
 <h2 id='intro'>
@@ -45,10 +51,10 @@ Custom Selectors</h2>
 
 	A <dfn>custom selector</dfn> is defined with the ''@custom-selector'' rule:
 
-	<pre class='prod'><dfn>@custom-selector</dfn> = @custom-selector <<extension-name>> <<selector>> ;</pre>
+	<pre class='prod'><dfn>@custom-selector</dfn> = @custom-selector <<extension-name>> <<selector-list>> ;</pre>
 
 	This defines a <a>custom selector</a> which is written as a <a spec=selectors>pseudo-class</a> with the given <<extension-name>>,
-	and represents a '':matches()'' selector using the provided <<selector>> as its argument.
+	and represents a '':matches()'' selector using the provided <<selector-list>> as its argument.
 
 	<div class='example'>
 		For example, if an author wanted to easily refer to all heading elements in their HTML document,
