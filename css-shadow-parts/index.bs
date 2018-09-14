@@ -8,13 +8,13 @@ Work Status: exploring
 URL: http://tabatkins.github.io/specs/css-shadow-parts/
 Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/
 Abstract: This specification defines the ''::part()'' and ''::theme()'' pseudo-elements on <a>shadow hosts</a>, allowing <a>shadow hosts</a> to selectively expose chosen elements from their <a>shadow tree</a> to the outside page for styling purposes.
-Warning: not ready
+Warning: replaced by https://drafts.csswg.org/css-shadow-parts/
 </pre>
 
 <pre class=link-defaults>
 spec:selectors-4;
     type:selector; text::hover
-    type:dfn; text:dynamic profile
+    type:dfn; text:live profile
     type:dfn; text:structural pseudo-class
 spec:dom; type:dfn; for:/; text:shadow root
 </pre>
@@ -63,7 +63,7 @@ it exposed too much of a component's internal structure to scrutiny,
 defeating some of the encapsulation benefits that using Shadow DOM brings.
 For this,
 and other performance-related reasons,
-the >>> combinator was eventually removed from the <a>dynamic profile</a>.
+the >>> combinator was eventually removed from the <a>live profile</a>.
 
 This left us with using <a>custom properties</a> as the only way to style into a shadow tree:
 the component would advertise that it uses certain <a>custom properties</a> to style its internals,
