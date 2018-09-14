@@ -2,7 +2,9 @@
 Title: CSS Filter Rule
 Shortname: css-filter-rule
 Level: 1
-Status: w3c/UD
+Status: UD
+Group: CSSWG
+Work Status: exploring
 URL: http://tabatkins.github.io/specs/css-filter-rule/
 Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/
 Abstract: The CSS 'filter' property allows an author to apply a number of useful visual filters to an element. Unfortunately, CSS only provides a few built-in filters for direct use; for anything more advanced, an author has to write an SVG document to define a <{filter}> element and then reference it via URL. This specification defines the ''@filter'' rule, which allows complex filters to be defined in a CSS stylesheet, avoiding the need to write a separate document in a different language.
