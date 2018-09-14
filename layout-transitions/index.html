@@ -1,145 +1,125 @@
-<!DOCTYPE html><html lang=en><head>
-  <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+<!doctype html><html lang="en">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <title>Layout Transition Primitives</title>
-  <style>
-@media print {
-  html { margin: 0 !important; }
-  body { font-family: serif; }
-  th, td { font-family: inherit; }
-  a { color: inherit !important; }
-  .example:before { font-family: serif !important; }
-  a:link, a:visited { text-decoration: none !important; }
-  a:link:after, a:visited:after { /* create a cross-ref "see..." */; }
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <meta content="exploring" name="csswg-work-status">
+  <meta content="UD" name="w3c-status">
+  <meta content="Primitive JavaScript operations to enable layout transition effects." name="abstract">
+  <link href="../default.css" rel="stylesheet" type="text/css">
+  <link href="../csslogo.ico" rel="shortcut icon" type="image/x-icon">
+  <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-UD" rel="stylesheet" type="text/css">
+  <meta content="Bikeshed version 090ef96cbce74475c89e94394cc8fa4fbc08b477" name="generator">
+  <link href="http://tabatkins.github.io/specs/layout-transitions/" rel="canonical">
+  <meta content="09b28f13192bbff2b04f9be9252d3783a887cde9" name="document-revision">
+<style>/* style-md-lists */
+
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
 }
-@page {
-  margin: 1.5cm 1.1cm;
+[data-md] > :last-child {
+    margin-bottom: 0;
+}</style>
+<style>/* style-selflinks */
+
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
 }
-h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
-figure, div.figure, div.sidefigure, pre, table.propdef, table.propdef-extra,
-.example { page-break-inside: avoid; }
-dt { page-break-after: avoid; }
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: gray;
+    color: white;
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: black;
+}
+
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }</style>
+<style>/* style-counters */
 
 body {
-  background: white;
-  /* background-image: floating-margin-image-goes-here; */
-  background-position: top left;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  color: black;
-  counter-reset: exampleno figure issue;
-  font-family: sans-serif;
-  line-height: 1.5;
-  margin: 0 auto;
-  max-width: 50em;
-  padding: 2em 1em 2em 70px;
+    counter-reset: example figure issue;
+}
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
 }
 
-/* General structural markup */
-
-h1, h2, h3, h4, h5, h6 { text-align: left; }
-h1, h2, h3 { color: #005A9C; }
-h1 { font: 170% sans-serif; }
-h2 { font: 140% sans-serif; }
-h3 { font: 120% sans-serif; }
-h4 { font: bold 100% sans-serif; }
-h5 { font: italic 100% sans-serif; }
-h6 { font: small-caps 100% sans-serif; }
-h2, h3, h4, h5, h6 { margin-top: 3em; }
-h1 + h2 { margin-top: 0em; }
-h2 + h3, h3 + h4, h4 + h5, h5 + h6 { margin-top: 1.2em; }
-
-.head { margin-bottom: 1em; }
-.head h1 { margin-top: 2em; clear: both; }
-.head table { margin-left: 2em; margin-top: 2em; }
-.head dd { margin-bottom: 0; }
-
-p.copyright { font-size: small; }
-p.copyright small { font-size: small; }
-
-pre { margin: 1em 0 1em 2em; }
-pre, code, .idl-code {
-  font-size: .9em;
-  font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+.example {
+    counter-increment: example;
 }
-dt dfn code { font-size: inherit; }
-
-dfn { font-weight: bolder; }
-
-s, del {text-decoration: line-through; color: red; }
-u, ins {text-decoration: underline; background: #bfa; }
-
-sup {
-  vertical-align: super;
-  font-size: 80%
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example" counter(example);
 }
 
-details { display: block; }
-
-dt { font-weight: bold; }
-dd { margin: 0 0 1em 2em; }
-ul, ol { margin-left: 0; padding-left: 2em; }
-li { margin: 0.25em 2em 0.5em 0; padding-left: 0; }
-
-td.pre {
-  white-space: pre-wrap;
+figcaption {
+    counter-increment: figure;
 }
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}</style>
+<style>/* style-autolinks */
 
-.css, .property { color: #005a9c; }
-.property { white-space: nowrap; }
-
-
-/* Boilerplate sections */
-
-ul.indexlist { margin-left: 0; columns: 13em; }
-ul.indexlist li { margin-left: 0; list-style: none }
-ul.indexlist li li { margin-left: 1em; }
-ul.indexlist a { font-weight: bold; }
-ul.indexlist ul, ul.indexlist dl { font-size: smaller; }
-ul.indexlist dl { margin-top: 0; }
-ul.indexlist dt { margin: .2em 0 .2em 20px; }
-ul.indexlist dd { margin: .2em 0 .2em 40px; }
-
-.toc {
-  font-weight: bold;
-  line-height: 1.3;
-  list-style: none;
-  margin: 1em 0 0 5em;
-  padding: 0;
+.css.css, .property.property, .descriptor.descriptor {
+    color: #005a9c;
+    font-size: inherit;
+    font-family: inherit;
 }
-.toc ul { margin: 0; padding: 0; font-weight: normal; }
-.toc ul ul { margin: 0 0 0 2em; font-style: italic; }
-.toc ul ul ul { margin: 0}
-.toc > li { margin: 1.5em 0; padding: 0; }
-.toc li { clear: both; }
-.toc ul.toc li { margin: 0.3em 0 0 0; }
-.toc a { border-bottom-style: none; }
-.toc a:hover, ul.toc a:focus { border-bottom-style: solid; }
-/* Section numbers in a column of their own */
-.toc span.secno {float: left; width: 4em; margin-left: -5em}
-.toc ul ul span.secno { margin-left: -7em; }
-
-table.proptable {
-  font-size: small;
-  border-collapse: collapse;
-  border-spacing: 0;
-  text-align: left;
-  margin: 1em 0;
+.css::before, .property::before, .descriptor::before {
+    content: "‘";
 }
-table.proptable td, table.proptable th {
-  padding: 0.4em;
-  text-align: center;
+.css::after, .property::after, .descriptor::after {
+    content: "’";
 }
-table.proptable tr:hover td { background: #DEF; }
-
-
-/* Links */
-
-a[href] { color: inherit; border-bottom: 1px solid silver; text-decoration: none; }
-a[href]:hover { background: #ffa; }
-a[href]:active { color: #C00; background: transparent; }
-img, a.logo { border-style: none; }
-.heading, .issue, .note, .example, li, dt { position: relative; }
-/* CSS-ish link types */
+.property, .descriptor {
+    /* Don't wrap property and descriptor names */
+    white-space: nowrap;
+}
+.type { /* CSS value <type> */
+    font-style: italic;
+}
+pre .property::before, pre .property::after {
+    content: "";
+}
 [data-link-type="property"]::before,
 [data-link-type="propdesc"]::before,
 [data-link-type="descriptor"]::before,
@@ -147,7 +127,9 @@ img, a.logo { border-style: none; }
 [data-link-type="function"]::before,
 [data-link-type="at-rule"]::before,
 [data-link-type="selector"]::before,
-[data-link-type="maybe"]::before {content: "“";}
+[data-link-type="maybe"]::before {
+    content: "‘";
+}
 [data-link-type="property"]::after,
 [data-link-type="propdesc"]::after,
 [data-link-type="descriptor"]::after,
@@ -155,930 +137,1116 @@ img, a.logo { border-style: none; }
 [data-link-type="function"]::after,
 [data-link-type="at-rule"]::after,
 [data-link-type="selector"]::after,
-[data-link-type="maybe"]::after {content: "”";}
+[data-link-type="maybe"]::after {
+    content: "’";
+}
+
 [data-link-type].production::before,
-[data-link-type].production::after { content: ""; }
-/* Element-type link styling */
-[data-link-type=element] { font-family: monospace; }
+[data-link-type].production::after,
+.prod [data-link-type]::before,
+.prod [data-link-type]::after {
+    content: "";
+}
+
+[data-link-type=element],
+[data-link-type=element-attr] {
+    font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    font-size: .9em;
+}
 [data-link-type=element]::before { content: "<" }
-[data-link-type=element]::after { content: ">" }
-/* Self-links */
-a.self-link {
-  position: absolute;
-  top: 0;
-  left: -2.5em;
-  width: 2em;
-  height: 2em;
-  text-align: center;
-  border: none;
-  transition: opacity .2s;
-  opacity: .5;
-}
-a.self-link:hover {
-  opacity: 1;
-}
-.heading > a.self-link {
-  font-size: 83%;
-}
-li > a.self-link {
-  left: -3.5em;
-}
-dfn > a.self-link {
-  top: auto;
-  left: auto;
-  opacity: 0;
-  width: 1.5em;
-  height: 1.5em;
-  background: gray;
-  color: white;
-  font-style: normal;
-  transition: opacity .2s, background-color .2s, color .2s;
-}
-dfn:hover > a.self-link {
-  opacity: 1;
-}
-dfn > a.self-link:hover {
-  color: black;
-}
-a.self-link::before { content: "¶"; }
-.heading > a.self-link::before { content: "§"; }
-dfn > a.self-link::before { content: "#"; }
+[data-link-type=element]::after  { content: ">" }
 
+[data-link-type=biblio] {
+    white-space: pre;
+}</style>
+<style>/* style-dfn-panel */
 
-/* Figures */
-
-figure {
-  display: block;
-  text-align: center;
-  margin: 2.5em 0;
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    height: auto;
+    width: -webkit-fit-content;
+    width: fit-content;
+    max-width: 300px;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: #DDDDDD;
+    color: black;
+    border: outset 0.2em;
 }
-figure.sidefigure {
-  float: right;
-  width: 50%;
-  margin: 0 0 0.5em 0.5em
-}
-figure pre {
-  text-align: left;
-  display: table;
-  margin: 1em auto;
-}
-figure table {
-  margin: auto;
-}
-figure img, figure object {
-  display: block;
-  margin: auto;
-  max-width: 100%
-}
-figcaption {
-  counter-increment: figure;
-  font-size: 90%;
-  font-style: italic;
-  text-align: center;
-}
-figcaption::before {
-  content: "Figure " counter(figure) ". ";
-  font-weight: bold;
-}
-dd figure { margin-left: -2em; }
-
-
-/* Definition tables */
-
-table.definition {
-  border-spacing: 0;
-  padding: 0 1em 0.5em;
-  width: 100%;
-  table-layout: fixed;
-  margin: 1.2em 0;
-}
-table.definition td, table.definition th {
-  padding: 0.5em;
-  vertical-align: baseline;
-  border-bottom: 1px solid #bbd7e9;
-}
-table.definition th:first-child {
-  font-style: italic;
-  font-weight: normal;
-  text-align: left;
-  width: 8.3em;
-  padding-left: 1em;
-}
-table.definition > tbody > tr:last-child > th,
-table.definition > tbody > tr:last-child > td {
-  border-bottom: none;
-}
-table.definition tr:first-child > th,
-table.definition tr:first-child > td {
-  padding-top: 1em;
-}
-/* Footnotes at the bottom of a definition table */
-table.definition td.footnote {
-  font-style: normal;
-  padding-top: .6em;
-  width: auto;
-}
-table.definition td.footnote::before {
-  content: " ";
-  display: block;
-  height: 0.6em;
-  width: 4em;
-  border-top: thin solid;
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: black; }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0; }
+.dfn-panel li { list-style: inside; }
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: .5em;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
 }
 
-
-/* IDL fragments */
-
-pre.idl {
-  padding: .5em 1em;
-  margin: 1.2em 0;
-}
-pre.idl :link, pre.idl :visited {
-  color:inherit;
-  background:transparent;
-}
-
-
-/* Data tables */
-/* Comes in plain, long, complex, or define varieties */
-
-.data {
-  margin: 1em auto;
-  border-collapse: collapse;
-  width: 100%;
-  border: hidden;
-}
-.data {
-  text-align: center;
-  width: auto;
-}
-.data caption {
-  width: 100%;
-}
-.data td, .data th {
-  padding: 0.5em;
-  border-width: 1px;
-  border-color: silver;
-  border-top-style: solid;
-}
-.data thead td:empty {
-  padding: 0;
-  border: 0;
-}
-.data thead th[scope="row"] {
-  text-align: right;
-  color: inherit;
-}
-.data thead,
-.data tbody {
-  color: inherit;
-  border-bottom: 2px solid;
-}
-.data colgroup {
-  border-left: 2px solid;
-}
-.data tbody th:first-child,
-.data tbody td[scope="row"]:first-child {
-  text-align: right;
-  color: inherit;
-  border-right: 2px solid;
-  border-top: 1px solid silver;
-  padding-right: 1em;
-}
-.data.define td:last-child {
-  text-align: left;
-}
-.data tbody th[rowspan],
-.data tbody td[rowspan] {
-  border-left: 1px solid silver;
-}
-.data tbody th[rowspan]:first-child,
-.data tbody td[rowspan]:first-child {
-  border-left: 0;
-  border-right: 1px solid silver;
-}
-.data.complex th,
-.data.complex td {
-  border: 1px solid silver;
-}
-.data td.long {
- vertical-align: baseline;
- text-align: left;
-}
-.data img {
-  vertical-align: middle;
-}
-
-
-/* Switch/case <dl>s */
-
-dl.switch {
- padding-left: 2em;
-}
-dl.switch > dt {
- text-indent: -1.5em;
-}
-dl.switch > dt:before {
- content: '↪';
- padding: 0 0.5em 0 0;
- display: inline-block;
- width: 1em;
- text-align: right;
- line-height: 0.5em;
-}
-
-
-/* Style for At Risk features (intended as editorial aid, not intended for publishing) */
-.atrisk::before {
- position: absolute;
- margin-left: -5em;
- margin-top: -2px;
- padding: 4px;
- border: 1px solid;
- content: 'At risk';
- font-size: small;
- background-color: white;
- color: gray;
- border-radius: 1em;
- text-align: center;
-}
-
-
-/* Obsoletion notice */
-details.obsolete[open] {
-  background: #fdd;
-  color: red;
-  font-weight: bold;
-  text-align: center;
-  padding: .5em;
-  border: thick solid red;
-  border-radius: 1em;
-  position: fixed;
-  left: 1em;
-  right: 1em;
-  bottom: 1em;
-  z-index: 1000;
-}
-details.obsolete:not([open]) > summary {
-  background: #fdd;
-  color: red;
-  font-weight: bold;
-  text-align: center;
-  padding: .5em;
-}
-
-
-/* Examples */
-
-.example {
-  counter-increment: exampleno;
-}
-.example::before {
-  content: "Example";
-  content: "Example " counter(exampleno);
-  min-width: 7.5em;
-  text-transform: uppercase;
-  display: block;
-}
-.illegal-example::before {
-  content: "Invalid Example";
-  content: "Invalid Example" counter(exampleno);
-}
-.example, .illegal-example, .html, .illegal-html, .xml, .illegal-xml {
-  padding: 0.5em;
-  margin: 1em 0;
-  position: relative;
-  clear: both;
-}
-pre.example, pre.illegal-example, pre.html,
-pre.illegal-html, pre.xml, pre.illegal-xml {
-  padding-top: 1.5em;
-}
-.illegal-example { color: red; }
-.illegal-example p { color: black; }
-.html { color: #600; }
-.illegal-html { color: red; }
-.illegal-html p { color: black; }
-.xml { color: #600; }
-.illegal-xml { color: red; }
-.illegal-xml p { color: black; }
-code.css { font-family: inherit; font-size: 100% }
-code.html { color: #600 } /* inline HTML */
-code.xml { color: #600 }  /* inline XML */
-
-
-/* Issues */
-
-.issue {
-  border-color: #E05252;
-  background: #FBE9E9;
-  counter-increment: issue;
-}
-.issue:before {
-  content: "Issue " counter(issue);
-  padding-right: 1em;
-  text-transform: uppercase;
-  color: #E05252;
-}
-
-
-/* Whys */
-
-details.why > summary {
-  font-style: italic;
-}
-details.why[open] > summary {
-  border-bottom: 1px silver solid;
-}
-
-
-/* All the blocks get similarly styled */
-
-table.definition, pre.idl, .example, .note, details.why, .issue {
-  border: none;
-  border-left: .5em solid black;
-  border-left: .5rem solid black;
-}
-.issue, .note, .example, .why {
-  padding: .5em;
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-table.definition, pre.idl {
-  background: hsl(210, 70%, 95%);
-  border-color: hsl(210, 80%, 75%);
-}
-.example {
-  background: hsl(50, 70%, 95%);
-  border-color: hsl(50, 70%, 60%);
-}
-.example::before {
-  color: hsl(50, 70%, 60%);
-}
-.note, details.why {
-  background: hsl(120, 70%, 95%);
-  border-color: hsl(120, 70%, 60%);
-}
-.note::before {
-  color: hsl(120, 70%, 60%);
-}
-.issue {
-  background: hsl(0, 70%, 95%);
-  border-color: hsl(0, 70%, 60%);
-}
-.issue::before {
-  color: hsl(0, 70%, 60%);
-}
-span.issue, span.note {
-  padding: .1em .5em .15em;
-  border-right-width: .5em;
-  border-right-style: solid;
-}
-  </style>
-</head>
-<body class=h-entry>
-<div class=head>
-  <p data-fill-with=logo></p>
-  <h1 class="p-name no-ref" id=title>Layout Transition Primitives</h1>
-  <h2 class="no-num no-toc no-ref heading settled heading" id=subtitle><span class=content>Editor’s Draft,
-    <span class=dt-updated><span class=value-title title=20140124>24 January 2014</span></span></span></h2>
-  <div data-fill-with=spec-metadata><dl><dt>This version:<dd><a class=u-url href=http://tabatkins.github.io/specs/layout-transitions/>http://tabatkins.github.io/specs/layout-transitions/</a><dt>Editor’s Draft:<dd><a href=http://tabatkins.github.io/specs/layout-transitions/>http://tabatkins.github.io/specs/layout-transitions/</a><dt>Test Suite:<dd>None Yet<dt>Editors:
-<dd class="p-author h-card vcard"><a class="p-name fn u-email email" href=mailto:shanestephens@google.com>Shane Stephens</a> (<span class="p-org org">Google</span>)<dd class="p-author h-card vcard"><a class="p-name fn u-url url" href=http://xanthir.com/contact/>Tab Atkins Jr.</a> (<span class="p-org org">Google</span>)</dl></div>
-  <div data-fill-with=warning></div>
-  <p class=copyright data-fill-with=copyright><a href=http://creativecommons.org/publicdomain/zero/1.0/ rel=license><img alt=CC0 src=http://i.creativecommons.org/p/zero/1.0/80x15.png></a>
-To the extent possible under law, the editors have waived all copyright
-and related or neighboring rights to this work.
-In addition, as of 24 January 2014,
-the editors have made this specification available under the
-<a href=http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0 rel=license>Open Web Foundation Agreement Version 1.0</a>,
-which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
-Parts of this work may be from an existing specification document.  If so, those parts are instead covered by the license of the existing specification document.
-</p>
-  <hr title="Separator for header">
-</div>
-
-<h2 class="no-num no-toc no-ref heading settled heading" id=abstract><span class=content>Abstract</span></h2>
-<p class=p-summary data-fill-with=abstract>Primitive JavaScript operations to enable layout transition effects.
-</p>
-<div data-fill-with=at-risk></div>
-
-<h2 class="no-num no-toc no-ref heading settled heading" id=contents><span class=content>Table of contents</span></h2>
-<div data-fill-with=table-of-contents><ul class=toc><li><a href=#intro><span class=secno>1</span>
-Introduction</a><ul class=toc><li><a href=#examples><span class=secno>1.1</span>
-Motivating Examples</a></ul><li><a href=#defs><span class=secno>2</span>
-Definitions</a><li><a href=#idl><span class=secno>3</span>
-IDL</a><li><a href=#suspending><span class=secno>4</span>
-Suspending Painting - the suspendPainting() and resumePainting() methods</a><li><a href=#snapshotting><span class=secno>5</span>
-Snapshotting Elements - The snapshot() method</a><ul class=toc><li><a href=#snapshots><span class=secno>5.1</span>
-Snapshots: the <code>OpaqueImageSnapshot</code> object</a></ul><li><a href=#recasting><span class=secno>6</span>
-Recasting Painting - The recastElement() and cancelRecast() methods</a><ul class=toc><li><a href=#element-bounds><span class=secno>6.1</span>
-The <code>ElementBounds</code> Object</a></ul><li><a href=#style-updates><span class=secno>7</span>
-Appendix A: The Style Updates Queue</a><li><a href=#conformance><span class=secno></span>
-Conformance</a><li><a href=#references><span class=secno></span>
-References</a><ul class=toc><li><a href=#normative><span class=secno></span>
-Normative References</a><li><a href=#informative><span class=secno></span>
-Informative References</a></ul><li><a href=#index><span class=secno></span>
-Index</a><li><a href=#property-index><span class=secno></span>
-Property index</a><li><a href=#issues-index><span class=secno></span>Issues Index</a></ul></div>
-
-
-
-<h2 class="heading settled heading" data-level=1 id=intro><span class=secno>1 </span><span class=content>
-Introduction</span><a class=self-link href=#intro></a></h2>
-
-<p>	<a data-biblio-type=informative data-link-type=biblio href=#css3-transitions title=css3-transitions>[CSS3-TRANSITIONS]</a> provide web authors with the ability to generate smooth transitioning effects
+.dfn-paneled { cursor: pointer; }
+</style>
+<style>/* style-syntax-highlighting */
+pre.idl.highlight { color: #708090; }
+.highlight:not(.idl) { background: hsl(24, 20%, 95%); }
+code.highlight { padding: .1em; border-radius: .3em; }
+pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
+c-[a] { color: #990055 } /* Keyword.Declaration */
+c-[b] { color: #990055 } /* Keyword.Type */
+c-[c] { color: #708090 } /* Comment */
+c-[d] { color: #708090 } /* Comment.Multiline */
+c-[e] { color: #0077aa } /* Name.Attribute */
+c-[f] { color: #669900 } /* Name.Tag */
+c-[g] { color: #222222 } /* Name.Variable */
+c-[k] { color: #990055 } /* Keyword */
+c-[l] { color: #000000 } /* Literal */
+c-[m] { color: #000000 } /* Literal.Number */
+c-[n] { color: #0077aa } /* Name */
+c-[o] { color: #999999 } /* Operator */
+c-[p] { color: #999999 } /* Punctuation */
+c-[s] { color: #a67f59 } /* Literal.String */
+c-[t] { color: #a67f59 } /* Literal.String.Single */
+c-[u] { color: #a67f59 } /* Literal.String.Double */
+c-[cp] { color: #708090 } /* Comment.Preproc */
+c-[c1] { color: #708090 } /* Comment.Single */
+c-[cs] { color: #708090 } /* Comment.Special */
+c-[kc] { color: #990055 } /* Keyword.Constant */
+c-[kn] { color: #990055 } /* Keyword.Namespace */
+c-[kp] { color: #990055 } /* Keyword.Pseudo */
+c-[kr] { color: #990055 } /* Keyword.Reserved */
+c-[ld] { color: #000000 } /* Literal.Date */
+c-[nc] { color: #0077aa } /* Name.Class */
+c-[no] { color: #0077aa } /* Name.Constant */
+c-[nd] { color: #0077aa } /* Name.Decorator */
+c-[ni] { color: #0077aa } /* Name.Entity */
+c-[ne] { color: #0077aa } /* Name.Exception */
+c-[nf] { color: #0077aa } /* Name.Function */
+c-[nl] { color: #0077aa } /* Name.Label */
+c-[nn] { color: #0077aa } /* Name.Namespace */
+c-[py] { color: #0077aa } /* Name.Property */
+c-[ow] { color: #999999 } /* Operator.Word */
+c-[mb] { color: #000000 } /* Literal.Number.Bin */
+c-[mf] { color: #000000 } /* Literal.Number.Float */
+c-[mh] { color: #000000 } /* Literal.Number.Hex */
+c-[mi] { color: #000000 } /* Literal.Number.Integer */
+c-[mo] { color: #000000 } /* Literal.Number.Oct */
+c-[sb] { color: #a67f59 } /* Literal.String.Backtick */
+c-[sc] { color: #a67f59 } /* Literal.String.Char */
+c-[sd] { color: #a67f59 } /* Literal.String.Doc */
+c-[se] { color: #a67f59 } /* Literal.String.Escape */
+c-[sh] { color: #a67f59 } /* Literal.String.Heredoc */
+c-[si] { color: #a67f59 } /* Literal.String.Interpol */
+c-[sx] { color: #a67f59 } /* Literal.String.Other */
+c-[sr] { color: #a67f59 } /* Literal.String.Regex */
+c-[ss] { color: #a67f59 } /* Literal.String.Symbol */
+c-[vc] { color: #0077aa } /* Name.Variable.Class */
+c-[vg] { color: #0077aa } /* Name.Variable.Global */
+c-[vi] { color: #0077aa } /* Name.Variable.Instance */
+c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
+</style>
+ <body class="h-entry">
+  <div class="head">
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
+   <h1 class="p-name no-ref" id="title">Layout Transition Primitives</h1>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Unofficial Proposal Draft, <time class="dt-updated" datetime="2018-09-14">14 September 2018</time></span></h2>
+   <div data-fill-with="spec-metadata">
+    <dl>
+     <dt>This version:
+     <dd><a class="u-url" href="http://tabatkins.github.io/specs/layout-transitions/">http://tabatkins.github.io/specs/layout-transitions/</a>
+     <dt>Issue Tracking:
+     <dd><a href="#issues-index">Inline In Spec</a>
+     <dd><a href="https://github.com/w3c/csswg-drafts/labels/layout-transitions-1">GitHub Issues</a>
+     <dt class="editor">Editors:
+     <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:shanestephens@google.com">Shane Stephens</a> (<span class="p-org org">Google</span>)
+     <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="http://xanthir.com/contact/">Tab Atkins Jr.</a> (<span class="p-org org">Google</span>)
+     <dt>Suggest an Edit for this Spec:
+     <dd><a href="https://github.com/w3c/csswg-drafts/blob/master/layout-transitions-1/Overview.bs">GitHub Editor</a>
+    </dl>
+   </div>
+   <div data-fill-with="warning"></div>
+   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2018 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">permissive document license</a> rules apply. </p>
+   <hr title="Separator for header">
+  </div>
+  <div class="p-summary" data-fill-with="abstract">
+   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <p>Primitive JavaScript operations to enable layout transition effects.</p>
+    <a href="http://www.w3.org/TR/CSS/">CSS</a> is a language for describing the rendering of structured documents
+(such as HTML and XML)
+on screen, on paper, in speech, etc.
+  </div>
+  <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+  <div data-fill-with="status">
+   <p></p>
+  </div>
+  <div data-fill-with="at-risk"></div>
+  <nav data-fill-with="table-of-contents" id="toc">
+   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
+   <ol class="toc" role="directory">
+    <li>
+     <a href="#intro"><span class="secno">1</span> <span class="content"> Introduction</span></a>
+     <ol class="toc">
+      <li><a href="#examples"><span class="secno">1.1</span> <span class="content"> Motivating Examples</span></a>
+     </ol>
+    <li><a href="#idl"><span class="secno">2</span> <span class="content"> IDL</span></a>
+    <li><a href="#suspending"><span class="secno">3</span> <span class="content"> Suspending Painting - the suspendPainting() and resumePainting() methods</span></a>
+    <li>
+     <a href="#snapshotting"><span class="secno">4</span> <span class="content"> Snapshotting Elements - The snapshot() method</span></a>
+     <ol class="toc">
+      <li><a href="#snapshots"><span class="secno">4.1</span> <span class="content"> Snapshots: the <code class="highlight">OpaqueImageSnapshot</code> object</span></a>
+     </ol>
+    <li>
+     <a href="#recasting"><span class="secno">5</span> <span class="content"> Recasting Painting - The recastElement() and cancelRecast() methods</span></a>
+     <ol class="toc">
+      <li><a href="#element-bounds"><span class="secno">5.1</span> <span class="content"> The <code class="highlight">ElementBounds</code> Object</span></a>
+     </ol>
+    <li><a href="#style-updates"><span class="secno">6</span> <span class="content"> Appendix A: The Style Updates Queue</span></a>
+    <li>
+     <a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
+     <ol class="toc">
+      <li><a href="#document-conventions"><span class="secno"></span> <span class="content"> Document conventions</span></a>
+      <li><a href="#conform-classes"><span class="secno"></span> <span class="content"> Conformance classes</span></a>
+      <li>
+       <a href="#conform-responsible"><span class="secno"></span> <span class="content"> Requirements for Responsible Implementation of CSS</span></a>
+       <ol class="toc">
+        <li><a href="#conform-partial"><span class="secno"></span> <span class="content"> Partial Implementations</span></a>
+        <li><a href="#conform-future-proofing"><span class="secno"></span> <span class="content"> Implementations of Unstable and Proprietary Features</span></a>
+        <li><a href="#conform-testing"><span class="secno"></span> <span class="content"> Implementations of CR-level Features</span></a>
+       </ol>
+     </ol>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ol>
+    <li>
+     <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+     <ol class="toc">
+      <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+      <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
+     </ol>
+    <li><a href="#idl-index"><span class="secno"></span> <span class="content">IDL Index</span></a>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
+   </ol>
+  </nav>
+  <main>
+   <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content"> Introduction</span><a class="self-link" href="#intro"></a></h2>
+   <p><a data-link-type="biblio" href="#biblio-css3-transitions">[CSS3-TRANSITIONS]</a> provide web authors with the ability to generate smooth transitioning effects
 	when mutating the CSS of their web pages.
 	However, the transitions that can be generated in this manner are limited in important ways,
-	which make it difficult or impossible to use them in some cases.
-
-<p>	In particular,
+	which make it difficult or impossible to use them in some cases.</p>
+   <p>In particular,
 	CSS Transitions only operate on <em>computed style</em> values,
-	such as between <span class=css data-link-type=maybe title=100px>100px</span> and <span class=css data-link-type=maybe title=200px>200px</span>;
+	such as between <span class="css">100px</span> and <span class="css">200px</span>;
 	values that rely on layout,
-	such as <a class=css data-link-type=propdesc href=http://www.w3.org/TR/CSS21/visudet.html#propdef-width title=width>width: auto</a>,
-	can’t be used as the start or end of a transition.
-
-<p>	Furthermore, CSS Transitions only work over actual CSS property values,
+	such as <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css2/visudet.html#propdef-width" id="ref-for-propdef-width">width: auto</a>,
+	can’t be used as the start or end of a transition.</p>
+   <p>Furthermore, CSS Transitions only work over actual CSS property values,
 	but some of aspects of an element one might wish to transition are derived from other properties
 	rather than being directly specified.
 	For example, the position and size of an element positioned with Grid Layout
-	is derived from its <a data-link-type=dfn href=http://dev.w3.org/csswg/css-grid-1/#grid-placement-property title="grid-placement properties">grid-placement properties</a>,
+	is derived from its <a data-link-type="dfn" href="https://drafts.csswg.org/css-grid-1/#grid-placement-property" id="ref-for-grid-placement-property">grid-placement properties</a>,
 	rather than being directly specified.
-	An author can transition the <a data-link-type=dfn href=http://dev.w3.org/csswg/css-grid-1/#grid-placement-property title="grid-placement properties">grid-placement properties</a>,
+	An author can transition the <span>grid-placement properties</span>,
 	but that will merely cause the element to "skip" from cell to cell
-	as its <a class=property data-link-type=propdesc href=http://dev.w3.org/csswg/css-grid-1/#propdef-grid-row-start title=grid-row-start>grid-row-start</a> and similar properties transition as integers;
+	as its <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-grid-1/#propdef-grid-row-start" id="ref-for-propdef-grid-row-start">grid-row-start</a> and similar properties transition as integers;
 	it won’t have the desired effect of making the element smoothly move between its start and end position.
-	Relatedly, there is no reasonable way to express a transition when an element enters or leaves the document.
-
-<p>	These shortcomings make <a data-biblio-type=informative data-link-type=biblio href=#css3-transitions title=css3-transitions>[CSS3-TRANSITIONS]</a> unsuitable for specifying transitions between laid out states of a web page.
+	Relatedly, there is no reasonable way to express a transition when an element enters or leaves the document.</p>
+   <p>These shortcomings make <a data-link-type="biblio" href="#biblio-css3-transitions">[CSS3-TRANSITIONS]</a> unsuitable for specifying transitions between laid out states of a web page.
 	This specification provides a set of primitive JavaScript methods
-	to enable transition-like graphical effects for complex layout changes.
-
-<h3 class="heading settled heading" data-level=1.1 id=examples><span class=secno>1.1 </span><span class=content>
-Motivating Examples</span><a class=self-link href=#examples></a></h3>
-
-<p>	Layout transition primitives can be used to programmatically control transitions between layout states.
-	For example:
-
-	<div class=example>
-		To transition element <code>myDiv</code> from an initial laid out position to a new position:
-
-		<pre>  myDiv.suspendPainting();
-  CSS.elementSources.myDivSnapshot = myDiv.snapshot();
-  var div = document.createElement('div');
-  div.style.position = 'absolute';
-  div.style.left = myDiv.offsetLeft + 'px';
-  // ...
-  div.style.backgroundImage = 'element(myDivSnapshot)';
-  document.body.appendChild(div);
-  // perform layout
-  div.animate({left: myDiv.offsetLeft, ... }, 1).source.onEnd(function() {
-    myDiv.resumePainting();
-    div.remove();
-  });
-</pre>	</div>
-
-<p>	Layout transition primitives also allow element insertions and removals to be smoothed.
-	For example:
-
-	<div class=example>
-		In this example, afterDiv is the last div in a list.
-		We wish to grow newDiv in-place before afterDiv,
-		smoothly moving afterDiv down as we do so.
-
-		<pre>  container.suspendPainting();
-  CSS.elementSources.afterDivSnapshot = afterDiv.snapshot();
-  // .. create and insert snapshot element (see previous example)
-  container.appendBefore(afterDiv, newDiv);
-  var bounds = newDiv.recastElement();
-  new ParGroup([
-    bounds.animate([{height: 0}, {height: bounds.height}], 1),
-    div.animate({top: afterDiv.top}, 1)
-  ]).source.onEnd(function() {
-    myDiv.resumePainting();
-    div.remove();
-  });
-</pre>	</div>
-
-<p>	When combined with <a data-biblio-type=informative data-link-type=biblio href=#css4-images title=css4-images>[CSS4-IMAGES]</a>,
-	layout transition primitves allow crossfade and transfade effects to be scripted.
-	For example:
-
-	<div class=example>
-		<pre>  myDiv.suspendPainting();
-  CSS.elementSources.before = myDiv.snapshot();
-  // .. create and insert snapshot element (see previous example)
-  // perform layout
-  CSS.elementSources.after = myDiv.snapshot();
-  div.style.transition = 'background-image 1s';
-  div.style.backgroundImage = 'element(after)';
-  setTimeout(function() {
-    myDiv.resumePainting();
-    div.remove();
-  }, 1000);
-</pre>	</div>
-
-<h2 class="heading settled heading" data-level=2 id=defs><span class=secno>2 </span><span class=content>
-Definitions</span><a class=self-link href=#defs></a></h2>
-
-<p>	For the purpose of this specification:
-
-<p>	<ul>
-		<li>
-			the <dfn class=idl-code data-dfn-type=interface data-export="" id=dom-promise>Promise<a class=self-link href=#dom-promise></a></dfn> interface is defined in
-			the <a href=https://github.com/domenic/promises-unwrapping>Promises draft specification</a>.
-
-		<li>
-			the <dfn class=idl-code data-dfn-for=Element data-dfn-type=method data-export="" id=dom-element-getclientboundingrect title=getclientboundingrect()>getClientBoundingRect()<a class=self-link href=#dom-element-getclientboundingrect></a></dfn> method is defined in
-			the <a data-biblio-type=informative data-link-type=biblio href=#cssom-view title=cssom-view>[CSSOM-VIEW]</a> specification.
-	</ul>
-
-<h2 class="heading settled heading" data-level=3 id=idl><span class=secno>3 </span><span class=content>
-IDL</span><a class=self-link href=#idl></a></h2>
-
-	<pre class=idl>partial interface <dfn class=idl-code data-dfn-type=interface data-export="" data-global-name="" id=dom-element>Element<a class=self-link href=#dom-element></a></dfn> {
-    void <dfn class=idl-code data-dfn-for=Element data-dfn-type=method data-export="" data-global-name="Element<interface>/suspendpainting()<method>" id=dom-element-suspendpainting title=suspendPainting()>suspendPainting<a class=self-link href=#dom-element-suspendpainting></a></dfn>();
-    void <dfn class=idl-code data-dfn-for=Element data-dfn-type=method data-export="" data-global-name="Element<interface>/resumepainting()<method>" id=dom-element-resumepainting title=resumePainting()>resumePainting<a class=self-link href=#dom-element-resumepainting></a></dfn>();
-    <a data-link-type=idl href=#dom-opaqueimagesnapshot title=opaqueimagesnapshot>OpaqueImageSnapshot</a> <dfn class=idl-code data-dfn-for=Element data-dfn-type=method data-export="" data-global-name="Element<interface>/snapshot()<method>" id=dom-element-snapshot title=snapshot()>snapshot<a class=self-link href=#dom-element-snapshot></a></dfn>();
-    <a data-link-type=idl href=#dom-elementbounds title=elementbounds>ElementBounds</a> <dfn class=idl-code data-dfn-for=Element data-dfn-type=method data-export="" data-global-name="Element<interface>/recastelement()<method>" id=dom-element-recastelement title=recastElement()>recastElement<a class=self-link href=#dom-element-recastelement></a></dfn>();
-    void <dfn class=idl-code data-dfn-for=Element data-dfn-type=method data-export="" data-global-name="Element<interface>/cancelrecast()<method>" id=dom-element-cancelrecast title=cancelRecast()>cancelRecast<a class=self-link href=#dom-element-cancelrecast></a></dfn>();
-  };
-
-  interface <dfn class=idl-code data-dfn-type=interface data-export="" data-global-name="" id=dom-opaqueimagesnapshot>OpaqueImageSnapshot<a class=self-link href=#dom-opaqueimagesnapshot></a></dfn> {
-    <a data-link-type=idl href=#dom-promise title=promise>Promise</a> <dfn class=idl-code data-dfn-for=OpaqueImageSnapshot data-dfn-type=method data-export="" data-global-name="OpaqueImageSnapshot<interface>/ready()<method>" id=dom-opaqueimagesnapshot-ready title=ready()>ready<a class=self-link href=#dom-opaqueimagesnapshot-ready></a></dfn>();
-  };
-
-  interface <dfn class=idl-code data-dfn-type=interface data-export="" data-global-name="" id=dom-elementbounds>ElementBounds<a class=self-link href=#dom-elementbounds></a></dfn> {
-    attribute DOMString <dfn class=idl-code data-dfn-for=ElementBounds data-dfn-type=attribute data-export="" data-global-name="ElementBounds<interface>/left<attribute>" id=dom-elementbounds-left>left<a class=self-link href=#dom-elementbounds-left></a></dfn>;
-    attribute DOMString <dfn class=idl-code data-dfn-for=ElementBounds data-dfn-type=attribute data-export="" data-global-name="ElementBounds<interface>/top<attribute>" id=dom-elementbounds-top>top<a class=self-link href=#dom-elementbounds-top></a></dfn>;
-    attribute DOMString <dfn class=idl-code data-dfn-for=ElementBounds data-dfn-type=attribute data-export="" data-global-name="ElementBounds<interface>/width<attribute>" id=dom-elementbounds-width>width<a class=self-link href=#dom-elementbounds-width></a></dfn>;
-    attribute DOMString <dfn class=idl-code data-dfn-for=ElementBounds data-dfn-type=attribute data-export="" data-global-name="ElementBounds<interface>/height<attribute>" id=dom-elementbounds-height>height<a class=self-link href=#dom-elementbounds-height></a></dfn>;
-    attribute DOMString <dfn class=idl-code data-dfn-for=ElementBounds data-dfn-type=attribute data-export="" data-global-name="ElementBounds<interface>/transform<attribute>" id=dom-elementbounds-transform>transform<a class=self-link href=#dom-elementbounds-transform></a></dfn>;
-    attribute DOMString <dfn class=idl-code data-dfn-for=ElementBounds data-dfn-type=attribute data-export="" data-global-name="ElementBounds<interface>/transformorigin<attribute>" id=dom-elementbounds-transformorigin>transformOrigin<a class=self-link href=#dom-elementbounds-transformorigin></a></dfn>;
-    attribute DOMString <dfn class=idl-code data-dfn-for=ElementBounds data-dfn-type=attribute data-export="" data-global-name="ElementBounds<interface>/opacity<attribute>" id=dom-elementbounds-opacity>opacity<a class=self-link href=#dom-elementbounds-opacity></a></dfn>;
-    attribute DOMString <dfn class=idl-code data-dfn-for=ElementBounds data-dfn-type=attribute data-export="" data-global-name="ElementBounds<interface>/overflow<attribute>" id=dom-elementbounds-overflow>overflow<a class=self-link href=#dom-elementbounds-overflow></a></dfn>;
-  };
+	to enable transition-like graphical effects for complex layout changes.</p>
+   <h3 class="heading settled" data-level="1.1" id="examples"><span class="secno">1.1. </span><span class="content"> Motivating Examples</span><a class="self-link" href="#examples"></a></h3>
+   <p>Layout transition primitives can be used to programmatically control transitions between layout states.
+	For example:</p>
+   <div class="example" id="example-31be0630">
+    <a class="self-link" href="#example-31be0630"></a> To transition element <code class="highlight">myDiv</code> from an initial laid out position to a new position:
+<pre class="highlight">myDiv<c- p>.</c->suspendPainting<c- p>();</c->
+CSS<c- p>.</c->elementSources<c- p>.</c->myDivSnapshot <c- o>=</c-> myDiv<c- p>.</c->snapshot<c- p>();</c->
+<c- a>var</c-> div <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>'div'</c-><c- p>);</c->
+div<c- p>.</c->style<c- p>.</c->position <c- o>=</c-> <c- t>'absolute'</c-><c- p>;</c->
+div<c- p>.</c->style<c- p>.</c->left <c- o>=</c-> myDiv<c- p>.</c->offsetLeft <c- o>+</c-> <c- t>'px'</c-><c- p>;</c->
+<c- c1>// ...</c->
+div<c- p>.</c->style<c- p>.</c->backgroundImage <c- o>=</c-> <c- t>'element(myDivSnapshot)'</c-><c- p>;</c->
+document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->div<c- p>);</c->
+<c- c1>// perform layout</c->
+div<c- p>.</c->animate<c- p>({</c->left<c- o>:</c-> myDiv<c- p>.</c->offsetLeft<c- p>,</c-> <c- p>...</c-> <c- p>},</c-> <c- mi>1</c-><c- p>).</c->source<c- p>.</c->onEnd<c- p>(</c-><c- a>function</c-><c- p>()</c-> <c- p>{</c->
+  myDiv<c- p>.</c->resumePainting<c- p>();</c->
+  div<c- p>.</c->remove<c- p>();</c->
+<c- p>});</c->
 </pre>
-	<p class=issue id=issue-aae8a3a4><a class=self-link href=#issue-aae8a3a4></a>
-		Ensure that ElementBounds implements Animatable,
-		assuming that this idea makes it into the Web Animations specification.
+   </div>
+   <div class="example" id="example-6755f5c4">
+    <a class="self-link" href="#example-6755f5c4"></a> Layout transition primitives also allow element insertions and removals to be smoothed.
+    <p>In this example, afterDiv is the last div in a list.
+		We wish to grow newDiv in-place before afterDiv,
+		smoothly moving afterDiv down as we do so.</p>
+<pre class="highlight">container<c- p>.</c->suspendPainting<c- p>();</c->
+CSS<c- p>.</c->elementSources<c- p>.</c->afterDivSnapshot <c- o>=</c-> afterDiv<c- p>.</c->snapshot<c- p>();</c->
+<c- c1>// .. create and insert snapshot element (see previous example)</c->
+container<c- p>.</c->appendBefore<c- p>(</c->afterDiv<c- p>,</c-> newDiv<c- p>);</c->
+<c- a>var</c-> bounds <c- o>=</c-> newDiv<c- p>.</c->recastElement<c- p>();</c->
+<c- k>new</c-> ParGroup<c- p>([</c->
+  bounds<c- p>.</c->animate<c- p>([{</c->height<c- o>:</c-> <c- mi>0</c-><c- p>},</c-> <c- p>{</c->height<c- o>:</c-> bounds<c- p>.</c->height<c- p>}],</c-> <c- mi>1</c-><c- p>),</c->
+  div<c- p>.</c->animate<c- p>({</c->top<c- o>:</c-> afterDiv<c- p>.</c->top<c- p>},</c-> <c- mi>1</c-><c- p>)</c->
+<c- p>]).</c->source<c- p>.</c->onEnd<c- p>(</c-><c- a>function</c-><c- p>()</c-> <c- p>{</c->
+  myDiv<c- p>.</c->resumePainting<c- p>();</c->
+  div<c- p>.</c->remove<c- p>();</c->
+<c- p>});</c->
+</pre>
+   </div>
+   <div class="example" id="example-d1477dcc">
+    <a class="self-link" href="#example-d1477dcc"></a> When combined with <a data-link-type="biblio" href="#biblio-css4-images">[CSS4-IMAGES]</a>,
+		layout transition primitves allow crossfade and transfade effects to be scripted.
+		For example:
+<pre class="highlight">myDiv<c- p>.</c->suspendPainting<c- p>();</c->
+CSS<c- p>.</c->elementSources<c- p>.</c->before <c- o>=</c-> myDiv<c- p>.</c->snapshot<c- p>();</c->
+<c- c1>// .. create and insert snapshot element (see previous example)</c->
+<c- c1>// perform layout</c->
+CSS<c- p>.</c->elementSources<c- p>.</c->after <c- o>=</c-> myDiv<c- p>.</c->snapshot<c- p>();</c->
+div<c- p>.</c->style<c- p>.</c->transition <c- o>=</c-> <c- t>'background-image 1s'</c-><c- p>;</c->
+div<c- p>.</c->style<c- p>.</c->backgroundImage <c- o>=</c-> <c- t>'element(after)'</c-><c- p>;</c->
+setTimeout<c- p>(</c-><c- a>function</c-><c- p>()</c-> <c- p>{</c->
+  myDiv<c- p>.</c->resumePainting<c- p>();</c->
+  div<c- p>.</c->remove<c- p>();</c->
+<c- p>},</c-> <c- mi>1000</c-><c- p>);</c->
+</pre>
+   </div>
+   <h2 class="heading settled" data-level="2" id="idl"><span class="secno">2. </span><span class="content"> IDL</span><a class="self-link" href="#idl"></a></h2>
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://dom.spec.whatwg.org/#element" id="ref-for-element"><c- g>Element</c-></a> {
+  <c- b>void</c-> <dfn class="dfn-paneled idl-code" data-dfn-for="Element" data-dfn-type="method" data-export data-lt="suspendPainting()" id="dom-element-suspendpainting"><code class="highlight"><c- g>suspendPainting</c-></code></dfn>();
+  <c- b>void</c-> <dfn class="dfn-paneled idl-code" data-dfn-for="Element" data-dfn-type="method" data-export data-lt="resumePainting()" id="dom-element-resumepainting"><code class="highlight"><c- g>resumePainting</c-></code></dfn>();
+  <c- b>Promise</c->&lt;<a class="n" data-link-type="idl-name" href="#opaqueimagesnapshot" id="ref-for-opaqueimagesnapshot"><c- n>OpaqueImageSnapshot</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="Element" data-dfn-type="method" data-export data-lt="snapshot()" id="dom-element-snapshot"><code class="highlight"><c- g>snapshot</c-></code></dfn>();
+  <a class="n" data-link-type="idl-name" href="#elementbounds" id="ref-for-elementbounds"><c- n>ElementBounds</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Element" data-dfn-type="method" data-export data-lt="recastElement()" id="dom-element-recastelement"><code class="highlight"><c- g>recastElement</c-></code></dfn>();
+  <c- b>void</c-> <dfn class="dfn-paneled idl-code" data-dfn-for="Element" data-dfn-type="method" data-export data-lt="cancelRecast()" id="dom-element-cancelrecast"><code class="highlight"><c- g>cancelRecast</c-></code></dfn>();
+};
 
-<h2 class="heading settled heading" data-level=4 id=suspending><span class=secno>4 </span><span class=content>
-Suspending Painting - the suspendPainting() and resumePainting() methods</span><a class=self-link href=#suspending></a></h2>
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="opaqueimagesnapshot"><code class="highlight"><c- g>OpaqueImageSnapshot</c-></code></dfn> {
+};
 
-<p>	The <a class=idl-code data-link-type=method href=#dom-element-suspendpainting title=suspendpainting()>suspendPainting()</a> and <a class=idl-code data-link-type=method href=#dom-element-resumepainting title=resumepainting()>resumePainting()</a> methods on elements
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="elementbounds"><code class="highlight"><c- g>ElementBounds</c-></code></dfn> {
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ElementBounds" data-dfn-type="attribute" data-export data-type="DOMString" id="dom-elementbounds-left"><code class="highlight"><c- g>left</c-></code></dfn>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ElementBounds" data-dfn-type="attribute" data-export data-type="DOMString" id="dom-elementbounds-top"><code class="highlight"><c- g>top</c-></code></dfn>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ElementBounds" data-dfn-type="attribute" data-export data-type="DOMString" id="dom-elementbounds-width"><code class="highlight"><c- g>width</c-></code></dfn>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ElementBounds" data-dfn-type="attribute" data-export data-type="DOMString" id="dom-elementbounds-height"><code class="highlight"><c- g>height</c-></code></dfn>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString④"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ElementBounds" data-dfn-type="attribute" data-export data-type="DOMString" id="dom-elementbounds-transform"><code class="highlight"><c- g>transform</c-></code></dfn>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑤"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ElementBounds" data-dfn-type="attribute" data-export data-type="DOMString" id="dom-elementbounds-transformorigin"><code class="highlight"><c- g>transformOrigin</c-></code><a class="self-link" href="#dom-elementbounds-transformorigin"></a></dfn>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑥"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ElementBounds" data-dfn-type="attribute" data-export data-type="DOMString" id="dom-elementbounds-opacity"><code class="highlight"><c- g>opacity</c-></code></dfn>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑦"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ElementBounds" data-dfn-type="attribute" data-export data-type="DOMString" id="dom-elementbounds-overflow"><code class="highlight"><c- g>overflow</c-></code><a class="self-link" href="#dom-elementbounds-overflow"></a></dfn>;
+};
+</pre>
+   <p class="issue" id="issue-d957305b"><a class="self-link" href="#issue-d957305b"></a> Ensure that ElementBounds implements Animatable,
+	assuming that this idea makes it into the Web Animations specification.</p>
+   <h2 class="heading settled" data-level="3" id="suspending"><span class="secno">3. </span><span class="content"> Suspending Painting - the suspendPainting() and resumePainting() methods</span><a class="self-link" href="#suspending"></a></h2>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-element-suspendpainting" id="ref-for-dom-element-suspendpainting">suspendPainting()</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-element-resumepainting" id="ref-for-dom-element-resumepainting">resumePainting()</a></code> methods on elements
 	allow an author to control whether an element "paints",
 	or is displayed on the screen.
-	This is similar to using the <a class=property data-link-type=propdesc href=http://www.w3.org/TR/CSS21/visufx.html#propdef-visibility title=visibility>visibility</a> property,
+	This is similar to using the <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css2/visufx.html#propdef-visibility" id="ref-for-propdef-visibility">visibility</a> property,
 	but more explicit and slightly more powerful.
-	Like <a class=property data-link-type=propdesc href=http://www.w3.org/TR/CSS21/visufx.html#propdef-visibility title=visibility>visibility</a> and unlike other properties such as <a class=property data-link-type=propdesc href=http://www.w3.org/TR/CSS21/visuren.html#propdef-display title=display>display</a>,
+	Like <span class="property">visibility</span> and unlike other properties such as <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-3/#propdef-display" id="ref-for-propdef-display">display</a>,
 	the element is still laid out and takes up space on the page as normal
-	even if it’s not being painted.
-
-<p class=note>	Note: Suspending the painting of an element is commonly used with the other methods in this specification,
-	to get the original element "out of the way" while script is simulating a transition of the element with snapshots and recastings.
-
-<p>	When <a class=idl-code data-link-type=method href=#dom-element-suspendpainting title=suspendpainting()>suspendPainting()</a> is called on an element,
-	the element’s <dfn data-dfn-type=dfn data-noexport="" id=painting-suspended-flag>painting suspended flag<a class=self-link href=#painting-suspended-flag></a></dfn> must be set.
-	When <a class=idl-code data-link-type=method href=#dom-element-resumepainting title=resumepainting()>resumePainting()</a> is called on an element,
-	the element’s <a data-link-type=dfn href=#painting-suspended-flag title="painting suspended flag">painting suspended flag</a> must be unset.
-
-<p>	When an element’s <a data-link-type=dfn href=#painting-suspended-flag title="painting suspended flag">painting suspended flag</a> is toggled from unset to set,
-	its subtree must be repainted.
-	<p class=issue id=issue-72b32847><a class=self-link href=#issue-72b32847></a>This is actually trying to introduce the notion that suspendPainting is an entry in the style updates queue. How should this be worded?
-
-<p>	An element is <dfn data-dfn-type=dfn data-noexport="" id=suspended>suspended<a class=self-link href=#suspended></a></dfn> if its <a data-link-type=dfn href=#painting-suspended-flag title="painting suspended flag">painting suspended flag</a> is set,
-	or if it has a parent element and that parent element is <a data-link-type=dfn href=#suspended title=suspended>suspended</a>.
-
-<p>	Whether the <a data-link-type=dfn href=#painting-suspended-flag title="painting suspended flag">painting suspended flag</a> is set or unset must not change if the element is added or removed from the document.
-
-<p>	When an element is <a data-link-type=dfn href=#suspended title=suspended>suspended</a>,
+	even if it’s not being painted.</p>
+   <p class="note" role="note"><span>Note:</span> Suspending the painting of an element is commonly used with the other methods in this specification,
+	to get the original element "out of the way" while script is simulating a transition of the element with snapshots and recastings.</p>
+   <p>When <code class="idl"><a data-link-type="idl" href="#dom-element-suspendpainting" id="ref-for-dom-element-suspendpainting①">suspendPainting()</a></code> is called on an element,
+	the element’s <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="painting-suspended-flag">painting suspended flag</dfn> must be set.
+	When <code class="idl"><a data-link-type="idl" href="#dom-element-resumepainting" id="ref-for-dom-element-resumepainting①">resumePainting()</a></code> is called on an element,
+	the element’s <a data-link-type="dfn" href="#painting-suspended-flag" id="ref-for-painting-suspended-flag">painting suspended flag</a> must be unset.</p>
+   <p>When an element’s <a data-link-type="dfn" href="#painting-suspended-flag" id="ref-for-painting-suspended-flag①">painting suspended flag</a> is toggled from unset to set,
+	its subtree must be repainted.</p>
+   <p class="issue" id="issue-5c3fb4c1"><a class="self-link" href="#issue-5c3fb4c1"></a> This is actually trying to introduce the notion that <code class="idl"><a data-link-type="idl" href="#dom-element-suspendpainting" id="ref-for-dom-element-suspendpainting②">suspendPainting()</a></code> is an entry in the style updates queue.
+	How should this be worded?</p>
+   <p>An element is <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="suspended">suspended</dfn> if its <a data-link-type="dfn" href="#painting-suspended-flag" id="ref-for-painting-suspended-flag②">painting suspended flag</a> is set,
+	or if it has a parent element and that parent element is <a data-link-type="dfn" href="#suspended" id="ref-for-suspended">suspended</a>.</p>
+   <p>Whether the <a data-link-type="dfn" href="#painting-suspended-flag" id="ref-for-painting-suspended-flag③">painting suspended flag</a> is set or unset must not change if the element is added or removed from the document.</p>
+   <p>When an element is <a data-link-type="dfn" href="#suspended" id="ref-for-suspended①">suspended</a>,
 	its generated box is invisible
 	(fully transparent, nothing is drawn),
-	but still affects layout.
-	<span class=note>This is similar to the effects of <a class=css data-link-type=propdesc href=http://www.w3.org/TR/CSS21/visufx.html#propdef-visibility title=visibility>visibility: hidden</a></span>
-
-<p class=note>	Note: Calling <a class=idl-code data-link-type=method href=#dom-element-resumepainting title=resumepainting()>resumePainting()</a> on an element which is <a data-link-type=dfn href=#suspended title=suspended>suspended</a>
-	due to an ancestor having its <a data-link-type=dfn href=#painting-suspended-flag title="painting suspended flag">painting suspended flag</a> set will do nothing;
-	the element’s <a data-link-type=dfn href=#painting-suspended-flag title="painting suspended flag">painting suspended flag</a> is already unset.
-
-<h2 class="heading settled heading" data-level=5 id=snapshotting><span class=secno>5 </span><span class=content>
-Snapshotting Elements - The snapshot() method</span><a class=self-link href=#snapshotting></a></h2>
-
-<p>	The <a class=idl-code data-link-type=method href=#dom-element-snapshot title=snapshot()>snapshot()</a> method takes a "snapshot" of an element,
+	but still affects layout. <span class="note">This is similar to the effects of <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css2/visufx.html#propdef-visibility" id="ref-for-propdef-visibility②">visibility: hidden</a></span></p>
+   <p class="note" role="note"><span>Note:</span> Calling <code class="idl"><a data-link-type="idl" href="#dom-element-resumepainting" id="ref-for-dom-element-resumepainting②">resumePainting()</a></code> on an element which is <a data-link-type="dfn" href="#suspended" id="ref-for-suspended②">suspended</a> due to an ancestor having its <a data-link-type="dfn" href="#painting-suspended-flag" id="ref-for-painting-suspended-flag④">painting suspended flag</a> set will do nothing;
+	the element’s <span>painting suspended flag</span> is already unset.</p>
+   <h2 class="heading settled" data-level="4" id="snapshotting"><span class="secno">4. </span><span class="content"> Snapshotting Elements - The snapshot() method</span><a class="self-link" href="#snapshotting"></a></h2>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-element-snapshot" id="ref-for-dom-element-snapshot">snapshot()</a></code> method takes a "snapshot" of an element,
 	returning an image of the element at that time
-	(even if the element is currently <a data-link-type=dfn href=#suspended title=suspended>suspended</a>)
+	(even if the element is currently <a data-link-type="dfn" href="#suspended" id="ref-for-suspended③">suspended</a>)
 	which is useful in implementing layout transitions,
-	as described in the Examples section of this document.
-
-<p>	When <a class=idl-code data-link-type=method href=#dom-element-snapshot title=snapshot()>snapshot()</a> is called on an element <var>el</var>,
-	the user agent must perform the following steps:
-
-	<ol>
-		<li>
-			Let <var>snapshot</var> be a newly-created <a class=idl-code data-link-type=interface href=#dom-opaqueimagesnapshot title=opaqueimagesnapshot>OpaqueImageSnapshot</a> object.
+	as described in the Examples section of this document.</p>
+   <p>When <code class="idl"><a data-link-type="idl" href="#dom-element-snapshot" id="ref-for-dom-element-snapshot①">snapshot()</a></code> is called on an element <var>el</var>,
+	the user agent must perform the following steps:</p>
+   <ol>
+    <li> Let <var>snapshot</var> be a newly-created <code class="idl"><a data-link-type="idl" href="#opaqueimagesnapshot" id="ref-for-opaqueimagesnapshot①">OpaqueImageSnapshot</a></code> object.
 			Return <var>snapshot</var>,
 			and complete the rest of these steps asynchronously.
-
-		<li>
-			Create a new <a data-link-type=dfn href=#style-dependent-action title="style-dependent action">style-dependent action</a> <var>action</var>
-			which, when executed,
-			<a data-link-type=dfn href=#capture-the-current-rendering title="capture the current rendering">captures the current rendering</a> of <var>el</var>,
+    <li> Create a new <a data-link-type="dfn" href="#style-dependent-action" id="ref-for-style-dependent-action">style-dependent action</a> <var>action</var> which, when executed, <a data-link-type="dfn" href="#capture-the-current-rendering" id="ref-for-capture-the-current-rendering">captures the current rendering</a> of <var>el</var>,
 			associates the rendering with <var>snapshot</var>,
-			and resolves <var>snapshot</var>’s ready promise with <code>undefined</code>.
-
-		<li>
-			Push <var>action</var> onto <var>el</var>’s <a data-link-type=dfn href=#style-updates-queue title="style updates queue">style updates queue</a>.
-	</ol>
-
-<p>	When asked to <dfn data-dfn-type=dfn data-noexport="" id=capture-the-current-rendering>capture the current rendering<a class=self-link href=#capture-the-current-rendering></a></dfn> of an element <var>el</var>,
+			and resolves <var>snapshot</var>’s ready promise with <code class="highlight"><c- kc>undefined</c-></code>.
+    <li> Push <var>action</var> onto <var>el</var>’s <a data-link-type="dfn" href="#style-updates-queue" id="ref-for-style-updates-queue">style updates queue</a>.
+   </ol>
+   <p class="issue" id="issue-b1fefb93"><a class="self-link" href="#issue-b1fefb93"></a> Rewrite this to return a promise for a snapshot,
+	rather than sync-returning a snapshot that then has a ready promise.</p>
+   <p>When asked to <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="capture-the-current-rendering">capture the current rendering</dfn> of an element <var>el</var>,
 	the user agent must produce
-	the image that would be represented by an <a class=css data-link-type=maybe href=http://dev.w3.org/csswg/css-images-4/#funcdef-element title=element()>element()</a> function referencing <var>el</var> at that moment,
+	the image that would be represented by an <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-images-4/#funcdef-element" id="ref-for-funcdef-element">element()</a> function referencing <var>el</var> at that moment,
 	with the image having the same width and height as <var>el</var> does at that moment.
-	If <var>el</var> is currently <a data-link-type=dfn href=#suspended title=suspended>suspended</a>,
-	for the purposes of generating this image it is treated as being not <a data-link-type=dfn href=#suspended title=suspended>suspended</a>.
-
-<p class=note>	Note: Only the current element’s <a data-link-type=dfn href=#suspended title=suspended>suspended</a> state is altered
+	If <var>el</var> is currently <a data-link-type="dfn" href="#suspended" id="ref-for-suspended④">suspended</a>,
+	for the purposes of generating this image it is treated as being not <span>suspended</span>.</p>
+   <p class="note" role="note"><span>Note:</span> Only the current element’s <a data-link-type="dfn" href="#suspended" id="ref-for-suspended⑥">suspended</a> state is altered
 	for the purposes of generating a snapshot image.
-	If descendant elements are also marked as <a data-link-type=dfn href=#suspended title=suspended>suspended</a>,
-	then those elements will remain transparent in the snapshot.
-
-<p class=note>	Note: The image does not necessarily have to be a raster bitmap,
+	If descendant elements are also marked as <span>suspended</span>,
+	then those elements will remain transparent in the snapshot.</p>
+   <p class="note" role="note"><span>Note:</span> The image does not necessarily have to be a raster bitmap,
 	as the actual image data is never directly exposed to the page.
 	For example, some user agents use an intermediate vector-like representation of an element
 	before the rasterization step;
 	this alternative representation may be produced instead,
 	so that the image can be rendered accurately at any target size
-	without scaling artifacts.
-
-<p class=note>	Note: Due to the way the <a data-link-type=dfn href=#style-updates-queue title="style updates queue">style updates queue</a> works,
-	if an author generates a snapshot
-	<em>before</em> creating a new element and assigning the snapshot as a background image,
+	without scaling artifacts.</p>
+   <p class="note" role="note"><span>Note:</span> Due to the way the <a data-link-type="dfn" href="#style-updates-queue" id="ref-for-style-updates-queue①">style updates queue</a> works,
+	if an author generates a snapshot <em>before</em> creating a new element and assigning the snapshot as a background image,
 	it’s guaranteed that there will be no FOUC (flash of unstyled content).
 	Any other order <em>might</em> generate a FOUC,
-	depending on timing and user-agent-specific behavior.
-
-<p class=note>	Note: Snapshots never "expire" or otherwise become unusable,
-	even if the element they are snapshotting is removed or deleted.
-
-
-<h3 class="heading settled heading" data-level=5.1 id=snapshots><span class=secno>5.1 </span><span class=content>
-Snapshots: the <code>OpaqueImageSnapshot</code> object</span><a class=self-link href=#snapshots></a></h3>
-
-<p>	<a class=idl-code data-link-type=interface href=#dom-opaqueimagesnapshot title=opaqueimagesnapshot>OpaqueImageSnapshot</a> objects are returned by the <a class=idl-code data-link-type=method href=#dom-element-snapshot title=snapshot()>snapshot()</a> method,
-	and represent the rendering of an element at the time that <a class=idl-code data-link-type=method href=#dom-element-snapshot title=snapshot()>snapshot()</a> is called.
-
-<p>	For security reasons,
-	the image data represented by an <a class=idl-code data-link-type=interface href=#dom-opaqueimagesnapshot title=opaqueimagesnapshot>OpaqueImageSnapshot</a> object is not obtainable by any means;
+	depending on timing and user-agent-specific behavior.</p>
+   <p class="note" role="note"><span>Note:</span> Snapshots never "expire" or otherwise become unusable,
+	even if the element they are snapshotting is removed or deleted.</p>
+   <h3 class="heading settled" data-level="4.1" id="snapshots"><span class="secno">4.1. </span><span class="content"> Snapshots: the <code class="highlight">OpaqueImageSnapshot</code> object</span><a class="self-link" href="#snapshots"></a></h3>
+   <p><code class="idl"><a data-link-type="idl" href="#opaqueimagesnapshot" id="ref-for-opaqueimagesnapshot②">OpaqueImageSnapshot</a></code> objects are returned by the <code class="idl"><a data-link-type="idl" href="#dom-element-snapshot" id="ref-for-dom-element-snapshot②">snapshot()</a></code> method,
+	and represent the rendering of an element at the time that <code class="idl"><a data-link-type="idl" href="#dom-element-snapshot" id="ref-for-dom-element-snapshot③">snapshot()</a></code> is called.</p>
+   <p>For security reasons,
+	the image data represented by an <code class="idl"><a data-link-type="idl" href="#opaqueimagesnapshot" id="ref-for-opaqueimagesnapshot③">OpaqueImageSnapshot</a></code> object is not obtainable by any means;
 	the image can only be displayed indirectly,
-	by using the <a class=idl-code data-link-type=interface href=#dom-opaqueimagesnapshot title=opaqueimagesnapshot>OpaqueImageSnapshot</a> object
-	in conjunction with CSS’s <a class=css data-link-type=maybe href=http://dev.w3.org/csswg/css-images-4/#funcdef-element title=element()>element()</a> function
-	and the <a class=idl-code data-link-type=attribute href=http://dev.w3.org/csswg/css-images-4/#dom-css-elementsources title=elementsources>elementSources</a> map.
-
-<p>	An <a class=idl-code data-link-type=interface href=#dom-opaqueimagesnapshot title=opaqueimagesnapshot>OpaqueImageSnapshot</a> object might represent an image.
-	If it does, it provides a <a data-link-type=dfn href=http://dev.w3.org/csswg/css-images-4/#paint-source title="paint source">paint source</a>,
-	with the width, height, and appearance of the image it represents.
-
-<p>	When the <a class=idl-code data-link-type=method href=#dom-opaqueimagesnapshot-ready title=ready()>ready()</a> method of an <a class=idl-code data-link-type=interface href=#dom-opaqueimagesnapshot title=opaqueimagesnapshot>OpaqueImageSnapshot</a> <var>snapshot</var> is called,
-	user agents must perform the following steps:
-
-	<ol>
-		<li>
-			Let <var>ready promise</var> be a newly-created Promise.
+	by using the <code class="idl"><a data-link-type="idl" href="#opaqueimagesnapshot" id="ref-for-opaqueimagesnapshot④">OpaqueImageSnapshot</a></code> object
+	in conjunction with CSS’s <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-images-4/#funcdef-element" id="ref-for-funcdef-element①">element()</a> function
+	and the <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/css4-images/#dom-css-elementsources" id="ref-for-dom-css-elementsources">elementSources</a></code> map.</p>
+   <p>An <code class="idl"><a data-link-type="idl" href="#opaqueimagesnapshot" id="ref-for-opaqueimagesnapshot⑤">OpaqueImageSnapshot</a></code> object might represent an image.
+	If it does, it provides a <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-4/#paint-source" id="ref-for-paint-source">paint source</a>,
+	with the width, height, and appearance of the image it represents.</p>
+   <p>When the <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/css-font-loading-3/#dom-fontfaceset-ready" id="ref-for-dom-fontfaceset-ready">ready()</a></code> method of an <code class="idl"><a data-link-type="idl" href="#opaqueimagesnapshot" id="ref-for-opaqueimagesnapshot⑥">OpaqueImageSnapshot</a></code> <var>snapshot</var> is called,
+	user agents must perform the following steps:</p>
+   <ol>
+    <li> Let <var>ready promise</var> be a newly-created Promise.
 			Return it,
 			and perform the rest of these steps asynchronously.
-
-		<li>
-			When <var>snapshot</var> represents an image,
-			resolve <var>promise</var> with <code>undefined</code>.
-	</ol>
-
-	<p class=issue id=issue-5d5792e9><a class=self-link href=#issue-5d5792e9></a>
-		Is there any way for a snapshot to fail?
-		Deleting the element before it’s rendered?
-
-<h2 class="heading settled heading" data-level=6 id=recasting><span class=secno>6 </span><span class=content>
-Recasting Painting - The recastElement() and cancelRecast() methods</span><a class=self-link href=#recasting></a></h2>
-
-<p>	While <a href=#snapshotting>snapshotting</a> elements into static images
+    <li> When <var>snapshot</var> represents an image,
+			resolve <var>ready promise</var> with <code class="highlight"><c- kc>undefined</c-></code>.
+   </ol>
+   <p class="issue" id="issue-d99051e3"><a class="self-link" href="#issue-d99051e3"></a> Is there any way for a snapshot to fail?
+		Deleting the element before it’s rendered? </p>
+   <h2 class="heading settled" data-level="5" id="recasting"><span class="secno">5. </span><span class="content"> Recasting Painting - The recastElement() and cancelRecast() methods</span><a class="self-link" href="#recasting"></a></h2>
+   <p>While <a href="#snapshotting">snapshotting</a> elements into static images
 	is appropriate for many layout transitions,
 	sometimes it is necessary to continuously lay out the element and its contents
 	as it changes size and shape.
 	However, the actual element can’t be used for this purpose,
 	as it’s busy occupying space in the layout.
-	Instead, a <a data-link-type=dfn href=#suspended title=suspended>suspended</a> element can have its painting <strong>recasted</strong>,
+	Instead, a <a data-link-type="dfn" href="#suspended" id="ref-for-suspended⑧">suspended</a> element can have its painting <strong>recasted</strong>,
 	rendering it at an explicitly-set size and position
-	without moving it in the layout as far as the outer page is concerned.
-
-<p>	When the <a class=idl-code data-link-type=method href=#dom-element-recastelement title=recastelement()>recastElement()</a> method is called on an element <var>el</var>,
-	the user agent must perform the following steps:
-
-	<ol>
-		<li>
-			If the element is not currently <a data-link-type=dfn href=#suspended title=suspended>suspended</a>,
+	without moving it in the layout as far as the outer page is concerned.</p>
+   <p>When the <code class="idl"><a data-link-type="idl" href="#dom-element-recastelement" id="ref-for-dom-element-recastelement">recastElement()</a></code> method is called on an element <var>el</var>,
+	the user agent must perform the following steps:</p>
+   <ol>
+    <li> If the element is not currently <a data-link-type="dfn" href="#suspended" id="ref-for-suspended⑨">suspended</a>,
 			throw a ??? error
 			and exit this algorithm.
-
-		<li>
-			If the element already has an associated <a class=idl-code data-link-type=interface href=#dom-elementbounds title=elementbounds>ElementBounds</a> object,
+    <li> If the element already has an associated <code class="idl"><a data-link-type="idl" href="#elementbounds" id="ref-for-elementbounds①">ElementBounds</a></code> object,
 			return that object
 			and exit this algorithm.
-
-		<li>
-			Create a new <a class=idl-code data-link-type=interface href=#dom-elementbounds title=elementbounds>ElementBounds</a> object <var>bounds</var>
-			associated with <var>el</var>.
-			<a data-link-type=dfn href=#initialize-the-element-bounds title="initialize the element bounds">Initialize the element bounds</a>.
+    <li> Create a new <code class="idl"><a data-link-type="idl" href="#elementbounds" id="ref-for-elementbounds②">ElementBounds</a></code> object <var>bounds</var> associated with <var>el</var>. <a data-link-type="dfn" href="#initialize-the-element-bounds" id="ref-for-initialize-the-element-bounds">Initialize the element bounds</a>.
 			Return <var>bounds</var>.
-	</ol>
-
-<p>	While an element has an associated <a class=idl-code data-link-type=interface href=#dom-elementbounds title=elementbounds>ElementBounds</a> object,
-	it is <dfn data-dfn-type=dfn data-noexport="" id=recast>recast<a class=self-link href=#recast></a></dfn>.
-
-<p>	If an element is <a data-link-type=dfn href=#recast title=recast>recast</a>,
-	and stops being <a data-link-type=dfn href=#suspended title=suspended>suspended</a> for any reason,
-	it must <dfn data-dfn-type=dfn data-noexport="" id=cancel-recast>cancel recast<a class=self-link href=#cancel-recast></a></dfn>,
-	which causes its associated <a class=idl-code data-link-type=interface href=#dom-elementbounds title=elementbounds>ElementBounds</a> object to no longer be associated with it.
-
-<p>	While an element is <a data-link-type=dfn href=#recast title=recast>recast</a>,
+   </ol>
+   <p>While an element has an associated <code class="idl"><a data-link-type="idl" href="#elementbounds" id="ref-for-elementbounds③">ElementBounds</a></code> object,
+	it is <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="recast">recast</dfn>.</p>
+   <p>If an element is <a data-link-type="dfn" href="#recast" id="ref-for-recast">recast</a>,
+	and stops being <a data-link-type="dfn" href="#suspended" id="ref-for-suspended①⓪">suspended</a> for any reason,
+	it must <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="cancel-recast">cancel recast</dfn>,
+	which causes its associated <code class="idl"><a data-link-type="idl" href="#elementbounds" id="ref-for-elementbounds④">ElementBounds</a></code> object to no longer be associated with it.</p>
+   <p>While an element is <a data-link-type="dfn" href="#recast" id="ref-for-recast①">recast</a>,
 	it must be laid out twice.
-	The first is as normal for a <a data-link-type=dfn href=#suspended title=suspended>suspended</a> element,
-	to establish the space that the element takes up in the page.
-
-<p>	The second treats the element as <a data-link-type=dfn title="absolutely positioned">absolutely positioned</a>
-	with the <a data-link-type=dfn title="initial containing block">initial containing block</a> as its containing block,
-	and the element’s <a class=property data-link-type=propdesc href=http://www.w3.org/TR/CSS21/visudet.html#propdef-width title=width>width</a>, <a class=property data-link-type=propdesc href=http://www.w3.org/TR/CSS21/visudet.html#propdef-height title=height>height</a>, <a class=property data-link-type=propdesc href=http://dev.w3.org/csswg/css-position-3/#left title=left>left</a>, <a class=property data-link-type=propdesc href=http://dev.w3.org/csswg/css-position-3/#top title=top>top</a>, <a class=property data-link-type=propdesc href=http://dev.w3.org/csswg/css-color-3/#opacity title=opacity>opacity</a>, and <a class=property data-link-type=propdesc href=http://dev.w3.org/csswg/css-transforms-1/#propdef-transform title=transform>transform</a> properties
-	set to the corresponding values from the element’s associated <a class=idl-code data-link-type=interface href=#dom-elementbounds title=elementbounds>ElementBounds</a> object
+	The first is as normal for a <a data-link-type="dfn" href="#suspended" id="ref-for-suspended①①">suspended</a> element,
+	to establish the space that the element takes up in the page.</p>
+   <p>The second treats the element as <a data-link-type="dfn">absolutely positioned</a> with the <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#initial-containing-block" id="ref-for-initial-containing-block">initial containing block</a> as its containing block,
+	and the element’s <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css2/visudet.html#propdef-width" id="ref-for-propdef-width①">width</a>, <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css2/visudet.html#propdef-height" id="ref-for-propdef-height">height</a>, <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-position-3/#propdef-left" id="ref-for-propdef-left">left</a>, <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-position-3/#propdef-top" id="ref-for-propdef-top">top</a>, <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-color-4/#propdef-opacity" id="ref-for-propdef-opacity">opacity</a>, and <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform">transform</a> properties
+	set to the corresponding values from the element’s associated <code class="idl"><a data-link-type="idl" href="#elementbounds" id="ref-for-elementbounds⑤">ElementBounds</a></code> object
 	rather than the values obtained from the cascade.
-	Additionally, the element’s <a class=property data-link-type=propdesc href=http://dev.w3.org/csswg/css-position-3/#right title=right>right</a> and <a class=property data-link-type=propdesc href=http://dev.w3.org/csswg/css-position-3/#bottom title=bottom>bottom</a> properties must be treated as <span class=css data-link-for=right data-link-type=maybe title=auto>auto</span> for this layout.
-	The element must then render as normal based on the results of this layout.
-
-<p>	Modifying the element’s associated <a class=idl-code data-link-type=interface href=#dom-elementbounds title=elementbounds>ElementBounds</a> object
+	Additionally, the element’s <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-position-3/#propdef-right" id="ref-for-propdef-right">right</a> and <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-position-3/#propdef-bottom" id="ref-for-propdef-bottom">bottom</a> properties must be treated as <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-position-3/#valdef-top-auto" id="ref-for-valdef-top-auto">auto</a> for this layout.
+	The element must then render as normal based on the results of this layout.</p>
+   <p>Modifying the element’s associated <code class="idl"><a data-link-type="idl" href="#elementbounds" id="ref-for-elementbounds⑥">ElementBounds</a></code> object
 	must cause the element to perform its second layout with the new values,
-	as if this were an ordinary style change.
-
-<p>	Querying the style of any properties on the element
+	as if this were an ordinary style change.</p>
+   <p>Querying the style of any properties on the element
 	must return the results of the first layout,
-	not the second.
-
-<p class=note>	Note: Note that while an element is <a data-link-type=dfn href=#recast title=recast>recast</a>,
-	any additional calls to <a class=idl-code data-link-type=method href=#dom-element-recastelement title=recastelement()>recastElement()</a> will return the same <a class=idl-code data-link-type=interface href=#dom-elementbounds title=elementbounds>ElementBounds</a> object.
-
-<p>	When the <a class=idl-code data-link-type=method href=#dom-element-cancelrecast title=cancelrecast()>cancelRecast()</a> method is called on an element,
-	the user agent must <a data-link-type=dfn href=#cancel-recast title="cancel recast">cancel recast</a> on it.
-
-<p>	Removing a <a data-link-type=dfn href=#recast title=recast>recast</a> element from the document
-	causes that element to <a data-link-type=dfn href=#cancel-recast title="cancel recast">cancel recast</a>.
-	However, atomic moves within the same document do not <a data-link-type=dfn href=#cancel-recast title="cancel recast">cancel recast</a>.
-
-<p class=note>	Note: recasting an element does not alter the suspended state of
-	descendents of that element.
-
-<h3 class="heading settled heading" data-level=6.1 id=element-bounds><span class=secno>6.1 </span><span class=content>
-The <code>ElementBounds</code> Object</span><a class=self-link href=#element-bounds></a></h3>
-
-<p>	The <a class=idl-code data-link-type=interface href=#dom-elementbounds title=elementbounds>ElementBounds</a> object controls the position and size of a <a data-link-type=dfn href=#recast title=recast>recast</a> element’s rendering.
-	It is returned by calling <a class=idl-code data-link-type=method href=#dom-element-recastelement title=recastelement()>recastElement()</a> on an element.
-
-<p>	When asked to <dfn data-dfn-type=dfn data-noexport="" id=initialize-the-element-bounds>initialize the element bounds<a class=self-link href=#initialize-the-element-bounds></a></dfn> for an element <var>el</var>
-	and an <a class=idl-code data-link-type=interface href=#dom-elementbounds title=elementbounds>ElementBounds</a> object <var>eb</var>,
-	user agents must perform the following steps:
-
-	<ol>
-		<li>
-			Lay out the element as normal.
-
-		<li>
-			Set the <a class=idl-code data-link-type=attribute href=#dom-elementbounds-width title=width>width</a>,
-			<a class=idl-code data-link-type=attribute href=#dom-elementbounds-height title=height>height</a>,
-			<a class=idl-code data-link-type=attribute href=#dom-elementbounds-opacity title=opacity>opacity</a>,
-			and <a class=idl-code data-link-type=attribute href=#dom-elementbounds-transform title=transform>transform</a> attributes of <var>eb</var>
-			to the used values of the corresponding properties from <var>el</var>.
-
-		<li>
-			Set the <a class=idl-code data-link-type=attribute href=#dom-elementbounds-left title=left>left</a> and <a class=idl-code data-link-type=attribute href=#dom-elementbounds-top title=top>top</a> attributes of <var>eb</var>
-			to the offsets of <var>el</var>’s left and top edges, respectively,
+	not the second.</p>
+   <p class="note" role="note"><span>Note:</span> Note that while an element is <a data-link-type="dfn" href="#recast" id="ref-for-recast②">recast</a>,
+	any additional calls to <code class="idl"><a data-link-type="idl" href="#dom-element-recastelement" id="ref-for-dom-element-recastelement①">recastElement()</a></code> will return the same <code class="idl"><a data-link-type="idl" href="#elementbounds" id="ref-for-elementbounds⑦">ElementBounds</a></code> object.</p>
+   <p>When the <code class="idl"><a data-link-type="idl" href="#dom-element-cancelrecast" id="ref-for-dom-element-cancelrecast">cancelRecast()</a></code> method is called on an element,
+	the user agent must <a data-link-type="dfn" href="#cancel-recast" id="ref-for-cancel-recast">cancel recast</a> on it.</p>
+   <p>Removing a <a data-link-type="dfn" href="#recast" id="ref-for-recast③">recast</a> element from the document
+	causes that element to <a data-link-type="dfn" href="#cancel-recast" id="ref-for-cancel-recast①">cancel recast</a>.
+	However, atomic moves within the same document do not <span>cancel recast</span>.</p>
+   <p class="note" role="note"><span>Note:</span> recasting an element does not alter the suspended state of
+	descendents of that element.</p>
+   <h3 class="heading settled" data-level="5.1" id="element-bounds"><span class="secno">5.1. </span><span class="content"> The <code class="highlight">ElementBounds</code> Object</span><a class="self-link" href="#element-bounds"></a></h3>
+   <p>The <code class="idl"><a data-link-type="idl" href="#elementbounds" id="ref-for-elementbounds⑧">ElementBounds</a></code> object controls the position and size of a <a data-link-type="dfn" href="#recast" id="ref-for-recast④">recast</a> element’s rendering.
+	It is returned by calling <code class="idl"><a data-link-type="idl" href="#dom-element-recastelement" id="ref-for-dom-element-recastelement②">recastElement()</a></code> on an element.</p>
+   <p>When asked to <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="initialize-the-element-bounds">initialize the element bounds</dfn> for an element <var>el</var> and an <code class="idl"><a data-link-type="idl" href="#elementbounds" id="ref-for-elementbounds⑨">ElementBounds</a></code> object <var>eb</var>,
+	user agents must perform the following steps:</p>
+   <ol>
+    <li> Lay out the element as normal.
+    <li> Set the <code class="idl"><a data-link-type="idl" href="#dom-elementbounds-width" id="ref-for-dom-elementbounds-width">width</a></code>, <code class="idl"><a data-link-type="idl" href="#dom-elementbounds-height" id="ref-for-dom-elementbounds-height">height</a></code>, <code class="idl"><a data-link-type="idl" href="#dom-elementbounds-opacity" id="ref-for-dom-elementbounds-opacity">opacity</a></code>,
+			and <code class="idl"><a data-link-type="idl" href="#dom-elementbounds-transform" id="ref-for-dom-elementbounds-transform">transform</a></code> attributes of <var>eb</var> to the used values of the corresponding properties from <var>el</var>.
+    <li> Set the <code class="idl"><a data-link-type="idl" href="#dom-elementbounds-left" id="ref-for-dom-elementbounds-left">left</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-elementbounds-top" id="ref-for-dom-elementbounds-top">top</a></code> attributes of <var>eb</var> to the offsets of <var>el</var>’s left and top edges, respectively,
 			relative to the top left corner of the initial containing block.
-	</ol>
-
-<h2 class="heading settled heading" data-level=7 id=style-updates><span class=secno>7 </span><span class=content>
-Appendix A: The Style Updates Queue</span><a class=self-link href=#style-updates></a></h2>
-
-<p class=note>	Note: This section probably isn’t best placed here,
-	but I need some terms defined that aren’t currently defined.
-
-<p>	Each element in a document is associated with a <dfn data-dfn-type=dfn data-export="" id=style-updates-queue>style updates queue<a class=self-link href=#style-updates-queue></a></dfn>,
-	containing <a data-link-type=dfn href=#style-update title="style updates">style updates</a> and <a data-link-type=dfn href=#style-dependent-action title="style-dependent actions">style-dependent actions</a>.
-	A <dfn data-dfn-type=dfn data-noexport="" id=style-update>style update<a class=self-link href=#style-update></a></dfn> is a pending currently-unapplied change made to the style of an element on the page
+   </ol>
+   <h2 class="heading settled" data-level="6" id="style-updates"><span class="secno">6. </span><span class="content"> Appendix A: The Style Updates Queue</span><a class="self-link" href="#style-updates"></a></h2>
+   <p class="note" role="note"><span>Note:</span> This section probably isn’t best placed here,
+	but I need some terms defined that aren’t currently defined.</p>
+   <p>Each element in a document is associated with a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="style-updates-queue">style updates queue</dfn>,
+	containing <a data-link-type="dfn" href="#style-update" id="ref-for-style-update">style updates</a> and <a data-link-type="dfn" href="#style-dependent-action" id="ref-for-style-dependent-action①">style-dependent actions</a>.
+	A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="style-update">style update</dfn> is a pending currently-unapplied change made to the style of an element on the page
 	which might have an effect on the style, layout, or rendering of the element.
-	A <dfn data-dfn-type=dfn data-noexport="" id=style-dependent-action>style-dependent action<a class=self-link href=#style-dependent-action></a></dfn> is an operation which relies on the element’s style, layout, and/or rendering
-	being fully up-to-date.
-
-<p>	Whenever a change is made to the page’s style that may affect an element,
-	a <a data-link-type=dfn href=#style-update title="style update">style update</a> must be pushed onto the element’s <a data-link-type=dfn href=#style-updates-queue title="style updates queue">style updates queue</a>.
+	A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="style-dependent-action">style-dependent action</dfn> is an operation which relies on the element’s style, layout, and/or rendering
+	being fully up-to-date.</p>
+   <p>Whenever a change is made to the page’s style that may affect an element,
+	a <a data-link-type="dfn" href="#style-update" id="ref-for-style-update①">style update</a> must be pushed onto the element’s <a data-link-type="dfn" href="#style-updates-queue" id="ref-for-style-updates-queue②">style updates queue</a>.
 	The element’s style, layout, and/or rendering must not be updated
-	unless a corresponding <a data-link-type=dfn href=#style-update title="style update">style update</a> is at the front of the <a data-link-type=dfn href=#style-updates-queue title="style updates queue">style updates queue</a>.
-	When a <a data-link-type=dfn href=#style-update title="style update">style update</a> is applied,
-	it must be popped from the queue.
-
-<p>	Similarly, <a data-link-type=dfn href=#style-dependent-action title="style-dependent actions">style-dependent actions</a> must not be executed
-	unless they are at the front of the <a data-link-type=dfn href=#style-updates-queue title="style updates queue">style updates queue</a>.
+	unless a corresponding <span>style update</span> is at the front of the <span>style updates queue</span>.
+	When a <span>style update</span> is applied,
+	it must be popped from the queue.</p>
+   <p>Similarly, <a data-link-type="dfn" href="#style-dependent-action" id="ref-for-style-dependent-action②">style-dependent actions</a> must not be executed
+	unless they are at the front of the <a data-link-type="dfn" href="#style-updates-queue" id="ref-for-style-updates-queue④">style updates queue</a>.
 	When they are executed,
-	they must be popped from the queue.
-
-<p>	User agents may delay applying <a data-link-type=dfn href=#style-update title="style updates">style updates</a> as long as they consider reasonable
+	they must be popped from the queue.</p>
+   <p>User agents may delay applying <a data-link-type="dfn" href="#style-update" id="ref-for-style-update④">style updates</a> as long as they consider reasonable
 	so as to batch any work caused by updating styles, layout, and rendering.
-	User agents should prioritize applying <a data-link-type=dfn href=#style-update title="style updates">style updates</a>
-	that precede a <a data-link-type=dfn href=#style-dependent-action title="style-dependent action">style-dependent action</a>
-	when a <a data-link-type=dfn href=#style-dependent-action title="style-dependent action">style-dependent action</a> is in the queue.
+	User agents should prioritize applying <span>style updates</span> that precede a <a data-link-type="dfn" href="#style-dependent-action" id="ref-for-style-dependent-action③">style-dependent action</a> when a <span>style-dependent action</span> is in the queue.</p>
+  </main>
+  <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
+  <h3 class="heading settled" id="document-conventions"><span class="content"> Document conventions</span><a class="self-link" href="#document-conventions"></a></h3>
+  <p>Conformance requirements are expressed with a combination of
+	descriptive assertions and RFC 2119 terminology. The key words “MUST”,
+	“MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”,
+	“RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative parts of this
+	document are to be interpreted as described in RFC 2119.
+	However, for readability, these words do not appear in all uppercase
+	letters in this specification. </p>
+  <p>All of the text of this specification is normative except sections
+	explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p>
+  <p>Examples in this specification are introduced with the words “for example”
+	or are set apart from the normative text with <code class="highlight"><c- kr>class</c-><c- o>=</c-><c- u>"example"</c-></code>,
+	like this: </p>
+  <div class="example" id="example-ae2b6bc0">
+   <a class="self-link" href="#example-ae2b6bc0"></a>
+   <p>This is an example of an informative example. </p>
+  </div>
+  <p>Informative notes begin with the word “Note” and are set apart from the
+	normative text with <code class="highlight"><c- kr>class</c-><c- o>=</c-><c- u>"note"</c-></code>, like this: </p>
+  <p class="note" role="note">Note, this is an informative note. </p>
+  <p>Advisements are normative sections styled to evoke special attention and are
+	set apart from other normative text with <code class="highlight"><c- o>&lt;</c->strong <c- kr>class</c-><c- o>=</c-><c- u>"advisement"</c-><c- o>></c-></code>, like
+	this: <strong class="advisement"> UAs MUST provide an accessible alternative. </strong> </p>
+  <h3 class="heading settled" id="conform-classes"><span class="content"> Conformance classes</span><a class="self-link" href="#conform-classes"></a></h3>
+  <p>Conformance to this specification
+	is defined for three conformance classes: </p>
+  <dl>
+   <dt>style sheet
+   <dd>A <a href="http://www.w3.org/TR/CSS2/conform.html#style-sheet">CSS
+			style sheet</a>.
+   <dt>renderer
+   <dd>A <a href="http://www.w3.org/TR/CSS2/conform.html#user-agent">UA</a> that interprets the semantics of a style sheet and renders
+			documents that use them.
+   <dt>authoring tool
+   <dd>A <a href="http://www.w3.org/TR/CSS2/conform.html#user-agent">UA</a> that writes a style sheet.
+  </dl>
+  <p>A style sheet is conformant to this specification
+	if all of its statements that use syntax defined in this module are valid
+	according to the generic CSS grammar and the individual grammars of each
+	feature defined in this module. </p>
+  <p>A renderer is conformant to this specification
+	if, in addition to interpreting the style sheet as defined by the
+	appropriate specifications, it supports all the features defined
+	by this specification by parsing them correctly
+	and rendering the document accordingly. However, the inability of a
+	UA to correctly render a document due to limitations of the device
+	does not make the UA non-conformant. (For example, a UA is not
+	required to render color on a monochrome monitor.) </p>
+  <p>An authoring tool is conformant to this specification
+	if it writes style sheets that are syntactically correct according to the
+	generic CSS grammar and the individual grammars of each feature in
+	this module, and meet all other conformance requirements of style sheets
+	as described in this module. </p>
+  <h3 class="heading settled" id="conform-responsible"><span class="content"> Requirements for Responsible Implementation of CSS</span><a class="self-link" href="#conform-responsible"></a></h3>
+  <p>The following sections define several conformance requirements
+		for implementing CSS responsibly,
+		in a way that promotes interoperability in the present and future. </p>
+  <h4 class="heading settled" id="conform-partial"><span class="content"> Partial Implementations</span><a class="self-link" href="#conform-partial"></a></h4>
+  <p>So that authors can exploit the forward-compatible parsing rules to assign fallback values, <strong>CSS renderers <em>must</em> treat as invalid
+		(and <a href="http://www.w3.org/TR/CSS2/conform.html#ignore">ignore as appropriate</a>)
+		any at-rules, properties, property values, keywords, and other syntactic constructs
+		for which they have no usable level of support</strong>.
+		In particular, user agents <em>must not</em> selectively ignore
+		unsupported property values and honor supported values in a single multi-value property declaration:
+		if any value is considered invalid (as unsupported values must be),
+		CSS requires that the entire declaration be ignored. </p>
+  <h4 class="heading settled" id="conform-future-proofing"><span class="content"> Implementations of Unstable and Proprietary Features</span><a class="self-link" href="#conform-future-proofing"></a></h4>
+  <p>To avoid clashes with future stable CSS features,
+		the CSSWG recommends <a href="http://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="http://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="http://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS. </p>
+  <h4 class="heading settled" id="conform-testing"><span class="content"> Implementations of CR-level Features</span><a class="self-link" href="#conform-testing"></a></h4>
+  <p>Once a specification reaches the Candidate Recommendation stage,
+		implementers should release an <a data-link-type="dfn" href="http://www.w3.org/TR/CSS/#vendor-prefix">unprefixed</a> implementation
+		of any CR-level feature they can demonstrate
+		to be correctly implemented according to spec,
+		and should avoid exposing a prefixed variant of that feature. </p>
+  <p>To establish and maintain the interoperability of CSS across
+		implementations, the CSS Working Group requests that non-experimental
+		CSS renderers submit an implementation report (and, if necessary, the
+		testcases used for that implementation report) to the W3C before
+		releasing an unprefixed implementation of any CSS features. Testcases
+		submitted to W3C are subject to review and correction by the CSS
+		Working Group. </p>
+  <p>
+   Further information on submitting testcases and implementation reports
+		can be found from on the CSS Working Group’s website at <a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
+		Questions should be directed to the <a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a> mailing list.
+<script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
+  </p>
+  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="index">
+   <li><a href="#dom-element-cancelrecast">cancelRecast()</a><span>, in §2</span>
+   <li><a href="#cancel-recast">cancel recast</a><span>, in §5</span>
+   <li><a href="#capture-the-current-rendering">capture the current rendering</a><span>, in §4</span>
+   <li><a href="#elementbounds">ElementBounds</a><span>, in §2</span>
+   <li><a href="#dom-elementbounds-height">height</a><span>, in §2</span>
+   <li><a href="#initialize-the-element-bounds">initialize the element bounds</a><span>, in §5.1</span>
+   <li><a href="#dom-elementbounds-left">left</a><span>, in §2</span>
+   <li><a href="#dom-elementbounds-opacity">opacity</a><span>, in §2</span>
+   <li><a href="#opaqueimagesnapshot">OpaqueImageSnapshot</a><span>, in §2</span>
+   <li><a href="#dom-elementbounds-overflow">overflow</a><span>, in §2</span>
+   <li><a href="#painting-suspended-flag">painting suspended flag</a><span>, in §3</span>
+   <li><a href="#recast">recast</a><span>, in §5</span>
+   <li><a href="#dom-element-recastelement">recastElement()</a><span>, in §2</span>
+   <li><a href="#dom-element-resumepainting">resumePainting()</a><span>, in §2</span>
+   <li><a href="#dom-element-snapshot">snapshot()</a><span>, in §2</span>
+   <li><a href="#style-dependent-action">style-dependent action</a><span>, in §6</span>
+   <li><a href="#style-update">style update</a><span>, in §6</span>
+   <li><a href="#style-updates-queue">style updates queue</a><span>, in §6</span>
+   <li><a href="#suspended">suspended</a><span>, in §3</span>
+   <li><a href="#dom-element-suspendpainting">suspendPainting()</a><span>, in §2</span>
+   <li><a href="#dom-elementbounds-top">top</a><span>, in §2</span>
+   <li><a href="#dom-elementbounds-transform">transform</a><span>, in §2</span>
+   <li><a href="#dom-elementbounds-transformorigin">transformOrigin</a><span>, in §2</span>
+   <li><a href="#dom-elementbounds-width">width</a><span>, in §2</span>
+  </ul>
+  <aside class="dfn-panel" data-for="term-for-propdef-opacity">
+   <a href="https://drafts.csswg.org/css-color-4/#propdef-opacity">https://drafts.csswg.org/css-color-4/#propdef-opacity</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-opacity">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-display">
+   <a href="https://drafts.csswg.org/css-display-3/#propdef-display">https://drafts.csswg.org/css-display-3/#propdef-display</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-display">3.
+Suspending Painting - the suspendPainting() and resumePainting() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-initial-containing-block">
+   <a href="https://drafts.csswg.org/css-display-3/#initial-containing-block">https://drafts.csswg.org/css-display-3/#initial-containing-block</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-initial-containing-block">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-fontfaceset-ready">
+   <a href="https://www.w3.org/TR/css-font-loading-3/#dom-fontfaceset-ready">https://www.w3.org/TR/css-font-loading-3/#dom-fontfaceset-ready</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-fontfaceset-ready">4.1.
+Snapshots: the OpaqueImageSnapshot object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-grid-placement-property">
+   <a href="https://drafts.csswg.org/css-grid-1/#grid-placement-property">https://drafts.csswg.org/css-grid-1/#grid-placement-property</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-grid-placement-property">1.
+Introduction</a> <a href="#ref-for-grid-placement-property①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-grid-row-start">
+   <a href="https://drafts.csswg.org/css-grid-1/#propdef-grid-row-start">https://drafts.csswg.org/css-grid-1/#propdef-grid-row-start</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-grid-row-start">1.
+Introduction</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-top-auto">
+   <a href="https://drafts.csswg.org/css-position-3/#valdef-top-auto">https://drafts.csswg.org/css-position-3/#valdef-top-auto</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-top-auto">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-bottom">
+   <a href="https://drafts.csswg.org/css-position-3/#propdef-bottom">https://drafts.csswg.org/css-position-3/#propdef-bottom</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-bottom">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-left">
+   <a href="https://drafts.csswg.org/css-position-3/#propdef-left">https://drafts.csswg.org/css-position-3/#propdef-left</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-left">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-right">
+   <a href="https://drafts.csswg.org/css-position-3/#propdef-right">https://drafts.csswg.org/css-position-3/#propdef-right</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-right">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-top">
+   <a href="https://drafts.csswg.org/css-position-3/#propdef-top">https://drafts.csswg.org/css-position-3/#propdef-top</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-top">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-transform">
+   <a href="https://drafts.csswg.org/css-transforms-1/#propdef-transform">https://drafts.csswg.org/css-transforms-1/#propdef-transform</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-transform">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-height">
+   <a href="https://drafts.csswg.org/css2/visudet.html#propdef-height">https://drafts.csswg.org/css2/visudet.html#propdef-height</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-height">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-visibility">
+   <a href="https://drafts.csswg.org/css2/visufx.html#propdef-visibility">https://drafts.csswg.org/css2/visufx.html#propdef-visibility</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-visibility">3.
+Suspending Painting - the suspendPainting() and resumePainting() methods</a> <a href="#ref-for-propdef-visibility①">(2)</a> <a href="#ref-for-propdef-visibility②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-width">
+   <a href="https://drafts.csswg.org/css2/visudet.html#propdef-width">https://drafts.csswg.org/css2/visudet.html#propdef-width</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-width">1.
+Introduction</a>
+    <li><a href="#ref-for-propdef-width①">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-funcdef-element">
+   <a href="https://drafts.csswg.org/css-images-4/#funcdef-element">https://drafts.csswg.org/css-images-4/#funcdef-element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-funcdef-element">4.
+Snapshotting Elements - The snapshot() method</a>
+    <li><a href="#ref-for-funcdef-element①">4.1.
+Snapshots: the OpaqueImageSnapshot object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-css-elementsources">
+   <a href="https://www.w3.org/TR/css4-images/#dom-css-elementsources">https://www.w3.org/TR/css4-images/#dom-css-elementsources</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-css-elementsources">4.1.
+Snapshots: the OpaqueImageSnapshot object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-paint-source">
+   <a href="https://drafts.csswg.org/css-images-4/#paint-source">https://drafts.csswg.org/css-images-4/#paint-source</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-paint-source">4.1.
+Snapshots: the OpaqueImageSnapshot object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-element">
+   <a href="https://dom.spec.whatwg.org/#element">https://dom.spec.whatwg.org/#element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-element">2.
+IDL</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-DOMString">
+   <a href="https://heycam.github.io/webidl/#idl-DOMString">https://heycam.github.io/webidl/#idl-DOMString</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-DOMString">2.
+IDL</a> <a href="#ref-for-idl-DOMString①">(2)</a> <a href="#ref-for-idl-DOMString②">(3)</a> <a href="#ref-for-idl-DOMString③">(4)</a> <a href="#ref-for-idl-DOMString④">(5)</a> <a href="#ref-for-idl-DOMString⑤">(6)</a> <a href="#ref-for-idl-DOMString⑥">(7)</a> <a href="#ref-for-idl-DOMString⑦">(8)</a>
+   </ul>
+  </aside>
+  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio">[css-color-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-opacity" style="color:initial">opacity</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-display-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-display" style="color:initial">display</span>
+     <li><span class="dfn-paneled" id="term-for-initial-containing-block" style="color:initial">initial containing block</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-font-loading-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-dom-fontfaceset-ready" style="color:initial">ready()</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-grid-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-grid-placement-property" style="color:initial">grid-placement property</span>
+     <li><span class="dfn-paneled" id="term-for-propdef-grid-row-start" style="color:initial">grid-row-start</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-position-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-valdef-top-auto" style="color:initial">auto</span>
+     <li><span class="dfn-paneled" id="term-for-propdef-bottom" style="color:initial">bottom</span>
+     <li><span class="dfn-paneled" id="term-for-propdef-left" style="color:initial">left</span>
+     <li><span class="dfn-paneled" id="term-for-propdef-right" style="color:initial">right</span>
+     <li><span class="dfn-paneled" id="term-for-propdef-top" style="color:initial">top</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-transforms-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-transform" style="color:initial">transform</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS2]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-height" style="color:initial">height</span>
+     <li><span class="dfn-paneled" id="term-for-propdef-visibility" style="color:initial">visibility</span>
+     <li><span class="dfn-paneled" id="term-for-propdef-width" style="color:initial">width</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS4-IMAGES]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-funcdef-element" style="color:initial">element()</span>
+     <li><span class="dfn-paneled" id="term-for-dom-css-elementsources" style="color:initial">elementSources</span>
+     <li><span class="dfn-paneled" id="term-for-paint-source" style="color:initial">paint source</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[DOM]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-element" style="color:initial">Element</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-idl-DOMString" style="color:initial">DOMString</span>
+    </ul>
+  </ul>
+  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <dl>
+   <dt id="biblio-css-color-4">[CSS-COLOR-4]
+   <dd>Tab Atkins Jr.; Chris Lilley. <a href="https://www.w3.org/TR/css-color-4/">CSS Color Module Level 4</a>. 5 July 2016. WD. URL: <a href="https://www.w3.org/TR/css-color-4/">https://www.w3.org/TR/css-color-4/</a>
+   <dt id="biblio-css-display-3">[CSS-DISPLAY-3]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-display-3/">CSS Display Module Level 3</a>. 9 August 2018. WD. URL: <a href="https://www.w3.org/TR/css-display-3/">https://www.w3.org/TR/css-display-3/</a>
+   <dt id="biblio-css-font-loading-3">[CSS-FONT-LOADING-3]
+   <dd>Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-font-loading-3/">CSS Font Loading Module Level 3</a>. 22 May 2014. WD. URL: <a href="https://www.w3.org/TR/css-font-loading-3/">https://www.w3.org/TR/css-font-loading-3/</a>
+   <dt id="biblio-css-grid-1">[CSS-GRID-1]
+   <dd>Tab Atkins Jr.; Elika Etemad; Rossen Atanassov. <a href="https://www.w3.org/TR/css-grid-1/">CSS Grid Layout Module Level 1</a>. 14 December 2017. CR. URL: <a href="https://www.w3.org/TR/css-grid-1/">https://www.w3.org/TR/css-grid-1/</a>
+   <dt id="biblio-css-position-3">[CSS-POSITION-3]
+   <dd>Rossen Atanassov; Arron Eicholz. <a href="https://www.w3.org/TR/css-position-3/">CSS Positioned Layout Module Level 3</a>. 17 May 2016. WD. URL: <a href="https://www.w3.org/TR/css-position-3/">https://www.w3.org/TR/css-position-3/</a>
+   <dt id="biblio-css-transforms-1">[CSS-TRANSFORMS-1]
+   <dd>Simon Fraser; et al. <a href="https://www.w3.org/TR/css-transforms-1/">CSS Transforms Module Level 1</a>. 30 November 2017. WD. URL: <a href="https://www.w3.org/TR/css-transforms-1/">https://www.w3.org/TR/css-transforms-1/</a>
+   <dt id="biblio-css2">[CSS2]
+   <dd>Bert Bos; et al. <a href="https://www.w3.org/TR/CSS2/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a>. 7 June 2011. REC. URL: <a href="https://www.w3.org/TR/CSS2/">https://www.w3.org/TR/CSS2/</a>
+   <dt id="biblio-css4-images">[CSS4-IMAGES]
+   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://www.w3.org/TR/css-images-4/">CSS Image Values and Replaced Content Module Level 4</a>. 13 April 2017. WD. URL: <a href="https://www.w3.org/TR/css-images-4/">https://www.w3.org/TR/css-images-4/</a>
+   <dt id="biblio-dom">[DOM]
+   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
+   <dt id="biblio-rfc2119">[RFC2119]
+   <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-webidl">[WebIDL]
+   <dd>Cameron McCormack; Boris Zbarsky; Tobie Langel. <a href="https://heycam.github.io/webidl/">Web IDL</a>. 15 December 2016. ED. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
+  </dl>
+  <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <dl>
+   <dt id="biblio-css3-transitions">[CSS3-TRANSITIONS]
+   <dd>David Baron; Dean Jackson; Brian Birtles. <a href="https://www.w3.org/TR/css-transitions-1/">CSS Transitions</a>. 30 November 2017. WD. URL: <a href="https://www.w3.org/TR/css-transitions-1/">https://www.w3.org/TR/css-transitions-1/</a>
+  </dl>
+  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://dom.spec.whatwg.org/#element" id="ref-for-element①"><c- g>Element</c-></a> {
+  <c- b>void</c-> <a href="#dom-element-suspendpainting"><code class="highlight"><c- g>suspendPainting</c-></code></a>();
+  <c- b>void</c-> <a href="#dom-element-resumepainting"><code class="highlight"><c- g>resumePainting</c-></code></a>();
+  <c- b>Promise</c->&lt;<a class="n" data-link-type="idl-name" href="#opaqueimagesnapshot" id="ref-for-opaqueimagesnapshot⑦"><c- n>OpaqueImageSnapshot</c-></a>> <a href="#dom-element-snapshot"><code class="highlight"><c- g>snapshot</c-></code></a>();
+  <a class="n" data-link-type="idl-name" href="#elementbounds" id="ref-for-elementbounds①⓪"><c- n>ElementBounds</c-></a> <a href="#dom-element-recastelement"><code class="highlight"><c- g>recastElement</c-></code></a>();
+  <c- b>void</c-> <a href="#dom-element-cancelrecast"><code class="highlight"><c- g>cancelRecast</c-></code></a>();
+};
 
-<h2 class="no-ref no-num heading settled heading" id=conformance><span class=content>
-Conformance</span><a class=self-link href=#conformance></a></h2>
+<c- b>interface</c-> <a href="#opaqueimagesnapshot"><code class="highlight"><c- g>OpaqueImageSnapshot</c-></code></a> {
+};
 
-    <p>
-        Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
-        The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”
-        in the normative parts of this document
-        are to be interpreted as described in RFC 2119.
-        However, for readability,
-        these words do not appear in all uppercase letters in this specification.
+<c- b>interface</c-> <a href="#elementbounds"><code class="highlight"><c- g>ElementBounds</c-></code></a> {
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑧"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-elementbounds-left"><code class="highlight"><c- g>left</c-></code></a>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString①①"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-elementbounds-top"><code class="highlight"><c- g>top</c-></code></a>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②①"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-elementbounds-width"><code class="highlight"><c- g>width</c-></code></a>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③①"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-elementbounds-height"><code class="highlight"><c- g>height</c-></code></a>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString④①"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-elementbounds-transform"><code class="highlight"><c- g>transform</c-></code></a>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑤①"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-elementbounds-transformorigin"><code class="highlight"><c- g>transformOrigin</c-></code></a>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑥①"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-elementbounds-opacity"><code class="highlight"><c- g>opacity</c-></code></a>;
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑦①"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-elementbounds-overflow"><code class="highlight"><c- g>overflow</c-></code></a>;
+};
 
-    <p>
-        All of the text of this specification is normative
-        except sections explicitly marked as non-normative, examples, and notes. <a data-biblio-type=normative data-link-type=biblio href=#rfc2119 title=rfc2119>[RFC2119]</a>
+</pre>
+  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue"> Ensure that ElementBounds implements Animatable,
+	assuming that this idea makes it into the Web Animations specification.<a href="#issue-d957305b"> ↵ </a></div>
+   <div class="issue"> This is actually trying to introduce the notion that <code class="idl"><a data-link-type="idl" href="#dom-element-suspendpainting">suspendPainting()</a></code> is an entry in the style updates queue.
+	How should this be worded?<a href="#issue-5c3fb4c1"> ↵ </a></div>
+   <div class="issue"> Rewrite this to return a promise for a snapshot,
+	rather than sync-returning a snapshot that then has a ready promise.<a href="#issue-b1fefb93"> ↵ </a></div>
+   <div class="issue"> Is there any way for a snapshot to fail?
+		Deleting the element before it’s rendered? <a href="#issue-d99051e3"> ↵ </a></div>
+  </div>
+  <aside class="dfn-panel" data-for="dom-element-suspendpainting">
+   <b><a href="#dom-element-suspendpainting">#dom-element-suspendpainting</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-element-suspendpainting">3.
+Suspending Painting - the suspendPainting() and resumePainting() methods</a> <a href="#ref-for-dom-element-suspendpainting①">(2)</a> <a href="#ref-for-dom-element-suspendpainting②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-element-resumepainting">
+   <b><a href="#dom-element-resumepainting">#dom-element-resumepainting</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-element-resumepainting">3.
+Suspending Painting - the suspendPainting() and resumePainting() methods</a> <a href="#ref-for-dom-element-resumepainting①">(2)</a> <a href="#ref-for-dom-element-resumepainting②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-element-snapshot">
+   <b><a href="#dom-element-snapshot">#dom-element-snapshot</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-element-snapshot">4.
+Snapshotting Elements - The snapshot() method</a> <a href="#ref-for-dom-element-snapshot①">(2)</a>
+    <li><a href="#ref-for-dom-element-snapshot②">4.1.
+Snapshots: the OpaqueImageSnapshot object</a> <a href="#ref-for-dom-element-snapshot③">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-element-recastelement">
+   <b><a href="#dom-element-recastelement">#dom-element-recastelement</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-element-recastelement">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a> <a href="#ref-for-dom-element-recastelement①">(2)</a>
+    <li><a href="#ref-for-dom-element-recastelement②">5.1.
+The ElementBounds Object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-element-cancelrecast">
+   <b><a href="#dom-element-cancelrecast">#dom-element-cancelrecast</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-element-cancelrecast">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="opaqueimagesnapshot">
+   <b><a href="#opaqueimagesnapshot">#opaqueimagesnapshot</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-opaqueimagesnapshot">2.
+IDL</a>
+    <li><a href="#ref-for-opaqueimagesnapshot①">4.
+Snapshotting Elements - The snapshot() method</a>
+    <li><a href="#ref-for-opaqueimagesnapshot②">4.1.
+Snapshots: the OpaqueImageSnapshot object</a> <a href="#ref-for-opaqueimagesnapshot③">(2)</a> <a href="#ref-for-opaqueimagesnapshot④">(3)</a> <a href="#ref-for-opaqueimagesnapshot⑤">(4)</a> <a href="#ref-for-opaqueimagesnapshot⑥">(5)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="elementbounds">
+   <b><a href="#elementbounds">#elementbounds</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-elementbounds">2.
+IDL</a>
+    <li><a href="#ref-for-elementbounds①">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a> <a href="#ref-for-elementbounds②">(2)</a> <a href="#ref-for-elementbounds③">(3)</a> <a href="#ref-for-elementbounds④">(4)</a> <a href="#ref-for-elementbounds⑤">(5)</a> <a href="#ref-for-elementbounds⑥">(6)</a> <a href="#ref-for-elementbounds⑦">(7)</a>
+    <li><a href="#ref-for-elementbounds⑧">5.1.
+The ElementBounds Object</a> <a href="#ref-for-elementbounds⑨">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-elementbounds-left">
+   <b><a href="#dom-elementbounds-left">#dom-elementbounds-left</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-elementbounds-left">5.1.
+The ElementBounds Object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-elementbounds-top">
+   <b><a href="#dom-elementbounds-top">#dom-elementbounds-top</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-elementbounds-top">5.1.
+The ElementBounds Object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-elementbounds-width">
+   <b><a href="#dom-elementbounds-width">#dom-elementbounds-width</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-elementbounds-width">5.1.
+The ElementBounds Object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-elementbounds-height">
+   <b><a href="#dom-elementbounds-height">#dom-elementbounds-height</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-elementbounds-height">5.1.
+The ElementBounds Object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-elementbounds-transform">
+   <b><a href="#dom-elementbounds-transform">#dom-elementbounds-transform</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-elementbounds-transform">5.1.
+The ElementBounds Object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-elementbounds-opacity">
+   <b><a href="#dom-elementbounds-opacity">#dom-elementbounds-opacity</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-elementbounds-opacity">5.1.
+The ElementBounds Object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="painting-suspended-flag">
+   <b><a href="#painting-suspended-flag">#painting-suspended-flag</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-painting-suspended-flag">3.
+Suspending Painting - the suspendPainting() and resumePainting() methods</a> <a href="#ref-for-painting-suspended-flag①">(2)</a> <a href="#ref-for-painting-suspended-flag②">(3)</a> <a href="#ref-for-painting-suspended-flag③">(4)</a> <a href="#ref-for-painting-suspended-flag④">(5)</a> <a href="#ref-for-painting-suspended-flag⑤">(6)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="suspended">
+   <b><a href="#suspended">#suspended</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-suspended">3.
+Suspending Painting - the suspendPainting() and resumePainting() methods</a> <a href="#ref-for-suspended①">(2)</a> <a href="#ref-for-suspended②">(3)</a>
+    <li><a href="#ref-for-suspended③">4.
+Snapshotting Elements - The snapshot() method</a> <a href="#ref-for-suspended④">(2)</a> <a href="#ref-for-suspended⑤">(3)</a> <a href="#ref-for-suspended⑥">(4)</a> <a href="#ref-for-suspended⑦">(5)</a>
+    <li><a href="#ref-for-suspended⑧">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a> <a href="#ref-for-suspended⑨">(2)</a> <a href="#ref-for-suspended①⓪">(3)</a> <a href="#ref-for-suspended①①">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="capture-the-current-rendering">
+   <b><a href="#capture-the-current-rendering">#capture-the-current-rendering</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-capture-the-current-rendering">4.
+Snapshotting Elements - The snapshot() method</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="recast">
+   <b><a href="#recast">#recast</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-recast">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a> <a href="#ref-for-recast①">(2)</a> <a href="#ref-for-recast②">(3)</a> <a href="#ref-for-recast③">(4)</a>
+    <li><a href="#ref-for-recast④">5.1.
+The ElementBounds Object</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="cancel-recast">
+   <b><a href="#cancel-recast">#cancel-recast</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-cancel-recast">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a> <a href="#ref-for-cancel-recast①">(2)</a> <a href="#ref-for-cancel-recast②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="initialize-the-element-bounds">
+   <b><a href="#initialize-the-element-bounds">#initialize-the-element-bounds</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-initialize-the-element-bounds">5.
+Recasting Painting - The recastElement() and cancelRecast() methods</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="style-updates-queue">
+   <b><a href="#style-updates-queue">#style-updates-queue</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-style-updates-queue">4.
+Snapshotting Elements - The snapshot() method</a> <a href="#ref-for-style-updates-queue①">(2)</a>
+    <li><a href="#ref-for-style-updates-queue②">6.
+Appendix A: The Style Updates Queue</a> <a href="#ref-for-style-updates-queue③">(2)</a> <a href="#ref-for-style-updates-queue④">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="style-update">
+   <b><a href="#style-update">#style-update</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-style-update">6.
+Appendix A: The Style Updates Queue</a> <a href="#ref-for-style-update①">(2)</a> <a href="#ref-for-style-update②">(3)</a> <a href="#ref-for-style-update③">(4)</a> <a href="#ref-for-style-update④">(5)</a> <a href="#ref-for-style-update⑤">(6)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="style-dependent-action">
+   <b><a href="#style-dependent-action">#style-dependent-action</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-style-dependent-action">4.
+Snapshotting Elements - The snapshot() method</a>
+    <li><a href="#ref-for-style-dependent-action①">6.
+Appendix A: The Style Updates Queue</a> <a href="#ref-for-style-dependent-action②">(2)</a> <a href="#ref-for-style-dependent-action③">(3)</a> <a href="#ref-for-style-dependent-action④">(4)</a>
+   </ul>
+  </aside>
+<script>/* script-dfn-panel */
 
-    <p>
-        Examples in this specification are introduced with the words “for example”
-        or are set apart from the normative text with <code>class="example"</code>, like this:
+document.body.addEventListener("click", function(e) {
+    var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
+    // Find the dfn element or panel, if any, that was clicked on.
+    var el = e.target;
+    var target;
+    var hitALink = false;
+    while(el.parentElement) {
+        if(el.tagName == "A") {
+            // Clicking on a link in a <dfn> shouldn't summon the panel
+            hitALink = true;
+        }
+        if(el.classList.contains("dfn-paneled")) {
+            target = "dfn";
+            break;
+        }
+        if(el.classList.contains("dfn-panel")) {
+            target = "dfn-panel";
+            break;
+        }
+        el = el.parentElement;
+    }
+    if(target != "dfn-panel") {
+        // Turn off any currently "on" or "activated" panels.
+        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
+            el.classList.remove("on");
+            el.classList.remove("activated");
+        });
+    }
+    if(target == "dfn" && !hitALink) {
+        // open the panel
+        var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
+        if(dfnPanel) {
+            dfnPanel.classList.add("on");
+            var rect = el.getBoundingClientRect();
+            dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
+            dfnPanel.style.top = window.scrollY + rect.top + "px";
+            var panelRect = dfnPanel.getBoundingClientRect();
+            var panelWidth = panelRect.right - panelRect.left;
+            if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
+                // Reposition, because the panel is overflowing
+                dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
+            }
+        } else {
+            console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
+        }
+    } else if(target == "dfn-panel") {
+        // Switch it to "activated" state, which pins it.
+        el.classList.add("activated");
+        el.style.left = null;
+        el.style.top = null;
+    }
 
-    <div class=example>
-        This is an example of an informative example.
-    </div>
-
-    <p>
-        Informative notes begin with the word “Note”
-        and are set apart from the normative text with <code>class="note"</code>, like this:
-
-    <p class=note>
-        Note, this is an informative note.
-
-<h2 class="no-num no-ref heading settled heading" id=references><span class=content>
-References</span><a class=self-link href=#references></a></h2>
-
-<h3 class="no-num no-ref heading settled heading" id=normative><span class=content>
-Normative References</span><a class=self-link href=#normative></a></h3>
-<div data-fill-with=normative-references><dl><dt id=rfc2119 title=RFC2119><a class=self-link href=#rfc2119></a>[RFC2119]<dd>S. Bradner. <a href=http://www.ietf.org/rfc/rfc2119.txt>Key words for use in RFCs to Indicate Requirement Levels</a>. URL: <a href=http://www.ietf.org/rfc/rfc2119.txt>http://www.ietf.org/rfc/rfc2119.txt</a></dl></div>
-
-<h3 class="no-num no-ref heading settled heading" id=informative><span class=content>
-Informative References</span><a class=self-link href=#informative></a></h3>
-<div data-fill-with=informative-references><dl><dt id=css3-transitions title=CSS3-TRANSITIONS><a class=self-link href=#css3-transitions></a>[CSS3-TRANSITIONS]<dd>Dean Jackson; et al. <a href=http://www.w3.org/TR/2013/WD-css3-transitions-20130212/>CSS Transitions</a>. 12 February 2013. W3C Working Draft. (Work in progress.) URL: <a href=http://www.w3.org/TR/2013/WD-css3-transitions-20130212/>http://www.w3.org/TR/2013/WD-css3-transitions-20130212/</a><dt id=css4-images title=CSS4-IMAGES><a class=self-link href=#css4-images></a>[CSS4-IMAGES]<dd>Elika J. Etemad; Tab Atkins Jr.. <a href=http://www.w3.org/TR/2012/WD-css4-images-20120911/>CSS Image Values and Replaced Content Module Level 4</a>. 11 September 2012. W3C Working Draft. (Work in progress.) URL: <a href=http://www.w3.org/TR/2012/WD-css4-images-20120911/>http://www.w3.org/TR/2012/WD-css4-images-20120911/</a><dt id=cssom-view title=CSSOM-VIEW><a class=self-link href=#cssom-view></a>[CSSOM-VIEW]<dd>Anne van Kesteren. <a href=http://www.w3.org/TR/2011/WD-cssom-view-20110804/>CSSOM View Module</a>. 4 August 2011. W3C Working Draft. (Work in progress.) URL: <a href=http://www.w3.org/TR/2011/WD-cssom-view-20110804/>http://www.w3.org/TR/2011/WD-cssom-view-20110804/</a></dl></div>
-
-<h2 class="no-num no-ref heading settled heading" id=index><span class=content>
-Index</span><a class=self-link href=#index></a></h2>
-<div data-fill-with=index><ul class=indexlist>
-<li>cancelRecast(), <a href=#dom-element-cancelrecast title="section 3">3</a>
-<li>cancel recast, <a href=#cancel-recast title="section 6">6</a>
-<li>capture the current rendering, <a href=#capture-the-current-rendering title="section 5">5</a>
-<li>Element, <a href=#dom-element title="section 3">3</a>
-<li>ElementBounds, <a href=#dom-elementbounds title="section 3">3</a>
-<li>getclientboundingrect(), <a href=#dom-element-getclientboundingrect title="section 2">2</a>
-<li>height, <a href=#dom-elementbounds-height title="section 3">3</a>
-<li>initialize the element bounds, <a href=#initialize-the-element-bounds title="section 6.1">6.1</a>
-<li>left, <a href=#dom-elementbounds-left title="section 3">3</a>
-<li>opacity, <a href=#dom-elementbounds-opacity title="section 3">3</a>
-<li>OpaqueImageSnapshot, <a href=#dom-opaqueimagesnapshot title="section 3">3</a>
-<li>overflow, <a href=#dom-elementbounds-overflow title="section 3">3</a>
-<li>painting suspended flag, <a href=#painting-suspended-flag title="section 4">4</a>
-<li>Promise, <a href=#dom-promise title="section 2">2</a>
-<li>ready(), <a href=#dom-opaqueimagesnapshot-ready title="section 3">3</a>
-<li>recast, <a href=#recast title="section 6">6</a>
-<li>recastElement(), <a href=#dom-element-recastelement title="section 3">3</a>
-<li>resumePainting(), <a href=#dom-element-resumepainting title="section 3">3</a>
-<li>snapshot(), <a href=#dom-element-snapshot title="section 3">3</a>
-<li>style-dependent action, <a href=#style-dependent-action title="section 7">7</a>
-<li>style update, <a href=#style-update title="section 7">7</a>
-<li>style updates queue, <a href=#style-updates-queue title="section 7">7</a>
-<li>suspended, <a href=#suspended title="section 4">4</a>
-<li>suspendPainting(), <a href=#dom-element-suspendpainting title="section 3">3</a>
-<li>top, <a href=#dom-elementbounds-top title="section 3">3</a>
-<li>transform, <a href=#dom-elementbounds-transform title="section 3">3</a>
-<li>transformOrigin, <a href=#dom-elementbounds-transformorigin title="section 3">3</a>
-<li>width, <a href=#dom-elementbounds-width title="section 3">3</a>
-</ul></div>
-
-<h2 class="no-num no-ref heading settled heading" id=property-index><span class=content>
-Property index</span><a class=self-link href=#property-index></a></h2>
-<div data-fill-with=property-index><p>No properties defined.</div>
-
-
-
-<h2 class="no-num heading settled" id=issues-index><span class=content>Issues Index</span><a class=self-link href=#issues-index></a></h2><div style="counter-reset: issue"><div class=issue>
-		Ensure that ElementBounds implements Animatable,
-		assuming that this idea makes it into the Web Animations specification.
-
-<a href=#issue-aae8a3a4> ↵ </a></div><div class=issue>This is actually trying to introduce the notion that suspendPainting is an entry in the style updates queue. How should this be worded?
-
-<a href=#issue-72b32847> ↵ </a></div><div class=issue>
-		Is there any way for a snapshot to fail?
-		Deleting the element before it’s rendered?
-
-<a href=#issue-5d5792e9> ↵ </a></div></div>
+});
+</script>

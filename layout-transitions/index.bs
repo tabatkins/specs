@@ -1,14 +1,20 @@
-<h1>Layout Transition Primitives</h1>
 <pre class='metadata'>
-Status: ED
+Title: Layout Transition Primitives
+Status: UD
+Group: CSSWG
+Work Status: exploring
 ED: http://tabatkins.github.io/specs/layout-transitions/
 Shortname: layout-transitions
 Level: 1
 Editor: Shane Stephens, Google, shanestephens@google.com
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact/
 Abstract: Primitive JavaScript operations to enable layout transition effects.
-Ignored Terms: absolutely positioned, initial containing block
-Link Defaults: css-transforms-1 (property) transform
+Default Highlight: javascript
+Ignored Terms: absolutely positioned
+</pre>
+
+<pre class=link-defaults>
+spec:css-images-4; type:function; text:element()
 </pre>
 
 <h2 id='intro'>
@@ -30,9 +36,9 @@ Introduction</h2>
 	but some of aspects of an element one might wish to transition are derived from other properties
 	rather than being directly specified.
 	For example, the position and size of an element positioned with Grid Layout
-	is derived from its <a>grid-placement properties</a>,
+	is derived from its [=grid-placement properties=],
 	rather than being directly specified.
-	An author can transition the <a>grid-placement properties</a>,
+	An author can transition the [=grid-placement properties=],
 	but that will merely cause the element to "skip" from cell to cell
 	as its 'grid-row-start' and similar properties transition as integers;
 	it won't have the desired effect of making the element smoothly move between its start and end position.
@@ -68,10 +74,10 @@ Motivating Examples</h3>
 		</pre>
 	</div>
 
-	Layout transition primitives also allow element insertions and removals to be smoothed.
-	For example:
 
 	<div class='example'>
+		Layout transition primitives also allow element insertions and removals to be smoothed.
+
 		In this example, afterDiv is the last div in a list.
 		We wish to grow newDiv in-place before afterDiv,
 		smoothly moving afterDiv down as we do so.
@@ -92,11 +98,12 @@ Motivating Examples</h3>
 		</pre>
 	</div>
 
-	When combined with [[CSS4-IMAGES]],
-	layout transition primitves allow crossfade and transfade effects to be scripted.
-	For example:
 
 	<div class='example'>
+		When combined with [[CSS4-IMAGES]],
+		layout transition primitves allow crossfade and transfade effects to be scripted.
+		For example:
+
 		<pre>
 			myDiv.suspendPainting();
 			CSS.elementSources.before = myDiv.snapshot();
@@ -112,35 +119,19 @@ Motivating Examples</h3>
 		</pre>
 	</div>
 
-<h2 id='defs'>
-Definitions</h2>
-
-	For the purpose of this specification:
-
-	<ul>
-		<li>
-			the <dfn interface>Promise</dfn> interface is defined in
-			the <a href='https://github.com/domenic/promises-unwrapping'>Promises draft specification</a>.
-
-		<li>
-			the <dfn method for='Element'>getClientBoundingRect()</dfn> method is defined in
-			the [[CSSOM-VIEW]] specification.
-	</ul>
-
 <h2 id='idl'>
 IDL</h2>
 
-	<pre class='idl'>
+	<xmp class='idl'>
 		partial interface Element {
 			void suspendPainting();
 			void resumePainting();
-			OpaqueImageSnapshot snapshot();
+			Promise<OpaqueImageSnapshot> snapshot();
 			ElementBounds recastElement();
 			void cancelRecast();
 		};
 
 		interface OpaqueImageSnapshot {
-			Promise ready();
 		};
 
 		interface ElementBounds {
@@ -153,16 +144,15 @@ IDL</h2>
 			attribute DOMString opacity;
 			attribute DOMString overflow;
 		};
-	</pre>
+	</xmp>
 
-	<p class='issue'>
-		Ensure that ElementBounds implements Animatable,
-		assuming that this idea makes it into the Web Animations specification.
+	Issue: Ensure that ElementBounds implements Animatable,
+	assuming that this idea makes it into the Web Animations specification.
 
 <h2 id='suspending'>
 Suspending Painting - the suspendPainting() and resumePainting() methods</h2>
 
-	The <a method>suspendPainting()</a> and <a method>resumePainting()</a> methods on elements
+	The {{suspendPainting()}} and {{resumePainting()}} methods on elements
 	allow an author to control whether an element "paints",
 	or is displayed on the screen.
 	This is similar to using the 'visibility' property,
@@ -174,69 +164,74 @@ Suspending Painting - the suspendPainting() and resumePainting() methods</h2>
 	Note: Suspending the painting of an element is commonly used with the other methods in this specification,
 	to get the original element "out of the way" while script is simulating a transition of the element with snapshots and recastings.
 
-	When <a method>suspendPainting()</a> is called on an element,
+	When {{suspendPainting()}} is called on an element,
 	the element's <dfn>painting suspended flag</dfn> must be set.
-	When <a method>resumePainting()</a> is called on an element,
-	the element's <a>painting suspended flag</a> must be unset.
+	When {{resumePainting()}} is called on an element,
+	the element's [=painting suspended flag=] must be unset.
 
-	When an element's <a>painting suspended flag</a> is toggled from unset to set,
+	When an element's [=painting suspended flag=] is toggled from unset to set,
 	its subtree must be repainted.
-	<p class='issue'>This is actually trying to introduce the notion that suspendPainting is an entry in the style updates queue. How should this be worded?
 
-	An element is <dfn>suspended</dfn> if its <a>painting suspended flag</a> is set,
-	or if it has a parent element and that parent element is <a>suspended</a>.
+	Issue: This is actually trying to introduce the notion that {{suspendPainting()}} is an entry in the style updates queue.
+	How should this be worded?
 
-	Whether the <a>painting suspended flag</a> is set or unset must not change if the element is added or removed from the document.
+	An element is <dfn>suspended</dfn> if its [=painting suspended flag=] is set,
+	or if it has a parent element and that parent element is [=suspended=].
 
-	When an element is <a>suspended</a>,
+	Whether the [=painting suspended flag=] is set or unset must not change if the element is added or removed from the document.
+
+	When an element is [=suspended=],
 	its generated box is invisible
 	(fully transparent, nothing is drawn),
 	but still affects layout.
 	<span class='note'>This is similar to the effects of ''visibility: hidden''</span>
 
-	Note: Calling <a method>resumePainting()</a> on an element which is <a>suspended</a>
-	due to an ancestor having its <a>painting suspended flag</a> set will do nothing;
-	the element's <a>painting suspended flag</a> is already unset.
+	Note: Calling {{resumePainting()}} on an element which is [=suspended=]
+	due to an ancestor having its [=painting suspended flag=] set will do nothing;
+	the element's [=painting suspended flag=] is already unset.
 
 <h2 id='snapshotting'>
 Snapshotting Elements - The snapshot() method</h2>
 
-	The <a method>snapshot()</a> method takes a "snapshot" of an element,
+	The {{snapshot()}} method takes a "snapshot" of an element,
 	returning an image of the element at that time
-	(even if the element is currently <a>suspended</a>)
+	(even if the element is currently [=suspended=])
 	which is useful in implementing layout transitions,
 	as described in the Examples section of this document.
 
-	When <a method>snapshot()</a> is called on an element <var>el</var>,
+	When {{snapshot()}} is called on an element <var>el</var>,
 	the user agent must perform the following steps:
 
 	<ol>
 		<li>
-			Let <var>snapshot</var> be a newly-created <a interface>OpaqueImageSnapshot</a> object.
+			Let <var>snapshot</var> be a newly-created {{OpaqueImageSnapshot}} object.
 			Return <var>snapshot</var>,
 			and complete the rest of these steps asynchronously.
 
 		<li>
-			Create a new <a>style-dependent action</a> <var>action</var>
+			Create a new [=style-dependent action=] <var>action</var>
 			which, when executed,
-			<a title="capture the current rendering">captures the current rendering</a> of <var>el</var>,
+			<a lt="capture the current rendering">captures the current rendering</a> of <var>el</var>,
 			associates the rendering with <var>snapshot</var>,
 			and resolves <var>snapshot</var>'s ready promise with <code>undefined</code>.
 
 		<li>
-			Push <var>action</var> onto <var>el</var>'s <a>style updates queue</a>.
+			Push <var>action</var> onto <var>el</var>'s [=style updates queue=].
 	</ol>
+
+	Issue: Rewrite this to return a promise for a snapshot,
+	rather than sync-returning a snapshot that then has a ready promise.
 
 	When asked to <dfn>capture the current rendering</dfn> of an element <var>el</var>,
 	the user agent must produce
 	the image that would be represented by an ''element()'' function referencing <var>el</var> at that moment,
 	with the image having the same width and height as <var>el</var> does at that moment.
-	If <var>el</var> is currently <a>suspended</a>,
-	for the purposes of generating this image it is treated as being not <a>suspended</a>.
+	If <var>el</var> is currently [=suspended=],
+	for the purposes of generating this image it is treated as being not [=suspended=].
 
-	Note: Only the current element's <a>suspended</a> state is altered
+	Note: Only the current element's [=suspended=] state is altered
 	for the purposes of generating a snapshot image.
-	If descendant elements are also marked as <a>suspended</a>,
+	If descendant elements are also marked as [=suspended=],
 	then those elements will remain transparent in the snapshot.
 
 	Note: The image does not necessarily have to be a raster bitmap,
@@ -247,7 +242,7 @@ Snapshotting Elements - The snapshot() method</h2>
 	so that the image can be rendered accurately at any target size
 	without scaling artifacts.
 
-	Note: Due to the way the <a>style updates queue</a> works,
+	Note: Due to the way the [=style updates queue=] works,
 	if an author generates a snapshot
 	<em>before</em> creating a new element and assigning the snapshot as a background image,
 	it's guaranteed that there will be no FOUC (flash of unstyled content).
@@ -261,21 +256,21 @@ Snapshotting Elements - The snapshot() method</h2>
 <h3 id='snapshots'>
 Snapshots: the <code>OpaqueImageSnapshot</code> object</h3>
 
-	<a interface>OpaqueImageSnapshot</a> objects are returned by the <a method>snapshot()</a> method,
-	and represent the rendering of an element at the time that <a method>snapshot()</a> is called.
+	{{OpaqueImageSnapshot}} objects are returned by the {{snapshot()}} method,
+	and represent the rendering of an element at the time that {{snapshot()}} is called.
 
 	For security reasons,
-	the image data represented by an <a interface>OpaqueImageSnapshot</a> object is not obtainable by any means;
+	the image data represented by an {{OpaqueImageSnapshot}} object is not obtainable by any means;
 	the image can only be displayed indirectly,
-	by using the <a interface>OpaqueImageSnapshot</a> object
+	by using the {{OpaqueImageSnapshot}} object
 	in conjunction with CSS's ''element()'' function
-	and the <a attribute>elementSources</a> map.
+	and the {{elementSources}} map.
 
-	An <a interface>OpaqueImageSnapshot</a> object might represent an image.
-	If it does, it provides a <a>paint source</a>,
+	An {{OpaqueImageSnapshot}} object might represent an image.
+	If it does, it provides a [=paint source=],
 	with the width, height, and appearance of the image it represents.
 
-	When the <a method>ready()</a> method of an <a interface>OpaqueImageSnapshot</a> <var>snapshot</var> is called,
+	When the {{ready()}} method of an {{OpaqueImageSnapshot}} <var>snapshot</var> is called,
 	user agents must perform the following steps:
 
 	<ol>
@@ -286,7 +281,7 @@ Snapshots: the <code>OpaqueImageSnapshot</code> object</h3>
 
 		<li>
 			When <var>snapshot</var> represents an image,
-			resolve <var>promise</var> with <code>undefined</code>.
+			resolve <var>ready promise</var> with <code>undefined</code>.
 	</ol>
 
 	<p class='issue'>
@@ -302,53 +297,53 @@ Recasting Painting - The recastElement() and cancelRecast() methods</h2>
 	as it changes size and shape.
 	However, the actual element can't be used for this purpose,
 	as it's busy occupying space in the layout.
-	Instead, a <a>suspended</a> element can have its painting <strong>recasted</strong>,
+	Instead, a [=suspended=] element can have its painting <strong>recasted</strong>,
 	rendering it at an explicitly-set size and position
 	without moving it in the layout as far as the outer page is concerned.
 
-	When the <a method>recastElement()</a> method is called on an element <var>el</var>,
+	When the {{recastElement()}} method is called on an element <var>el</var>,
 	the user agent must perform the following steps:
 
 	<ol>
 		<li>
-			If the element is not currently <a>suspended</a>,
+			If the element is not currently [=suspended=],
 			throw a ??? error
 			and exit this algorithm.
 
 		<li>
-			If the element already has an associated <a interface>ElementBounds</a> object,
+			If the element already has an associated {{ElementBounds}} object,
 			return that object
 			and exit this algorithm.
 
 		<li>
-			Create a new <a interface>ElementBounds</a> object <var>bounds</var>
+			Create a new {{ElementBounds}} object <var>bounds</var>
 			associated with <var>el</var>.
-			<a>Initialize the element bounds</a>.
+			[=Initialize the element bounds=].
 			Return <var>bounds</var>.
 	</ol>
 
-	While an element has an associated <a interface>ElementBounds</a> object,
+	While an element has an associated {{ElementBounds}} object,
 	it is <dfn>recast</dfn>.
 
-	If an element is <a>recast</a>,
-	and stops being <a>suspended</a> for any reason,
+	If an element is [=recast=],
+	and stops being [=suspended=] for any reason,
 	it must <dfn>cancel recast</dfn>,
-	which causes its associated <a interface>ElementBounds</a> object to no longer be associated with it.
+	which causes its associated {{ElementBounds}} object to no longer be associated with it.
 
-	While an element is <a>recast</a>,
+	While an element is [=recast=],
 	it must be laid out twice.
-	The first is as normal for a <a>suspended</a> element,
+	The first is as normal for a [=suspended=] element,
 	to establish the space that the element takes up in the page.
 
-	The second treats the element as <a>absolutely positioned</a>
-	with the <a>initial containing block</a> as its containing block,
+	The second treats the element as [=absolutely positioned=]
+	with the [=initial containing block=] as its containing block,
 	and the element's 'width', 'height', 'left', 'top', 'opacity', and 'transform' properties
-	set to the corresponding values from the element's associated <a interface>ElementBounds</a> object
+	set to the corresponding values from the element's associated {{ElementBounds}} object
 	rather than the values obtained from the cascade.
 	Additionally, the element's 'right' and 'bottom' properties must be treated as ''right/auto'' for this layout.
 	The element must then render as normal based on the results of this layout.
 
-	Modifying the element's associated <a interface>ElementBounds</a> object
+	Modifying the element's associated {{ElementBounds}} object
 	must cause the element to perform its second layout with the new values,
 	as if this were an ordinary style change.
 
@@ -356,15 +351,15 @@ Recasting Painting - The recastElement() and cancelRecast() methods</h2>
 	must return the results of the first layout,
 	not the second.
 
-	Note: Note that while an element is <a>recast</a>,
-	any additional calls to <a method>recastElement()</a> will return the same <a interface>ElementBounds</a> object.
+	Note: Note that while an element is [=recast=],
+	any additional calls to {{recastElement()}} will return the same {{ElementBounds}} object.
 
-	When the <a method>cancelRecast()</a> method is called on an element,
-	the user agent must <a>cancel recast</a> on it.
+	When the {{cancelRecast()}} method is called on an element,
+	the user agent must [=cancel recast=] on it.
 
-	Removing a <a>recast</a> element from the document
-	causes that element to <a>cancel recast</a>.
-	However, atomic moves within the same document do not <a>cancel recast</a>.
+	Removing a [=recast=] element from the document
+	causes that element to [=cancel recast=].
+	However, atomic moves within the same document do not [=cancel recast=].
 
 	Note: recasting an element does not alter the suspended state of
 	descendents of that element.
@@ -372,11 +367,11 @@ Recasting Painting - The recastElement() and cancelRecast() methods</h2>
 <h3 id='element-bounds'>
 The <code>ElementBounds</code> Object</h3>
 
-	The <a interface>ElementBounds</a> object controls the position and size of a <a>recast</a> element's rendering.
-	It is returned by calling <a method>recastElement()</a> on an element.
+	The {{ElementBounds}} object controls the position and size of a [=recast=] element's rendering.
+	It is returned by calling {{recastElement()}} on an element.
 
 	When asked to <dfn>initialize the element bounds</dfn> for an element <var>el</var>
-	and an <a interface>ElementBounds</a> object <var>eb</var>,
+	and an {{ElementBounds}} object <var>eb</var>,
 	user agents must perform the following steps:
 
 	<ol>
@@ -384,14 +379,14 @@ The <code>ElementBounds</code> Object</h3>
 			Lay out the element as normal.
 
 		<li>
-			Set the <a attribute>width</a>,
-			<a attribute>height</a>,
-			<a attribute>opacity</a>,
-			and <a attribute>transform</a> attributes of <var>eb</var>
+			Set the {{ElementBounds/width}},
+			{{ElementBounds/height}},
+			{{ElementBounds/opacity}},
+			and {{ElementBounds/transform}} attributes of <var>eb</var>
 			to the used values of the corresponding properties from <var>el</var>.
 
 		<li>
-			Set the <a attribute>left</a> and <a attribute>top</a> attributes of <var>eb</var>
+			Set the {{ElementBounds/left}} and {{ElementBounds/top}} attributes of <var>eb</var>
 			to the offsets of <var>el</var>'s left and top edges, respectively,
 			relative to the top left corner of the initial containing block.
 	</ol>
@@ -403,26 +398,26 @@ Appendix A: The Style Updates Queue</h2>
 	but I need some terms defined that aren't currently defined.
 
 	Each element in a document is associated with a <dfn export>style updates queue</dfn>,
-	containing <a>style updates</a> and <a>style-dependent actions</a>.
+	containing [=style updates=] and [=style-dependent actions=].
 	A <dfn>style update</dfn> is a pending currently-unapplied change made to the style of an element on the page
 	which might have an effect on the style, layout, or rendering of the element.
 	A <dfn>style-dependent action</dfn> is an operation which relies on the element's style, layout, and/or rendering
 	being fully up-to-date.
 
 	Whenever a change is made to the page's style that may affect an element,
-	a <a>style update</a> must be pushed onto the element's <a>style updates queue</a>.
+	a [=style update=] must be pushed onto the element's [=style updates queue=].
 	The element's style, layout, and/or rendering must not be updated
-	unless a corresponding <a>style update</a> is at the front of the <a>style updates queue</a>.
-	When a <a>style update</a> is applied,
+	unless a corresponding [=style update=] is at the front of the [=style updates queue=].
+	When a [=style update=] is applied,
 	it must be popped from the queue.
 
-	Similarly, <a>style-dependent actions</a> must not be executed
-	unless they are at the front of the <a>style updates queue</a>.
+	Similarly, [=style-dependent actions=] must not be executed
+	unless they are at the front of the [=style updates queue=].
 	When they are executed,
 	they must be popped from the queue.
 
-	User agents may delay applying <a>style updates</a> as long as they consider reasonable
+	User agents may delay applying [=style updates=] as long as they consider reasonable
 	so as to batch any work caused by updating styles, layout, and rendering.
-	User agents should prioritize applying <a>style updates</a>
-	that precede a <a>style-dependent action</a>
-	when a <a>style-dependent action</a> is in the queue.
+	User agents should prioritize applying [=style updates=]
+	that precede a [=style-dependent action=]
+	when a [=style-dependent action=] is in the queue.
