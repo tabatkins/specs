@@ -2,10 +2,13 @@
 Title: CSS Sticky Scrollbars
 Shortname: css-sticky-scrollbars
 Level: 1
-Status: DREAM
+Status: UD
+Group: CSSWG
+Work Status: abandoned
 ED: http://tabatkins.github.io/css-sticky-scrollbars/
 Editor: Tab Atkins, Google, http://xanthir.com/contact
 Abstract: Scrollbars that "stick" to an edge!
+Warning: replaced by https://drafts.csswg.org/css-scroll-snap/
 </pre>
 
 <pre class=link-defaults>
