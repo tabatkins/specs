@@ -2,7 +2,9 @@
 Title: CSS When/Else Rules
 Shortname: css-when-else
 Level: 1
-Status: DREAM
+Status: UD
+Group: CSSWG
+Work Status: exploring
 URL: https://tabatkins.github.io/specs/css-when-else/
 Editor: Tab Atkins-Bittner
 Abstract: A proposal to extend the concept of CSS conditional rules to arbitrary when/else chains, and supporing this, a proposal to unify the disparate conditional rules into a single grammar.
