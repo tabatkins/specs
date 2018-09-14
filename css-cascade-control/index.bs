@@ -2,7 +2,9 @@
 Title: CSS Cascade Control
 Shortname: css-cascade-control
 Level: 1
-Status: DREAM
+Status: UD
+Group: CSSWG
+Work Status: exploring
 URL: https://tabatkins.github.io/specs/css-cascade-control/
 Editor: Tab Atkins-Bittner
 Abstract: A proposal to improve the handling of list-value and set-valued properties when one wants to alter them in multiple independent ways, without overriding each other or having to explicitly handle all combinations.
@@ -199,7 +201,7 @@ cascade() Function
 
 <div class=issue>
 	More directly but slightly more complex,
-	we coudl add a cascade() function
+	we could add a cascade() function
 	that's accepted by all set-valued and list-values properties
 	as a whole "unit".
 	By default it subs in the <a>previous cascaded value</a> for itself,
