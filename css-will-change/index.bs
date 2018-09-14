@@ -1,13 +1,13 @@
-<h1>CSS Will Change Module Level 1</h1>
-
 <pre class='metadata'>
+Title: CSS Will Change Module Level 1
 Shortname: css-will-change
 Level: 1
 Status: ED
+Group: CSSWG
+Work Status: exploring
 ED: http://tabatkins.github.io/specs/css-will-change/
 Abstract: This document defines the 'will-change' property, which allows an author to inform the UA ahead of time of what kinds of changes they are likely to make to an element.  This allows the UA to optimize how they handle the element ahead of time, performing potentially-expensive work preparing for an animation before the animation actually begins.
 Editor: Tab Atkins Jr., Google Inc., http://xanthir.com/contact/
-Link Defaults: css-transforms-1 (property) transform
 Warning: replaced by http://dev.w3.org/csswg/css-will-change/
 </pre>
 
@@ -75,7 +75,7 @@ Hinting at Future Behavior: the 'will-change' property</h2>
 		<dd>
 			Indicates that the author expects to animate or change the property with the given name on the element in the near future.
 
-			The <<custom-ident>> production used here excludes the keywords ''will-change'', ''none'', ''all'', ''auto'', ''scroll-position'', and ''contents'',
+			The <<custom-ident>> production used here excludes the keywords <css>will-change</css>, <css>none</css>, <css>all</css>, <css>auto</css>, <css>scroll-position</css>, and <css>contents</css>,
 			in addition to the keywords normally excluded from <<custom-ident>>.
 
 			Note: Note that most properties will have no effect when specified,
@@ -97,9 +97,9 @@ Hinting at Future Behavior: the 'will-change' property</h2>
 
 
 	<div class='example'>
-		For example, setting 'opacity' to any value other than ''1'' creates a stacking context on the element.
+		For example, setting 'opacity' to any value other than <css>1</css> creates a stacking context on the element.
 		Thus, setting ''will-change: opacity'' also creates a stacking context,
-		even if 'opacity' is <em>currently</em> still equal to ''1''.
+		even if 'opacity' is <em>currently</em> still equal to <css>1</css>.
 	</div>
 
 	The 'will-change' property has no <em>direct</em> effect on the element it is specified on,
