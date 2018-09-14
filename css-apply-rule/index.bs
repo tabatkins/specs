@@ -2,13 +2,21 @@
 Title: CSS @apply Rule
 Shortname: css-apply-rule
 Level: 1
-Status: DREAM
+Status: UD
+Group: CSSWG
+Work Status: abandoned
 URL: http://tabatkins.github.io/specs/css-apply-rule
 Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/
 Editor: Shane Stephens, Google, shanestephens@google.com
 Abstract: This specification defines the ''@apply'' rule, which allows an author to store a set of properties in a named variable, then reference them in other style rules.
-Link Defaults: css-syntax-3 (dfn) style rule, html (dfn) throw
 Ignored Terms: SyntaxError
+Warning: custom
+Custom Warning Title: Abandoned
+Custom Warning Text: This specification has been abandoned, due to being generally a bad idea. The reasoning is explained <a href="https://www.xanthir.com/b4o00">in this blog post</a>. It is not expected to be revived.
+</pre>
+
+<pre class=link-defaults>
+spec:css-conditional-3; type:interface; text:CSSGroupingRule
 </pre>
 
 Introduction {#intro}
@@ -163,7 +171,7 @@ the ''@apply'' rule inlines it into a style rule.
 It's syntax is:
 
 	<pre class=prod>
-		<dfn>@apply</dfn> = @apply <<custom-property-name>> ;
+		<dfn at-rule>@apply</dfn> = @apply <<custom-property-name>> ;
 	</pre>
 
 The ''@apply'' rule is only valid inside of a style rule.
