@@ -1,0 +1,81 @@
+<pre class='metadata'>
+Title: CSS 'content-size' Property
+Shortname: css-content-size
+Level: 1
+Status: UD
+Group: CSSWG
+Work Status: exploring
+URL: http://example.com/url-this-spec-will-live-at
+Editor: Tab Atkins-Bittner, Google
+Abstract: This specification defines the 'content-size' property,
+	which, in conjunction with [=size containment=],
+	defines a 'default size' for the contents of an element.
+
+</pre>
+
+<pre class=link-defaults>
+type:property; spec: css-sizing-3;
+	text: min-height;
+	text: min-width;
+</pre>
+
+Introduction {#intro}
+=====================
+
+When [=size containment=] is applied to an element,
+it lays out as if it were completely empty,
+ignoring any child content it might have.
+This directive lets the layout engine "scope" sizing-related layout changes;
+the UA knows, for 100% certain,
+that no changes in the contents of the element
+will have any effect on the element's own size,
+and so the UA can immediately skip redoing layout for the element or its ancestors
+without having to rely on heuristics.
+
+However, making the element completely empty isn't always desirable;
+it can allow the element to shrink down to zero size.
+Setting an explicit 'width'/'height' (or 'min-width'/'min-height') on the element can prevent this,
+but that can have its own possibly unwanted implications on layout,
+making it act differently than an ordinary element with children would in the same situation.
+
+The 'content-size' property,
+when set on an element with [=size containment=],
+causes the element to pretend to have a single, fixed-size child of the specified size,
+rather than pretending to be completely empty.
+This accomplishes the same "hiding" of layout dirtying that [=size containment=] normally does,
+but allows the author to provide a more useful "default size" for the element,
+and avoid accidentally letting the element shrink down to a useless size.
+
+
+The 'content-size' Property {#content-size}
+===========================================
+
+<pre class=propdef>
+Name: content-size
+Value: none | <<length-percentage>>{1,2}
+Initial: none
+Applies To: elements with [=size containment=]
+Inherited: no
+Computed Value: the specified keyword, or a pair of absolutized <<length-percentage>>s
+</pre>
+
+The 'content-size' property specifies whether a container with [=size containment=]
+should pretend to be empty for layout purposes,
+or pretend to have a single child of the specified size.
+Its values are:
+
+<dl dfn-type=value dfn-for=content-size>
+	: <dfn>none</dfn>
+	:: If the element has [=size containment=],
+		it lays out as if it were empty.
+
+	: <dfn><<length-percentage>>{1,2}</dfn>
+	:: If the element has [=size containment=],
+		it lays out as if it had a single child element,
+		with the child‘s 'width' property set to the first <<length-percentage>>,
+		and its 'height' property set to the second <<length-percentage>>
+		(defaulting to the first if only one is specified).
+</dl>
+
+If the element does not have [=size containment=],
+this property has no effect.
