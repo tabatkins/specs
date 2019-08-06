@@ -85,8 +85,13 @@ Its values are:
 		its intrinsic width is the first <<length>>,
 		and its intrinsic height is the second <<length>>
 		(defaulting to the first if only one is specified).
-
 </dl>
 
 If the element does not have [=size containment=],
 this property has no effect.
+
+Issue: Currently this takes only <<length>>s,
+because afaict % width/height on the pretend child
+will either resolve to zero,
+or have no effect on the container's size anyway.
+Are there any exceptions that would justify <<length-percentage>>?
