@@ -13,3 +13,4 @@ Live copies of the specs:
 * [Constructable Stylesheets](http://tabatkins.github.io/specs/construct-stylesheets)
 * [SVG Parameters](http://tabatkins.github.io/specs/svg-params)
 * [CSS Cascade Control](https://tabatkins.github.io/specs/css-cascade-control/)
+* [@when/@else](https://tabatkins.github.io/specs/css-when-else/)
