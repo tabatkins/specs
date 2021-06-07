@@ -9,135 +9,13 @@
   <link href="../default.css" rel="stylesheet" type="text/css">
   <link href="../csslogo.ico" rel="shortcut icon" type="image/x-icon">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-UD" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 090ef96cbce74475c89e94394cc8fa4fbc08b477" name="generator">
+  <meta content="Bikeshed version 800b43329, updated Tue May 25 14:13:32 2021 -0700" name="generator">
   <link href="http://tabatkins.github.io/specs/css-toggle-states/Overview.html" rel="canonical">
-  <meta content="b53ae7223f7eba7b50a553947b3b64bdf69cb946" name="document-revision">
-<style>/* style-md-lists */
-
-/* This is a weird hack for me not yet following the commonmark spec
-   regarding paragraph and lists. */
-[data-md] > :first-child {
-    margin-top: 0;
-}
-[data-md] > :last-child {
-    margin-bottom: 0;
-}</style>
-<style>/* style-counters */
-
-body {
-    counter-reset: example figure issue;
-}
-.issue {
-    counter-increment: issue;
-}
-.issue:not(.no-marker)::before {
-    content: "Issue " counter(issue);
-}
-
-.example {
-    counter-increment: example;
-}
-.example:not(.no-marker)::before {
-    content: "Example " counter(example);
-}
-.invalid.example:not(.no-marker)::before,
-.illegal.example:not(.no-marker)::before {
-    content: "Invalid Example" counter(example);
-}
-
-figcaption {
-    counter-increment: figure;
-}
-figcaption:not(.no-marker)::before {
-    content: "Figure " counter(figure) " ";
-}</style>
-<style>/* style-dfn-panel */
-
-.dfn-panel {
-    position: absolute;
-    z-index: 35;
-    height: auto;
-    width: -webkit-fit-content;
-    width: fit-content;
-    max-width: 300px;
-    max-height: 500px;
-    overflow: auto;
-    padding: 0.5em 0.75em;
-    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
-    background: #DDDDDD;
-    color: black;
-    border: outset 0.2em;
-}
-.dfn-panel:not(.on) { display: none; }
-.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
-.dfn-panel > b { display: block; }
-.dfn-panel a { color: black; }
-.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
-.dfn-panel > b + b { margin-top: 0.25em; }
-.dfn-panel ul { padding: 0; }
-.dfn-panel li { list-style: inside; }
-.dfn-panel.activated {
-    display: inline-block;
-    position: fixed;
-    left: .5em;
-    bottom: 2em;
-    margin: 0 auto;
-    max-width: calc(100vw - 1.5em - .4em - .5em);
-    max-height: 30vh;
-}
-
-.dfn-paneled { cursor: pointer; }
-</style>
-<style>/* style-selflinks */
-
-.heading, .issue, .note, .example, li, dt {
-    position: relative;
-}
-a.self-link {
-    position: absolute;
-    top: 0;
-    left: calc(-1 * (3.5rem - 26px));
-    width: calc(3.5rem - 26px);
-    height: 2em;
-    text-align: center;
-    border: none;
-    transition: opacity .2s;
-    opacity: .5;
-}
-a.self-link:hover {
-    opacity: 1;
-}
-.heading > a.self-link {
-    font-size: 83%;
-}
-li > a.self-link {
-    left: calc(-1 * (3.5rem - 26px) - 2em);
-}
-dfn > a.self-link {
-    top: auto;
-    left: auto;
-    opacity: 0;
-    width: 1.5em;
-    height: 1.5em;
-    background: gray;
-    color: white;
-    font-style: normal;
-    transition: opacity .2s, background-color .2s, color .2s;
-}
-dfn:hover > a.self-link {
-    opacity: 1;
-}
-dfn > a.self-link:hover {
-    color: black;
-}
-
-a.self-link::before            { content: "¶"; }
-.heading > a.self-link::before { content: "§"; }
-dfn > a.self-link::before      { content: "#"; }</style>
+  <meta content="0f90e9982fed395209b46894de4aff526fdcd2b9" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
-    color: #005a9c;
+    color: var(--a-normal-text);
     font-size: inherit;
     font-family: inherit;
 }
@@ -196,37 +74,429 @@ pre .property::before, pre .property::after {
 [data-link-type=biblio] {
     white-space: pre;
 }</style>
+<style>/* style-colors */
+
+/* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
+:root {
+    color-scheme: light dark;
+
+    --text: black;
+    --bg: white;
+
+    --unofficial-watermark: url(https://www.w3.org/StyleSheets/TR/2016/logos/UD-watermark);
+
+    --logo-bg: #1a5e9a;
+    --logo-active-bg: #c00;
+    --logo-text: white;
+
+    --tocnav-normal-text: #707070;
+    --tocnav-normal-bg: var(--bg);
+    --tocnav-hover-text: var(--tocnav-normal-text);
+    --tocnav-hover-bg: #f8f8f8;
+    --tocnav-active-text: #c00;
+    --tocnav-active-bg: var(--tocnav-normal-bg);
+
+    --tocsidebar-text: var(--text);
+    --tocsidebar-bg: #f7f8f9;
+    --tocsidebar-shadow: rgba(0,0,0,.1);
+    --tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+    --toclink-text: var(--text);
+    --toclink-underline: #3980b5;
+    --toclink-visited-text: var(--toclink-text);
+    --toclink-visited-underline: #054572;
+
+    --heading-text: #005a9c;
+
+    --hr-text: var(--text);
+
+    --algo-border: #def;
+
+    --del-text: red;
+    --del-bg: transparent;
+    --ins-text: #080;
+    --ins-bg: transparent;
+
+    --a-normal-text: #034575;
+    --a-normal-underline: #bbb;
+    --a-visited-text: var(--a-normal-text);
+    --a-visited-underline: #707070;
+    --a-hover-bg: rgba(75%, 75%, 75%, .25);
+    --a-active-text: #c00;
+    --a-active-underline: #c00;
+
+    --blockquote-border: silver;
+    --blockquote-bg: transparent;
+    --blockquote-text: currentcolor;
+
+    --issue-border: #e05252;
+    --issue-bg: #fbe9e9;
+    --issue-text: var(--text);
+    --issueheading-text: #831616;
+
+    --example-border: #e0cb52;
+    --example-bg: #fcfaee;
+    --example-text: var(--text);
+    --exampleheading-text: #574b0f;
+
+    --note-border: #52e052;
+    --note-bg: #e9fbe9;
+    --note-text: var(--text);
+    --noteheading-text: hsl(120, 70%, 30%);
+    --notesummary-underline: silver;
+
+    --assertion-border: #aaa;
+    --assertion-bg: #eee;
+    --assertion-text: black;
+
+    --advisement-border: orange;
+    --advisement-bg: #fec;
+    --advisement-text: var(--text);
+    --advisementheading-text: #b35f00;
+
+    --warning-border: red;
+    --warning-bg: hsla(40,100%,50%,0.95);
+    --warning-text: var(--text);
+
+    --amendment-border: #330099;
+    --amendment-bg: #F5F0FF;
+    --amendment-text: var(--text);
+    --amendmentheading-text: #220066;
+
+    --def-border: #8ccbf2;
+    --def-bg: #def;
+    --def-text: var(--text);
+    --defrow-border: #bbd7e9;
+
+    --datacell-border: silver;
+
+    --indexinfo-text: #707070;
+
+    --indextable-hover-text: black;
+    --indextable-hover-bg: #f7f8f9;
+
+    --outdatedspec-bg: rgba(0, 0, 0, .5);
+    --outdatedspec-text: black;
+    --outdated-bg: maroon;
+    --outdated-text: white;
+    --outdated-shadow: red;
+
+    --editedrec-bg: darkorange;
+}</style>
+<style>/* style-counters */
+
+body {
+    counter-reset: example figure issue;
+}
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
+}
+
+.example {
+    counter-increment: example;
+}
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example" counter(example);
+}
+
+figcaption {
+    counter-increment: figure;
+}
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}</style>
+<style>/* style-dfn-panel */
+
+:root {
+    --dfnpanel-bg: #ddd;
+    --dfnpanel-text: var(--text);
+}
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    height: auto;
+    width: -webkit-fit-content;
+    width: fit-content;
+    max-width: 300px;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--dfnpanel-bg);
+    color: var(--dfnpanel-text);
+    border: outset 0.2em;
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: var(--dfnpanel-text); }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0; }
+.dfn-panel li { list-style: inside; }
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: .5em;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+}
+
+.dfn-paneled { cursor: pointer; }
+</style>
+<style>/* style-md-lists */
+
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
+}
+[data-md] > :last-child {
+    margin-bottom: 0;
+}</style>
+<style>/* style-selflinks */
+
+:root {
+    --selflink-text: white;
+    --selflink-bg: gray;
+    --selflink-hover-text: black;
+}
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
+}
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: var(--selflink-bg);
+    color: var(--selflink-text);
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: var(--selflink-hover-text);
+}
+
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }
+</style>
+<style>/* style-darkmode */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text: #ddd;
+        --bg: black;
+
+        --unofficial-watermark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cg fill='%23100808' transform='translate(200 200) rotate(-45) translate(-200 -200)' stroke='%23100808' stroke-width='3'%3E%3Ctext x='50%25' y='220' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EUNOFFICIAL%3C/text%3E%3Ctext x='50%25' y='305' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EDRAFT%3C/text%3E%3C/g%3E%3C/svg%3E");
+
+        --logo-bg: #1a5e9a;
+        --logo-active-bg: #c00;
+        --logo-text: white;
+
+        --tocnav-normal-text: #999;
+        --tocnav-normal-bg: var(--bg);
+        --tocnav-hover-text: var(--tocnav-normal-text);
+        --tocnav-hover-bg: #080808;
+        --tocnav-active-text: #f44;
+        --tocnav-active-bg: var(--tocnav-normal-bg);
+
+        --tocsidebar-text: var(--text);
+        --tocsidebar-bg: #080808;
+        --tocsidebar-shadow: rgba(255,255,255,.1);
+        --tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+        --toclink-text: var(--text);
+        --toclink-underline: #6af;
+        --toclink-visited-text: var(--toclink-text);
+        --toclink-visited-underline: #054572;
+
+        --heading-text: #8af;
+
+        --hr-text: var(--text);
+
+        --algo-border: #456;
+
+        --del-text: #f44;
+        --del-bg: transparent;
+        --ins-text: #4a4;
+        --ins-bg: transparent;
+
+        --a-normal-text: #6af;
+        --a-normal-underline: #555;
+        --a-visited-text: var(--a-normal-text);
+        --a-visited-underline: var(--a-normal-underline);
+        --a-hover-bg: rgba(25%, 25%, 25%, .2);
+        --a-active-text: #f44;
+        --a-active-underline: var(--a-active-text);
+
+        --borderedblock-bg: rgba(255, 255, 255, .05);
+
+        --blockquote-border: silver;
+        --blockquote-bg: var(--borderedblock-bg);
+        --blockquote-text: currentcolor;
+
+        --issue-border: #e05252;
+        --issue-bg: var(--borderedblock-bg);
+        --issue-text: var(--text);
+        --issueheading-text: hsl(0deg, 70%, 70%);
+
+        --example-border: hsl(50deg, 90%, 60%);
+        --example-bg: var(--borderedblock-bg);
+        --example-text: var(--text);
+        --exampleheading-text: hsl(50deg, 70%, 70%);
+
+        --note-border: hsl(120deg, 100%, 35%);
+        --note-bg: var(--borderedblock-bg);
+        --note-text: var(--text);
+        --noteheading-text: hsl(120, 70%, 70%);
+        --notesummary-underline: silver;
+
+        --assertion-border: #444;
+        --assertion-bg: var(--borderedblock-bg);
+        --assertion-text: var(--text);
+
+        --advisement-border: orange;
+        --advisement-bg: #222218;
+        --advisement-text: var(--text);
+        --advisementheading-text: #f84;
+
+        --warning-border: red;
+        --warning-bg: hsla(40,100%,20%,0.95);
+        --warning-text: var(--text);
+
+        --amendment-border: #330099;
+        --amendment-bg: #080010;
+        --amendment-text: var(--text);
+        --amendmentheading-text: #cc00ff;
+
+        --def-border: #8ccbf2;
+        --def-bg: #080818;
+        --def-text: var(--text);
+        --defrow-border: #136;
+
+        --datacell-border: silver;
+
+        --indexinfo-text: #aaa;
+
+        --indextable-hover-text: var(--text);
+        --indextable-hover-bg: #181818;
+
+        --outdatedspec-bg: rgba(255, 255, 255, .5);
+        --outdatedspec-text: black;
+        --outdated-bg: maroon;
+        --outdated-text: white;
+        --outdated-shadow: red;
+
+        --editedrec-bg: darkorange;
+    }
+    /* In case a transparent-bg image doesn't expect to be on a dark bg,
+       which is quite common in practice... */
+    img { background: white; }
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --selflink-text: black;
+        --selflink-bg: silver;
+        --selflink-hover-text: white;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --dfnpanel-bg: #222;
+        --dfnpanel-text: var(--text);
+    }
+}</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Toggle States</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Unofficial Proposal Draft, <time class="dt-updated" datetime="2018-09-14">14 September 2018</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Unofficial Proposal Draft, <time class="dt-updated" datetime="2021-06-07">7 June 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
      <dd><a class="u-url" href="http://tabatkins.github.io/specs/css-toggle-states/Overview.html">http://tabatkins.github.io/specs/css-toggle-states/Overview.html</a>
      <dt>Issue Tracking:
+     <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-toggle-states-1">CSSWG Issues Repository</a>
      <dd><a href="#issues-index">Inline In Spec</a>
-     <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-toggle-states-1">GitHub Issues</a>
      <dt class="editor">Editor:
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="http://xanthir.com/contact">Tab Atkins Jr.</a> (<span class="p-org org">Google</span>)
      <dt>Suggest an Edit for this Spec:
      <dd><a href="https://github.com/w3c/csswg-drafts/blob/master/css-toggle-states-1/Overview.bs">GitHub Editor</a>
     </dl>
    </div>
-   <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2018 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">permissive document license</a> rules apply. </p>
+   <div data-fill-with="warning">
+    <details class="annoying-warning" open>
+     <summary>This Document Is Obsolete and Has Been Replaced</summary>
+     <p> This specification is obsolete and has been replaced by the document at <a href="http://tabatkins.github.io/css-toggle/">http://tabatkins.github.io/css-toggle/</a>.
+		Do not attempt to implement this specification.
+		Do not refer to this specification except as a historical artifact. </p>
+    </details>
+   </div>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2021 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This specification defines a way to associate a toggleable state with an element which can be used in Selectors to select an element, and declarative ways to set and modify the state on the element.</p>
-    <a href="http://www.w3.org/TR/CSS/">CSS</a> is a language for describing the rendering of structured documents
+    <a href="https://www.w3.org/TR/CSS/">CSS</a> is a language for describing the rendering of structured documents
 (such as HTML and XML)
-on screen, on paper, in speech, etc.
+on screen, on paper, etc. 
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
+   <p><em>This section describes the status of this document at the time of its publication.
+	Other documents may supersede this document.
+	A list of current W3C publications
+	and the latest revision of this technical report
+	can be found in the <a href="https://www.w3.org/TR/">W3C technical reports index at https://www.w3.org/TR/.</a></em> </p>
+   <p>Please send feedback
+	by <a href="https://github.com/w3c/csswg-drafts/issues">filing issues in GitHub</a> (preferred),
+	including the spec code “css-toggle-states” in the title, like this:
+	“[css-toggle-states] <i>…summary of comment…</i>”.
+	All issues and comments are <a href="https://lists.w3.org/Archives/Public/public-css-archive/">archived</a>.
+	Alternately, feedback can be sent to the (<a href="https://lists.w3.org/Archives/Public/www-style/">archived</a>) public mailing list <a href="mailto:www-style@w3.org?Subject=%5Bcss-toggle-states%5D%20PUT%20SUBJECT%20HERE">www-style@w3.org</a>. </p>
+   <p>This document is governed by the <a href="https://www.w3.org/2020/Process-20200915/" id="w3c_process_revision">15 September 2020 W3C Process Document</a>. </p>
+   <p>This document was produced by a group operating under the <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/">W3C Patent Policy</a>.
+	W3C maintains a <a href="https://www.w3.org/2004/01/pp-impl/32061/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
+	that page also includes instructions for disclosing a patent.
+	An individual who has actual knowledge of a patent which the individual believes
+	contains <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -246,17 +516,16 @@ on screen, on paper, in speech, etc.
       <li><a href="#checked-problems"><span class="secno">3.1</span> <span class="content"> Problems with Combining <span class="css">:checked</span> and <span class="property">toggle-*</span> Properties</span></a>
      </ol>
     <li>
-     <a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
+     <a href="#w3c-conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
      <ol class="toc">
-      <li><a href="#document-conventions"><span class="secno"></span> <span class="content"> Document conventions</span></a>
-      <li><a href="#conform-classes"><span class="secno"></span> <span class="content"> Conformance classes</span></a>
+      <li><a href="#w3c-conventions"><span class="secno"></span> <span class="content"> Document conventions</span></a>
+      <li><a href="#w3c-conformance-classes"><span class="secno"></span> <span class="content"> Conformance classes</span></a>
       <li>
-       <a href="#conform-responsible"><span class="secno"></span> <span class="content"> Requirements for Responsible Implementation of CSS</span></a>
+       <a href="#w3c-partial"><span class="secno"></span> <span class="content"> Partial implementations</span></a>
        <ol class="toc">
-        <li><a href="#conform-partial"><span class="secno"></span> <span class="content"> Partial Implementations</span></a>
-        <li><a href="#conform-future-proofing"><span class="secno"></span> <span class="content"> Implementations of Unstable and Proprietary Features</span></a>
-        <li><a href="#conform-testing"><span class="secno"></span> <span class="content"> Implementations of CR-level Features</span></a>
+        <li><a href="#w3c-conform-future-proofing"><span class="secno"></span> <span class="content"> Implementations of Unstable and Proprietary Features</span></a>
        </ol>
+      <li><a href="#w3c-testing"><span class="secno"></span> <span class="content"> Non-experimental implementations</span></a>
      </ol>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -282,7 +551,7 @@ on screen, on paper, in speech, etc.
 	which toggles between true and false when the user activates the element,
 	and which is selected by the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#checked-pseudo" id="ref-for-checked-pseudo">:checked</a> pseudoclass.</p>
    <div class="example" id="example-9e4debc9">
-    <a class="self-link" href="#example-9e4debc9"></a> The following markup example shows how to lightly abuse HTML semantics to declaratively use toggleable state:
+    <a class="self-link" href="#example-9e4debc9"></a> The following markup example shows how to lightly abuse HTML semantics to declaratively use toggleable state: 
 <pre>&lt;ul class='ingredients'>
   &lt;li>&lt;label>&lt;input type=checkbox>&lt;span>1 banana&lt;/span>&lt;/label>
   &lt;li>&lt;label>&lt;input type=checkbox>&lt;span>1 cup blueberries&lt;/span>&lt;/label>
@@ -316,32 +585,32 @@ input[type='checkbox']:checked + span {
       <th>Name:
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-toggle-states">toggle-states</dfn>
      <tr class="value">
-      <th><a href="https://drafts.csswg.org/css-values/#value-defs">Value:</a>
-      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#integer-value" id="ref-for-integer-value">&lt;integer></a> [cycle <span>|</span> sticky]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a>
+      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
+      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#integer-value" id="ref-for-integer-value">&lt;integer></a> [cycle <span id="ref-for-comb-one①">|</span> sticky]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#initial-values">Initial:</a>
-      <td>none
+      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
+      <td>none 
      <tr>
       <th>Applies to:
-      <td><a href="https://drafts.csswg.org/css-pseudo/#generated-content" title="Includes ::before and ::after pseudo-elements.">all elements</a>
+      <td><a href="https://www.w3.org/TR/css-pseudo/#generated-content" title="Includes ::before and ::after pseudo-elements.">all elements</a> 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#inherited-property">Inherited:</a>
-      <td>no
+      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
+      <td>no 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-values/#percentages">Percentages:</a>
-      <td>n/a
+      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
+      <td>n/a 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#computed">Computed value:</a>
-      <td>as specified
+      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
+      <td>as specified 
      <tr>
       <th>Canonical order:
-      <td>per grammar
+      <td>per grammar 
      <tr>
       <th>Media:
-      <td>interactive
+      <td>interactive 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-transitions/#animatable-properties">Animatable:</a>
-      <td>no
+      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animatable:</a>
+      <td>no 
    </table>
    <table class="def propdef" data-link-for-hint="toggle-initial">
     <tbody>
@@ -349,45 +618,45 @@ input[type='checkbox']:checked + span {
       <th>Name:
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-toggle-initial">toggle-initial</dfn>
      <tr class="value">
-      <th><a href="https://drafts.csswg.org/css-values/#value-defs">Value:</a>
-      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#integer-value" id="ref-for-integer-value①">&lt;integer></a>
+      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
+      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#integer-value" id="ref-for-integer-value①">&lt;integer></a> 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#initial-values">Initial:</a>
-      <td>0
+      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
+      <td>0 
      <tr>
       <th>Applies to:
-      <td><a href="https://drafts.csswg.org/css-pseudo/#generated-content" title="Includes ::before and ::after pseudo-elements.">all elements</a>
+      <td><a href="https://www.w3.org/TR/css-pseudo/#generated-content" title="Includes ::before and ::after pseudo-elements.">all elements</a> 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#inherited-property">Inherited:</a>
-      <td>no
+      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
+      <td>no 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-values/#percentages">Percentages:</a>
-      <td>n/a
+      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
+      <td>n/a 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#computed">Computed value:</a>
-      <td>as specified
+      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
+      <td>as specified 
      <tr>
       <th>Canonical order:
-      <td>per grammar
+      <td>per grammar 
      <tr>
       <th>Media:
-      <td>interactive
+      <td>interactive 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-transitions/#animatable-properties">Animatable:</a>
-      <td>no
+      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animatable:</a>
+      <td>no 
    </table>
    <p>The <a class="property" data-link-type="propdesc" href="#propdef-toggle-states" id="ref-for-propdef-toggle-states①">toggle-states</a> property controls whether an element has toggleable state or not.</p>
    <dl>
-    <dt><dfn class="css" data-dfn-for="toggle-states" data-dfn-type="value" data-export id="valdef-toggle-states-none">none<a class="self-link" href="#valdef-toggle-states-none"></a></dfn>
-    <dd> Indicates that the element does not have toggleable state.
-    <dt><dfn class="css" data-dfn-for="toggle-states" data-dfn-type="value" data-export id="valdef-toggle-states-integer-cycle--sticky"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#integer-value" id="ref-for-integer-value②">&lt;integer></a> [cycle | sticky]?<a class="self-link" href="#valdef-toggle-states-integer-cycle--sticky"></a></dfn>
+    <dt><dfn class="css" data-dfn-for="toggle-states" data-dfn-type="value" data-export id="valdef-toggle-states-none">none<a class="self-link" href="#valdef-toggle-states-none"></a></dfn> 
+    <dd> Indicates that the element does not have toggleable state. 
+    <dt><dfn class="css" data-dfn-for="toggle-states" data-dfn-type="value" data-export id="valdef-toggle-states-integer-cycle--sticky"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#integer-value" id="ref-for-integer-value②">&lt;integer></a> [cycle | sticky]?<a class="self-link" href="#valdef-toggle-states-integer-cycle--sticky"></a></dfn> 
     <dd> Indicates that the element is <a data-link-type="dfn" href="#toggleable" id="ref-for-toggleable">toggleable</a>.
 			The <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#integer-value" id="ref-for-integer-value③">&lt;integer></a> gives the number of states;
 			it must be 2 or greater, or else the property is invalid.
 			The following optional keyword defines the behavior
 			when the element is already at its last state,
 			and is toggled again: <dfn class="css" data-dfn-for="toggle-states" data-dfn-type="value" data-export id="valdef-toggle-states-cycle">cycle<a class="self-link" href="#valdef-toggle-states-cycle"></a></dfn> defines that it should cycle back around to the first state,
-			while <dfn class="dfn-paneled css" data-dfn-for="toggle-states" data-dfn-type="value" data-export id="valdef-toggle-states-sticky">sticky</dfn> defines that it should stay at the last state.
+			while <dfn class="dfn-paneled css" data-dfn-for="toggle-states" data-dfn-type="value" data-export id="valdef-toggle-states-sticky">sticky</dfn> defines that it should stay at the last state. 
    </dl>
    <p>If an element is <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="toggleable">toggleable</dfn>,
 	it has a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="toggle-state">toggle state</dfn>,
@@ -399,7 +668,7 @@ input[type='checkbox']:checked + span {
 	as defined later in this specification.</p>
    <div class="example" id="example-07df4432">
     <a class="self-link" href="#example-07df4432"></a> Revisiting the example in the Introduction,
-		the same ingredient list can be specified in simple HTML and CSS:
+		the same ingredient list can be specified in simple HTML and CSS: 
 <pre>&lt;ul class='ingredients'>
   &lt;li>1 banana
   &lt;li>1 cup blueberries
@@ -430,54 +699,54 @@ li:checked {
       <th>Name:
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-toggle-group">toggle-group</dfn>
      <tr class="value">
-      <th><a href="https://drafts.csswg.org/css-values/#value-defs">Value:</a>
-      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value">&lt;custom-ident></a>
+      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
+      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value">&lt;custom-ident></a> 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#initial-values">Initial:</a>
-      <td>none
+      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
+      <td>none 
      <tr>
       <th>Applies to:
-      <td><a href="https://drafts.csswg.org/css-pseudo/#generated-content" title="Includes ::before and ::after pseudo-elements.">all elements</a>
+      <td><a href="https://www.w3.org/TR/css-pseudo/#generated-content" title="Includes ::before and ::after pseudo-elements.">all elements</a> 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#inherited-property">Inherited:</a>
-      <td>no
+      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
+      <td>no 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-values/#percentages">Percentages:</a>
-      <td>n/a
+      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
+      <td>n/a 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#computed">Computed value:</a>
-      <td>as specified
+      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
+      <td>as specified 
      <tr>
       <th>Canonical order:
-      <td>per grammar
+      <td>per grammar 
      <tr>
       <th>Media:
-      <td>interactive
+      <td>interactive 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-transitions/#animatable-properties">Animatable:</a>
-      <td>no
+      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animatable:</a>
+      <td>no 
    </table>
    <p>By default, each <a data-link-type="dfn" href="#toggleable" id="ref-for-toggleable①">toggleable</a> element’s <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state①">toggle state</a> is independent;
 	incrementing one has no effect an any other.
-	The <a class="property" data-link-type="propdesc" href="#propdef-toggle-group" id="ref-for-propdef-toggle-group①">toggle-group</a> property allows elements to link their <span>toggle states</span> together
+	The <a class="property" data-link-type="propdesc" href="#propdef-toggle-group" id="ref-for-propdef-toggle-group①">toggle-group</a> property allows elements to link their <span id="ref-for-toggle-state②">toggle states</span> together
 	by declaring them to be part of a named <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="toggle-group">toggle group</dfn>,
-	such that only one can have a non-zero <span>toggle state</span> at a time,
+	such that only one can have a non-zero <span id="ref-for-toggle-state③">toggle state</span> at a time,
 	similar to HTML’s <code>&lt;input type=radio></code> element.
 	Each <a data-link-type="dfn" href="#toggle-group" id="ref-for-toggle-group">toggle group</a> on a page is identified by a unique <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value①">&lt;custom-ident></a>.</p>
    <dl>
-    <dt><dfn class="css" data-dfn-for="toggle-group" data-dfn-type="value" data-export id="valdef-toggle-group-none">none<a class="self-link" href="#valdef-toggle-group-none"></a></dfn>
+    <dt><dfn class="css" data-dfn-for="toggle-group" data-dfn-type="value" data-export id="valdef-toggle-group-none">none<a class="self-link" href="#valdef-toggle-group-none"></a></dfn> 
     <dd> The element is not in a <a data-link-type="dfn" href="#toggle-group" id="ref-for-toggle-group①">toggle group</a>.
-			It’s <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state④">toggle state</a> is independent of any other elements'.
-    <dt><dfn class="css" data-dfn-for="toggle-group" data-dfn-type="value" data-export id="valdef-toggle-group-custom-ident"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value②">&lt;custom-ident></a><a class="self-link" href="#valdef-toggle-group-custom-ident"></a></dfn>
+			It’s <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state④">toggle state</a> is independent of any other elements'. 
+    <dt><dfn class="css" data-dfn-for="toggle-group" data-dfn-type="value" data-export id="valdef-toggle-group-custom-ident"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value②">&lt;custom-ident></a><a class="self-link" href="#valdef-toggle-group-custom-ident"></a></dfn> 
     <dd>
       The element is in the <a data-link-type="dfn" href="#toggle-group" id="ref-for-toggle-group②">toggle group</a> named by the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value③">&lt;custom-ident></a>.
-			Any time an element in the given <span>toggle group</span> has its <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state⑤">toggle state</a> incremented,
-			the <span>toggle state</span> of every other element in the same <span>toggle group</span> is set to 0.
+			Any time an element in the given <span id="ref-for-toggle-group③">toggle group</span> has its <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state⑤">toggle state</a> incremented,
+			the <span id="ref-for-toggle-state⑥">toggle state</span> of every other element in the same <span id="ref-for-toggle-group④">toggle group</span> is set to 0. 
      <p>The keyword <span class="css">none</span> is excluded from this <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#identifier-value" id="ref-for-identifier-value④">&lt;custom-ident></a>.</p>
    </dl>
    <div class="example" id="example-27346e43">
     <a class="self-link" href="#example-27346e43"></a> For example, <a class="property" data-link-type="propdesc" href="#propdef-toggle-group" id="ref-for-propdef-toggle-group②">toggle-group</a> can be used to control a tabbed display,
-		so that only one panel is displayed at a time:
+		so that only one panel is displayed at a time: 
 <pre>.tab {
   toggle-states: 2 sticky;
   toggle-group: "tabs";
@@ -496,7 +765,7 @@ li:checked {
 </pre>
     <p>Clicking on any tab will increment its <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state⑦">toggle state</a> from 0 to 1
 		(and the <a class="css" data-link-type="maybe" href="#valdef-toggle-states-sticky" id="ref-for-valdef-toggle-states-sticky">sticky</a> keyword will keep it at 1 if activated multiple times),
-		while resetting the rest of the tabs' <span>toggle states</span> to 0.
+		while resetting the rest of the tabs' <span id="ref-for-toggle-state⑧">toggle states</span> to 0.
 		The same happens to the panels,
 		using the <a class="property" data-link-type="propdesc" href="#propdef-toggle-share" id="ref-for-propdef-toggle-share">toggle-share</a> property defined in a later section.
 		The active tab and panel are styled and shown differently than the other tabs and panels.</p>
@@ -512,42 +781,42 @@ li:checked {
       <th>Name:
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-toggle-share">toggle-share</dfn>
      <tr class="value">
-      <th><a href="https://drafts.csswg.org/css-values/#value-defs">Value:</a>
-      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/selectors-4/#typedef-selector-list" id="ref-for-typedef-selector-list">&lt;selector-list></a>
+      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
+      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/selectors-4/#typedef-selector-list" id="ref-for-typedef-selector-list">&lt;selector-list></a> 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#initial-values">Initial:</a>
-      <td>none
+      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
+      <td>none 
      <tr>
       <th>Applies to:
-      <td><a href="https://drafts.csswg.org/css-pseudo/#generated-content" title="Includes ::before and ::after pseudo-elements.">all elements</a>
+      <td><a href="https://www.w3.org/TR/css-pseudo/#generated-content" title="Includes ::before and ::after pseudo-elements.">all elements</a> 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#inherited-property">Inherited:</a>
-      <td>no
+      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
+      <td>no 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-values/#percentages">Percentages:</a>
-      <td>n/a
+      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
+      <td>n/a 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-cascade/#computed">Computed value:</a>
-      <td>as specified
+      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
+      <td>as specified 
      <tr>
       <th>Canonical order:
-      <td>per grammar
+      <td>per grammar 
      <tr>
       <th>Media:
-      <td>interactive
+      <td>interactive 
      <tr>
-      <th><a href="https://drafts.csswg.org/css-transitions/#animatable-properties">Animatable:</a>
-      <td>no
+      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animatable:</a>
+      <td>no 
    </table>
    <p>By default, activating an element only increments its own <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state⑨">toggle state</a>.
-	The <a class="property" data-link-type="propdesc" href="#propdef-toggle-share" id="ref-for-propdef-toggle-share②">toggle-share</a> property allows an element to additionally increment the <span>toggle state</span> of another element.</p>
+	The <a class="property" data-link-type="propdesc" href="#propdef-toggle-share" id="ref-for-propdef-toggle-share②">toggle-share</a> property allows an element to additionally increment the <span id="ref-for-toggle-state①⓪">toggle state</span> of another element.</p>
    <dl>
-    <dt><dfn class="css" data-dfn-for="toggle-share" data-dfn-type="value" data-export id="valdef-toggle-share-none">none<a class="self-link" href="#valdef-toggle-share-none"></a></dfn>
-    <dd> Activating the element only increments its own <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state①①">toggle state</a> (assuming the element is <a data-link-type="dfn" href="#toggleable" id="ref-for-toggleable②">toggleable</a>).
-    <dt><dfn class="css" data-dfn-for="toggle-share" data-dfn-type="value" data-export id="valdef-toggle-share-selector-list"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/selectors-4/#typedef-selector-list" id="ref-for-typedef-selector-list①">&lt;selector-list></a><a class="self-link" href="#valdef-toggle-share-selector-list"></a></dfn>
+    <dt><dfn class="css" data-dfn-for="toggle-share" data-dfn-type="value" data-export id="valdef-toggle-share-none">none<a class="self-link" href="#valdef-toggle-share-none"></a></dfn> 
+    <dd> Activating the element only increments its own <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state①①">toggle state</a> (assuming the element is <a data-link-type="dfn" href="#toggleable" id="ref-for-toggleable②">toggleable</a>). 
+    <dt><dfn class="css" data-dfn-for="toggle-share" data-dfn-type="value" data-export id="valdef-toggle-share-selector-list"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/selectors-4/#typedef-selector-list" id="ref-for-typedef-selector-list①">&lt;selector-list></a><a class="self-link" href="#valdef-toggle-share-selector-list"></a></dfn> 
     <dd>
       Activating the element increments the <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state①②">toggle state</a> of both itself and all the elements matched by the given selector
-			(assuming the elements are <a data-link-type="dfn" href="#toggleable" id="ref-for-toggleable③">toggleable</a>).
+			(assuming the elements are <a data-link-type="dfn" href="#toggleable" id="ref-for-toggleable③">toggleable</a>). 
      <p>If the set of elements sharing the activation includes elements that share a <a data-link-type="dfn" href="#toggle-group" id="ref-for-toggle-group⑤">toggle group</a>,
 			only the last such element (in document order) per group has its <a data-link-type="dfn" href="#toggle-state" id="ref-for-toggle-state①③">toggle state</a> incremented.</p>
    </dl>
@@ -573,8 +842,8 @@ li:checked {
     <a class="self-link" href="#example-bd5eace4"></a> For example,
 		in the following code,
 		the element starts in a state that matches <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#checked-pseudo" id="ref-for-checked-pseudo⑥">:checked</a>,
-		but the <span class="css">:checked</span> selector makes the element no longer <a data-link-type="dfn" href="#toggleable" id="ref-for-toggleable④">toggleable</a>,
-		so it no longer matches <span class="css">:checked</span>.
+		but the <span class="css" id="ref-for-checked-pseudo⑦">:checked</span> selector makes the element no longer <a data-link-type="dfn" href="#toggleable" id="ref-for-toggleable④">toggleable</a>,
+		so it no longer matches <span class="css" id="ref-for-checked-pseudo⑧">:checked</span>. 
 <pre>#foo {
   toggle-states: 2;
   toggle-initial: 1;
@@ -594,95 +863,89 @@ li:checked {
 	which is triggered by an affected selector.
 	Is there a better way to define this so that it’s reliable?</p>
   </main>
-  <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
-  <h3 class="heading settled" id="document-conventions"><span class="content"> Document conventions</span><a class="self-link" href="#document-conventions"></a></h3>
+  <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content"> Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
+  <h3 class="no-ref heading settled" id="w3c-conventions"><span class="content"> Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
   <p>Conformance requirements are expressed with a combination of
-	descriptive assertions and RFC 2119 terminology. The key words “MUST”,
-	“MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”,
-	“RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative parts of this
-	document are to be interpreted as described in RFC 2119.
-	However, for readability, these words do not appear in all uppercase
-	letters in this specification. </p>
+    descriptive assertions and RFC 2119 terminology. The key words “MUST”,
+    “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”,
+    “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative parts of this
+    document are to be interpreted as described in RFC 2119.
+    However, for readability, these words do not appear in all uppercase
+    letters in this specification. </p>
   <p>All of the text of this specification is normative except sections
-	explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p>
+    explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a></p>
   <p>Examples in this specification are introduced with the words “for example”
-	or are set apart from the normative text with <code>class="example"</code>,
-	like this: </p>
-  <div class="example" id="example-ae2b6bc0">
-   <a class="self-link" href="#example-ae2b6bc0"></a>
-   <p>This is an example of an informative example. </p>
+    or are set apart from the normative text with <code>class="example"</code>,
+    like this: </p>
+  <div class="example" id="w3c-example">
+   <a class="self-link" href="#w3c-example"></a> 
+   <p>This is an example of an informative example.</p>
   </div>
   <p>Informative notes begin with the word “Note” and are set apart from the
-	normative text with <code>class="note"</code>, like this: </p>
-  <p class="note" role="note">Note, this is an informative note. </p>
+    normative text with <code>class="note"</code>, like this: </p>
+  <p class="note" role="note">Note, this is an informative note.</p>
   <p>Advisements are normative sections styled to evoke special attention and are
-	set apart from other normative text with <code>&lt;strong class="advisement"></code>, like
-	this: <strong class="advisement"> UAs MUST provide an accessible alternative. </strong> </p>
-  <h3 class="heading settled" id="conform-classes"><span class="content"> Conformance classes</span><a class="self-link" href="#conform-classes"></a></h3>
+    set apart from other normative text with <code>&lt;strong class="advisement"></code>, like
+    this: <strong class="advisement"> UAs MUST provide an accessible alternative. </strong> </p>
+  <h3 class="no-ref heading settled" id="w3c-conformance-classes"><span class="content"> Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"></a></h3>
   <p>Conformance to this specification
-	is defined for three conformance classes: </p>
+    is defined for three conformance classes: </p>
   <dl>
-   <dt>style sheet
-   <dd>A <a href="http://www.w3.org/TR/CSS2/conform.html#style-sheet">CSS
-			style sheet</a>.
-   <dt>renderer
-   <dd>A <a href="http://www.w3.org/TR/CSS2/conform.html#user-agent">UA</a> that interprets the semantics of a style sheet and renders
-			documents that use them.
-   <dt>authoring tool
-   <dd>A <a href="http://www.w3.org/TR/CSS2/conform.html#user-agent">UA</a> that writes a style sheet.
+   <dt>style sheet 
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
+            style sheet</a>. 
+   <dt>renderer 
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a> that interprets the semantics of a style sheet and renders
+            documents that use them. 
+   <dt>authoring tool 
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a> that writes a style sheet. 
   </dl>
   <p>A style sheet is conformant to this specification
-	if all of its statements that use syntax defined in this module are valid
-	according to the generic CSS grammar and the individual grammars of each
-	feature defined in this module. </p>
+    if all of its statements that use syntax defined in this module are valid
+    according to the generic CSS grammar and the individual grammars of each
+    feature defined in this module. </p>
   <p>A renderer is conformant to this specification
-	if, in addition to interpreting the style sheet as defined by the
-	appropriate specifications, it supports all the features defined
-	by this specification by parsing them correctly
-	and rendering the document accordingly. However, the inability of a
-	UA to correctly render a document due to limitations of the device
-	does not make the UA non-conformant. (For example, a UA is not
-	required to render color on a monochrome monitor.) </p>
+    if, in addition to interpreting the style sheet as defined by the
+    appropriate specifications, it supports all the features defined
+    by this specification by parsing them correctly
+    and rendering the document accordingly. However, the inability of a
+    UA to correctly render a document due to limitations of the device
+    does not make the UA non-conformant. (For example, a UA is not
+    required to render color on a monochrome monitor.) </p>
   <p>An authoring tool is conformant to this specification
-	if it writes style sheets that are syntactically correct according to the
-	generic CSS grammar and the individual grammars of each feature in
-	this module, and meet all other conformance requirements of style sheets
-	as described in this module. </p>
-  <h3 class="heading settled" id="conform-responsible"><span class="content"> Requirements for Responsible Implementation of CSS</span><a class="self-link" href="#conform-responsible"></a></h3>
-  <p>The following sections define several conformance requirements
-		for implementing CSS responsibly,
-		in a way that promotes interoperability in the present and future. </p>
-  <h4 class="heading settled" id="conform-partial"><span class="content"> Partial Implementations</span><a class="self-link" href="#conform-partial"></a></h4>
-  <p>So that authors can exploit the forward-compatible parsing rules to assign fallback values, <strong>CSS renderers <em>must</em> treat as invalid
-		(and <a href="http://www.w3.org/TR/CSS2/conform.html#ignore">ignore as appropriate</a>)
-		any at-rules, properties, property values, keywords, and other syntactic constructs
-		for which they have no usable level of support</strong>.
-		In particular, user agents <em>must not</em> selectively ignore
-		unsupported property values and honor supported values in a single multi-value property declaration:
-		if any value is considered invalid (as unsupported values must be),
-		CSS requires that the entire declaration be ignored. </p>
-  <h4 class="heading settled" id="conform-future-proofing"><span class="content"> Implementations of Unstable and Proprietary Features</span><a class="self-link" href="#conform-future-proofing"></a></h4>
+    if it writes style sheets that are syntactically correct according to the
+    generic CSS grammar and the individual grammars of each feature in
+    this module, and meet all other conformance requirements of style sheets
+    as described in this module. </p>
+  <h3 class="no-ref heading settled" id="w3c-partial"><span class="content"> Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
+  <p>So that authors can exploit the forward-compatible parsing rules to
+    assign fallback values, CSS renderers <strong>must</strong> treat as invalid (and <a href="http://www.w3.org/TR/CSS21/conform.html#ignore">ignore
+    as appropriate</a>) any at-rules, properties, property values, keywords,
+    and other syntactic constructs for which they have no usable level of
+    support. In particular, user agents <strong>must not</strong> selectively
+    ignore unsupported component values and honor supported values in a single
+    multi-value property declaration: if any value is considered invalid
+    (as unsupported values must be), CSS requires that the entire declaration
+    be ignored.</p>
+  <h4 class="heading settled" id="w3c-conform-future-proofing"><span class="content"> Implementations of Unstable and Proprietary Features</span><a class="self-link" href="#w3c-conform-future-proofing"></a></h4>
   <p>To avoid clashes with future stable CSS features,
-		the CSSWG recommends <a href="http://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="http://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="http://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS. </p>
-  <h4 class="heading settled" id="conform-testing"><span class="content"> Implementations of CR-level Features</span><a class="self-link" href="#conform-testing"></a></h4>
+        the CSSWG recommends <a href="http://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="http://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="http://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS. </p>
+  <h3 class="no-ref heading settled" id="w3c-testing"><span class="content"> Non-experimental implementations</span><a class="self-link" href="#w3c-testing"></a></h3>
   <p>Once a specification reaches the Candidate Recommendation stage,
-		implementers should release an <a data-link-type="dfn" href="http://www.w3.org/TR/CSS/#vendor-prefix">unprefixed</a> implementation
-		of any CR-level feature they can demonstrate
-		to be correctly implemented according to spec,
-		and should avoid exposing a prefixed variant of that feature. </p>
+    non-experimental implementations are possible, and implementors should
+    release an unprefixed implementation of any CR-level feature they
+    can demonstrate to be correctly implemented according to spec. </p>
   <p>To establish and maintain the interoperability of CSS across
-		implementations, the CSS Working Group requests that non-experimental
-		CSS renderers submit an implementation report (and, if necessary, the
-		testcases used for that implementation report) to the W3C before
-		releasing an unprefixed implementation of any CSS features. Testcases
-		submitted to W3C are subject to review and correction by the CSS
-		Working Group. </p>
-  <p>
-   Further information on submitting testcases and implementation reports
-		can be found from on the CSS Working Group’s website at <a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
-		Questions should be directed to the <a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a> mailing list.
+    implementations, the CSS Working Group requests that non-experimental
+    CSS renderers submit an implementation report (and, if necessary, the
+    testcases used for that implementation report) to the W3C before
+    releasing an unprefixed implementation of any CSS features. Testcases
+    submitted to W3C are subject to review and correction by the CSS
+    Working Group. </p>
+  <p>Further information on submitting testcases and implementation reports
+    can be found from on the CSS Working Group’s website at <a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
+    Questions should be directed to the <a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a> mailing list.</p>
 <script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
-  </p>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
@@ -712,68 +975,68 @@ li:checked {
   <aside class="dfn-panel" data-for="term-for-integer-value">
    <a href="https://drafts.csswg.org/css-values-3/#integer-value">https://drafts.csswg.org/css-values-3/#integer-value</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-integer-value">2.
+    <li><a href="#ref-for-integer-value">2. 
 Creating a Toggleable Element: the toggle-states and toggle-initial property</a> <a href="#ref-for-integer-value①">(2)</a> <a href="#ref-for-integer-value②">(3)</a> <a href="#ref-for-integer-value③">(4)</a>
-    <li><a href="#ref-for-integer-value④">3.
+    <li><a href="#ref-for-integer-value④">3. 
 Selecting Elements Based on Toggle State: the :checked and :checked() pseudo-class</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-identifier-value">
    <a href="https://drafts.csswg.org/css-values-4/#identifier-value">https://drafts.csswg.org/css-values-4/#identifier-value</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-identifier-value">2.1.
+    <li><a href="#ref-for-identifier-value">2.1. 
 Linking Toggle States: the toggle-group property</a> <a href="#ref-for-identifier-value①">(2)</a> <a href="#ref-for-identifier-value②">(3)</a> <a href="#ref-for-identifier-value③">(4)</a> <a href="#ref-for-identifier-value④">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-mult-opt">
    <a href="https://drafts.csswg.org/css-values-4/#mult-opt">https://drafts.csswg.org/css-values-4/#mult-opt</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-mult-opt">2.
+    <li><a href="#ref-for-mult-opt">2. 
 Creating a Toggleable Element: the toggle-states and toggle-initial property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-comb-one">
    <a href="https://drafts.csswg.org/css-values-4/#comb-one">https://drafts.csswg.org/css-values-4/#comb-one</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-comb-one">2.
+    <li><a href="#ref-for-comb-one">2. 
 Creating a Toggleable Element: the toggle-states and toggle-initial property</a> <a href="#ref-for-comb-one①">(2)</a>
-    <li><a href="#ref-for-comb-one②">2.1.
+    <li><a href="#ref-for-comb-one②">2.1. 
 Linking Toggle States: the toggle-group property</a>
-    <li><a href="#ref-for-comb-one③">2.2.
+    <li><a href="#ref-for-comb-one③">2.2. 
 Sharing Toggle Activations: the toggle-share property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-active-pseudo">
    <a href="https://drafts.csswg.org/selectors-4/#active-pseudo">https://drafts.csswg.org/selectors-4/#active-pseudo</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-active-pseudo">2.
+    <li><a href="#ref-for-active-pseudo">2. 
 Creating a Toggleable Element: the toggle-states and toggle-initial property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-checked-pseudo">
    <a href="https://drafts.csswg.org/selectors-4/#checked-pseudo">https://drafts.csswg.org/selectors-4/#checked-pseudo</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-checked-pseudo">1.
+    <li><a href="#ref-for-checked-pseudo">1. 
 Introduction</a>
-    <li><a href="#ref-for-checked-pseudo①">2.
+    <li><a href="#ref-for-checked-pseudo①">2. 
 Creating a Toggleable Element: the toggle-states and toggle-initial property</a>
-    <li><a href="#ref-for-checked-pseudo②">3.
+    <li><a href="#ref-for-checked-pseudo②">3. 
 Selecting Elements Based on Toggle State: the :checked and :checked() pseudo-class</a> <a href="#ref-for-checked-pseudo③">(2)</a>
-    <li><a href="#ref-for-checked-pseudo④">3.1.
+    <li><a href="#ref-for-checked-pseudo④">3.1. 
 Problems with Combining :checked and toggle-* Properties</a> <a href="#ref-for-checked-pseudo⑤">(2)</a> <a href="#ref-for-checked-pseudo⑥">(3)</a> <a href="#ref-for-checked-pseudo⑦">(4)</a> <a href="#ref-for-checked-pseudo⑧">(5)</a> <a href="#ref-for-checked-pseudo⑨">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-hover-pseudo">
    <a href="https://drafts.csswg.org/selectors-4/#hover-pseudo">https://drafts.csswg.org/selectors-4/#hover-pseudo</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-hover-pseudo">2.2.
+    <li><a href="#ref-for-hover-pseudo">2.2. 
 Sharing Toggle Activations: the toggle-share property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-typedef-selector-list">
    <a href="https://drafts.csswg.org/selectors-4/#typedef-selector-list">https://drafts.csswg.org/selectors-4/#typedef-selector-list</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-typedef-selector-list">2.2.
+    <li><a href="#ref-for-typedef-selector-list">2.2. 
 Sharing Toggle Activations: the toggle-share property</a> <a href="#ref-for-typedef-selector-list①">(2)</a>
    </ul>
   </aside>
@@ -782,35 +1045,35 @@ Sharing Toggle Activations: the toggle-share property</a> <a href="#ref-for-type
    <li>
     <a data-link-type="biblio">[css-values-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-integer-value" style="color:initial">&lt;integer></span>
+     <li><span class="dfn-paneled" id="term-for-integer-value">&lt;integer></span>
     </ul>
    <li>
     <a data-link-type="biblio">[css-values-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-identifier-value" style="color:initial">&lt;custom-ident></span>
-     <li><span class="dfn-paneled" id="term-for-mult-opt" style="color:initial">?</span>
-     <li><span class="dfn-paneled" id="term-for-comb-one" style="color:initial">|</span>
+     <li><span class="dfn-paneled" id="term-for-identifier-value">&lt;custom-ident></span>
+     <li><span class="dfn-paneled" id="term-for-mult-opt">?</span>
+     <li><span class="dfn-paneled" id="term-for-comb-one">|</span>
     </ul>
    <li>
     <a data-link-type="biblio">[SELECTORS-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-active-pseudo" style="color:initial">:active</span>
-     <li><span class="dfn-paneled" id="term-for-checked-pseudo" style="color:initial">:checked</span>
-     <li><span class="dfn-paneled" id="term-for-hover-pseudo" style="color:initial">:hover</span>
-     <li><span class="dfn-paneled" id="term-for-typedef-selector-list" style="color:initial">&lt;selector-list></span>
+     <li><span class="dfn-paneled" id="term-for-active-pseudo">:active</span>
+     <li><span class="dfn-paneled" id="term-for-checked-pseudo">:checked</span>
+     <li><span class="dfn-paneled" id="term-for-hover-pseudo">:hover</span>
+     <li><span class="dfn-paneled" id="term-for-typedef-selector-list">&lt;selector-list></span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-css-values-3">[CSS-VALUES-3]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-3/">CSS Values and Units Module Level 3</a>. 14 August 2018. CR. URL: <a href="https://www.w3.org/TR/css-values-3/">https://www.w3.org/TR/css-values-3/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-3/">CSS Values and Units Module Level 3</a>. 6 June 2019. CR. URL: <a href="https://www.w3.org/TR/css-values-3/">https://www.w3.org/TR/css-values-3/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/">CSS Values and Units Module Level 4</a>. 14 August 2018. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/">CSS Values and Units Module Level 4</a>. 11 November 2020. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-selectors-4">[SELECTORS-4]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/selectors-4/">Selectors Level 4</a>. 2 February 2018. WD. URL: <a href="https://www.w3.org/TR/selectors-4/">https://www.w3.org/TR/selectors-4/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/selectors-4/">Selectors Level 4</a>. 21 November 2018. WD. URL: <a href="https://www.w3.org/TR/selectors-4/">https://www.w3.org/TR/selectors-4/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <div class="big-element-wrapper">
@@ -888,103 +1151,103 @@ Sharing Toggle Activations: the toggle-share property</a> <a href="#ref-for-type
   <aside class="dfn-panel" data-for="propdef-toggle-states">
    <b><a href="#propdef-toggle-states">#propdef-toggle-states</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-toggle-states">2.
+    <li><a href="#ref-for-propdef-toggle-states">2. 
 Creating a Toggleable Element: the toggle-states and toggle-initial property</a> <a href="#ref-for-propdef-toggle-states①">(2)</a> <a href="#ref-for-propdef-toggle-states②">(3)</a> <a href="#ref-for-propdef-toggle-states③">(4)</a>
-    <li><a href="#ref-for-propdef-toggle-states④">3.1.
+    <li><a href="#ref-for-propdef-toggle-states④">3.1. 
 Problems with Combining :checked and toggle-* Properties</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="propdef-toggle-initial">
    <b><a href="#propdef-toggle-initial">#propdef-toggle-initial</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-toggle-initial">2.
+    <li><a href="#ref-for-propdef-toggle-initial">2. 
 Creating a Toggleable Element: the toggle-states and toggle-initial property</a> <a href="#ref-for-propdef-toggle-initial①">(2)</a>
-    <li><a href="#ref-for-propdef-toggle-initial②">3.1.
+    <li><a href="#ref-for-propdef-toggle-initial②">3.1. 
 Problems with Combining :checked and toggle-* Properties</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-toggle-states-sticky">
    <b><a href="#valdef-toggle-states-sticky">#valdef-toggle-states-sticky</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valdef-toggle-states-sticky">2.1.
+    <li><a href="#ref-for-valdef-toggle-states-sticky">2.1. 
 Linking Toggle States: the toggle-group property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="toggleable">
    <b><a href="#toggleable">#toggleable</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-toggleable">2.
+    <li><a href="#ref-for-toggleable">2. 
 Creating a Toggleable Element: the toggle-states and toggle-initial property</a>
-    <li><a href="#ref-for-toggleable①">2.1.
+    <li><a href="#ref-for-toggleable①">2.1. 
 Linking Toggle States: the toggle-group property</a>
-    <li><a href="#ref-for-toggleable②">2.2.
+    <li><a href="#ref-for-toggleable②">2.2. 
 Sharing Toggle Activations: the toggle-share property</a> <a href="#ref-for-toggleable③">(2)</a>
-    <li><a href="#ref-for-toggleable④">3.1.
+    <li><a href="#ref-for-toggleable④">3.1. 
 Problems with Combining :checked and toggle-* Properties</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="toggle-state">
    <b><a href="#toggle-state">#toggle-state</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-toggle-state">2.
+    <li><a href="#ref-for-toggle-state">2. 
 Creating a Toggleable Element: the toggle-states and toggle-initial property</a>
-    <li><a href="#ref-for-toggle-state①">2.1.
+    <li><a href="#ref-for-toggle-state①">2.1. 
 Linking Toggle States: the toggle-group property</a> <a href="#ref-for-toggle-state②">(2)</a> <a href="#ref-for-toggle-state③">(3)</a> <a href="#ref-for-toggle-state④">(4)</a> <a href="#ref-for-toggle-state⑤">(5)</a> <a href="#ref-for-toggle-state⑥">(6)</a> <a href="#ref-for-toggle-state⑦">(7)</a> <a href="#ref-for-toggle-state⑧">(8)</a>
-    <li><a href="#ref-for-toggle-state⑨">2.2.
+    <li><a href="#ref-for-toggle-state⑨">2.2. 
 Sharing Toggle Activations: the toggle-share property</a> <a href="#ref-for-toggle-state①⓪">(2)</a> <a href="#ref-for-toggle-state①①">(3)</a> <a href="#ref-for-toggle-state①②">(4)</a> <a href="#ref-for-toggle-state①③">(5)</a> <a href="#ref-for-toggle-state①④">(6)</a>
-    <li><a href="#ref-for-toggle-state①⑤">3.
+    <li><a href="#ref-for-toggle-state①⑤">3. 
 Selecting Elements Based on Toggle State: the :checked and :checked() pseudo-class</a> <a href="#ref-for-toggle-state①⑥">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="propdef-toggle-group">
    <b><a href="#propdef-toggle-group">#propdef-toggle-group</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-toggle-group">2.1.
+    <li><a href="#ref-for-propdef-toggle-group">2.1. 
 Linking Toggle States: the toggle-group property</a> <a href="#ref-for-propdef-toggle-group①">(2)</a> <a href="#ref-for-propdef-toggle-group②">(3)</a>
-    <li><a href="#ref-for-propdef-toggle-group③">2.2.
+    <li><a href="#ref-for-propdef-toggle-group③">2.2. 
 Sharing Toggle Activations: the toggle-share property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="toggle-group">
    <b><a href="#toggle-group">#toggle-group</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-toggle-group">2.1.
+    <li><a href="#ref-for-toggle-group">2.1. 
 Linking Toggle States: the toggle-group property</a> <a href="#ref-for-toggle-group①">(2)</a> <a href="#ref-for-toggle-group②">(3)</a> <a href="#ref-for-toggle-group③">(4)</a> <a href="#ref-for-toggle-group④">(5)</a>
-    <li><a href="#ref-for-toggle-group⑤">2.2.
+    <li><a href="#ref-for-toggle-group⑤">2.2. 
 Sharing Toggle Activations: the toggle-share property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="propdef-toggle-share">
    <b><a href="#propdef-toggle-share">#propdef-toggle-share</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-toggle-share">2.1.
+    <li><a href="#ref-for-propdef-toggle-share">2.1. 
 Linking Toggle States: the toggle-group property</a>
-    <li><a href="#ref-for-propdef-toggle-share①">2.2.
+    <li><a href="#ref-for-propdef-toggle-share①">2.2. 
 Sharing Toggle Activations: the toggle-share property</a> <a href="#ref-for-propdef-toggle-share②">(2)</a> <a href="#ref-for-propdef-toggle-share③">(3)</a> <a href="#ref-for-propdef-toggle-share④">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="selectordef-checked-integer">
    <b><a href="#selectordef-checked-integer">#selectordef-checked-integer</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-selectordef-checked-integer">2.
+    <li><a href="#ref-for-selectordef-checked-integer">2. 
 Creating a Toggleable Element: the toggle-states and toggle-initial property</a>
-    <li><a href="#ref-for-selectordef-checked-integer①">3.
+    <li><a href="#ref-for-selectordef-checked-integer①">3. 
 Selecting Elements Based on Toggle State: the :checked and :checked() pseudo-class</a>
-    <li><a href="#ref-for-selectordef-checked-integer②">3.1.
+    <li><a href="#ref-for-selectordef-checked-integer②">3.1. 
 Problems with Combining :checked and toggle-* Properties</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="selector-affecting-property">
    <b><a href="#selector-affecting-property">#selector-affecting-property</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-selector-affecting-property">3.1.
+    <li><a href="#ref-for-selector-affecting-property">3.1. 
 Problems with Combining :checked and toggle-* Properties</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="property-affected-selector">
    <b><a href="#property-affected-selector">#property-affected-selector</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-property-affected-selector">3.1.
+    <li><a href="#ref-for-property-affected-selector">3.1. 
 Problems with Combining :checked and toggle-* Properties</a>
    </ul>
   </aside>

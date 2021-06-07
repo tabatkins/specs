@@ -9,6 +9,7 @@ Level: 1
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact
 Abstract: This specification defines a way to associate a toggleable state with an element which can be used in Selectors to select an element, and declarative ways to set and modify the state on the element.
 Ignored Terms: <integer>, <string>, <selector>
+Warning: replaced by http://tabatkins.github.io/css-toggle/
 </pre>
 
 <pre class=link-defaults>
