@@ -14,3 +14,4 @@ Live copies of the specs:
 * [SVG Parameters](http://tabatkins.github.io/specs/svg-params)
 * [CSS Cascade Control](https://tabatkins.github.io/specs/css-cascade-control/)
 * [@when/@else](https://tabatkins.github.io/specs/css-when-else/)
+* [CSS Stacking Context](https://tabatkins.github.io/specs/css-stacking-context-1/)
