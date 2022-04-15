@@ -8,7 +8,7 @@
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 616204878, updated Tue Mar 8 15:25:09 2022 -0800" name="generator">
   <link href="https://drafts.csswg.org/css-stacking-context/" rel="canonical">
-  <meta content="7880ad70f7bd51502183fd722e53d81db567769b" name="document-revision">
+  <meta content="3d4619336dcd8a5767e5ab5d5212d68d3251eae4" name="document-revision">
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -481,7 +481,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Stacking Context Module Level 1</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2022-04-14">14 April 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2022-04-15">15 April 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -534,11 +534,7 @@ on screen, on paper, etc.
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
-    <li>
-     <a href="#order"><span class="secno">2</span> <span class="content">Painting Order</span></a>
-     <ol class="toc">
-      <li><a href="#stacking-notes"><span class="secno">2.1</span> <span class="content">Notes</span></a>
-     </ol>
+    <li><a href="#order"><span class="secno">2</span> <span class="content">Painting Order</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
      <ol class="toc">
@@ -595,6 +591,18 @@ on screen, on paper, etc.
 	The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="document-layer">document layer</dfn> is the layer
 	containing the principal box of the document’s root element;
 	it is below all other <a data-link-type="dfn" href="#css-rendering-layer" id="ref-for-css-rendering-layer①">rendering layers</a>.</p>
+   <p>In the following algorithms,
+	a given box or fragment is only painted once,
+	by whatever step attempts to paint it first.
+	(This allows the algorithm to be written much simply,
+	without elaborate guards to check against double-painting.)</p>
+   <p class="issue" id="issue-5d913e30"><a class="self-link" href="#issue-5d913e30"></a> This is meant to be a reproduction and elaboration
+	of the <a href="https://andreubotella.com/csswg-auto-build/css2/#elaborate-stacking-contexts">CSS2 "Elaborate Description of Stacking Contexts" algorithm</a>,
+	modified to account for where filter/clipping/compositing can happen,
+	the existence of top layers,
+	and the newer element/box/fragment hierarchy.
+	Non-editorial changes beyond the above
+	are unintentional and probably bugs.</p>
    <div class="algorithm" data-algorithm="paint a document">
      To <dfn data-dfn-type="dfn" data-export data-lt="paint a document|paint the document" id="paint-a-document">paint a document<a class="self-link" href="#paint-a-document"></a></dfn>: 
     <ol>
@@ -632,6 +640,10 @@ Figure out if I missed something,
 and make it block propagation here.</p>
      <li data-md>
       <p>For each top-level <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#box" id="ref-for-box④">box</a> in <var>layer</var>, <a data-link-type="dfn" href="#paint-a-stacking-context" id="ref-for-paint-a-stacking-context">paint a stacking context</a> of the box onto <var>canvas</var>.</p>
+     <li data-md>
+      <p>If the implementation chose not to paint outlines
+while executing the previous step,
+paint the outlines of all boxes/fragments in <var>layer</var> to <var>canvas</var>.</p>
      <li data-md>
       <p class="issue" id="issue-2a74f3b1"><a class="self-link" href="#issue-2a74f3b1"></a> Clipping/filtering/etc goes here.</p>
      <li data-md>
@@ -742,132 +754,129 @@ onto <var>canvas</var>.</p>
         </ol>
       </dl>
      <li data-md>
-      <p>For each non-positioned,
-floating
-descendant of <var>box</var>:</p>
+      <p>For each non-<a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#positioned-box" id="ref-for-positioned-box①">positioned</a>, <a data-link-type="dfn" href="https://drafts.csswg.org/css-page-floats-3/#float" id="ref-for-float">floating</a> descendant <var>d</var> of <var>box</var>,
+in tree order, <a data-link-type="dfn" href="#paint-a-stacking-context" id="ref-for-paint-a-stacking-context②">paint a stacking context</a> from <var>d</var> onto <var>canvas</var>,
+skipping any positioned descendants of <var>d</var> and any descendants of <var>d</var> that actually create new stacking contexts.
+(They are, instead, painted
+as part of <var>box</var> in other steps.)</p>
+     <li data-md>
+      <p>If <var>box</var> is <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#inline-level" id="ref-for-inline-level">inline-level</a> and generates a <a data-link-type="dfn" href="https://svgwg.org/svg2-draft/render.html#TermStackingContext" id="ref-for-TermStackingContext①">stacking context</a>,
+then for each <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box">line box</a> that <var>box</var> is in, <a data-link-type="dfn" href="#paint-an-inline-run" id="ref-for-paint-an-inline-run">paint an inline run</a> from <var>box</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragment" id="ref-for-fragment">fragments</a> in that <span id="ref-for-line-box①">line box</span> onto <var>canvas</var>.</p>
+     <li data-md>
+      <p>Otherwise
+(if it did not match Step 6’s condition),
+then first for <var>box</var>,
+then for all its <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#in-flow" id="ref-for-in-flow">in-flow</a>,
+non-<a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#positioned-box" id="ref-for-positioned-box②">positioned</a>, <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#block-level" id="ref-for-block-level③">block-level</a> descendants <var>d</var>,
+in tree order:</p>
       <ol>
        <li data-md>
+        <p>If <var>d</var> is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#block-level" id="ref-for-block-level④">block-level</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#replaced-element" id="ref-for-replaced-element">replaced</a> element,
+paint the replaced content onto <var>canvas</var>,
+atomically.</p>
+       <li data-md>
+        <p>Otherwise, for each <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box②">line box</a> of <var>d</var>,
+for each <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#box" id="ref-for-box⑥">box</a> child of <var>d</var> that generates <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragment" id="ref-for-fragment①">fragments</a> in that <span id="ref-for-line-box③">line box</span>, <a data-link-type="dfn" href="#paint-an-inline-run" id="ref-for-paint-an-inline-run①">paint an inline run</a> from those <span id="ref-for-fragment②">fragments</span> onto <var>canvas</var>.</p>
+       <li data-md>
+        <p>Optionally, if <var>d</var> is <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#block-level" id="ref-for-block-level⑤">block-level</a>,
+paint the outline of <var>d</var> onto <var>canvas</var>.</p>
       </ol>
+     <li data-md>
+      <p>For each <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#positioned-box" id="ref-for-positioned-box③">positioned</a> descendant <var>d</var> of <var>box</var> with zero or <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-z-index-auto" id="ref-for-valdef-z-index-auto">auto</a> z-index,
+in tree order, <a data-link-type="dfn" href="#paint-a-stacking-context" id="ref-for-paint-a-stacking-context③">paint a stacking context</a> for <var>d</var> onto <var>canvas</var>.
+If <var>d</var> is <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css2/#propdef-z-index" id="ref-for-propdef-z-index">z-index: auto</a>,
+skip any positioned descendants of <var>d</var> and any descendants of <var>d</var> that actually create new stacking contexts.
+(They are, instead, painted
+as part of <var>box</var>.)</p>
+     <li data-md>
+      <p>For each <a data-link-type="dfn" href="https://svgwg.org/svg2-draft/render.html#TermStackingContext" id="ref-for-TermStackingContext②">stacking context</a> descendant of <var>box</var> with strictly positive z-indexes,
+in z-index order
+(least positive first),
+then tree order, <a data-link-type="dfn" href="#paint-a-stacking-context" id="ref-for-paint-a-stacking-context④">paint a stacking context</a> for the descendant
+onto <var>canvas</var>.</p>
+     <li data-md>
+      <p>Filter/clip/etc here</p>
+     <li data-md>
+      <p>Composite <var>canvas</var> onto <var>root canvas</var>.</p>
     </ol>
    </div>
-   <li> All non-positioned floating descendants, in tree order. For
-	each one of these, treat the element as if it created a new
-	stacking context, but any positioned descendants and
-	descendants which actually create a new stacking context
-	should be considered part of the parent stacking context, not
-	this new one. 
-   <li>
-     If the element is an inline element that generates a
-	stacking context, then: 
+   <div class="algorithm" data-algorithm="paint an inline run">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="paint an inline run|paint the inline run" id="paint-an-inline-run">paint an inline run</dfn> of a list of <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragment" id="ref-for-fragment③">fragments</a> <var>frags</var> that are all in the same <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box④">line box</a>,
+		onto a <a data-link-type="dfn" href="#css-canvas" id="ref-for-css-canvas⑤">canvas</a> <var>canvas</var>: 
     <ol>
-     <li>
-       For each line box that the element is in: 
+     <li data-md>
+      <p>For each <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragment" id="ref-for-fragment④">fragment</a> <var>frag</var> of <var>frags</var>:</p>
       <ol>
-       <li>Jump to <a href="#each-box">7.2.1</a> for the
-	      box(es) of the element in that line box (in tree order). 
-      </ol>
-    </ol>
-   <li>
-     Otherwise: first for the element, then for all its in-flow,
-	non-positioned, block-level descendants in tree order: 
-    <ol>
-     <li> If the element is a block-level replaced element, then:
-	    the replaced content, atomically. 
-     <li>
-       Otherwise, for each line box of that element: 
-      <ol>
-       <li id="each-box">
-        <a class="self-link" href="#each-box"></a> For each box that is a child of that element, in
-		that line box, in tree order: 
-        <ol>
-         <li> background color of element. 
-         <li> background image of element. 
-         <li> border of element. 
-         <li>
-           For inline elements: 
-          <ol>
-           <li>
-             For all the element’s in-flow,
-			non-positioned, inline-level children that are
-			in this line box, and all runs of text inside
-			the element that is on this line box, in tree
-			order: 
+       <li data-md>
+        <p>Paint the background color,
+then background image,
+then border of <var>frag</var> onto <var>canvas</var>.</p>
+       <li data-md>
+        <dl class="switch">
+         <dt data-md>If <var>frag</var> was generated by an <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#inline" id="ref-for-inline">inline</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#box" id="ref-for-box⑦">box</a>
+         <dd data-md>
+          <p>For all descendant <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragment" id="ref-for-fragment⑤">fragments</a> of <var>frag</var> that were generated by an in-flow,
+non-positioned, <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#inline-level" id="ref-for-inline-level①">inline-level</a> box,
+or that were generated by a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#text-run" id="ref-for-text-run">text run</a>:</p>
+          <dl class="switch">
+           <dt data-md>If the fragment was generated by a text run
+           <dd data-md>
             <ol>
-             <li>
-               If this is a run of text, then: 
-              <ol>
-               <li>any underlining affecting the text
-			      of the element, in tree order of the
-			      elements applying the underlining (such
-			      that the deepest element’s underlining,
-			      if any, is painted topmost and the root
-			      element’s underlining, if any, is drawn
-			      bottommost). 
-               <li>any overlining affecting the text of
-			      the element, in tree order of the
-			      elements applying the overlining (such
-			      that the deepest element’s overlining,
-			      if any, is painted topmost and the root
-			      element’s overlining, if any, is drawn
-			      bottommost). 
-               <li>the text. 
-               <li>any line-through affecting the text
-			      of the element, in tree order of the
-			      elements applying the line-through (such
-			      that the deepest element’s line-through,
-			      if any, is painted topmost and the root
-			      element’s line-through, if any, is drawn
-			      bottommost). 
-              </ol>
-             <li> Otherwise, jump to <a href="#each-box">7.2.1</a> for that
-			    element. 
+             <li data-md>
+              <p>Paint any underlining affecting the text of the fragment,
+in tree order of the elements applying the underlining
+(such that the deepest element’s underline,
+if any,
+if painted topmost
+and the root element’s underlining,
+if any,
+is painted bottommost),
+onto <var>canvas</var>.</p>
+             <li data-md>
+              <p>Paint any overlining affecting the text of the fragment,
+in the same order as underlines,
+onto <var>canvas</var>.</p>
+             <li data-md>
+              <p>Paint the text onto <var>canvas</var>.</p>
+             <li data-md>
+              <p>Paint any line-through affecting the text of the fragment,
+in the same order as underlines,
+onto <var>canvas</var>.</p>
             </ol>
-          </ol>
-          <p>For inline-block and inline-table elements:</p>
-          <ol>
-           <li>For each one of these, treat the element as
-		      if it created a new stacking context, but any
-		      positioned descendants and descendants which
-		      actually create a new stacking context should be
-		      considered part of the parent stacking context,
-		      not this new one. 
-          </ol>
-          <p>For inline-level replaced elements:</p>
-          <ol>
-           <li>the replaced content, atomically. 
-          </ol>
-        </ol>
-        <p class="note" role="note">Some of the boxes may have been
-		generated by line splitting or the Unicode
-		bidirectional algorithm. </p>
-       <li> Optionally, the outline of the element (see <a href="#outlines">10 below</a>). 
+           <dt data-md>Otherwise
+           <dd data-md>
+            <p><a data-link-type="dfn" href="#paint-an-inline-run" id="ref-for-paint-an-inline-run②">Paint an inline run</a> from <var>frag</var> onto <var>canvas</var>.</p>
+          </dl>
+         <dt data-md>If <var>frag</var> was generated by an <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#inline-level" id="ref-for-inline-level②">inline-level</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#block" id="ref-for-block">block</a> or <a data-link-type="dfn">table wrapper</a> box
+         <dd data-md>
+          <p><a data-link-type="dfn" href="#paint-a-stacking-context" id="ref-for-paint-a-stacking-context⑤">Paint a stacking context</a> from <var>frag</var>’s generating <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#box" id="ref-for-box⑧">box</a> onto <var>canvas</var>,
+skipping any <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#positioned-box" id="ref-for-positioned-box④">positioned</a> descendants of the box
+and any descendants of the box
+that actually create new <a data-link-type="dfn" href="https://svgwg.org/svg2-draft/render.html#TermStackingContext" id="ref-for-TermStackingContext③">stacking contexts</a>.
+(They are, instead,
+painted as part of their nearest ancestor <span id="ref-for-TermStackingContext④">stacking context</span>.)</p>
+         <dt data-md>If <var>frag</var> was generated by an <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#inline-level" id="ref-for-inline-level③">inline-level</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#replaced-element" id="ref-for-replaced-element①">replaced</a> box
+         <dd data-md>
+          <p>Paint the replaced content, atomically,
+onto <var>canvas</var>.</p>
+        </dl>
       </ol>
-     <li> Optionally, if the element is block-level, the outline
-	    of the element (see <a href="#outlines">10 below</a>). 
+     <li data-md>
+      <p>Optionally,
+paint the outline of <var>frag</var> onto <var>canvas</var>.</p>
     </ol>
-   <li> All positioned descendants with 'z-index: auto' or
-	'z-index: 0', in tree order. For those with 'z-index: auto',
-	treat the element as if it created a new stacking context, but
-	any positioned descendants and descendants which actually
-	create a new stacking context should be considered part of the
-	parent stacking context, not this new one. For those with
-	'z-index: 0', treat the stacking context generated atomically. 
-   <li> Stacking contexts formed by positioned descendants with
-	z-indices greater than or equal to 1 in z-index order
-	(smallest first) then tree order. 
-   <li id="outlines">
-    <a class="self-link" href="#outlines"></a> Finally, implementations that do not draw outlines in steps
-	above must draw outlines from this stacking context at this
-	stage. (It is recommended to draw outlines in this step and
-	not in the steps above.) 
-    <h3 class="heading settled" data-level="2.1" id="stacking-notes"><span class="secno">2.1. </span><span class="content">Notes</span><a class="self-link" href="#stacking-notes"></a></h3>
-    <p>The background of the root element is only painted once, over
-    the whole canvas.</p>
-    <p>While the backgrounds of bidirectional inlines are painted in
-    tree order, they are positioned in visual order. Since the
-    positioning of inline backgrounds is unspecified in CSS 2,
-    the exact result of these two requirements is UA-defined. CSS3 may
-    define this in more detail.</p>
+    <p class="note" role="note"><span>Note:</span> Some of the fragments in <var>frags</var> might have been generated by line splitting
+		or the Unicode bidirectional algorithm.</p>
+    <p class="issue" id="issue-daeeed74"><a class="self-link" href="#issue-daeeed74"></a> Figure out if filtering/clipping/compositing
+		can take place at this step,
+		and if so,
+		exactly how to phrase it
+		since this step potentially paints from multiple elements.</p>
+    <p class="issue" id="issue-247e277e"><a class="self-link" href="#issue-247e277e"></a> While the backgrounds of bidirectional inlines
+		are painted in tree order,
+		they are positioned in visual order.
+		Is the positioning of inline backgrounds still undefined?</p>
+   </div>
   </main>
   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content"> Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
   <h3 class="no-ref heading settled" id="w3c-conventions"><span class="content"> Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
@@ -960,8 +969,10 @@ descendant of <var>box</var>:</p>
    <li><a href="#css-rendering-layer">layer</a><span>, in § 2</span>
    <li><a href="#paint-a-document">paint a document</a><span>, in § 2</span>
    <li><a href="#paint-a-layer">paint a layer</a><span>, in § 2</span>
+   <li><a href="#paint-an-inline-run">paint an inline run</a><span>, in § 2</span>
    <li><a href="#paint-a-stacking-context">paint a stacking context</a><span>, in § 2</span>
    <li><a href="#paint-a-document">paint the document</a><span>, in § 2</span>
+   <li><a href="#paint-an-inline-run">paint the inline run</a><span>, in § 2</span>
    <li><a href="#paint-a-layer">paint the layer</a><span>, in § 2</span>
    <li><a href="#paint-a-stacking-context">paint the stacking context</a><span>, in § 2</span>
    <li><a href="#propagate-its-background">propagate its background</a><span>, in § 2</span>
@@ -986,6 +997,12 @@ descendant of <var>box</var>:</p>
     <li><a href="#ref-for-background-positioning-area">2. Painting Order</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-fragment">
+   <a href="https://drafts.csswg.org/css-break-4/#fragment">https://drafts.csswg.org/css-break-4/#fragment</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-fragment">2. Painting Order</a> <a href="#ref-for-fragment①">(2)</a> <a href="#ref-for-fragment②">(3)</a> <a href="#ref-for-fragment③">(4)</a> <a href="#ref-for-fragment④">(5)</a> <a href="#ref-for-fragment⑤">(6)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-transparent-black">
    <a href="https://drafts.csswg.org/css-color-4/#transparent-black">https://drafts.csswg.org/css-color-4/#transparent-black</a><b>Referenced in:</b>
    <ul>
@@ -998,16 +1015,22 @@ descendant of <var>box</var>:</p>
     <li><a href="#ref-for-propdef-color-scheme">2. Painting Order</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-block">
+   <a href="https://drafts.csswg.org/css-display-3/#block">https://drafts.csswg.org/css-display-3/#block</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-block">2. Painting Order</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-block-level">
    <a href="https://drafts.csswg.org/css-display-3/#block-level">https://drafts.csswg.org/css-display-3/#block-level</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-block-level">2. Painting Order</a> <a href="#ref-for-block-level①">(2)</a> <a href="#ref-for-block-level②">(3)</a>
+    <li><a href="#ref-for-block-level">2. Painting Order</a> <a href="#ref-for-block-level①">(2)</a> <a href="#ref-for-block-level②">(3)</a> <a href="#ref-for-block-level③">(4)</a> <a href="#ref-for-block-level④">(5)</a> <a href="#ref-for-block-level⑤">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-box">
    <a href="https://drafts.csswg.org/css-display-3/#box">https://drafts.csswg.org/css-display-3/#box</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-box">2. Painting Order</a> <a href="#ref-for-box①">(2)</a> <a href="#ref-for-box②">(3)</a> <a href="#ref-for-box③">(4)</a> <a href="#ref-for-box④">(5)</a> <a href="#ref-for-box⑤">(6)</a>
+    <li><a href="#ref-for-box">2. Painting Order</a> <a href="#ref-for-box①">(2)</a> <a href="#ref-for-box②">(3)</a> <a href="#ref-for-box③">(4)</a> <a href="#ref-for-box④">(5)</a> <a href="#ref-for-box⑤">(6)</a> <a href="#ref-for-box⑥">(7)</a> <a href="#ref-for-box⑦">(8)</a> <a href="#ref-for-box⑧">(9)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-elements">
@@ -1016,16 +1039,70 @@ descendant of <var>box</var>:</p>
     <li><a href="#ref-for-elements">2. Painting Order</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-in-flow">
+   <a href="https://drafts.csswg.org/css-display-3/#in-flow">https://drafts.csswg.org/css-display-3/#in-flow</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-in-flow">2. Painting Order</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-inline">
+   <a href="https://drafts.csswg.org/css-display-3/#inline">https://drafts.csswg.org/css-display-3/#inline</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-inline">2. Painting Order</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-inline-level">
+   <a href="https://drafts.csswg.org/css-display-3/#inline-level">https://drafts.csswg.org/css-display-3/#inline-level</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-inline-level">2. Painting Order</a> <a href="#ref-for-inline-level①">(2)</a> <a href="#ref-for-inline-level②">(3)</a> <a href="#ref-for-inline-level③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-replaced-element">
+   <a href="https://drafts.csswg.org/css-display-3/#replaced-element">https://drafts.csswg.org/css-display-3/#replaced-element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-replaced-element">2. Painting Order</a> <a href="#ref-for-replaced-element①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-text-run">
+   <a href="https://drafts.csswg.org/css-display-3/#text-run">https://drafts.csswg.org/css-display-3/#text-run</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-text-run">2. Painting Order</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-line-box">
+   <a href="https://drafts.csswg.org/css-inline-3/#line-box">https://drafts.csswg.org/css-inline-3/#line-box</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-line-box">2. Painting Order</a> <a href="#ref-for-line-box①">(2)</a> <a href="#ref-for-line-box②">(3)</a> <a href="#ref-for-line-box③">(4)</a> <a href="#ref-for-line-box④">(5)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-float">
+   <a href="https://drafts.csswg.org/css-page-floats-3/#float">https://drafts.csswg.org/css-page-floats-3/#float</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-float">2. Painting Order</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-positioned-box">
    <a href="https://drafts.csswg.org/css-position-3/#positioned-box">https://drafts.csswg.org/css-position-3/#positioned-box</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-positioned-box">2. Painting Order</a>
+    <li><a href="#ref-for-positioned-box">2. Painting Order</a> <a href="#ref-for-positioned-box①">(2)</a> <a href="#ref-for-positioned-box②">(3)</a> <a href="#ref-for-positioned-box③">(4)</a> <a href="#ref-for-positioned-box④">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-table-wrapper-box">
    <a href="https://drafts.csswg.org/css-tables-3/#table-wrapper-box">https://drafts.csswg.org/css-tables-3/#table-wrapper-box</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-table-wrapper-box">2. Painting Order</a> <a href="#ref-for-table-wrapper-box①">(2)</a> <a href="#ref-for-table-wrapper-box②">(3)</a> <a href="#ref-for-table-wrapper-box③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-z-index-auto">
+   <a href="https://drafts.csswg.org/css2/#valdef-z-index-auto">https://drafts.csswg.org/css2/#valdef-z-index-auto</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-z-index-auto">2. Painting Order</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-z-index">
+   <a href="https://drafts.csswg.org/css2/#propdef-z-index">https://drafts.csswg.org/css2/#propdef-z-index</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-z-index">2. Painting Order</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-tree">
@@ -1049,7 +1126,7 @@ descendant of <var>box</var>:</p>
   <aside class="dfn-panel" data-for="term-for-TermStackingContext">
    <a href="https://svgwg.org/svg2-draft/render.html#TermStackingContext">https://svgwg.org/svg2-draft/render.html#TermStackingContext</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-TermStackingContext">2. Painting Order</a>
+    <li><a href="#ref-for-TermStackingContext">2. Painting Order</a> <a href="#ref-for-TermStackingContext①">(2)</a> <a href="#ref-for-TermStackingContext②">(3)</a> <a href="#ref-for-TermStackingContext③">(4)</a> <a href="#ref-for-TermStackingContext④">(5)</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1060,6 +1137,11 @@ descendant of <var>box</var>:</p>
      <li><span class="dfn-paneled" id="term-for-propdef-background">background</span>
      <li><span class="dfn-paneled" id="term-for-background-painting-area">background painting area</span>
      <li><span class="dfn-paneled" id="term-for-background-positioning-area">background positioning area</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-break-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-fragment">fragment</span>
     </ul>
    <li>
     <a data-link-type="biblio">[css-color-4]</a> defines the following terms:
@@ -1074,9 +1156,25 @@ descendant of <var>box</var>:</p>
    <li>
     <a data-link-type="biblio">[css-display-3]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-block">block</span>
      <li><span class="dfn-paneled" id="term-for-block-level">block-level</span>
      <li><span class="dfn-paneled" id="term-for-box">box</span>
      <li><span class="dfn-paneled" id="term-for-elements">element</span>
+     <li><span class="dfn-paneled" id="term-for-in-flow">in-flow</span>
+     <li><span class="dfn-paneled" id="term-for-inline">inline</span>
+     <li><span class="dfn-paneled" id="term-for-inline-level">inline-level</span>
+     <li><span class="dfn-paneled" id="term-for-replaced-element">replaced</span>
+     <li><span class="dfn-paneled" id="term-for-text-run">text run</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-inline-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-line-box">line box</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-page-floats-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-float">float</span>
     </ul>
    <li>
     <a data-link-type="biblio">[css-position-3]</a> defines the following terms:
@@ -1087,6 +1185,12 @@ descendant of <var>box</var>:</p>
     <a data-link-type="biblio">[CSS-TABLES-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-table-wrapper-box">table wrapper box</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS21]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-valdef-z-index-auto">auto</span>
+     <li><span class="dfn-paneled" id="term-for-propdef-z-index">z-index</span>
     </ul>
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
@@ -1114,16 +1218,24 @@ descendant of <var>box</var>:</p>
   <dl>
    <dt id="biblio-css-backgrounds-3">[CSS-BACKGROUNDS-3]
    <dd>Bert Bos; Elika Etemad; Brad Kemper. <a href="https://www.w3.org/TR/css-backgrounds-3/"><cite>CSS Backgrounds and Borders Module Level 3</cite></a>. 26 July 2021. CR. URL: <a href="https://www.w3.org/TR/css-backgrounds-3/">https://www.w3.org/TR/css-backgrounds-3/</a>
+   <dt id="biblio-css-break-4">[CSS-BREAK-4]
+   <dd>Rossen Atanassov; Elika Etemad. <a href="https://www.w3.org/TR/css-break-4/"><cite>CSS Fragmentation Module Level 4</cite></a>. 18 December 2018. WD. URL: <a href="https://www.w3.org/TR/css-break-4/">https://www.w3.org/TR/css-break-4/</a>
    <dt id="biblio-css-color-4">[CSS-COLOR-4]
    <dd>Tab Atkins Jr.; Chris Lilley; Lea Verou. <a href="https://www.w3.org/TR/css-color-4/"><cite>CSS Color Module Level 4</cite></a>. 15 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-color-4/">https://www.w3.org/TR/css-color-4/</a>
    <dt id="biblio-css-color-adjust-1">[CSS-COLOR-ADJUST-1]
    <dd>Elika Etemad; et al. <a href="https://www.w3.org/TR/css-color-adjust-1/"><cite>CSS Color Adjustment Module Level 1</cite></a>. 10 February 2022. CR. URL: <a href="https://www.w3.org/TR/css-color-adjust-1/">https://www.w3.org/TR/css-color-adjust-1/</a>
    <dt id="biblio-css-display-3">[CSS-DISPLAY-3]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-display-3/"><cite>CSS Display Module Level 3</cite></a>. 3 September 2021. CR. URL: <a href="https://www.w3.org/TR/css-display-3/">https://www.w3.org/TR/css-display-3/</a>
+   <dt id="biblio-css-inline-3">[CSS-INLINE-3]
+   <dd>Dave Cramer; Elika Etemad; Steve Zilles. <a href="https://www.w3.org/TR/css-inline-3/"><cite>CSS Inline Layout Module Level 3</cite></a>. 27 August 2020. WD. URL: <a href="https://www.w3.org/TR/css-inline-3/">https://www.w3.org/TR/css-inline-3/</a>
+   <dt id="biblio-css-page-floats-3">[CSS-PAGE-FLOATS-3]
+   <dd>Johannes Wilm. <a href="https://www.w3.org/TR/css-page-floats-3/"><cite>CSS Page Floats</cite></a>. 15 September 2015. WD. URL: <a href="https://www.w3.org/TR/css-page-floats-3/">https://www.w3.org/TR/css-page-floats-3/</a>
    <dt id="biblio-css-position-3">[CSS-POSITION-3]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-position-3/"><cite>CSS Positioned Layout Module Level 3</cite></a>. 16 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-position-3/">https://www.w3.org/TR/css-position-3/</a>
    <dt id="biblio-css-tables-3">[CSS-TABLES-3]
    <dd>François Remy; Greg Whitworth; David Baron. <a href="https://www.w3.org/TR/css-tables-3/"><cite>CSS Table Module Level 3</cite></a>. 27 July 2019. WD. URL: <a href="https://www.w3.org/TR/css-tables-3/">https://www.w3.org/TR/css-tables-3/</a>
+   <dt id="biblio-css21">[CSS21]
+   <dd>Bert Bos; et al. <a href="https://www.w3.org/TR/CSS21/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. 7 June 2011. REC. URL: <a href="https://www.w3.org/TR/CSS21/">https://www.w3.org/TR/CSS21/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-html">[HTML]
@@ -1142,6 +1254,13 @@ descendant of <var>box</var>:</p>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
+   <div class="issue"> This is meant to be a reproduction and elaboration
+	of the <a href="https://andreubotella.com/csswg-auto-build/css2/#elaborate-stacking-contexts">CSS2 "Elaborate Description of Stacking Contexts" algorithm</a>,
+	modified to account for where filter/clipping/compositing can happen,
+	the existence of top layers,
+	and the newer element/box/fragment hierarchy.
+	Non-editorial changes beyond the above
+	are unintentional and probably bugs. <a class="issue-return" href="#issue-5d913e30" title="Jump to section">↵</a></div>
    <div class="issue"> <a data-link-type="biblio" href="#biblio-css-contain-3">[CSS-CONTAIN-3]</a> should, apparently, block propagation,
 but I can’t find that in the spec.
 Figure out if I missed something,
@@ -1150,11 +1269,20 @@ and make it block propagation here. <a class="issue-return" href="#issue-6233971
    <div class="issue"> Does only the document layer have non-trivial whole-layer compositing? <a class="issue-return" href="#issue-8f014af0" title="Jump to section">↵</a></div>
    <div class="issue"> I think this needs more detail,
 and I think <a data-link-type="biblio" href="#biblio-css-tables-3">[CSS-TABLES-3]</a> provides it. <a class="issue-return" href="#issue-09b8ddab" title="Jump to section">↵</a></div>
+   <div class="issue"> Figure out if filtering/clipping/compositing
+		can take place at this step,
+		and if so,
+		exactly how to phrase it
+		since this step potentially paints from multiple elements. <a class="issue-return" href="#issue-daeeed74" title="Jump to section">↵</a></div>
+   <div class="issue"> While the backgrounds of bidirectional inlines
+		are painted in tree order,
+		they are positioned in visual order.
+		Is the positioning of inline backgrounds still undefined? <a class="issue-return" href="#issue-247e277e" title="Jump to section">↵</a></div>
   </div>
   <aside class="dfn-panel" data-for="css-canvas">
    <b><a href="#css-canvas">#css-canvas</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-css-canvas">2. Painting Order</a> <a href="#ref-for-css-canvas①">(2)</a> <a href="#ref-for-css-canvas②">(3)</a> <a href="#ref-for-css-canvas③">(4)</a> <a href="#ref-for-css-canvas④">(5)</a>
+    <li><a href="#ref-for-css-canvas">2. Painting Order</a> <a href="#ref-for-css-canvas①">(2)</a> <a href="#ref-for-css-canvas②">(3)</a> <a href="#ref-for-css-canvas③">(4)</a> <a href="#ref-for-css-canvas④">(5)</a> <a href="#ref-for-css-canvas⑤">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="css-root-canvas">
@@ -1190,7 +1318,13 @@ and I think <a data-link-type="biblio" href="#biblio-css-tables-3">[CSS-TABLES-3
   <aside class="dfn-panel" data-for="paint-a-stacking-context">
    <b><a href="#paint-a-stacking-context">#paint-a-stacking-context</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-paint-a-stacking-context">2. Painting Order</a> <a href="#ref-for-paint-a-stacking-context①">(2)</a>
+    <li><a href="#ref-for-paint-a-stacking-context">2. Painting Order</a> <a href="#ref-for-paint-a-stacking-context①">(2)</a> <a href="#ref-for-paint-a-stacking-context②">(3)</a> <a href="#ref-for-paint-a-stacking-context③">(4)</a> <a href="#ref-for-paint-a-stacking-context④">(5)</a> <a href="#ref-for-paint-a-stacking-context⑤">(6)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="paint-an-inline-run">
+   <b><a href="#paint-an-inline-run">#paint-an-inline-run</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-paint-an-inline-run">2. Painting Order</a> <a href="#ref-for-paint-an-inline-run①">(2)</a> <a href="#ref-for-paint-an-inline-run②">(3)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
