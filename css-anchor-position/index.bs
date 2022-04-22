@@ -1,0 +1,228 @@
+<pre class='metadata'>
+Title: CSS Anchor Positioning
+Shortname: css-anchor-position
+Level: 1
+Status: w3c/UD
+Group: csswg
+Work Status: exploring
+URL: http://tabatkins.github.io/specs/css-anchor-position
+Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/, w3cid 42199
+Abstract: This specification defines 'anchor positioning', where a positioned element can size and position itself relative to one or more "anchor elements" elsewhere on the page.
+</pre>
+
+Introduction {#intro}
+=====================
+
+Introduction here.
+
+<pre class=propdef>
+Name: anchor-name
+Value: none | <<dashed-ident>>
+Initial: none
+Inherited: no
+Animation Type: discrete
+</pre>
+
+If 'anchor-name' is not ''anchor-name/none'',
+the element is an <dfn local-lt="anchor">anchor element</dfn>,
+with an <dfn>anchor name</dfn> equal to the <<dashed-ident>>.
+
+------
+
+An [=absolutely-positioned=] element
+can use the <dfn>anchor()</dfn> function
+to refer to the position of one or more [=anchor elements=]
+when setting its [=inset properties=].
+The ''anchor()'' function resolves to a <<length>>.
+
+<pre class=prod>
+anchor() = anchor( <<dashed-ident>> [<<anchor-side>> | <<anchor-size>>], <<length-percentage>>? )
+<dfn><<anchor-side>></dfn> = top | left | right | bottom | start | end | self-start | self-end
+<dfn><<anchor-size>></dfn> = width | height | block | inline | self-block | self-inline
+</pre>
+
+The ''anchor()'' function has three arguments:
+
+* the <<dashed-ident>> specifies the [=anchor name=] of the [=anchor element=]
+	it will be drawing positioning information from.
+
+	Issue: Do we need the ability to refer to multiple anchors?
+	Like, leftmost among all with a given name,
+	or leftmost between two given names?
+	Think about if it's possible to do google-docs style comments
+	with minimal or zero scripting.
+
+* the <<anchor-side>> or <<anchor-size>> keywords
+	specify what information is being queried:
+	<<anchor-side>> keywords refer to the position of the corresponding side,
+	while <<anchor-size>> keywords refer to the distance between two opposing sides.
+
+	The logical <<anchor-side>> keywords
+	(''start'', ''end'', ''self-start'', and ''self-end'')
+	map to one of the physical keywords
+	depending on the property the function is being used in
+	(''top'' or ''bottom'' in the 'top' or 'bottom' properties, etc)
+	and the [=writing mode=] of either the element
+	(for ''self-start'' and ''self-end'')
+	or the [=writing mode=] of the element's [=containing block=]
+	(for ''start'' and ''end'').
+
+
+	The logical <<anchor-size>> keywords
+	(''block'', ''inline'', ''self-block'', and ''self-inline'')
+	map to one of the physical keywords
+	according to either the [=writing mode=] of the element
+	(for ''self-block'' and ''self-inline'')
+	or the [=writing mode=] of the element's [=containing block=]
+	(for ''block'' and ''inline'').
+
+	Issue: Do we need to refer to the anchor element's [=writing mode=]?
+	I think that's too unpredictable to actually do anything useful.
+
+* the optional <<length-percentage>> final argument is a fallback value.
+	If the ''anchor()'' represents an [=invalid anchor query=],
+	it resolves to this value
+	rather that determining its value as detailed below.
+
+	If omitted,
+	it defaults to ''0px''.
+
+
+The value of ''anchor()'' representing a [=valid anchor query=]
+varies based on the information being requested
+by the <<anchor-side>> or <<anchor-size>> keywords,
+and on which property it's used in.
+
+* For <<anchor-side>> keywords,
+	the ''anchor()'' function resolves to the <<length>>
+	that would align the relevant edge
+	of the positioned elements' [=inset-modified containing block=]
+	with the specified edge of the [=target anchor element=].
+
+	For this purpose, all scrolling containers
+	are treated as if scrolled to their initial scroll position,
+	and all transforms are ignored.
+
+	<div class=example>
+		For example,
+		in ''.bar { top: anchor(--foo, top); }'',
+		the ''anchor()'' will resolve to the length
+		that'll line up the <code>.bar</code> element's top edge
+		with the ''--foo'' anchor's top edge.
+
+		On the other hand,
+		in ''.bar { bottom: anchor(--foo, top); }'',
+		it will instead resolve to the length
+		that'll line up the <code>.bar</code> element's <em>bottom</em> edge
+		with the ''--foo'' anchor's top edge.
+
+		Since 'top' and 'bottom' values specify insets from different edges
+		(the top and bottom of the element's [=containing block=],
+		respectively),
+		the same ''anchor()'' will usually resolve to different lengths in each.
+	</div>
+
+* For <<anchor-size>> keywords,
+	the ''anchor()'' function resolves to the <<length>>
+	separating the relevant edges
+	(either left and right, or top and bottom,
+	whichever is in the specified axis)
+	of the [=target anchor element=].
+
+## Determining The Anchor
+
+The ''anchor()'' function specifies an [=anchor element=] by name.
+That name is not necessarily unique on the page, however.
+To determine the <dfn>target [=anchor element=]</dfn>,
+find the first element in tree order
+which satisfies the following conditions:
+
+* is an [=anchor element=] with the given [=anchor name=]
+* is a descendant of the querying element's [=containing block=],
+	or the quering element's [=containing block=] is the [=initial containing block=]
+* if it has the same [=containing block=] as the querying element,
+	it is not itself [=positioned=]
+* if it has a different [=containing block=] from the querying element,
+	the last [=containing block=] in its [=containing block chain=]
+	before reaching the querying element's [=containing block=]
+	is not, itself, [=positioned=]
+
+Note: There might not be any such element.
+
+
+## Anchor Queries
+
+The ''anchor()'' function represents an <dfn>anchor query</dfn>:
+a request for the position of one or more sides
+of one or more [=anchor elements=].
+
+[=Anchor queries=] are <dfn lt="valid anchor query|invalid anchor query" local-lt="invalid|valid">valid</dfn>
+only if all of the following conditions are true:
+
+* The ''anchor()'' function is used on an element that is [=absolutely-positioned=].
+* If the ''anchor()'' function specifies an <<anchor-side>> keyword,
+	it is used in an [=inset property=].
+* If the ''anchor()'' function specifies ''top'', ''left'', ''right'', or ''bottom'',
+	it is used on an [=inset property=] in the corresponding axis.
+* There is a [=target anchor element=].
+
+Note: As specified in the definition of ''anchor()'',
+an [=invalid anchor query=]
+causes the function to resolve to its fallback value instead.
+
+Position Fallback
+=================
+
+Anchor positioning,
+while powerful,
+can also be unpredictable.
+The [=anchor element=] might be anywhere on the page,
+so positioning an element in any particular fashion
+(such as above the anchor, or the right of the anchor)
+might result in the positioned element overflowing
+or being positioned partially off screen.
+
+''@position-set'' allows an author to specify multiple sets of properties,
+and try each set on the element one by one,
+selecting the first that results in the positioned element
+not overflowing its containing block.
+
+
+Issue: Fill in the @position-set stuff from <a href="https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/CSSAnchoredPositioning/explainer.md">the MS Edge explainer</a>.
+
+Sketch:
+
+<pre highlight=css>
+@position-set --foo {
+	@try {
+		top: ...;
+		width: ...;
+	}
+	@try {
+		other stuff
+	}
+}
+
+.foo {
+	position: fixed;
+	position-set: --foo;
+}
+</pre>
+
+* tries out each @try, in order, applying the properties specified in it
+	(treated as having the same cascade info as the style rule with 'position-set',
+	but a source position immediately following the style rule)
+* a @try is discarded if it results in the element overflowing its [=inset-modified containing block=]
+* If all @trys are discarded, stick with the last one
+	(it's usually going to be the "largest", most general size/position,
+	and thus the least bad in emergency situations)
+* Because evaluating @trys is expensive, especially when nested,
+	UAs can have impl-defined limits on how many attempts they do.
+	A top-level positioned element
+	(that is, an element using 'position-set'
+	with no ancestor doing the same)
+	must support at least five @trys
+	(enough to try a position on all four sides, then a final fallback),
+	but non-top-level have no required minimum.
+
+Names 100% tbd
