@@ -15,3 +15,4 @@ Live copies of the specs:
 * [CSS Cascade Control](https://tabatkins.github.io/specs/css-cascade-control/)
 * [@when/@else](https://tabatkins.github.io/specs/css-when-else/)
 * [CSS Stacking Context](https://tabatkins.github.io/specs/css-stacking-context-1/)
+* [CSS Anchor Positioning](https://tabatkins.github.io/specs/css-anchor-position/)
