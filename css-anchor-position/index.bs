@@ -192,8 +192,8 @@ Anchor-based Sizing: the ''anchor-size()'' function {#anchor-size}
 
 An [=absolutely-positioned=] element
 can use the <dfn>anchor-size()</dfn> function
+in its [=sizing properties=]
 to refer to the size of one or more [=anchor elements=].
-Unlike ''anchor()'', ''anchor-size()'' is not restricted to certain properties.
 The ''anchor-size()'' function resolves to a <<length>>.
 
 <pre class=prod>
@@ -297,6 +297,8 @@ only if all of the following conditions are true:
 * Their function is used on an element that is [=absolutely-positioned=].
 * If representing an ''anchor()'' function,
 	the function is being used in an [=inset property=].
+* If representing an ''anchor-size()'' function,
+	the function is being used in a [=sizing property=].
 * There is a [=target anchor element=].
 
 Note: As specified in the definition of ''anchor()'',

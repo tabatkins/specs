@@ -6,9 +6,9 @@
   <meta content="w3c/UD" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 616204878, updated Tue Mar 8 15:25:09 2022 -0800" name="generator">
+  <meta content="Bikeshed version 892b2a4c8, updated Thu Mar 31 08:06:19 2022 -0700" name="generator">
   <link href="http://tabatkins.github.io/specs/css-anchor-position" rel="canonical">
-  <meta content="ae80d8d2c795ba7728c16024e8037770aad7752e" name="document-revision">
+  <meta content="98e5673eba7da7700523a46dcfbd0013dfa3aa1f" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -575,7 +575,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Anchor Positioning</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2022-05-10">10 May 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2022-05-11">11 May 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -804,13 +804,12 @@ and all transforms are ignored.</p>
    <h3 class="heading settled" data-level="2.2" id="anchor-size"><span class="secno">2.2. </span><span class="content">Anchor-based Sizing: the <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size①">anchor-size()</a> function</span><a class="self-link" href="#anchor-size"></a></h3>
    <p>An <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position④">absolutely-positioned</a> element
 can use the <dfn class="dfn-paneled css" data-dfn-type="function" data-export id="funcdef-anchor-size">anchor-size()</dfn> function
-to refer to the size of one or more <a data-link-type="dfn" href="#anchor-element" id="ref-for-anchor-element④">anchor elements</a>.
-Unlike <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor⑨">anchor()</a>, <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size②">anchor-size()</a> is not restricted to certain properties.
-The <span class="css" id="ref-for-funcdef-anchor-size③">anchor-size()</span> function resolves to a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value③" title="Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | q | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw">&lt;length></a>.</p>
+in its <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#sizing-property" id="ref-for-sizing-property">sizing properties</a> to refer to the size of one or more <a data-link-type="dfn" href="#anchor-element" id="ref-for-anchor-element④">anchor elements</a>.
+The <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size②">anchor-size()</a> function resolves to a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value③" title="Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | q | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw">&lt;length></a>.</p>
 <pre class="prod">anchor-size() = anchor( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident②">&lt;dashed-ident></a> <a class="production" data-link-type="type" href="#typedef-anchor-size" id="ref-for-typedef-anchor-size">&lt;anchor-size></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-comma" id="ref-for-comb-comma①">,</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage②">&lt;length-percentage></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> )
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-anchor-size"><a class="production" data-link-type="type" href="#typedef-anchor-size" id="ref-for-typedef-anchor-size①">&lt;anchor-size></a></dfn> = width <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> height <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⓪">|</a> block <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①①">|</a> inline <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①②">|</a> self-block <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①③">|</a> self-inline
 </pre>
-   <p>The <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size④">anchor-size()</a> function is similar to <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①⓪">anchor()</a>,
+   <p>The <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size③">anchor-size()</a> function is similar to <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor⑨">anchor()</a>,
 and takes the same arguments,
 save that the <a class="production css" data-link-type="type" href="#typedef-anchor-side" id="ref-for-typedef-anchor-side⑤">&lt;anchor-side></a> keywords are replaced with <a class="production css" data-link-type="type" href="#typedef-anchor-size" id="ref-for-typedef-anchor-size②">&lt;anchor-size></a>,
 referring to the distance between two opposing sides.</p>
@@ -819,7 +818,7 @@ referring to the distance between two opposing sides.</p>
 refer to the width and height,
 respectively,
 of the <a data-link-type="dfn" href="#target-anchor-element" id="ref-for-target-anchor-element②">target anchor element</a>.
-Unlike <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①①">anchor()</a>, there is no restriction on having to match axises;
+Unlike <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①⓪">anchor()</a>, there is no restriction on having to match axises;
 for example, <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width: anchor-size(--foo height);</a> is valid.</p>
    <p>The logical <a class="production css" data-link-type="type" href="#typedef-anchor-size" id="ref-for-typedef-anchor-size④">&lt;anchor-size></a> keywords
 (<dfn class="dfn-paneled css" data-dfn-for="anchor-size()" data-dfn-type="value" data-export id="valdef-anchor-size-block">block</dfn>, <dfn class="dfn-paneled css" data-dfn-for="anchor-size()" data-dfn-type="value" data-export id="valdef-anchor-size-inline">inline</dfn>, <dfn class="dfn-paneled css" data-dfn-for="anchor-size()" data-dfn-type="value" data-export id="valdef-anchor-size-self-block">self-block</dfn>,
@@ -828,7 +827,7 @@ map to one of the physical keywords
 according to either the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#writing-mode" id="ref-for-writing-mode③">writing mode</a> of the element
 (for <a class="css" data-link-type="maybe" href="#valdef-anchor-size-self-block" id="ref-for-valdef-anchor-size-self-block">self-block</a> and <a class="css" data-link-type="maybe" href="#valdef-anchor-size-self-inline" id="ref-for-valdef-anchor-size-self-inline">self-inline</a>)
 or the <span id="ref-for-writing-mode④">writing mode</span> of the element’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#containing-block" id="ref-for-containing-block⑤">containing block</a> (for <a class="css" data-link-type="maybe" href="#valdef-anchor-size-block" id="ref-for-valdef-anchor-size-block">block</a> and <a class="css" data-link-type="maybe" href="#valdef-anchor-size-inline" id="ref-for-valdef-anchor-size-inline">inline</a>).</p>
-   <p>An <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size⑤">anchor-size()</a> function representing a <a data-link-type="dfn" href="#valid-anchor-query" id="ref-for-valid-anchor-query②">valid anchor query</a> resolves to the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value④" title="Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | q | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw">&lt;length></a> separating the relevant border edges
+   <p>An <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size④">anchor-size()</a> function representing a <a data-link-type="dfn" href="#valid-anchor-query" id="ref-for-valid-anchor-query②">valid anchor query</a> resolves to the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value④" title="Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | q | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw">&lt;length></a> separating the relevant border edges
 (either left and right, or top and bottom,
 whichever is in the specified axis)
 of the <a data-link-type="dfn" href="#target-anchor-element" id="ref-for-target-anchor-element③">target anchor element</a>.</p>
@@ -894,11 +893,11 @@ it is not itself <a data-link-type="dfn" href="https://drafts.csswg.org/css-posi
 the last <span id="ref-for-containing-block①⓪">containing block</span> in its <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#containing-block-chain" id="ref-for-containing-block-chain">containing block chain</a> before reaching the querying element’s <span id="ref-for-containing-block①①">containing block</span> is not, itself, <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#positioned-box" id="ref-for-positioned-box①">positioned</a></p>
    </ul>
    <p class="note" role="note"><span>Note:</span> There might not be any such element.</p>
-   <p class="note" role="note"><span>Note:</span> These conditions ensure that the <a data-link-type="dfn" href="#anchor-element" id="ref-for-anchor-element⑨">anchor element</a> is laid out strictly before the element using <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①②">anchor()</a> or <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size⑥">anchor-size()</a>,
+   <p class="note" role="note"><span>Note:</span> These conditions ensure that the <a data-link-type="dfn" href="#anchor-element" id="ref-for-anchor-element⑨">anchor element</a> is laid out strictly before the element using <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①①">anchor()</a> or <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size⑤">anchor-size()</a>,
 so there is no possible circularity between the position and/or size
 of the two elements.</p>
    <h3 class="heading settled" data-level="2.4" id="queries"><span class="secno">2.4. </span><span class="content">Anchor Queries</span><a class="self-link" href="#queries"></a></h3>
-   <p>The <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①③">anchor()</a> and <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size⑦">anchor-size()</a> functions
+   <p>The <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①②">anchor()</a> and <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size⑥">anchor-size()</a> functions
 represent an <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="anchor-query">anchor query</dfn>:
 a request for the position of one or more sides
 of one or more <a data-link-type="dfn" href="#anchor-element" id="ref-for-anchor-element①⓪">anchor elements</a>.</p>
@@ -907,12 +906,15 @@ of one or more <a data-link-type="dfn" href="#anchor-element" id="ref-for-anchor
     <li data-md>
      <p>Their function is used on an element that is <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position⑤">absolutely-positioned</a>.</p>
     <li data-md>
-     <p>If representing an <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①④">anchor()</a> function,
+     <p>If representing an <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①③">anchor()</a> function,
 the function is being used in an <a data-link-type="dfn" href="https://drafts.csswg.org/css-logical-1/#inset-properties" id="ref-for-inset-properties③">inset property</a>.</p>
+    <li data-md>
+     <p>If representing an <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size⑦">anchor-size()</a> function,
+the function is being used in a <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#sizing-property" id="ref-for-sizing-property①">sizing property</a>.</p>
     <li data-md>
      <p>There is a <a data-link-type="dfn" href="#target-anchor-element" id="ref-for-target-anchor-element④">target anchor element</a>.</p>
    </ul>
-   <p class="note" role="note"><span>Note:</span> As specified in the definition of <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①⑤">anchor()</a>,
+   <p class="note" role="note"><span>Note:</span> As specified in the definition of <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①④">anchor()</a>,
 an <a data-link-type="dfn" href="#valid-anchor-query" id="ref-for-valid-anchor-query③">invalid anchor query</a> causes the function to resolve to its fallback value instead.</p>
    <h2 class="heading settled" data-level="3" id="fallback"><span class="secno">3. </span><span class="content">Fallback Sizing/Positioning</span><a class="self-link" href="#fallback"></a></h2>
    <p>Anchor positioning,
@@ -1000,7 +1002,7 @@ the last one in document order "wins".</p>
     <li data-md>
      <p><a data-link-type="dfn" href="https://drafts.csswg.org/css-logical-1/#inset-properties" id="ref-for-inset-properties④">inset properties</a></p>
     <li data-md>
-     <p><a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#sizing-property" id="ref-for-sizing-property">sizing properties</a></p>
+     <p><a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#sizing-property" id="ref-for-sizing-property②">sizing properties</a></p>
    </ul>
    <p class="issue" id="issue-788a7647"><a class="self-link" href="#issue-788a7647"></a> What exactly are the constraints that determine what’s allowed here?
 It would probably be useful to allow the <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#box-alignment-properties" id="ref-for-box-alignment-properties①">box alignment properties</a>,
@@ -1357,7 +1359,9 @@ must have a limit of <em>at least</em> five entries.</p>
   <aside class="dfn-panel" data-for="term-for-sizing-property">
    <a href="https://drafts.csswg.org/css-sizing-3/#sizing-property">https://drafts.csswg.org/css-sizing-3/#sizing-property</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-sizing-property">3.2. The @position-fallback Rule</a>
+    <li><a href="#ref-for-sizing-property">2.2. Anchor-based Sizing: the anchor-size() function</a>
+    <li><a href="#ref-for-sizing-property①">2.4. Anchor Queries</a>
+    <li><a href="#ref-for-sizing-property②">3.2. The @position-fallback Rule</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-width">
@@ -1637,9 +1641,9 @@ without higher-cascade rules overriding some (or all!) of the properties. <a cla
    <ul>
     <li><a href="#ref-for-funcdef-anchor">2. Anchoring</a>
     <li><a href="#ref-for-funcdef-anchor①">2.1. Anchor-based Positioning: the anchor() function</a> <a href="#ref-for-funcdef-anchor②">(2)</a> <a href="#ref-for-funcdef-anchor③">(3)</a> <a href="#ref-for-funcdef-anchor④">(4)</a> <a href="#ref-for-funcdef-anchor⑤">(5)</a> <a href="#ref-for-funcdef-anchor⑥">(6)</a> <a href="#ref-for-funcdef-anchor⑦">(7)</a> <a href="#ref-for-funcdef-anchor⑧">(8)</a>
-    <li><a href="#ref-for-funcdef-anchor⑨">2.2. Anchor-based Sizing: the anchor-size() function</a> <a href="#ref-for-funcdef-anchor①⓪">(2)</a> <a href="#ref-for-funcdef-anchor①①">(3)</a>
-    <li><a href="#ref-for-funcdef-anchor①②">2.3. Determining The Anchor: the anchor-name property</a>
-    <li><a href="#ref-for-funcdef-anchor①③">2.4. Anchor Queries</a> <a href="#ref-for-funcdef-anchor①④">(2)</a> <a href="#ref-for-funcdef-anchor①⑤">(3)</a>
+    <li><a href="#ref-for-funcdef-anchor⑨">2.2. Anchor-based Sizing: the anchor-size() function</a> <a href="#ref-for-funcdef-anchor①⓪">(2)</a>
+    <li><a href="#ref-for-funcdef-anchor①①">2.3. Determining The Anchor: the anchor-name property</a>
+    <li><a href="#ref-for-funcdef-anchor①②">2.4. Anchor Queries</a> <a href="#ref-for-funcdef-anchor①③">(2)</a> <a href="#ref-for-funcdef-anchor①④">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="typedef-anchor-side">
@@ -1689,9 +1693,9 @@ without higher-cascade rules overriding some (or all!) of the properties. <a cla
    <b><a href="#funcdef-anchor-size">#funcdef-anchor-size</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-funcdef-anchor-size">2. Anchoring</a>
-    <li><a href="#ref-for-funcdef-anchor-size①">2.2. Anchor-based Sizing: the anchor-size() function</a> <a href="#ref-for-funcdef-anchor-size②">(2)</a> <a href="#ref-for-funcdef-anchor-size③">(3)</a> <a href="#ref-for-funcdef-anchor-size④">(4)</a> <a href="#ref-for-funcdef-anchor-size⑤">(5)</a>
-    <li><a href="#ref-for-funcdef-anchor-size⑥">2.3. Determining The Anchor: the anchor-name property</a>
-    <li><a href="#ref-for-funcdef-anchor-size⑦">2.4. Anchor Queries</a>
+    <li><a href="#ref-for-funcdef-anchor-size①">2.2. Anchor-based Sizing: the anchor-size() function</a> <a href="#ref-for-funcdef-anchor-size②">(2)</a> <a href="#ref-for-funcdef-anchor-size③">(3)</a> <a href="#ref-for-funcdef-anchor-size④">(4)</a>
+    <li><a href="#ref-for-funcdef-anchor-size⑤">2.3. Determining The Anchor: the anchor-name property</a>
+    <li><a href="#ref-for-funcdef-anchor-size⑥">2.4. Anchor Queries</a> <a href="#ref-for-funcdef-anchor-size⑦">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="typedef-anchor-size">
