@@ -1,0 +1,1688 @@
+<!doctype html><html lang="en">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <title>CSS Foo Module Level 1</title>
+  <meta content="ED" name="w3c-status">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
+  <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
+  <meta content="Bikeshed version 892b2a4c8, updated Thu Mar 31 08:06:19 2022 -0700" name="generator">
+  <link href="https://www.w3.org/TR/css-foo/" rel="canonical">
+  <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
+  <meta content="895d10327536de6f85d34cb48a4cacbac0af6aa7" name="document-revision">
+<style>
+/* Put nice boxes around each algorithm. */
+[data-algorithm]:not(.heading) {
+	padding: .5em;
+	border: thin solid #ddd; border-radius: .5em;
+	margin: .5em calc(-0.5em - 1px);
+}
+[data-algorithm]:not(.heading) > :first-child {
+	margin-top: 0;
+}
+[data-algorithm]:not(.heading) > :last-child {
+	margin-bottom: 0;
+}
+[data-algorithm] [data-algorithm] {
+		margin: 1em 0;
+}
+</style>
+<style>/* style-autolinks */
+
+.css.css, .property.property, .descriptor.descriptor {
+    color: var(--a-normal-text);
+    font-size: inherit;
+    font-family: inherit;
+}
+.css::before, .property::before, .descriptor::before {
+    content: "‘";
+}
+.css::after, .property::after, .descriptor::after {
+    content: "’";
+}
+.property, .descriptor {
+    /* Don't wrap property and descriptor names */
+    white-space: nowrap;
+}
+.type { /* CSS value <type> */
+    font-style: italic;
+}
+pre .property::before, pre .property::after {
+    content: "";
+}
+[data-link-type="property"]::before,
+[data-link-type="propdesc"]::before,
+[data-link-type="descriptor"]::before,
+[data-link-type="value"]::before,
+[data-link-type="function"]::before,
+[data-link-type="at-rule"]::before,
+[data-link-type="selector"]::before,
+[data-link-type="maybe"]::before {
+    content: "‘";
+}
+[data-link-type="property"]::after,
+[data-link-type="propdesc"]::after,
+[data-link-type="descriptor"]::after,
+[data-link-type="value"]::after,
+[data-link-type="function"]::after,
+[data-link-type="at-rule"]::after,
+[data-link-type="selector"]::after,
+[data-link-type="maybe"]::after {
+    content: "’";
+}
+
+[data-link-type].production::before,
+[data-link-type].production::after,
+.prod [data-link-type]::before,
+.prod [data-link-type]::after {
+    content: "";
+}
+
+[data-link-type=element],
+[data-link-type=element-attr] {
+    font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    font-size: .9em;
+}
+[data-link-type=element]::before { content: "<" }
+[data-link-type=element]::after  { content: ">" }
+
+[data-link-type=biblio] {
+    white-space: pre;
+}</style>
+<style>/* style-colors */
+
+/* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
+:root {
+    color-scheme: light dark;
+
+    --text: black;
+    --bg: white;
+
+    --unofficial-watermark: url(https://www.w3.org/StyleSheets/TR/2016/logos/UD-watermark);
+
+    --logo-bg: #1a5e9a;
+    --logo-active-bg: #c00;
+    --logo-text: white;
+
+    --tocnav-normal-text: #707070;
+    --tocnav-normal-bg: var(--bg);
+    --tocnav-hover-text: var(--tocnav-normal-text);
+    --tocnav-hover-bg: #f8f8f8;
+    --tocnav-active-text: #c00;
+    --tocnav-active-bg: var(--tocnav-normal-bg);
+
+    --tocsidebar-text: var(--text);
+    --tocsidebar-bg: #f7f8f9;
+    --tocsidebar-shadow: rgba(0,0,0,.1);
+    --tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+    --toclink-text: var(--text);
+    --toclink-underline: #3980b5;
+    --toclink-visited-text: var(--toclink-text);
+    --toclink-visited-underline: #054572;
+
+    --heading-text: #005a9c;
+
+    --hr-text: var(--text);
+
+    --algo-border: #def;
+
+    --del-text: red;
+    --del-bg: transparent;
+    --ins-text: #080;
+    --ins-bg: transparent;
+
+    --a-normal-text: #034575;
+    --a-normal-underline: #bbb;
+    --a-visited-text: var(--a-normal-text);
+    --a-visited-underline: #707070;
+    --a-hover-bg: rgba(75%, 75%, 75%, .25);
+    --a-active-text: #c00;
+    --a-active-underline: #c00;
+
+    --blockquote-border: silver;
+    --blockquote-bg: transparent;
+    --blockquote-text: currentcolor;
+
+    --issue-border: #e05252;
+    --issue-bg: #fbe9e9;
+    --issue-text: var(--text);
+    --issueheading-text: #831616;
+
+    --example-border: #e0cb52;
+    --example-bg: #fcfaee;
+    --example-text: var(--text);
+    --exampleheading-text: #574b0f;
+
+    --note-border: #52e052;
+    --note-bg: #e9fbe9;
+    --note-text: var(--text);
+    --noteheading-text: hsl(120, 70%, 30%);
+    --notesummary-underline: silver;
+
+    --assertion-border: #aaa;
+    --assertion-bg: #eee;
+    --assertion-text: black;
+
+    --advisement-border: orange;
+    --advisement-bg: #fec;
+    --advisement-text: var(--text);
+    --advisementheading-text: #b35f00;
+
+    --warning-border: red;
+    --warning-bg: hsla(40,100%,50%,0.95);
+    --warning-text: var(--text);
+
+    --amendment-border: #330099;
+    --amendment-bg: #F5F0FF;
+    --amendment-text: var(--text);
+    --amendmentheading-text: #220066;
+
+    --def-border: #8ccbf2;
+    --def-bg: #def;
+    --def-text: var(--text);
+    --defrow-border: #bbd7e9;
+
+    --datacell-border: silver;
+
+    --indexinfo-text: #707070;
+
+    --indextable-hover-text: black;
+    --indextable-hover-bg: #f7f8f9;
+
+    --outdatedspec-bg: rgba(0, 0, 0, .5);
+    --outdatedspec-text: black;
+    --outdated-bg: maroon;
+    --outdated-text: white;
+    --outdated-shadow: red;
+
+    --editedrec-bg: darkorange;
+}</style>
+<style>/* style-counters */
+
+body {
+    counter-reset: example figure issue;
+}
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
+}
+
+.example {
+    counter-increment: example;
+}
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example" counter(example);
+}
+
+figcaption {
+    counter-increment: figure;
+}
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}</style>
+<style>/* style-dfn-panel */
+
+:root {
+    --dfnpanel-bg: #ddd;
+    --dfnpanel-text: var(--text);
+}
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    height: auto;
+    width: -webkit-fit-content;
+    width: fit-content;
+    max-width: 300px;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--dfnpanel-bg);
+    color: var(--dfnpanel-text);
+    border: outset 0.2em;
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: var(--dfnpanel-text); }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0; }
+.dfn-panel li { list-style: inside; }
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: .5em;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+}
+
+.dfn-paneled { cursor: pointer; }
+</style>
+<style>/* style-issues */
+
+a[href].issue-return {
+    float: right;
+    float: inline-end;
+    color: var(--issueheading-text);
+    font-weight: bold;
+    text-decoration: none;
+}
+</style>
+<style>/* style-md-lists */
+
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
+}
+[data-md] > :last-child {
+    margin-bottom: 0;
+}</style>
+<style>/* style-selflinks */
+
+:root {
+    --selflink-text: white;
+    --selflink-bg: gray;
+    --selflink-hover-text: black;
+}
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
+}
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: var(--selflink-bg);
+    color: var(--selflink-text);
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: var(--selflink-hover-text);
+}
+
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }
+</style>
+<style>/* style-syntax-highlighting */
+
+            pre.idl.highlight {
+                background: var(--borderedblock-bg, var(--def-bg));
+            }
+            
+code.highlight { padding: .1em; border-radius: .3em; }
+pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
+
+.highlight:not(.idl) { background: rgba(0, 0, 0, .03); }
+c-[a] { color: #990055 } /* Keyword.Declaration */
+c-[b] { color: #990055 } /* Keyword.Type */
+c-[c] { color: #708090 } /* Comment */
+c-[d] { color: #708090 } /* Comment.Multiline */
+c-[e] { color: #0077aa } /* Name.Attribute */
+c-[f] { color: #669900 } /* Name.Tag */
+c-[g] { color: #222222 } /* Name.Variable */
+c-[k] { color: #990055 } /* Keyword */
+c-[l] { color: #000000 } /* Literal */
+c-[m] { color: #000000 } /* Literal.Number */
+c-[n] { color: #0077aa } /* Name */
+c-[o] { color: #999999 } /* Operator */
+c-[p] { color: #999999 } /* Punctuation */
+c-[s] { color: #a67f59 } /* Literal.String */
+c-[t] { color: #a67f59 } /* Literal.String.Single */
+c-[u] { color: #a67f59 } /* Literal.String.Double */
+c-[cp] { color: #708090 } /* Comment.Preproc */
+c-[c1] { color: #708090 } /* Comment.Single */
+c-[cs] { color: #708090 } /* Comment.Special */
+c-[kc] { color: #990055 } /* Keyword.Constant */
+c-[kn] { color: #990055 } /* Keyword.Namespace */
+c-[kp] { color: #990055 } /* Keyword.Pseudo */
+c-[kr] { color: #990055 } /* Keyword.Reserved */
+c-[ld] { color: #000000 } /* Literal.Date */
+c-[nc] { color: #0077aa } /* Name.Class */
+c-[no] { color: #0077aa } /* Name.Constant */
+c-[nd] { color: #0077aa } /* Name.Decorator */
+c-[ni] { color: #0077aa } /* Name.Entity */
+c-[ne] { color: #0077aa } /* Name.Exception */
+c-[nf] { color: #0077aa } /* Name.Function */
+c-[nl] { color: #0077aa } /* Name.Label */
+c-[nn] { color: #0077aa } /* Name.Namespace */
+c-[py] { color: #0077aa } /* Name.Property */
+c-[ow] { color: #999999 } /* Operator.Word */
+c-[mb] { color: #000000 } /* Literal.Number.Bin */
+c-[mf] { color: #000000 } /* Literal.Number.Float */
+c-[mh] { color: #000000 } /* Literal.Number.Hex */
+c-[mi] { color: #000000 } /* Literal.Number.Integer */
+c-[mo] { color: #000000 } /* Literal.Number.Oct */
+c-[sb] { color: #a67f59 } /* Literal.String.Backtick */
+c-[sc] { color: #a67f59 } /* Literal.String.Char */
+c-[sd] { color: #a67f59 } /* Literal.String.Doc */
+c-[se] { color: #a67f59 } /* Literal.String.Escape */
+c-[sh] { color: #a67f59 } /* Literal.String.Heredoc */
+c-[si] { color: #a67f59 } /* Literal.String.Interpol */
+c-[sx] { color: #a67f59 } /* Literal.String.Other */
+c-[sr] { color: #a67f59 } /* Literal.String.Regex */
+c-[ss] { color: #a67f59 } /* Literal.String.Symbol */
+c-[vc] { color: #0077aa } /* Name.Variable.Class */
+c-[vg] { color: #0077aa } /* Name.Variable.Global */
+c-[vi] { color: #0077aa } /* Name.Variable.Instance */
+c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
+</style>
+<style>/* style-var-click-highlighting */
+
+    var { cursor: pointer; }
+    var.selected0 { background-color: #F4D200; box-shadow: 0 0 0 2px #F4D200; }
+    var.selected1 { background-color: #FF87A2; box-shadow: 0 0 0 2px #FF87A2; }
+    var.selected2 { background-color: #96E885; box-shadow: 0 0 0 2px #96E885; }
+    var.selected3 { background-color: #3EEED2; box-shadow: 0 0 0 2px #3EEED2; }
+    var.selected4 { background-color: #EACFB6; box-shadow: 0 0 0 2px #EACFB6; }
+    var.selected5 { background-color: #82DDFF; box-shadow: 0 0 0 2px #82DDFF; }
+    var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
+    </style>
+<style>/* style-wpt */
+
+:root {
+    --wpt-border: hsl(0, 0%, 60%);
+    --wpt-bg: hsl(0, 0%, 95%);
+    --wpt-text: var(--text);
+    --wptheading-text: hsl(0, 0%, 30%);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --wpt-border: hsl(0, 0%, 30%);
+        --wpt-bg: var(--borderedblock-bg);
+        --wpt-text: var(--text);
+        --wptheading-text: hsl(0, 0%, 60%);
+    }
+}
+.wpt-tests-block {
+    list-style: none;
+    border-left: .5em solid var(--wpt-border);
+    background: var(--wpt-bg);
+    color: var(--wpt-text);
+    margin: 1em auto;
+    padding: .5em;
+}
+.wpt-tests-block summary {
+    color: var(--wptheading-text);
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.wpt-tests-block summary::marker{
+    color: var(--wpt-border);
+}
+.wpt-tests-block summary:hover::marker{
+    color: var(--wpt-text);
+}
+/*
+   The only content  of a wpt test block in its closed state is the <summary>,
+   which contains the word TESTS,
+   and that is absolutely positioned.
+   In that closed state, wpt test blocks are styled
+   to have a top margin whose height is exactly equal
+   to the height of the absolutely positioned <summary>,
+   and no other background/padding/margin/border.
+   The wpt test block elements will therefore allow the maring
+   of the previous/next block elements
+   to collapse through them;
+   if this combined margin would be larger than its own top margin,
+   it stays as is,
+   and therefore the pre-existing vertical rhythm of the document is undisturbed.
+   If that combined margin would be smaller, it is grown to that size.
+   This means that the wpt test block ensures
+   that there's always enough vertical space to insert the summary,
+   without adding more than is needed.
+*/
+.wpt-tests-block:not([open]){
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 0.75em;
+    line-height: 1;
+    position: relative;
+    margin: 1em 0 0;
+}
+.wpt-tests-block:not([open]) summary {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+/*
+   It is possible that both the last child of a block element
+   and the block element itself
+   would be annotated with a <wpt> block each.
+   If the block element has a padding or a border,
+   that's fine, but otherwise
+   the bottom margin of the block and of its last child would collapse
+   and both <wpt> elements would overlap, being both placed there.
+   To avoid that, add 1px of padding to the <wpt> element annotating the last child
+   to prevent the bottom margin of the block and of its last child from collapsing
+   (and as much negative margin,
+   as wel only want to prevent margin collapsing,
+   but are not trying to actually take more space).
+*/
+.wpt-tests-block:not([open]):last-child {
+    padding-bottom: 1px;
+    margin-bottom: -1px;
+}
+/*
+   Exception to the previous rule:
+   don't do that in non-last list items,
+   because it's not necessary,
+   and would therefore consume more space than strictly needed.
+   Lists must have list items as children, not <wpt> elements,
+   so a <wpt> element cannot be a sibling of a list item,
+   and the collision that the previous rule avoids cannot happen.
+*/
+li:not(:last-child) > .wpt-tests-block:not([open]):last-child,
+dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+.wpt-tests-block:not([open]):not(:hover){
+    opacity: 0.5;
+}
+.wpt-tests-list {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+    grid-template-columns: 1fr max-content auto auto;
+    grid-column-gap: .5em;
+}
+.wpt-tests-block hr:last-child {
+    display: none;
+}
+.wpt-test {
+    display: contents;
+}
+.wpt-test > a {
+    text-decoration: underline;
+    border: none;
+}
+.wpt-test > .wpt-name { grid-column: 1; }
+.wpt-test > .wpt-results { grid-column: 2; }
+.wpt-test > .wpt-live { grid-column: 3; }
+.wpt-test > .wpt-source { grid-column: 4; }
+
+.wpt-test > .wpt-results {
+    display: flex;
+    gap: .1em;
+}
+.wpt-test .wpt-result {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    position: relative;
+}
+</style>
+<style>/* style-darkmode */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text: #ddd;
+        --bg: black;
+
+        --unofficial-watermark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cg fill='%23100808' transform='translate(200 200) rotate(-45) translate(-200 -200)' stroke='%23100808' stroke-width='3'%3E%3Ctext x='50%25' y='220' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EUNOFFICIAL%3C/text%3E%3Ctext x='50%25' y='305' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EDRAFT%3C/text%3E%3C/g%3E%3C/svg%3E");
+
+        --logo-bg: #1a5e9a;
+        --logo-active-bg: #c00;
+        --logo-text: white;
+
+        --tocnav-normal-text: #999;
+        --tocnav-normal-bg: var(--bg);
+        --tocnav-hover-text: var(--tocnav-normal-text);
+        --tocnav-hover-bg: #080808;
+        --tocnav-active-text: #f44;
+        --tocnav-active-bg: var(--tocnav-normal-bg);
+
+        --tocsidebar-text: var(--text);
+        --tocsidebar-bg: #080808;
+        --tocsidebar-shadow: rgba(255,255,255,.1);
+        --tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+        --toclink-text: var(--text);
+        --toclink-underline: #6af;
+        --toclink-visited-text: var(--toclink-text);
+        --toclink-visited-underline: #054572;
+
+        --heading-text: #8af;
+
+        --hr-text: var(--text);
+
+        --algo-border: #456;
+
+        --del-text: #f44;
+        --del-bg: transparent;
+        --ins-text: #4a4;
+        --ins-bg: transparent;
+
+        --a-normal-text: #6af;
+        --a-normal-underline: #555;
+        --a-visited-text: var(--a-normal-text);
+        --a-visited-underline: var(--a-normal-underline);
+        --a-hover-bg: rgba(25%, 25%, 25%, .2);
+        --a-active-text: #f44;
+        --a-active-underline: var(--a-active-text);
+
+        --borderedblock-bg: rgba(255, 255, 255, .05);
+
+        --blockquote-border: silver;
+        --blockquote-bg: var(--borderedblock-bg);
+        --blockquote-text: currentcolor;
+
+        --issue-border: #e05252;
+        --issue-bg: var(--borderedblock-bg);
+        --issue-text: var(--text);
+        --issueheading-text: hsl(0deg, 70%, 70%);
+
+        --example-border: hsl(50deg, 90%, 60%);
+        --example-bg: var(--borderedblock-bg);
+        --example-text: var(--text);
+        --exampleheading-text: hsl(50deg, 70%, 70%);
+
+        --note-border: hsl(120deg, 100%, 35%);
+        --note-bg: var(--borderedblock-bg);
+        --note-text: var(--text);
+        --noteheading-text: hsl(120, 70%, 70%);
+        --notesummary-underline: silver;
+
+        --assertion-border: #444;
+        --assertion-bg: var(--borderedblock-bg);
+        --assertion-text: var(--text);
+
+        --advisement-border: orange;
+        --advisement-bg: #222218;
+        --advisement-text: var(--text);
+        --advisementheading-text: #f84;
+
+        --warning-border: red;
+        --warning-bg: hsla(40,100%,20%,0.95);
+        --warning-text: var(--text);
+
+        --amendment-border: #330099;
+        --amendment-bg: #080010;
+        --amendment-text: var(--text);
+        --amendmentheading-text: #cc00ff;
+
+        --def-border: #8ccbf2;
+        --def-bg: #080818;
+        --def-text: var(--text);
+        --defrow-border: #136;
+
+        --datacell-border: silver;
+
+        --indexinfo-text: #aaa;
+
+        --indextable-hover-text: var(--text);
+        --indextable-hover-bg: #181818;
+
+        --outdatedspec-bg: rgba(255, 255, 255, .5);
+        --outdatedspec-text: black;
+        --outdated-bg: maroon;
+        --outdated-text: white;
+        --outdated-shadow: red;
+
+        --editedrec-bg: darkorange;
+    }
+    /* In case a transparent-bg image doesn't expect to be on a dark bg,
+       which is quite common in practice... */
+    img { background: white; }
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --selflink-text: black;
+        --selflink-bg: silver;
+        --selflink-hover-text: white;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --dfnpanel-bg: #222;
+        --dfnpanel-text: var(--text);
+    }
+}
+@media (prefers-color-scheme: dark) {
+    .highlight:not(.idl) { background: rgba(255, 255, 255, .05); }
+
+    c-[a] { color: #d33682 } /* Keyword.Declaration */
+    c-[b] { color: #d33682 } /* Keyword.Type */
+    c-[c] { color: #2aa198 } /* Comment */
+    c-[d] { color: #2aa198 } /* Comment.Multiline */
+    c-[e] { color: #268bd2 } /* Name.Attribute */
+    c-[f] { color: #b58900 } /* Name.Tag */
+    c-[g] { color: #cb4b16 } /* Name.Variable */
+    c-[k] { color: #d33682 } /* Keyword */
+    c-[l] { color: #657b83 } /* Literal */
+    c-[m] { color: #657b83 } /* Literal.Number */
+    c-[n] { color: #268bd2 } /* Name */
+    c-[o] { color: #657b83 } /* Operator */
+    c-[p] { color: #657b83 } /* Punctuation */
+    c-[s] { color: #6c71c4 } /* Literal.String */
+    c-[t] { color: #6c71c4 } /* Literal.String.Single */
+    c-[u] { color: #6c71c4 } /* Literal.String.Double */
+    c-[ch] { color: #2aa198 } /* Comment.Hashbang */
+    c-[cp] { color: #2aa198 } /* Comment.Preproc */
+    c-[cpf] { color: #2aa198 } /* Comment.PreprocFile */
+    c-[c1] { color: #2aa198 } /* Comment.Single */
+    c-[cs] { color: #2aa198 } /* Comment.Special */
+    c-[kc] { color: #d33682 } /* Keyword.Constant */
+    c-[kn] { color: #d33682 } /* Keyword.Namespace */
+    c-[kp] { color: #d33682 } /* Keyword.Pseudo */
+    c-[kr] { color: #d33682 } /* Keyword.Reserved */
+    c-[ld] { color: #657b83 } /* Literal.Date */
+    c-[nc] { color: #268bd2 } /* Name.Class */
+    c-[no] { color: #268bd2 } /* Name.Constant */
+    c-[nd] { color: #268bd2 } /* Name.Decorator */
+    c-[ni] { color: #268bd2 } /* Name.Entity */
+    c-[ne] { color: #268bd2 } /* Name.Exception */
+    c-[nf] { color: #268bd2 } /* Name.Function */
+    c-[nl] { color: #268bd2 } /* Name.Label */
+    c-[nn] { color: #268bd2 } /* Name.Namespace */
+    c-[py] { color: #268bd2 } /* Name.Property */
+    c-[ow] { color: #657b83 } /* Operator.Word */
+    c-[mb] { color: #657b83 } /* Literal.Number.Bin */
+    c-[mf] { color: #657b83 } /* Literal.Number.Float */
+    c-[mh] { color: #657b83 } /* Literal.Number.Hex */
+    c-[mi] { color: #657b83 } /* Literal.Number.Integer */
+    c-[mo] { color: #657b83 } /* Literal.Number.Oct */
+    c-[sa] { color: #6c71c4 } /* Literal.String.Affix */
+    c-[sb] { color: #6c71c4 } /* Literal.String.Backtick */
+    c-[sc] { color: #6c71c4 } /* Literal.String.Char */
+    c-[dl] { color: #6c71c4 } /* Literal.String.Delimiter */
+    c-[sd] { color: #6c71c4 } /* Literal.String.Doc */
+    c-[se] { color: #6c71c4 } /* Literal.String.Escape */
+    c-[sh] { color: #6c71c4 } /* Literal.String.Heredoc */
+    c-[si] { color: #6c71c4 } /* Literal.String.Interpol */
+    c-[sx] { color: #6c71c4 } /* Literal.String.Other */
+    c-[sr] { color: #6c71c4 } /* Literal.String.Regex */
+    c-[ss] { color: #6c71c4 } /* Literal.String.Symbol */
+    c-[fm] { color: #268bd2 } /* Name.Function.Magic */
+    c-[vc] { color: #cb4b16 } /* Name.Variable.Class */
+    c-[vg] { color: #cb4b16 } /* Name.Variable.Global */
+    c-[vi] { color: #cb4b16 } /* Name.Variable.Instance */
+    c-[vm] { color: #cb4b16 } /* Name.Variable.Magic */
+    c-[il] { color: #657b83 } /* Literal.Number.Integer.Long */
+}
+</style>
+ <body class="h-entry">
+  <div class="head">
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
+   <h1 class="p-name no-ref" id="title">CSS Foo Module Level 1</h1>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-05-12">12 May 2022</time></p>
+   <details open>
+    <summary>More details about this document</summary>
+    <div data-fill-with="spec-metadata">
+     <dl>
+      <dt>This version:
+      <dd><a class="u-url" href="https://drafts.csswg.org/css-foo/">https://drafts.csswg.org/css-foo/</a>
+      <dt>Latest published version:
+      <dd><a href="https://www.w3.org/TR/css-foo/">https://www.w3.org/TR/css-foo/</a>
+      <dt>Feedback:
+      <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-foo-1">CSSWG Issues Repository</a>
+      <dd><a href="#issues-index">Inline In Spec</a>
+      <dt class="editor">Editor:
+      <dd class="editor p-author h-card vcard" data-editor-id="42199"><a class="p-name fn u-url url" href="http://xanthir.com/contact/">Tab Atkins-Bittner</a> (<span class="p-org org">Google</span>)
+      <dt>Suggest an Edit for this Spec:
+      <dd><a href="https://github.com/w3c/csswg-drafts/blob/main/css-foo-1/Overview.bs">GitHub Editor</a>
+     </dl>
+    </div>
+   </details>
+   <div data-fill-with="warning"></div>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2022 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+   <hr title="Separator for header">
+  </div>
+  <div class="p-summary" data-fill-with="abstract">
+   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <p>This module introduces the <a class="property css" data-link-type="property">foo</a> property and related values, which do bar and baz.</p>
+    <a href="https://www.w3.org/TR/CSS/">CSS</a> is a language for describing the rendering of structured documents
+(such as HTML and XML)
+on screen, on paper, etc. 
+  </div>
+  <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
+  <div data-fill-with="status">
+   <p> This is a public copy of the editors’ draft.
+	It is provided for discussion only and may change at any moment.
+	Its publication here does not imply endorsement of its contents by W3C.
+	Don’t cite this document other than as work in progress. </p>
+   <p>Please send feedback
+	by <a href="https://github.com/w3c/csswg-drafts/issues">filing issues in GitHub</a> (preferred),
+	including the spec code “css-foo” in the title, like this:
+	“[css-foo] <i>…summary of comment…</i>”.
+	All issues and comments are <a href="https://lists.w3.org/Archives/Public/public-css-archive/">archived</a>.
+	Alternately, feedback can be sent to the (<a href="https://lists.w3.org/Archives/Public/www-style/">archived</a>) public mailing list <a href="mailto:www-style@w3.org?Subject=%5Bcss-foo%5D%20PUT%20SUBJECT%20HERE">www-style@w3.org</a>. </p>
+   <p>This document is governed by the <a href="https://www.w3.org/2021/Process-20211102/" id="w3c_process_revision">2 November 2021 W3C Process Document</a>. </p>
+   <p></p>
+  </div>
+  <div data-fill-with="at-risk"></div>
+  <nav data-fill-with="table-of-contents" id="toc">
+   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
+   <ol class="toc" role="directory">
+    <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
+    <li><a href="#pseudo-elements"><span class="secno">2</span> <span class="content">Pseudo-Elements</span></a>
+    <li><a href="#api"><span class="secno">3</span> <span class="content">API</span></a>
+    <li>
+     <a href="#w3c-conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
+     <ol class="toc">
+      <li><a href="#w3c-conventions"><span class="secno"></span> <span class="content"> Document conventions</span></a>
+      <li><a href="#w3c-conformance-classes"><span class="secno"></span> <span class="content"> Conformance classes</span></a>
+      <li>
+       <a href="#w3c-partial"><span class="secno"></span> <span class="content"> Partial implementations</span></a>
+       <ol class="toc">
+        <li><a href="#w3c-conform-future-proofing"><span class="secno"></span> <span class="content"> Implementations of Unstable and Proprietary Features</span></a>
+       </ol>
+      <li><a href="#w3c-testing"><span class="secno"></span> <span class="content"> Non-experimental implementations</span></a>
+     </ol>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ol>
+    <li>
+     <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+     <ol class="toc">
+      <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+     </ol>
+    <li><a href="#idl-index"><span class="secno"></span> <span class="content">IDL Index</span></a>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
+   </ol>
+  </nav>
+  <main>
+   <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
+   <p>This spec describes the CSS and JS mechanics
+	of the single-page Page Transition API,</p>
+   <h2 class="heading settled" data-level="2" id="pseudo-elements"><span class="secno">2. </span><span class="content">Pseudo-Elements</span><a class="self-link" href="#pseudo-elements"></a></h2>
+   <p>::page-transition - The parent of all transition containers.
+::page-transition-container(tag) - Select the 'transition element' of a given page-transition-tag.
+::page-transition-image-wrapper(tag) - Select the 'image wrapper'.
+::page-transition-incoming-image(tag) - Select the incoming image.
+::page-transition-outgoing-image(tag) - Select the outgoing image.</p>
+   <h2 class="heading settled" data-level="3" id="api"><span class="secno">3. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
+   <p>Single-page API:</p>
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://dom.spec.whatwg.org/#document" id="ref-for-document"><c- g>Document</c-></a> {
+  <a data-link-type="idl-name" href="#samedocumenttransition" id="ref-for-samedocumenttransition"><c- n>SameDocumentTransition</c-></a> <a class="idl-code" data-link-type="method" href="#dom-document-createdocumenttransition" id="ref-for-dom-document-createdocumenttransition"><c- g>createDocumentTransition</c-></a>();
+};
+</pre>
+   <div class="algorithm" data-algorithm="Document.createDocumentTransition()"> The <a data-link-type="dfn">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="Document" data-dfn-type="method" data-export id="dom-document-createdocumenttransition"><code>createDocumentTransition()</code></dfn> are to return a fresh <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition①">SameDocumentTransition</a></code> object. </div>
+   <p class="issue" id="issue-9613dd8b"><a class="self-link" href="#issue-9613dd8b"></a> Why use a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①">Document</a></code> factory method
+rather than a constructor that takes a Document as a required arg?</p>
+<pre class="idl highlight def"><c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="samedocumenttransition"><code><c- g>SameDocumentTransition</c-></code></dfn> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-tag" id="ref-for-dom-samedocumenttransition-tag"><c- g>tag</c-></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="SameDocumentTransition/tag(tag, el)" data-dfn-type="argument" data-export id="dom-samedocumenttransition-tag-tag-el-tag"><code><c- g>tag</c-></code><a class="self-link" href="#dom-samedocumenttransition-tag-tag-el-tag"></a></dfn>, <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element"><c- n>Element</c-></a>? <dfn class="idl-code" data-dfn-for="SameDocumentTransition/tag(tag, el)" data-dfn-type="argument" data-export id="dom-samedocumenttransition-tag-tag-el-el"><code><c- g>el</c-></code><a class="self-link" href="#dom-samedocumenttransition-tag-tag-el-el"></a></dfn>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined①"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-ignorecsstaggedelements" id="ref-for-dom-samedocumenttransition-ignorecsstaggedelements"><c- g>ignoreCSSTaggedElements</c-></a>();
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined②"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-start" id="ref-for-dom-samedocumenttransition-start"><c- g>start</c-></a>(<a data-link-type="idl-name" href="#callbackdef-asyncfunction" id="ref-for-callbackdef-asyncfunction"><c- n>AsyncFunction</c-></a> <dfn class="idl-code" data-dfn-for="SameDocumentTransition/start(cb)" data-dfn-type="argument" data-export id="dom-samedocumenttransition-start-cb-cb"><code><c- g>cb</c-></code><a class="self-link" href="#dom-samedocumenttransition-start-cb-cb"></a></dfn>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined③"><c- b>undefined</c-></a> <dfn class="idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export data-lt="abandon()" id="dom-samedocumenttransition-abandon"><code><c- g>abandon</c-></code><a class="self-link" href="#dom-samedocumenttransition-abandon"></a></dfn>();
+};
+
+<c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-asyncfunction"><code><c- g>AsyncFunction</c-></code></dfn> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined④"><c- b>undefined</c-></a>> ();
+</pre>
+   <p>The <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition②">SameDocumentTransition</a></code> represents and controls
+a single same-document transition;
+that is, a <a data-link-type="dfn">page transition</a> where the starting and ending document are the same.</p>
+   <p><code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition③">SameDocumentTransition</a></code> objects have <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-outgoingelements-slot"><code>[[OutgoingElements]]</code></dfn> and <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-incomingelements-slot"><code>[[IncomingElements]]</code></dfn> private slots,
+both of which are <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">maps</a>,
+initially empty,
+whose keys are strings
+and whose values are <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="capturedelement">CapturedElement</dfn>s,
+a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct">struct</a> with items named "element" and "image",
+both initially empty.</p>
+   <p>They also have a <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-phase-slot"><code>[[Phase]]</code></dfn> internal slot,
+which is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string" id="ref-for-string">string</a> chosen from "ready", "outgoing-prep", "started", "incoming-prep", and "finished";
+it is initially "ready".</p>
+   <p class="issue" id="issue-6e316d4c"><a class="self-link" href="#issue-6e316d4c"></a> Is this object meant to be one-shot, or reusable?
+In other words, should it instead reset to "ready" when done?</p>
+   <p>They also have a <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-ignorecss-slot"><code>[[IgnoreCSS]]</code></dfn> internal slot,
+which is a boolean,
+initially false.</p>
+   <div class="algorithm" data-algorithm="SameDocumentTransition.tag()">
+     The <a data-link-type="dfn">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export id="dom-samedocumenttransition-tag"><code>tag(<var>tag</var>, <var>el</var>)</code></dfn> are: 
+    <ol>
+     <li data-md>
+      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot">[[Phase]]</a></code> internal slot is "ready",
+let <var>map</var> be <span id="ref-for-this①">this’s</span> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-outgoingelements-slot" id="ref-for-dom-samedocumenttransition-outgoingelements-slot">[[OutgoingElements]]</a></code> value.
+Otherwise, if it is "started",
+let <var>map</var> be <span id="ref-for-this②">this’s</span> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-incomingelements-slot" id="ref-for-dom-samedocumenttransition-incomingelements-slot">[[IncomingElements]]</a></code> value.
+Otherwise, <a data-link-type="dfn">throw</a> an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>.</p>
+     <li data-md>
+      <p>If <var>el</var> is <a data-link-type="dfn">null</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-remove" id="ref-for-map-remove">remove</a> <var>map</var>[<var>tag</var>].
+Otherwise,
+set <var>map</var>[<var>tag</var>] to a <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement">CapturedElement</a> whose "element" item is <var>el</var>.</p>
+    </ol>
+   </div>
+   <div class="algorithm" data-algorithm="SameDocumentTransition.ignoreCSSTaggedElements()">
+     The <a data-link-type="dfn">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export id="dom-samedocumenttransition-ignorecsstaggedelements"><code>ignoreCSSTaggedElements()</code></dfn> are: 
+    <ol>
+     <li data-md>
+      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot①">[[Phase]]</a></code> internal slot
+is "ready",
+set <span id="ref-for-this④">this’s</span> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-ignorecss-slot" id="ref-for-dom-samedocumenttransition-ignorecss-slot">[[IgnoreCSS]]</a></code> internal slot to true.</p>
+     <li data-md>
+      <p>Otherwise, <a data-link-type="dfn">throw</a> an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>.</p>
+    </ol>
+   </div>
+   <div class="algorithm" data-algorithm="SameDocumentTransition.start()">
+     The <a data-link-type="dfn">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export id="dom-samedocumenttransition-start"><code>start(cb)</code></dfn> are: 
+    <ol>
+     <li data-md>
+      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot②">[[Phase]]</a></code> internal slot is anything but "ready", <a data-link-type="dfn">throw</a> an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>.</p>
+     <li data-md>
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot③">[[Phase]]</a></code> internal slot to "outgoing-prep".</p>
+     <li data-md>
+      <p>Let <var>outgoingEls</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-outgoingelements-slot" id="ref-for-dom-samedocumenttransition-outgoingelements-slot①">[[OutgoingElements]]</a></code> internal slot.</p>
+     <li data-md>
+      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-ignorecss-slot" id="ref-for-dom-samedocumenttransition-ignorecss-slot①">[[IgnoreCSS]]</a></code> internal slot is false,
+then let <var>cssEls</var> be a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map①">map</a> whose keys are all the <a data-link-type="dfn">page transition tags</a> on the elements of the page,
+and whose values are the elements
+with that tag.
+If multiple elements have the same tag, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition">abandon the page transition</a> managed by <span id="ref-for-this⑨">this</span>.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate">For each</a> <var>tag</var> -> <var>el</var> of <var>cssEls</var>,
+if <var>outgoingEls</var>[<var>tag</var>] does not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists">exist</a>,
+set <var>outgoingEls</var>[<var>tag</var>] to a <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement①">CapturedElement</a> whose "element" item is <var>el</var>.</p>
+      <p class="note" role="note"><span>Note:</span> In other words,
+manually setting a tag via script
+overrides the tag set by CSS.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="#freeze-the-pages-rendering" id="ref-for-freeze-the-pages-rendering">Freeze the page’s rendering</a>,
+then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate①">for each</a> <var>elStruct</var> of <var>outgoingEls</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-getting-the-values" id="ref-for-map-getting-the-values">values</a>, <a data-link-type="dfn" href="#capture-the-image" id="ref-for-capture-the-image">capture the image</a> of <var>elStruct</var>’s element
+and set <var>elStruct</var>’s image to the result.</p>
+     <li data-md>
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot④">[[Phase]]</a></code> internal slot to "started".</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#invoke-a-callback-function" id="ref-for-invoke-a-callback-function">Invoke</a> <var>cb</var>, and let <var>p</var> be the return value. <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#upon-fulfillment" id="ref-for-upon-fulfillment">Upon fulfillment</a> of <var>p</var>,
+run the rest of this algorithm’s steps. <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#upon-rejection" id="ref-for-upon-rejection">Upon rejection</a> of <var>p</var>, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition①">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①①">this</a>.</p>
+      <p class="issue" id="issue-52cf4245"><a class="self-link" href="#issue-52cf4245"></a> Need to specify that if <var>cb</var> takes too long we can
+abandon the transition automatically.</p>
+     <li data-md>
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①②">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot⑤">[[Phase]]</a></code> internal slot to "incoming-prep".</p>
+     <li data-md>
+      <p>Let <var>incomingEls</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①③">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-incomingelements-slot" id="ref-for-dom-samedocumenttransition-incomingelements-slot①">[[IncomingElements]]</a></code> internal slot.</p>
+     <li data-md>
+      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①④">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-ignorecss-slot" id="ref-for-dom-samedocumenttransition-ignorecss-slot②">[[IgnoreCSS]]</a></code> internal slot is false,
+then let <var>cssEls</var> be a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map②">map</a> whose keys are all the <a data-link-type="dfn">page transition tags</a> on the elements of the page,
+and whose values are the elements
+with that tag.
+If multiple elements have the same tag, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition②">abandon the page transition</a> managed by <span id="ref-for-this①⑤">this</span>.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate②">For each</a> <var>tag</var> -> <var>el</var> of <var>cssEls</var>,
+if <var>incomingEls</var>[<var>tag</var>] does not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists①">exist</a>,
+set <var>incomingEls</var>[<var>tag</var>] to a <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement②">CapturedElement</a> whose "element" item is <var>el</var>.</p>
+      <p class="note" role="note"><span>Note:</span> In other words,
+manually setting a tag via script
+overrides the tag set by CSS.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate③">For each</a> <var>tag</var> -> <var>elStruct</var> of <var>incomingEls</var>,
+if <var>outgoingEls</var>[<var>tag</var>] <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists②">exists</a>, <a data-link-type="dfn" href="#capture-the-image" id="ref-for-capture-the-image①">capture the image</a> of <var>elStruct</var>’s element
+and set <var>elStruct</var>’s image to the result;
+otherwise, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-remove" id="ref-for-map-remove①">remove</a> <var>incomingEls</var>[<var>tag</var>].</p>
+     <li data-md>
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑥">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot⑥">[[Phase]]</a></code> internal slot to "finished",
+an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfreeze-the-pages-rendering">unfreeze the page’s rendering</a>.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="#animate-a-page-transition" id="ref-for-animate-a-page-transition">Animate a page transition</a> with outgoing elements <var>outgoingEls</var> and incoming elements <var>incomingEls</var>.</p>
+    </ol>
+    <p class="issue" id="issue-cc78a612"><a class="self-link" href="#issue-cc78a612"></a> I’m not actually returning a Promise yet;
+	need to do a little bit of rearranging.</p>
+   </div>
+   <div class="algorithm" data-algorithm="SinglePageTransition.abandon()"> The <a data-link-type="dfn">method steps</a> for <dfn class="idl-code" data-dfn-for="SinglePageTransition" data-dfn-type="method" data-export id="dom-singlepagetransition-abandon"><code>abandon()</code><a class="self-link" href="#dom-singlepagetransition-abandon"></a></dfn> are to <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition③">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a>. </div>
+   <div class="example" id="example-31cfedfe">
+    <a class="self-link" href="#example-31cfedfe"></a> If using the <a class="property css" data-link-type="property">page-transition-tag</a> property
+	to tag elements that should be animated across the page transition,
+	and the default animations for the page transition are acceptable,
+	kicking off a transition can be done in a single line of script: 
+<pre class="highlight">document<c- p>.</c->createDocumentTransition<c- p>()</c->
+  <c- p>.</c->start<c- p>(()=></c->coolFramework<c- p>.</c->changeTheDOMToPageB<c- p>());</c->
+</pre>
+    <p>If more precise management is needed, however,
+	transition elements can be managed in script:</p>
+<pre class="highlight"><c- k>async</c-> <c- a>function</c-> doTransition<c- p>()</c-> <c- p>{</c->
+  <c- a>let</c-> transition <c- o>=</c-> document<c- p>.</c->createDocumentTransition<c- p>();</c->
+
+  <c- c1>// Specify "outgoing" elements. The tag is used to match against</c->
+  <c- c1>// "incoming" elements they should transition to, and to refer to</c->
+  <c- c1>// the transitioning psuedo-element.</c->
+  transition<c- p>.</c->tag<c- p>(</c-><c- u>"message"</c-><c- p>,</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>".old-message"</c-><c- p>));</c->
+
+  <c- c1>// The start() call freezes the page’s rendering, and triggers</c->
+  <c- c1>// an async operation to capture snapshots for the offered elements.</c->
+  <c- k>await</c-> transition<c- p>.</c->start<c- p>(</c-><c- k>async</c-> <c- p>()</c-> <c- p>=></c-> <c- p>{</c->
+    <c- c1>// This callback is invoked by the browser when "outgoing"</c->
+    <c- c1>// capture  finishes and the DOM can be switched to the new</c->
+    <c- c1>// state. No frames are rendered until this callback returns.</c->
+
+    <c- c1>// Asynchronously load the new page.</c->
+    <c- k>await</c-> coolFramework<c- p>.</c->changeTheDOMToPageB<c- p>();</c->
+
+    <c- c1>// Tagging elements during the .start() callback marks them as</c->
+    <c- c1>// "incoming", to be matched up with the same-tagged "outgoing"</c->
+    <c- c1>// elements marked previously and transitioned between.</c->
+    transition<c- p>.</c->tag<c- p>(</c-><c- u>"message"</c-><c- p>,</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>".new-message"</c-><c- p>));</c->
+
+    <c- c1>// Set up custom animations using WA-API on the next frame.</c->
+    requestAnimationFrame<c- p>(()</c-> <c- p>=></c-> <c- p>{</c->
+      document<c- p>.</c->documentElement<c- p>.</c->animate<c- p>(</c->keyframes<c- p>,</c-> <c- p>{</c->
+      <c- p>...</c->animationOptions<c- p>,</c->
+      pseudoElement<c- o>:</c-> <c- u>"::page-transition-container(message)"</c-><c- p>,</c->
+      <c- p>});</c->
+    <c- p>});</c->
+
+    <c- c1>// When this callback returns, the browser will snapshot the</c->
+    <c- c1>// "incoming" elements (without showing them to the user)</c->
+  <c- p>});</c->
+
+  <c- c1>// When .start()'s promise resolves, the page is unfrozen, and</c->
+  <c- c1>// the transition animations are ready to start on the next frame.</c->
+<c- p>}</c->
+</pre>
+   </div>
+   <hr>
+   <div class="algorithm" data-algorithm="freeze the page’s rendering"> To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="freeze-the-pages-rendering">freeze the page’s rendering</dfn>,
+	... </div>
+   <div class="algorithm" data-algorithm="unfreeze the page’s rendering"> To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="unfreeze-the-pages-rendering">unfreeze the page’s rendering</dfn>,
+	... </div>
+   <div class="algorithm" data-algorithm="abandon the page transition">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="abandon-the-page-transition">abandon the page transition</dfn> managed by a <code class="idl"><a data-link-type="idl">SinglePageTransition</a></code> <var>manager</var>,
+	... 
+    <p class="issue" id="issue-9f3abfa5"><a class="self-link" href="#issue-9f3abfa5"></a> Unfreeze the page if necessary,
+	kick it straight into "finished",
+	and reject the promise returned by .start(),
+	if one has been created.</p>
+   </div>
+   <div class="algorithm" data-algorithm="capture the image">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="capture-the-image">capture the image</dfn> of an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element①">Element</a></code> <var>el</var>,
+	... 
+    <p class="issue" id="issue-18130b0c"><a class="self-link" href="#issue-18130b0c"></a> Flush style and layout the page,
+	then figure out <var>el</var>’s bounds
+	(both border box and ink overflow rectangle,
+	so we can set up the view box properly),
+	and render it into a canvas.
+	If it has children that are also tagged for capture,
+	skip their painting.
+	For this purpose, the element is treated as <a class="css" data-link-type="propdesc" href="https://drafts.fxtf.org/compositing-2/#propdef-isolation" id="ref-for-propdef-isolation">isolation: isolate</a>, <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-contain-2/#propdef-contain" id="ref-for-propdef-contain">contain: paint</a>,
+	and <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-break-3/#propdef-break-inside" id="ref-for-propdef-break-inside">break-inside: avoid</a>.</p>
+    <p class="issue" id="issue-e63d39aa"><a class="self-link" href="#issue-e63d39aa"></a> Spec says this is a live image for incoming images,
+	so gifs will loop, etc.
+	How live is it?
+	Do size changes reflect?</p>
+   </div>
+   <div class="algorithm" data-algorithm="animate a page transition">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="animate-a-page-transition">animate a page transition</dfn> given a map of <var>outgoingEls</var> and a map of <var>incomingEls</var>: 
+    <ol>
+     <li data-md>
+      <p>If there are currently any <a data-link-type="dfn">page-transition pseudo-elements</a> in the process of animating a page transition,
+remove them.</p>
+     <li data-md>
+      <p>Let <var>transition root pseudo</var> be a new <span class="css">::page-transition</span> pseudo-element,
+and place it in the <a data-link-type="dfn">page-transition paint layer</a>.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate④">For each</a> <var>tag</var> -> <var>incomingEl</var> of <var>incomingEls</var>,
+ordered according to the paint order of <var>incomingEl</var>’s element:</p>
+      <ol>
+       <li data-md>
+        <p>Let <var>outgoingEl</var> be <var>outgoingEls</var>[<var>tag</var>].</p>
+       <li data-md>
+        <p>Let <var>container pseudo</var> be a new <span class="css">::page-transition-container</span> pseudo-element,
+with the tag <var>tag</var>,
+nested in <var>transition root pseudo</var>.</p>
+        <p>It has a <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width</a> and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> equal to the border box width and height
+of <var>outgoingEl</var>’s element.</p>
+       <li data-md>
+        <p>Let <var>wrapper pseudo</var> be a new <span class="css">::page-transition-image-wrapper</span> pseudo-element,
+with the tag <var>tag</var>,
+nested in <var>container pseudo</var>.</p>
+        <p>It has the same width and height as <var>container pseudo</var>.</p>
+       <li data-md>
+        <p>Let <var>outgoing pseudo</var> be a new <span class="css">::page-transition-outgoing-image</span> pseudo-element,
+with the tag <var>tag</var>,
+nested in <var>wrapper pseudo</var>.</p>
+        <p>It is a replaced element,
+displaying <var>outgoingEl</var>’s image,
+with a natural view box of <span class="issue" id="issue-9da76ed0"><a class="self-link" href="#issue-9da76ed0"></a>set this up properly</span>.</p>
+       <li data-md>
+        <p>Let <var>incoming pseudo</var> be a new <span class="css">::page-transition-incoming-image</span> pseudo-element,
+with the tag <var>tag</var>,
+nested in <var>wrapper pseudo</var> (after <var>outgoing pseudo</var>).</p>
+        <p>It is a replaced element,
+displaying <var>incomingEl</var>’s image,
+with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="self-link" href="#issue-9da76ed0①"></a>set this up properly</span>.</p>
+      </ol>
+     <li data-md>
+      <p>Start an animation with keyframes of:</p>
+      <p class="issue" id="issue-c52e7bf4"><a class="self-link" href="#issue-c52e7bf4"></a> define this.</p>
+    </ol>
+   </div>
+  </main>
+  <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content"> Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
+  <h3 class="no-ref heading settled" id="w3c-conventions"><span class="content"> Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
+  <p>Conformance requirements are expressed with a combination of
+    descriptive assertions and RFC 2119 terminology. The key words “MUST”,
+    “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”,
+    “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative parts of this
+    document are to be interpreted as described in RFC 2119.
+    However, for readability, these words do not appear in all uppercase
+    letters in this specification. </p>
+  <p>All of the text of this specification is normative except sections
+    explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a></p>
+  <p>Examples in this specification are introduced with the words “for example”
+    or are set apart from the normative text with <code>class="example"</code>,
+    like this: </p>
+  <div class="example" id="w3c-example">
+   <a class="self-link" href="#w3c-example"></a> 
+   <p>This is an example of an informative example.</p>
+  </div>
+  <p>Informative notes begin with the word “Note” and are set apart from the
+    normative text with <code>class="note"</code>, like this: </p>
+  <p class="note" role="note">Note, this is an informative note.</p>
+  <p>Advisements are normative sections styled to evoke special attention and are
+    set apart from other normative text with <code>&lt;strong class="advisement"></code>, like
+    this: <strong class="advisement"> UAs MUST provide an accessible alternative. </strong></p>
+  <details class="wpt-tests-block" dir="ltr" lang="en" open>
+   <summary>Tests</summary>
+   <p>Tests relating to the content of this specification
+                     may be documented in “Tests” blocks like this one.
+                     Any such block is non-normative.</p>
+   <ul class="wpt-tests-list"></ul>
+   <hr>
+  </details>
+  <h3 class="no-ref heading settled" id="w3c-conformance-classes"><span class="content"> Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"></a></h3>
+  <p>Conformance to this specification
+    is defined for three conformance classes: </p>
+  <dl>
+   <dt>style sheet 
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
+            style sheet</a>. 
+   <dt>renderer 
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a> that interprets the semantics of a style sheet and renders
+            documents that use them. 
+   <dt>authoring tool 
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a> that writes a style sheet. 
+  </dl>
+  <p>A style sheet is conformant to this specification
+    if all of its statements that use syntax defined in this module are valid
+    according to the generic CSS grammar and the individual grammars of each
+    feature defined in this module. </p>
+  <p>A renderer is conformant to this specification
+    if, in addition to interpreting the style sheet as defined by the
+    appropriate specifications, it supports all the features defined
+    by this specification by parsing them correctly
+    and rendering the document accordingly. However, the inability of a
+    UA to correctly render a document due to limitations of the device
+    does not make the UA non-conformant. (For example, a UA is not
+    required to render color on a monochrome monitor.) </p>
+  <p>An authoring tool is conformant to this specification
+    if it writes style sheets that are syntactically correct according to the
+    generic CSS grammar and the individual grammars of each feature in
+    this module, and meet all other conformance requirements of style sheets
+    as described in this module. </p>
+  <h3 class="no-ref heading settled" id="w3c-partial"><span class="content"> Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
+  <p>So that authors can exploit the forward-compatible parsing rules to
+    assign fallback values, CSS renderers <strong>must</strong> treat as invalid (and <a href="http://www.w3.org/TR/CSS21/conform.html#ignore">ignore
+    as appropriate</a>) any at-rules, properties, property values, keywords,
+    and other syntactic constructs for which they have no usable level of
+    support. In particular, user agents <strong>must not</strong> selectively
+    ignore unsupported component values and honor supported values in a single
+    multi-value property declaration: if any value is considered invalid
+    (as unsupported values must be), CSS requires that the entire declaration
+    be ignored.</p>
+  <h4 class="heading settled" id="w3c-conform-future-proofing"><span class="content"> Implementations of Unstable and Proprietary Features</span><a class="self-link" href="#w3c-conform-future-proofing"></a></h4>
+  <p>To avoid clashes with future stable CSS features,
+        the CSSWG recommends <a href="http://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="http://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="http://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS. </p>
+  <h3 class="no-ref heading settled" id="w3c-testing"><span class="content"> Non-experimental implementations</span><a class="self-link" href="#w3c-testing"></a></h3>
+  <p>Once a specification reaches the Candidate Recommendation stage,
+    non-experimental implementations are possible, and implementors should
+    release an unprefixed implementation of any CR-level feature they
+    can demonstrate to be correctly implemented according to spec. </p>
+  <p>To establish and maintain the interoperability of CSS across
+    implementations, the CSS Working Group requests that non-experimental
+    CSS renderers submit an implementation report (and, if necessary, the
+    testcases used for that implementation report) to the W3C before
+    releasing an unprefixed implementation of any CSS features. Testcases
+    submitted to W3C are subject to review and correction by the CSS
+    Working Group. </p>
+  <p>Further information on submitting testcases and implementation reports
+    can be found from on the CSS Working Group’s website at <a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
+    Questions should be directed to the <a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a> mailing list.</p>
+<script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
+  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="index">
+   <li>
+    abandon()
+    <ul>
+     <li><a href="#dom-samedocumenttransition-abandon">method for SameDocumentTransition</a><span>, in § 3</span>
+     <li><a href="#dom-singlepagetransition-abandon">method for SinglePageTransition</a><span>, in § 3</span>
+    </ul>
+   <li><a href="#abandon-the-page-transition">abandon the page transition</a><span>, in § 3</span>
+   <li><a href="#animate-a-page-transition">animate a page transition</a><span>, in § 3</span>
+   <li><a href="#callbackdef-asyncfunction">AsyncFunction</a><span>, in § 3</span>
+   <li><a href="#capturedelement">CapturedElement</a><span>, in § 3</span>
+   <li><a href="#capture-the-image">capture the image</a><span>, in § 3</span>
+   <li><a href="#dom-document-createdocumenttransition">createDocumentTransition()</a><span>, in § 3</span>
+   <li><a href="#freeze-the-pages-rendering">freeze the page’s rendering</a><span>, in § 3</span>
+   <li><a href="#dom-samedocumenttransition-ignorecss-slot">[[IgnoreCSS]]</a><span>, in § 3</span>
+   <li><a href="#dom-samedocumenttransition-ignorecsstaggedelements">ignoreCSSTaggedElements()</a><span>, in § 3</span>
+   <li><a href="#dom-samedocumenttransition-incomingelements-slot">[[IncomingElements]]</a><span>, in § 3</span>
+   <li><a href="#dom-samedocumenttransition-outgoingelements-slot">[[OutgoingElements]]</a><span>, in § 3</span>
+   <li><a href="#dom-samedocumenttransition-phase-slot">[[Phase]]</a><span>, in § 3</span>
+   <li><a href="#samedocumenttransition">SameDocumentTransition</a><span>, in § 3</span>
+   <li><a href="#dom-samedocumenttransition-start">start(cb)</a><span>, in § 3</span>
+   <li><a href="#dom-samedocumenttransition-tag">tag(tag, el)</a><span>, in § 3</span>
+   <li><a href="#unfreeze-the-pages-rendering">unfreeze the page’s rendering</a><span>, in § 3</span>
+  </ul>
+  <aside class="dfn-panel" data-for="term-for-propdef-isolation">
+   <a href="https://drafts.fxtf.org/compositing-2/#propdef-isolation">https://drafts.fxtf.org/compositing-2/#propdef-isolation</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-isolation">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-break-inside">
+   <a href="https://drafts.csswg.org/css-break-3/#propdef-break-inside">https://drafts.csswg.org/css-break-3/#propdef-break-inside</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-break-inside">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-contain">
+   <a href="https://drafts.csswg.org/css-contain-2/#propdef-contain">https://drafts.csswg.org/css-contain-2/#propdef-contain</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-contain">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-height">
+   <a href="https://drafts.csswg.org/css-sizing-3/#propdef-height">https://drafts.csswg.org/css-sizing-3/#propdef-height</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-height">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-width">
+   <a href="https://drafts.csswg.org/css-sizing-3/#propdef-width">https://drafts.csswg.org/css-sizing-3/#propdef-width</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-width">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-document">
+   <a href="https://dom.spec.whatwg.org/#document">https://dom.spec.whatwg.org/#document</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-document">3. API</a> <a href="#ref-for-document①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-element">
+   <a href="https://dom.spec.whatwg.org/#element">https://dom.spec.whatwg.org/#element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-element">3. API</a> <a href="#ref-for-element①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-map-exists">
+   <a href="https://infra.spec.whatwg.org/#map-exists">https://infra.spec.whatwg.org/#map-exists</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-map-exists">3. API</a> <a href="#ref-for-map-exists①">(2)</a> <a href="#ref-for-map-exists②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-map-iterate">
+   <a href="https://infra.spec.whatwg.org/#map-iterate">https://infra.spec.whatwg.org/#map-iterate</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-map-iterate">3. API</a> <a href="#ref-for-map-iterate①">(2)</a> <a href="#ref-for-map-iterate②">(3)</a> <a href="#ref-for-map-iterate③">(4)</a> <a href="#ref-for-map-iterate④">(5)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-ordered-map">
+   <a href="https://infra.spec.whatwg.org/#ordered-map">https://infra.spec.whatwg.org/#ordered-map</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-ordered-map">3. API</a> <a href="#ref-for-ordered-map①">(2)</a> <a href="#ref-for-ordered-map②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-map-remove">
+   <a href="https://infra.spec.whatwg.org/#map-remove">https://infra.spec.whatwg.org/#map-remove</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-map-remove">3. API</a> <a href="#ref-for-map-remove①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-string">
+   <a href="https://infra.spec.whatwg.org/#string">https://infra.spec.whatwg.org/#string</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-string">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-struct">
+   <a href="https://infra.spec.whatwg.org/#struct">https://infra.spec.whatwg.org/#struct</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-struct">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-map-getting-the-values">
+   <a href="https://infra.spec.whatwg.org/#map-getting-the-values">https://infra.spec.whatwg.org/#map-getting-the-values</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-map-getting-the-values">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-DOMString">
+   <a href="https://webidl.spec.whatwg.org/#idl-DOMString">https://webidl.spec.whatwg.org/#idl-DOMString</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-DOMString">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-promise">
+   <a href="https://webidl.spec.whatwg.org/#idl-promise">https://webidl.spec.whatwg.org/#idl-promise</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-promise">3. API</a> <a href="#ref-for-idl-promise①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-invoke-a-callback-function">
+   <a href="https://webidl.spec.whatwg.org/#invoke-a-callback-function">https://webidl.spec.whatwg.org/#invoke-a-callback-function</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-invoke-a-callback-function">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-this">
+   <a href="https://webidl.spec.whatwg.org/#this">https://webidl.spec.whatwg.org/#this</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-this">3. API</a> <a href="#ref-for-this①">(2)</a> <a href="#ref-for-this②">(3)</a> <a href="#ref-for-this③">(4)</a> <a href="#ref-for-this④">(5)</a> <a href="#ref-for-this⑤">(6)</a> <a href="#ref-for-this⑥">(7)</a> <a href="#ref-for-this⑦">(8)</a> <a href="#ref-for-this⑧">(9)</a> <a href="#ref-for-this⑨">(10)</a> <a href="#ref-for-this①⓪">(11)</a> <a href="#ref-for-this①①">(12)</a> <a href="#ref-for-this①②">(13)</a> <a href="#ref-for-this①③">(14)</a> <a href="#ref-for-this①④">(15)</a> <a href="#ref-for-this①⑤">(16)</a> <a href="#ref-for-this①⑥">(17)</a> <a href="#ref-for-this①⑦">(18)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-undefined">
+   <a href="https://webidl.spec.whatwg.org/#idl-undefined">https://webidl.spec.whatwg.org/#idl-undefined</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-undefined">3. API</a> <a href="#ref-for-idl-undefined①">(2)</a> <a href="#ref-for-idl-undefined②">(3)</a> <a href="#ref-for-idl-undefined③">(4)</a> <a href="#ref-for-idl-undefined④">(5)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-upon-fulfillment">
+   <a href="https://webidl.spec.whatwg.org/#upon-fulfillment">https://webidl.spec.whatwg.org/#upon-fulfillment</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-upon-fulfillment">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-upon-rejection">
+   <a href="https://webidl.spec.whatwg.org/#upon-rejection">https://webidl.spec.whatwg.org/#upon-rejection</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-upon-rejection">3. API</a>
+   </ul>
+  </aside>
+  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio">[compositing-2]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-isolation">isolation</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-break-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-break-inside">break-inside</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-contain-2]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-contain">contain</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-sizing-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-height">height</span>
+     <li><span class="dfn-paneled" id="term-for-propdef-width">width</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[DOM]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-document">Document</span>
+     <li><span class="dfn-paneled" id="term-for-element">Element</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[INFRA]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-map-exists">exist</span>
+     <li><span class="dfn-paneled" id="term-for-map-iterate">for each</span>
+     <li><span class="dfn-paneled" id="term-for-ordered-map">map</span>
+     <li><span class="dfn-paneled" id="term-for-map-remove">remove</span>
+     <li><span class="dfn-paneled" id="term-for-string">string</span>
+     <li><span class="dfn-paneled" id="term-for-struct">struct</span>
+     <li><span class="dfn-paneled" id="term-for-map-getting-the-values">values</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-idl-DOMString">DOMString</span>
+     <li><span class="dfn-paneled" id="term-for-idl-promise">Promise</span>
+     <li><span class="dfn-paneled" id="term-for-invoke-a-callback-function">invoke</span>
+     <li><span class="dfn-paneled" id="term-for-this">this</span>
+     <li><span class="dfn-paneled" id="term-for-idl-undefined">undefined</span>
+     <li><span class="dfn-paneled" id="term-for-upon-fulfillment">upon fulfillment</span>
+     <li><span class="dfn-paneled" id="term-for-upon-rejection">upon rejection</span>
+    </ul>
+  </ul>
+  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <dl>
+   <dt id="biblio-compositing-2">[COMPOSITING-2]
+   <dd>Compositing and Blending Level 2 URL: <a href="https://drafts.fxtf.org/compositing-2/">https://drafts.fxtf.org/compositing-2/</a>
+   <dt id="biblio-css-break-3">[CSS-BREAK-3]
+   <dd>Rossen Atanassov; Elika Etemad. <a href="https://www.w3.org/TR/css-break-3/"><cite>CSS Fragmentation Module Level 3</cite></a>. 4 December 2018. CR. URL: <a href="https://www.w3.org/TR/css-break-3/">https://www.w3.org/TR/css-break-3/</a>
+   <dt id="biblio-css-contain-2">[CSS-CONTAIN-2]
+   <dd>Tab Atkins Jr.; Florian Rivoal; Vladimir Levin. <a href="https://www.w3.org/TR/css-contain-2/"><cite>CSS Containment Module Level 2</cite></a>. 16 December 2020. WD. URL: <a href="https://www.w3.org/TR/css-contain-2/">https://www.w3.org/TR/css-contain-2/</a>
+   <dt id="biblio-css-sizing-3">[CSS-SIZING-3]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-sizing-3/"><cite>CSS Box Sizing Module Level 3</cite></a>. 17 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-sizing-3/">https://www.w3.org/TR/css-sizing-3/</a>
+   <dt id="biblio-dom">[DOM]
+   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
+   <dt id="biblio-infra">[INFRA]
+   <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
+   <dt id="biblio-rfc2119">[RFC2119]
+   <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
+   <dt id="biblio-webidl">[WEBIDL]
+   <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
+  </dl>
+  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://dom.spec.whatwg.org/#document"><c- g>Document</c-></a> {
+  <a data-link-type="idl-name" href="#samedocumenttransition"><c- n>SameDocumentTransition</c-></a> <a class="idl-code" data-link-type="method" href="#dom-document-createdocumenttransition"><c- g>createDocumentTransition</c-></a>();
+};
+
+<c- b>interface</c-> <a href="#samedocumenttransition"><code><c- g>SameDocumentTransition</c-></code></a> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-tag"><c- g>tag</c-></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-samedocumenttransition-tag-tag-el-tag"><code><c- g>tag</c-></code></a>, <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element"><c- n>Element</c-></a>? <a href="#dom-samedocumenttransition-tag-tag-el-el"><code><c- g>el</c-></code></a>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-ignorecsstaggedelements"><c- g>ignoreCSSTaggedElements</c-></a>();
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-start"><c- g>start</c-></a>(<a data-link-type="idl-name" href="#callbackdef-asyncfunction"><c- n>AsyncFunction</c-></a> <a href="#dom-samedocumenttransition-start-cb-cb"><code><c- g>cb</c-></code></a>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> <a href="#dom-samedocumenttransition-abandon"><code><c- g>abandon</c-></code></a>();
+};
+
+<c- b>callback</c-> <a href="#callbackdef-asyncfunction"><code><c- g>AsyncFunction</c-></code></a> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> ();
+
+</pre>
+  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue"> Why use a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> factory method
+rather than a constructor that takes a Document as a required arg? <a class="issue-return" href="#issue-9613dd8b" title="Jump to section">↵</a></div>
+   <div class="issue"> Is this object meant to be one-shot, or reusable?
+In other words, should it instead reset to "ready" when done? <a class="issue-return" href="#issue-6e316d4c" title="Jump to section">↵</a></div>
+   <div class="issue"> Need to specify that if <var>cb</var> takes too long we can
+abandon the transition automatically. <a class="issue-return" href="#issue-52cf4245" title="Jump to section">↵</a></div>
+   <div class="issue"> I’m not actually returning a Promise yet;
+	need to do a little bit of rearranging. <a class="issue-return" href="#issue-cc78a612" title="Jump to section">↵</a></div>
+   <div class="issue"> Unfreeze the page if necessary,
+	kick it straight into "finished",
+	and reject the promise returned by .start(),
+	if one has been created. <a class="issue-return" href="#issue-9f3abfa5" title="Jump to section">↵</a></div>
+   <div class="issue"> Flush style and layout the page,
+	then figure out <var>el</var>’s bounds
+	(both border box and ink overflow rectangle,
+	so we can set up the view box properly),
+	and render it into a canvas.
+	If it has children that are also tagged for capture,
+	skip their painting.
+	For this purpose, the element is treated as <a class="css" data-link-type="propdesc" href="https://drafts.fxtf.org/compositing-2/#propdef-isolation">isolation: isolate</a>, <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-contain-2/#propdef-contain">contain: paint</a>,
+	and <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-break-3/#propdef-break-inside">break-inside: avoid</a>. <a class="issue-return" href="#issue-18130b0c" title="Jump to section">↵</a></div>
+   <div class="issue"> Spec says this is a live image for incoming images,
+	so gifs will loop, etc.
+	How live is it?
+	Do size changes reflect? <a class="issue-return" href="#issue-e63d39aa" title="Jump to section">↵</a></div>
+   <div class="issue">set this up properly <a class="issue-return" href="#issue-9da76ed0" title="Jump to section">↵</a></div>
+   <div class="issue">set this up properly <a class="issue-return" href="#issue-9da76ed0①" title="Jump to section">↵</a></div>
+   <div class="issue"> define this. <a class="issue-return" href="#issue-c52e7bf4" title="Jump to section">↵</a></div>
+  </div>
+  <aside class="dfn-panel" data-for="dom-document-createdocumenttransition">
+   <b><a href="#dom-document-createdocumenttransition">#dom-document-createdocumenttransition</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-document-createdocumenttransition">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="samedocumenttransition">
+   <b><a href="#samedocumenttransition">#samedocumenttransition</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-samedocumenttransition">3. API</a> <a href="#ref-for-samedocumenttransition①">(2)</a> <a href="#ref-for-samedocumenttransition②">(3)</a> <a href="#ref-for-samedocumenttransition③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="callbackdef-asyncfunction">
+   <b><a href="#callbackdef-asyncfunction">#callbackdef-asyncfunction</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-callbackdef-asyncfunction">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-samedocumenttransition-outgoingelements-slot">
+   <b><a href="#dom-samedocumenttransition-outgoingelements-slot">#dom-samedocumenttransition-outgoingelements-slot</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-samedocumenttransition-outgoingelements-slot">3. API</a> <a href="#ref-for-dom-samedocumenttransition-outgoingelements-slot①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-samedocumenttransition-incomingelements-slot">
+   <b><a href="#dom-samedocumenttransition-incomingelements-slot">#dom-samedocumenttransition-incomingelements-slot</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-samedocumenttransition-incomingelements-slot">3. API</a> <a href="#ref-for-dom-samedocumenttransition-incomingelements-slot①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="capturedelement">
+   <b><a href="#capturedelement">#capturedelement</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-capturedelement">3. API</a> <a href="#ref-for-capturedelement①">(2)</a> <a href="#ref-for-capturedelement②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-samedocumenttransition-phase-slot">
+   <b><a href="#dom-samedocumenttransition-phase-slot">#dom-samedocumenttransition-phase-slot</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-samedocumenttransition-phase-slot">3. API</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot②">(3)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot③">(4)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot④">(5)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑤">(6)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑥">(7)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-samedocumenttransition-ignorecss-slot">
+   <b><a href="#dom-samedocumenttransition-ignorecss-slot">#dom-samedocumenttransition-ignorecss-slot</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-samedocumenttransition-ignorecss-slot">3. API</a> <a href="#ref-for-dom-samedocumenttransition-ignorecss-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-ignorecss-slot②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-samedocumenttransition-tag">
+   <b><a href="#dom-samedocumenttransition-tag">#dom-samedocumenttransition-tag</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-samedocumenttransition-tag">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-samedocumenttransition-ignorecsstaggedelements">
+   <b><a href="#dom-samedocumenttransition-ignorecsstaggedelements">#dom-samedocumenttransition-ignorecsstaggedelements</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-samedocumenttransition-ignorecsstaggedelements">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-samedocumenttransition-start">
+   <b><a href="#dom-samedocumenttransition-start">#dom-samedocumenttransition-start</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-samedocumenttransition-start">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="freeze-the-pages-rendering">
+   <b><a href="#freeze-the-pages-rendering">#freeze-the-pages-rendering</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-freeze-the-pages-rendering">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="unfreeze-the-pages-rendering">
+   <b><a href="#unfreeze-the-pages-rendering">#unfreeze-the-pages-rendering</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-unfreeze-the-pages-rendering">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="abandon-the-page-transition">
+   <b><a href="#abandon-the-page-transition">#abandon-the-page-transition</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-abandon-the-page-transition">3. API</a> <a href="#ref-for-abandon-the-page-transition①">(2)</a> <a href="#ref-for-abandon-the-page-transition②">(3)</a> <a href="#ref-for-abandon-the-page-transition③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="capture-the-image">
+   <b><a href="#capture-the-image">#capture-the-image</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-capture-the-image">3. API</a> <a href="#ref-for-capture-the-image①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="animate-a-page-transition">
+   <b><a href="#animate-a-page-transition">#animate-a-page-transition</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-animate-a-page-transition">3. API</a>
+   </ul>
+  </aside>
+<script>/* script-dfn-panel */
+
+document.body.addEventListener("click", function(e) {
+    var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
+    // Find the dfn element or panel, if any, that was clicked on.
+    var el = e.target;
+    var target;
+    var hitALink = false;
+    while(el.parentElement) {
+        if(el.tagName == "A") {
+            // Clicking on a link in a <dfn> shouldn't summon the panel
+            hitALink = true;
+        }
+        if(el.classList.contains("dfn-paneled")) {
+            target = "dfn";
+            break;
+        }
+        if(el.classList.contains("dfn-panel")) {
+            target = "dfn-panel";
+            break;
+        }
+        el = el.parentElement;
+    }
+    if(target != "dfn-panel") {
+        // Turn off any currently "on" or "activated" panels.
+        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
+            el.classList.remove("on");
+            el.classList.remove("activated");
+        });
+    }
+    if(target == "dfn" && !hitALink) {
+        // open the panel
+        var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
+        if(dfnPanel) {
+            dfnPanel.classList.add("on");
+            var rect = el.getBoundingClientRect();
+            dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
+            dfnPanel.style.top = window.scrollY + rect.top + "px";
+            var panelRect = dfnPanel.getBoundingClientRect();
+            var panelWidth = panelRect.right - panelRect.left;
+            if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
+                // Reposition, because the panel is overflowing
+                dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
+            }
+        } else {
+            console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
+        }
+    } else if(target == "dfn-panel") {
+        // Switch it to "activated" state, which pins it.
+        el.classList.add("activated");
+        el.style.left = null;
+        el.style.top = null;
+    }
+
+});
+</script>
+<script>/* script-var-click-highlighting */
+
+    document.addEventListener("click", e=>{
+        if(e.target.nodeName == "VAR") {
+            highlightSameAlgoVars(e.target);
+        }
+    });
+    {
+        const indexCounts = new Map();
+        const indexNames = new Map();
+        function highlightSameAlgoVars(v) {
+            // Find the algorithm container.
+            let algoContainer = null;
+            let searchEl = v;
+            while(algoContainer == null && searchEl != document.body) {
+                searchEl = searchEl.parentNode;
+                if(searchEl.hasAttribute("data-algorithm")) {
+                    algoContainer = searchEl;
+                }
+            }
+
+            // Not highlighting document-global vars,
+            // too likely to be unrelated.
+            if(algoContainer == null) return;
+
+            const algoName = algoContainer.getAttribute("data-algorithm");
+            const varName = getVarName(v);
+            const addClass = !v.classList.contains("selected");
+            let highlightClass = null;
+            if(addClass) {
+                const index = chooseHighlightIndex(algoName, varName);
+                indexCounts.get(algoName)[index] += 1;
+                indexNames.set(algoName+"///"+varName, index);
+                highlightClass = nameFromIndex(index);
+            } else {
+                const index = previousHighlightIndex(algoName, varName);
+                indexCounts.get(algoName)[index] -= 1;
+                highlightClass = nameFromIndex(index);
+            }
+
+            // Find all same-name vars, and toggle their class appropriately.
+            for(const el of algoContainer.querySelectorAll("var")) {
+                if(getVarName(el) == varName) {
+                    el.classList.toggle("selected", addClass);
+                    el.classList.toggle(highlightClass, addClass);
+                }
+            }
+        }
+        function getVarName(el) {
+            return el.textContent.replace(/(\s|\xa0)+/, " ").trim();
+        }
+        function chooseHighlightIndex(algoName, varName) {
+            let indexes = null;
+            if(indexCounts.has(algoName)) {
+                indexes = indexCounts.get(algoName);
+            } else {
+                // 7 classes right now
+                indexes = [0,0,0,0,0,0,0];
+                indexCounts.set(algoName, indexes);
+            }
+
+            // If the element was recently unclicked,
+            // *and* that color is still unclaimed,
+            // give it back the same color.
+            const lastIndex = previousHighlightIndex(algoName, varName);
+            if(indexes[lastIndex] === 0) return lastIndex;
+
+            // Find the earliest index with the lowest count.
+            const minCount = Math.min.apply(null, indexes);
+            let index = null;
+            for(var i = 0; i < indexes.length; i++) {
+                if(indexes[i] == minCount) {
+                    return i;
+                }
+            }
+        }
+        function previousHighlightIndex(algoName, varName) {
+            return indexNames.get(algoName+"///"+varName);
+        }
+        function nameFromIndex(index) {
+            return "selected" + index;
+        }
+    }
+    </script>
