@@ -406,19 +406,24 @@ Applying Position Fallback {#fallback-apply}
 --------------------------
 
 When an element uses a [=position fallback list=],
-it selects one entry from the list,
-and applies those properties to itself,
-with the same specificity
-as the 'position-fallback' property specifying that list,
-as if they were specified at the end of the 'position-fallback' property's rule
-(that is, overriding any properties of the same name
-also specified in the rule).
+it selects one entry from the list
+as defined below,
+and applies those properties to itself as [=used values=].
 
-Issue: Or should they live in the animation cascade origin?
-It wouldn't prevent us from needing to handle mixing,
-since ''!important'' properties would still win,
-but would at least *usually* mean that the properties apply as a group,
-without higher-cascade rules overriding some (or all!) of the properties.
+Note: These have to be applied as used values
+because we're in the middle of layout right now;
+defining how they'd interact with the cascade
+would be extremely confusing *at a minimum*,
+and perhaps actually circular.
+In any case, not worth the cost in spec or impl.
+
+Issue: This implies that the values can't be transitioned in the usual fashion,
+since transitions key off of computed values
+and we're past that point.
+However, popups sliding between positions is a common effect in UI libs.
+Probably should introduce a <css>smooth</css> keyword
+to 'position-fallback'
+to trigger automatic "animation" of the fallback'd properties.
 
 To determine which entry is selected,
 [=list/iterate=] over the [=position fallback list=],

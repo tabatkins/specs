@@ -6,9 +6,9 @@
   <meta content="w3c/UD" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 892b2a4c8, updated Thu Mar 31 08:06:19 2022 -0700" name="generator">
+  <meta content="Bikeshed version 18533a7d9, updated Thu May 26 10:11:08 2022 -0700" name="generator">
   <link href="http://tabatkins.github.io/specs/css-anchor-position" rel="canonical">
-  <meta content="98e5673eba7da7700523a46dcfbd0013dfa3aa1f" name="document-revision">
+  <meta content="60bb8e99275df20549abd657b0476ec7171e814a" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -575,7 +575,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Anchor Positioning</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2022-05-11">11 May 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2022-05-26">26 May 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1016,18 +1016,21 @@ where each entry consists of the properties specified by each <span class="css" 
 in order.</p>
    <h3 class="heading settled" data-level="3.3" id="fallback-apply"><span class="secno">3.3. </span><span class="content">Applying Position Fallback</span><a class="self-link" href="#fallback-apply"></a></h3>
    <p>When an element uses a <a data-link-type="dfn" href="#position-fallback-list" id="ref-for-position-fallback-list③">position fallback list</a>,
-it selects one entry from the list,
-and applies those properties to itself,
-with the same specificity
-as the <a class="property css" data-link-type="property" href="#propdef-position-fallback" id="ref-for-propdef-position-fallback②">position-fallback</a> property specifying that list,
-as if they were specified at the end of the <span class="property" id="ref-for-propdef-position-fallback③">position-fallback</span> property’s rule
-(that is, overriding any properties of the same name
-also specified in the rule).</p>
-   <p class="issue" id="issue-e7827441"><a class="self-link" href="#issue-e7827441"></a> Or should they live in the animation cascade origin?
-It wouldn’t prevent us from needing to handle mixing,
-since <span class="css">!important</span> properties would still win,
-but would at least *usually* mean that the properties apply as a group,
-without higher-cascade rules overriding some (or all!) of the properties.</p>
+it selects one entry from the list
+as defined below,
+and applies those properties to itself as <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value">used values</a>.</p>
+   <p class="note" role="note"><span>Note:</span> These have to be applied as used values
+because we’re in the middle of layout right now;
+defining how they’d interact with the cascade
+would be extremely confusing *at a minimum*,
+and perhaps actually circular.
+In any case, not worth the cost in spec or impl.</p>
+   <p class="issue" id="issue-0b311ea0"><a class="self-link" href="#issue-0b311ea0"></a> This implies that the values can’t be transitioned in the usual fashion,
+since transitions key off of computed values
+and we’re past that point.
+However, popups sliding between positions is a common effect in UI libs.
+Probably should introduce a <span class="css">smooth</span> keyword
+to <a class="property css" data-link-type="property" href="#propdef-position-fallback" id="ref-for-propdef-position-fallback②">position-fallback</a> to trigger automatic "animation" of the fallback’d properties.</p>
    <p>To determine which entry is selected, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate">iterate</a> over the <a data-link-type="dfn" href="#position-fallback-list" id="ref-for-position-fallback-list④">position fallback list</a>,
 applying the properties of each entry in turn
 according to the standard cascade rules,
@@ -1245,6 +1248,12 @@ must have a limit of <em>at least</em> five entries.</p>
    <a href="https://drafts.csswg.org/css-cascade-5/#css-property">https://drafts.csswg.org/css-cascade-5/#css-property</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-css-property">3.2. The @position-fallback Rule</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-used-value">
+   <a href="https://drafts.csswg.org/css-cascade-5/#used-value">https://drafts.csswg.org/css-cascade-5/#used-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-used-value">3.3. Applying Position Fallback</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-containing-block">
@@ -1471,6 +1480,7 @@ must have a limit of <em>at least</em> five entries.</p>
     <a data-link-type="biblio">[css-cascade-5]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-css-property">property</span>
+     <li><span class="dfn-paneled" id="term-for-used-value">used value</span>
     </ul>
    <li>
     <a data-link-type="biblio">[css-display-3]</a> defines the following terms:
@@ -1566,6 +1576,12 @@ must have a limit of <em>at least</em> five entries.</p>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
+   <dt id="biblio-css-display-3①">[CSS-DISPLAY-3]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-display-3/"><cite>CSS Display Module Level 3</cite></a>. 3 September 2021. CR. URL: <a href="https://www.w3.org/TR/css-display-3/">https://www.w3.org/TR/css-display-3/</a>
+   <dt id="biblio-css-position-3①">[CSS-POSITION-3]
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-position-3/"><cite>CSS Positioned Layout Module Level 3</cite></a>. 16 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-position-3/">https://www.w3.org/TR/css-position-3/</a>
+   <dt id="biblio-css-values-4①">[CSS-VALUES-4]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. 16 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
   </dl>
@@ -1595,7 +1611,7 @@ must have a limit of <em>at least</em> five entries.</p>
       <td>per grammar
       <td>as specified
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-position-fallback" id="ref-for-propdef-position-fallback④">position-fallback</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-position-fallback" id="ref-for-propdef-position-fallback③">position-fallback</a>
       <td>none | &lt;dashed-ident>
       <td>none
       <td>absolutely-positioned elements
@@ -1624,11 +1640,12 @@ they don’t have too much effect on sizing,
 but wanting to left/right/center-align
 depending on how your <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#inset-modified-containing-block">inset-modified containing block</a> is aligned with the anchor
 seems reasonable. <a class="issue-return" href="#issue-788a7647" title="Jump to section">↵</a></div>
-   <div class="issue"> Or should they live in the animation cascade origin?
-It wouldn’t prevent us from needing to handle mixing,
-since <span class="css">!important</span> properties would still win,
-but would at least *usually* mean that the properties apply as a group,
-without higher-cascade rules overriding some (or all!) of the properties. <a class="issue-return" href="#issue-e7827441" title="Jump to section">↵</a></div>
+   <div class="issue"> This implies that the values can’t be transitioned in the usual fashion,
+since transitions key off of computed values
+and we’re past that point.
+However, popups sliding between positions is a common effect in UI libs.
+Probably should introduce a <span class="css">smooth</span> keyword
+to <a class="property css" data-link-type="property" href="#propdef-position-fallback">position-fallback</a> to trigger automatic "animation" of the fallback’d properties. <a class="issue-return" href="#issue-0b311ea0" title="Jump to section">↵</a></div>
   </div>
   <aside class="dfn-panel" data-for="anchor-function">
    <b><a href="#anchor-function">#anchor-function</a></b><b>Referenced in:</b>
@@ -1779,7 +1796,7 @@ without higher-cascade rules overriding some (or all!) of the properties. <a cla
    <ul>
     <li><a href="#ref-for-propdef-position-fallback">3. Fallback Sizing/Positioning</a>
     <li><a href="#ref-for-propdef-position-fallback①">3.1. The position-fallback Property</a>
-    <li><a href="#ref-for-propdef-position-fallback②">3.3. Applying Position Fallback</a> <a href="#ref-for-propdef-position-fallback③">(2)</a>
+    <li><a href="#ref-for-propdef-position-fallback②">3.3. Applying Position Fallback</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="at-ruledef-position-fallback">
