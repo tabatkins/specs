@@ -8,7 +8,7 @@
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 18533a7d9, updated Thu May 26 10:11:08 2022 -0700" name="generator">
   <link href="http://tabatkins.github.io/specs/css-anchor-position" rel="canonical">
-  <meta content="60bb8e99275df20549abd657b0476ec7171e814a" name="document-revision">
+  <meta content="d3ca7359d7e9da050d9152c17d56887e40bb0953" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -575,7 +575,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Anchor Positioning</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2022-05-26">26 May 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2022-05-27">27 May 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1041,12 +1041,34 @@ overflows its <a data-link-type="dfn" href="https://drafts.csswg.org/css-display
 are taken as the final values for the specified properties.</p>
    <p>Implementations may choose to impose an implementation-defined limit
 on the length of <a data-link-type="dfn" href="#position-fallback-list" id="ref-for-position-fallback-list⑤">position fallback lists</a>,
-to limit the potential for exponential explosions of layout attempts
-when anchored elements are nested.
-This limit can be different based on the nesting depth,
-but a "top-level" anchored element
-(that is, one which is not a descendant of another anchored element)
-must have a limit of <em>at least</em> five entries.</p>
+to limit the amount of excess layout work that may be required.
+This limit must be <em>at least</em> five.</p>
+   <div class="issue" id="issue-52cb8f94">
+    <a class="self-link" href="#issue-52cb8f94"></a> Nested anchors
+	(an anchored element inside of another anchored element)
+	present the potential for exponential blow-up of layouts
+	when doing fallback,
+	since the grandchild anchored element can cause scrollbars on an ancestor,
+	changing the IMCB for the child anchored element,
+	thus possibly causing the fallback choice to change for it. 
+    <p>There are strategies to avoid this,
+	but they’re not without costs of their own.
+	We should <em>probably</em> impose a <strong>maximum</strong> limit as well,
+	to avoid this.</p>
+    <p>However, since *most* usages won’t be problematic in the first place,
+	we don’t want to restrict them unduly
+	just to prevent weird situations from exploding.
+	Perhaps a complexity budget based on the branching factor at each level?
+	Like, accumulate the product of the fallback list lengths from ancestors,
+	and your fallback list gets limited to not exceed a total product
+	of, say, 1k.
+	Get too deep and you’re stuck with your first choice only!
+	But this would allow large, complex fallback lists for top-level stuff,
+	and even some reasonable nesting.
+	(Length-five lists could be nested to depth of 4, for example,
+	if we did go with 1k.)</p>
+    <p>More thought is needed.</p>
+   </div>
    <div class="example" id="example-cd628aaa">
     <a class="self-link" href="#example-cd628aaa"></a> For example,
 	the following CSS will first attempt to position a "popup"
@@ -1646,6 +1668,33 @@ and we’re past that point.
 However, popups sliding between positions is a common effect in UI libs.
 Probably should introduce a <span class="css">smooth</span> keyword
 to <a class="property css" data-link-type="property" href="#propdef-position-fallback">position-fallback</a> to trigger automatic "animation" of the fallback’d properties. <a class="issue-return" href="#issue-0b311ea0" title="Jump to section">↵</a></div>
+   <div class="issue">
+     Nested anchors
+	(an anchored element inside of another anchored element)
+	present the potential for exponential blow-up of layouts
+	when doing fallback,
+	since the grandchild anchored element can cause scrollbars on an ancestor,
+	changing the IMCB for the child anchored element,
+	thus possibly causing the fallback choice to change for it. 
+    <p>There are strategies to avoid this,
+	but they’re not without costs of their own.
+	We should <em>probably</em> impose a <strong>maximum</strong> limit as well,
+	to avoid this.</p>
+    <p>However, since *most* usages won’t be problematic in the first place,
+	we don’t want to restrict them unduly
+	just to prevent weird situations from exploding.
+	Perhaps a complexity budget based on the branching factor at each level?
+	Like, accumulate the product of the fallback list lengths from ancestors,
+	and your fallback list gets limited to not exceed a total product
+	of, say, 1k.
+	Get too deep and you’re stuck with your first choice only!
+	But this would allow large, complex fallback lists for top-level stuff,
+	and even some reasonable nesting.
+	(Length-five lists could be nested to depth of 4, for example,
+	if we did go with 1k.)</p>
+    <p>More thought is needed.</p>
+     <a class="issue-return" href="#issue-52cb8f94" title="Jump to section">↵</a>
+   </div>
   </div>
   <aside class="dfn-panel" data-for="anchor-function">
    <b><a href="#anchor-function">#anchor-function</a></b><b>Referenced in:</b>

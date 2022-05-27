@@ -438,12 +438,38 @@ are taken as the final values for the specified properties.
 
 Implementations may choose to impose an implementation-defined limit
 on the length of [=position fallback lists=],
-to limit the potential for exponential explosions of layout attempts
-when anchored elements are nested.
-This limit can be different based on the nesting depth,
-but a "top-level" anchored element
-(that is, one which is not a descendant of another anchored element)
-must have a limit of <em>at least</em> five entries.
+to limit the amount of excess layout work that may be required.
+This limit must be <em>at least</em> five.
+
+<div class=issue>
+	Nested anchors
+	(an anchored element inside of another anchored element)
+	present the potential for exponential blow-up of layouts
+	when doing fallback,
+	since the grandchild anchored element can cause scrollbars on an ancestor,
+	changing the IMCB for the child anchored element,
+	thus possibly causing the fallback choice to change for it.
+
+	There are strategies to avoid this,
+	but they're not without costs of their own.
+	We should <em>probably</em> impose a <strong>maximum</strong> limit as well,
+	to avoid this.
+
+	However, since *most* usages won't be problematic in the first place,
+	we don't want to restrict them unduly
+	just to prevent weird situations from exploding.
+	Perhaps a complexity budget based on the branching factor at each level?
+	Like, accumulate the product of the fallback list lengths from ancestors,
+	and your fallback list gets limited to not exceed a total product
+	of, say, 1k.
+	Get too deep and you're stuck with your first choice only!
+	But this would allow large, complex fallback lists for top-level stuff,
+	and even some reasonable nesting.
+	(Length-five lists could be nested to depth of 4, for example,
+	if we did go with 1k.)
+
+	More thought is needed.
+</div>
 
 <div class=example>
 	For example,
