@@ -8,7 +8,7 @@
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 18533a7d9, updated Thu May 26 10:11:08 2022 -0700" name="generator">
   <link href="http://tabatkins.github.io/specs/css-anchor-position" rel="canonical">
-  <meta content="d3ca7359d7e9da050d9152c17d56887e40bb0953" name="document-revision">
+  <meta content="ef0adf7a8953515929ff67b6f8e406e1bb3dc6b9" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1034,8 +1034,9 @@ to <a class="property css" data-link-type="property" href="#propdef-position-fal
    <p>To determine which entry is selected, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate">iterate</a> over the <a data-link-type="dfn" href="#position-fallback-list" id="ref-for-position-fallback-list④">position fallback list</a>,
 applying the properties of each entry in turn
 according to the standard cascade rules,
-and determining whether or not the element
-overflows its <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#containing-block" id="ref-for-containing-block①⑤">containing block</a>.</p>
+and determining whether or not the element’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#margin-box" id="ref-for-margin-box">margin box</a> overflows its <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#containing-block" id="ref-for-containing-block①⑤">containing block</a>.</p>
+   <p class="note" role="note"><span>Note:</span> Descendants overflowing the anchored block
+don’t affect this.</p>
    <p>The properties of the first non-overflowing entry
 (or the last attempted entry, if none succeeded),
 are taken as the final values for the specified properties.</p>
@@ -1264,6 +1265,12 @@ This limit must be <em>at least</em> five.</p>
    <ul>
     <li><a href="#ref-for-box-alignment-properties">2. Anchoring</a>
     <li><a href="#ref-for-box-alignment-properties①">3.2. The @position-fallback Rule</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-margin-box">
+   <a href="https://drafts.csswg.org/css-box-4/#margin-box">https://drafts.csswg.org/css-box-4/#margin-box</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-margin-box">3.3. Applying Position Fallback</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-css-property">
@@ -1499,6 +1506,11 @@ This limit must be <em>at least</em> five.</p>
      <li><span class="dfn-paneled" id="term-for-box-alignment-properties">box alignment properties</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[css-box-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-margin-box">margin box</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[css-cascade-5]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-css-property">property</span>
@@ -1575,6 +1587,8 @@ This limit must be <em>at least</em> five.</p>
   <dl>
    <dt id="biblio-css-align-3">[CSS-ALIGN-3]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-align-3/"><cite>CSS Box Alignment Module Level 3</cite></a>. 24 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-align-3/">https://www.w3.org/TR/css-align-3/</a>
+   <dt id="biblio-css-box-4">[CSS-BOX-4]
+   <dd>Elika Etemad. <a href="https://www.w3.org/TR/css-box-4/"><cite>CSS Box Model Module Level 4</cite></a>. 21 April 2020. WD. URL: <a href="https://www.w3.org/TR/css-box-4/">https://www.w3.org/TR/css-box-4/</a>
    <dt id="biblio-css-cascade-5">[CSS-CASCADE-5]
    <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. 13 January 2022. CR. URL: <a href="https://www.w3.org/TR/css-cascade-5/">https://www.w3.org/TR/css-cascade-5/</a>
    <dt id="biblio-css-display-3">[CSS-DISPLAY-3]

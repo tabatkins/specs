@@ -429,8 +429,11 @@ To determine which entry is selected,
 [=list/iterate=] over the [=position fallback list=],
 applying the properties of each entry in turn
 according to the standard cascade rules,
-and determining whether or not the element
+and determining whether or not the element's [=margin box=]
 overflows its [=containing block=].
+
+Note: Descendants overflowing the anchored block
+don't affect this.
 
 The properties of the first non-overflowing entry
 (or the last attempted entry, if none succeeded),
