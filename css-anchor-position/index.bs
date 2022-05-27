@@ -387,15 +387,14 @@ The ''@try'' rule only accepts the following [=properties=]:
 
 * [=inset properties=]
 * [=sizing properties=]
+* [=box alignment properties=]
 
 Issue: What exactly are the constraints that determine what's allowed here?
-It would probably be useful to allow the [=box alignment properties=],
-for example;
-they don't have too much effect on sizing,
-but wanting to left/right/center-align
-depending on how your [=inset-modified containing block=]
-is aligned with the anchor
-seems reasonable.
+Current list is based off of what's reasonable
+from Chrome's experimental impl.
+We can make a CQ that keys off of which fallback was used
+to allow more general styling,
+at least for descendants.
 
 The ''@try'' rules inside a ''@position-fallback''
 specify a <dfn>position fallback list</dfn>,

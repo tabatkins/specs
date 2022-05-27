@@ -8,7 +8,7 @@
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 18533a7d9, updated Thu May 26 10:11:08 2022 -0700" name="generator">
   <link href="http://tabatkins.github.io/specs/css-anchor-position" rel="canonical">
-  <meta content="ef0adf7a8953515929ff67b6f8e406e1bb3dc6b9" name="document-revision">
+  <meta content="d978b079eecc9f2868bb3e031d3f4066414e1655" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1003,14 +1003,15 @@ the last one in document order "wins".</p>
      <p><a data-link-type="dfn" href="https://drafts.csswg.org/css-logical-1/#inset-properties" id="ref-for-inset-properties④">inset properties</a></p>
     <li data-md>
      <p><a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#sizing-property" id="ref-for-sizing-property②">sizing properties</a></p>
+    <li data-md>
+     <p><a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#box-alignment-properties" id="ref-for-box-alignment-properties①">box alignment properties</a></p>
    </ul>
-   <p class="issue" id="issue-788a7647"><a class="self-link" href="#issue-788a7647"></a> What exactly are the constraints that determine what’s allowed here?
-It would probably be useful to allow the <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#box-alignment-properties" id="ref-for-box-alignment-properties①">box alignment properties</a>,
-for example;
-they don’t have too much effect on sizing,
-but wanting to left/right/center-align
-depending on how your <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#inset-modified-containing-block" id="ref-for-inset-modified-containing-block②">inset-modified containing block</a> is aligned with the anchor
-seems reasonable.</p>
+   <p class="issue" id="issue-14452576"><a class="self-link" href="#issue-14452576"></a> What exactly are the constraints that determine what’s allowed here?
+Current list is based off of what’s reasonable
+from Chrome’s experimental impl.
+We can make a CQ that keys off of which fallback was used
+to allow more general styling,
+at least for descendants.</p>
    <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-try" id="ref-for-at-ruledef-try②">@try</a> rules inside a <a class="css" data-link-type="maybe" href="#at-ruledef-position-fallback" id="ref-for-at-ruledef-position-fallback⑥">@position-fallback</a> specify a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="position-fallback-list">position fallback list</dfn>,
 where each entry consists of the properties specified by each <span class="css" id="ref-for-at-ruledef-try③">@try</span>,
 in order.</p>
@@ -1367,7 +1368,6 @@ This limit must be <em>at least</em> five.</p>
    <a href="https://drafts.csswg.org/css-position-3/#inset-modified-containing-block">https://drafts.csswg.org/css-position-3/#inset-modified-containing-block</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-inset-modified-containing-block">2.1. Anchor-based Positioning: the anchor() function</a> <a href="#ref-for-inset-modified-containing-block①">(2)</a>
-    <li><a href="#ref-for-inset-modified-containing-block②">3.2. The @position-fallback Rule</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-left">
@@ -1670,12 +1670,11 @@ I think that’s too unpredictable to actually do anything useful. <a class="iss
    <div class="issue"> Do we need to control which box we’re referring to,
 so you can align to padding or content edge? <a class="issue-return" href="#issue-3c6fe13f" title="Jump to section">↵</a></div>
    <div class="issue"> What exactly are the constraints that determine what’s allowed here?
-It would probably be useful to allow the <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#box-alignment-properties">box alignment properties</a>,
-for example;
-they don’t have too much effect on sizing,
-but wanting to left/right/center-align
-depending on how your <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#inset-modified-containing-block">inset-modified containing block</a> is aligned with the anchor
-seems reasonable. <a class="issue-return" href="#issue-788a7647" title="Jump to section">↵</a></div>
+Current list is based off of what’s reasonable
+from Chrome’s experimental impl.
+We can make a CQ that keys off of which fallback was used
+to allow more general styling,
+at least for descendants. <a class="issue-return" href="#issue-14452576" title="Jump to section">↵</a></div>
    <div class="issue"> This implies that the values can’t be transitioned in the usual fashion,
 since transitions key off of computed values
 and we’re past that point.
