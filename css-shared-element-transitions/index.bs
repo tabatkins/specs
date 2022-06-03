@@ -8,7 +8,7 @@ TR: https://www.w3.org/TR/css-foo/
 ED: https://drafts.csswg.org/css-foo/
 Work Status: exploring
 Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/, w3cid 42199
-Abstract: This module introduces the 'foo' property and related values, which do bar and baz.
+Abstract: This module defines the Single-Page Document-Transition API, along with associated properties and pseudo-elements.
 </pre>
 
 <style>
@@ -33,10 +33,43 @@ Introduction {#intro}
 =====================
 
 	This spec describes the CSS and JS mechanics
-	of the single-page Page Transition API,
+	of the single-page Page Transition API.
 
 
-Pseudo-Elements
+Page Transitions {#page-transitions}
+================
+
+Tagging Elements For Transition: the 'page-transition-tag' property {#page-transition-tag-prop}
+-------------------------------------------------------------------
+
+<pre class=propdef>
+Name: page-transition-tag
+Value: none | <<custom-ident>>
+Initial: none
+Inherited: no
+Percentages: n/a
+Computed Value: as specified
+Animation type: discrete
+</pre>
+
+The 'page-transition-tag' property "tags" an element
+as participating in a page transition.
+
+<dl dfn-type=value dfn-for=page-transition-tag>
+	: <dfn>none</dfn>
+	:: The element will not participate in a page transition.
+
+	: <dfn><<custom-ident>></dfn>
+	:: The element can participate in a page transition,
+		as either an outgoing or incoming element,
+		with a <dfn dfn for>page transition tag</dfn>
+		equal to the <<custom-ident>>'s value.
+
+		The value <css>none</css> is invalid as a <<custom-ident>>.
+</dl>
+
+
+Pseudo-Elements {#pseudo}
 ===============
 
 While the UA is [=animating a page transition=],
@@ -130,7 +163,7 @@ is defined in the [=animate a page transition=] algorithm.
 
 
 
-API
+API {#api}
 ====
 
 Single-page API:
