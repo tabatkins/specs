@@ -110,7 +110,9 @@ with that identifier as its 'page-transition-tag' value.
 	which is its [=originating element=].
 
 	Styles in the [=user-agent origin=]
-	set this pseudo-element's 'object-view-box' property
+	animate this pseudo-element's 'width' and 'height'
+	to the same size as its ancestor ''::page-transition-container()'',
+	and set this pseudo-element's 'object-view-box' property
 	with an ''xywh()'' value
 	such that the view box matches the outgoing element's border box
 	in the snapshot.
@@ -144,8 +146,10 @@ partial interface Document {
 	are to return a fresh {{SameDocumentTransition}} object.
 </div>
 
-Issue: Why use a {{Document}} factory method
-rather than a constructor that takes a Document as a required arg?
+Issue: Per discussion with Khushal and Vlad,
+seems like we actually want this to be a singleton,
+so it should probably be a
+readonly <code>Document.documentTransition</code> property.
 
 <xmp class=idl>
 interface SameDocumentTransition {
@@ -177,7 +181,8 @@ which is a [=/string=] chosen from
 "ready",
 "outgoing-prep",
 "started",
-and "incoming-prep";
+"incoming-prep",
+and "running";
 it is initially "ready".
 
 <div algorithm="SameDocumentTransition.start()">
@@ -243,12 +248,15 @@ it is initially "ready".
 		otherwise,
 		[=map/remove=] |incomingEls|[|tag|].
 
-	1. Set [=this's=] {{[[Phase]]}} internal slot to "ready",
-		an [=unfreeze the page's rendering=].
+	1. Set [=this's=] {{[[Phase]]}} internal slot to "running",
+		and [=unfreeze the page's rendering=].
 
 	1. [=Animate a page transition=]
 		with outgoing elements |outgoingEls|
 		and incoming elements |incomingEls|.
+
+		When the transition is finished,
+		set [=this's=] {{[[Phase]]}} internal slot to "ready".
 
 	Issue: I'm not actually returning a Promise yet;
 	need to do a little bit of rearranging.
@@ -339,7 +347,7 @@ it is initially "ready".
 
 <div algorithm>
 	To <dfn>abandon the page transition</dfn>
-	managed by a {{SinglePageTransition}} |manager|,
+	managed by a {{SameDocumentTransition}} |manager|,
 	...
 
 	Issue: Unfreeze the page if necessary,
@@ -380,10 +388,6 @@ it is initially "ready".
 	To <dfn>animate a page transition</dfn>
 	given a map of |outgoingEls|
 	and a map of |incomingEls|:
-
-	1. If there are currently any [=page-transition pseudo-elements=]
-		in the process of animating a page transition,
-		remove them.
 
 	1. Let |transition root pseudo| be a new ''::page-transition'' pseudo-element,
 		and place it in the [=page-transition paint layer=].
