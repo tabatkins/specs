@@ -238,7 +238,7 @@ it is initially "ready".
 
 	1. [=map/For each=] |tag| -> |elStruct| of |incomingEls|,
 		if |outgoingEls|[|tag|] [=map/exists=],
-		[=capture the image=] of |elStruct|'s element
+		[=capture the live image=] of |elStruct|'s element
 		and set |elStruct|'s image to the result;
 		otherwise,
 		[=map/remove=] |incomingEls|[|tag|].
@@ -321,6 +321,15 @@ it is initially "ready".
 <div algorithm>
 	To <dfn>freeze the page's rendering</dfn>,
 	...
+
+	Issue: Do a full lifecycle update first--
+	run rAF,
+	flush styles,
+	and fully layout the page.
+	This requires integration into the HTML lifetime cycle;
+	I haven't had to write text for that before,
+	but it should be similar or identical
+	to waht I need to
 </div>
 
 <div algorithm>
@@ -344,8 +353,7 @@ it is initially "ready".
 	of an {{Element}} |el|,
 	...
 
-	Issue: Flush style and layout the page,
-	then figure out |el|'s bounds
+	Issue: Figure out |el|'s bounds
 	(both border box and ink overflow rectangle,
 	so we can set up the view box properly),
 	and render it into a canvas.
@@ -354,11 +362,18 @@ it is initially "ready".
 	For this purpose, the element is treated as ''isolation: isolate'',
 	''contain: paint'',
 	and ''break-inside: avoid''.
+</div>
 
-	Issue: Spec says this is a live image for incoming images,
-	so gifs will loop, etc.
-	How live is it?
-	Do size changes reflect?
+<div algorithm>
+	To <dfn>capture the live image</dfn>
+	of an {{Element}} |el|,
+	...
+
+	Issue: Identical to [=capture the image=],
+	except rather than a static image snapshot,
+	it's a live rendering of the element,
+	reflecting the current size and appearance
+	in sync with the real element.
 </div>
 
 <div algorithm>

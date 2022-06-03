@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 863c1075f, updated Wed Jun 1 15:25:15 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-foo/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="7932526a93adeb631afcb85a935a747ad8192995" name="document-revision">
+  <meta content="2eb381f55498b5ffc0cd176f132510d4e0e5a737" name="document-revision">
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -973,7 +973,7 @@ If multiple elements have the same tag, <a data-link-type="dfn" href="#abandon-t
 set <var>incomingEls</var>[<var>tag</var>] to a <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement①">CapturedElement</a> whose "element" item is <var>el</var>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate③">For each</a> <var>tag</var> -> <var>elStruct</var> of <var>incomingEls</var>,
-if <var>outgoingEls</var>[<var>tag</var>] <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists">exists</a>, <a data-link-type="dfn" href="#capture-the-image" id="ref-for-capture-the-image①">capture the image</a> of <var>elStruct</var>’s element
+if <var>outgoingEls</var>[<var>tag</var>] <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists">exists</a>, <a data-link-type="dfn" href="#capture-the-live-image" id="ref-for-capture-the-live-image">capture the live image</a> of <var>elStruct</var>’s element
 and set <var>elStruct</var>’s image to the result;
 otherwise, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-remove" id="ref-for-map-remove">remove</a> <var>incomingEls</var>[<var>tag</var>].</p>
      <li data-md>
@@ -1037,8 +1037,17 @@ an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfr
 </pre>
    </div>
    <hr>
-   <div class="algorithm" data-algorithm="freeze the page’s rendering"> To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="freeze-the-pages-rendering">freeze the page’s rendering</dfn>,
-	... </div>
+   <div class="algorithm" data-algorithm="freeze the page’s rendering">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="freeze-the-pages-rendering">freeze the page’s rendering</dfn>,
+	... 
+    <p class="issue" id="issue-ff7f54f4"><a class="self-link" href="#issue-ff7f54f4"></a> Do a full lifecycle update first—<wbr>run rAF,
+	flush styles,
+	and fully layout the page.
+	This requires integration into the HTML lifetime cycle;
+	I haven’t had to write text for that before,
+	but it should be similar or identical
+	to waht I need to</p>
+   </div>
    <div class="algorithm" data-algorithm="unfreeze the page’s rendering"> To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="unfreeze-the-pages-rendering">unfreeze the page’s rendering</dfn>,
 	... </div>
    <div class="algorithm" data-algorithm="abandon the page transition">
@@ -1052,8 +1061,7 @@ an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfr
    <div class="algorithm" data-algorithm="capture the image">
      To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="capture-the-image">capture the image</dfn> of an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element">Element</a></code> <var>el</var>,
 	... 
-    <p class="issue" id="issue-18130b0c"><a class="self-link" href="#issue-18130b0c"></a> Flush style and layout the page,
-	then figure out <var>el</var>’s bounds
+    <p class="issue" id="issue-7a290c91"><a class="self-link" href="#issue-7a290c91"></a> Figure out <var>el</var>’s bounds
 	(both border box and ink overflow rectangle,
 	so we can set up the view box properly),
 	and render it into a canvas.
@@ -1061,10 +1069,15 @@ an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfr
 	skip their painting.
 	For this purpose, the element is treated as <a class="css" data-link-type="propdesc" href="https://drafts.fxtf.org/compositing-2/#propdef-isolation" id="ref-for-propdef-isolation">isolation: isolate</a>, <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-contain-2/#propdef-contain" id="ref-for-propdef-contain">contain: paint</a>,
 	and <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-break-3/#propdef-break-inside" id="ref-for-propdef-break-inside">break-inside: avoid</a>.</p>
-    <p class="issue" id="issue-e63d39aa"><a class="self-link" href="#issue-e63d39aa"></a> Spec says this is a live image for incoming images,
-	so gifs will loop, etc.
-	How live is it?
-	Do size changes reflect?</p>
+   </div>
+   <div class="algorithm" data-algorithm="capture the live image">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="capture-the-live-image">capture the live image</dfn> of an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element①">Element</a></code> <var>el</var>,
+	... 
+    <p class="issue" id="issue-35a6e0aa"><a class="self-link" href="#issue-35a6e0aa"></a> Identical to <a data-link-type="dfn" href="#capture-the-image" id="ref-for-capture-the-image①">capture the image</a>,
+	except rather than a static image snapshot,
+	it’s a live rendering of the element,
+	reflecting the current size and appearance
+	in sync with the real element.</p>
    </div>
    <div class="algorithm" data-algorithm="animate a page transition">
      To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="animate-a-page-transition">animate a page transition</dfn> given a map of <var>outgoingEls</var> and a map of <var>incomingEls</var>: 
@@ -1218,6 +1231,7 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
    <li><a href="#callbackdef-asyncfunction">AsyncFunction</a><span>, in § 3</span>
    <li><a href="#capturedelement">CapturedElement</a><span>, in § 3</span>
    <li><a href="#capture-the-image">capture the image</a><span>, in § 3</span>
+   <li><a href="#capture-the-live-image">capture the live image</a><span>, in § 3</span>
    <li><a href="#dom-document-createdocumenttransition">createDocumentTransition()</a><span>, in § 3</span>
    <li><a href="#freeze-the-pages-rendering">freeze the page’s rendering</a><span>, in § 3</span>
    <li><a href="#dom-samedocumenttransition-incomingelements-slot">[[IncomingElements]]</a><span>, in § 3</span>
@@ -1335,7 +1349,7 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
   <aside class="dfn-panel" data-for="term-for-element">
    <a href="https://dom.spec.whatwg.org/#element">https://dom.spec.whatwg.org/#element</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-element">3. API</a>
+    <li><a href="#ref-for-element">3. API</a> <a href="#ref-for-element①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-map-exists">
@@ -1607,23 +1621,30 @@ rather than a constructor that takes a Document as a required arg? <a class="iss
 abandon the transition automatically. <a class="issue-return" href="#issue-52cf4245" title="Jump to section">↵</a></div>
    <div class="issue"> I’m not actually returning a Promise yet;
 	need to do a little bit of rearranging. <a class="issue-return" href="#issue-cc78a612" title="Jump to section">↵</a></div>
+   <div class="issue"> Do a full lifecycle update first—<wbr>run rAF,
+	flush styles,
+	and fully layout the page.
+	This requires integration into the HTML lifetime cycle;
+	I haven’t had to write text for that before,
+	but it should be similar or identical
+	to waht I need to <a class="issue-return" href="#issue-ff7f54f4" title="Jump to section">↵</a></div>
    <div class="issue"> Unfreeze the page if necessary,
 	kick it straight into "finished",
 	and reject the promise returned by .start(),
 	if one has been created. <a class="issue-return" href="#issue-9f3abfa5" title="Jump to section">↵</a></div>
-   <div class="issue"> Flush style and layout the page,
-	then figure out <var>el</var>’s bounds
+   <div class="issue"> Figure out <var>el</var>’s bounds
 	(both border box and ink overflow rectangle,
 	so we can set up the view box properly),
 	and render it into a canvas.
 	If it has children that are also tagged for capture,
 	skip their painting.
 	For this purpose, the element is treated as <a class="css" data-link-type="propdesc" href="https://drafts.fxtf.org/compositing-2/#propdef-isolation">isolation: isolate</a>, <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-contain-2/#propdef-contain">contain: paint</a>,
-	and <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-break-3/#propdef-break-inside">break-inside: avoid</a>. <a class="issue-return" href="#issue-18130b0c" title="Jump to section">↵</a></div>
-   <div class="issue"> Spec says this is a live image for incoming images,
-	so gifs will loop, etc.
-	How live is it?
-	Do size changes reflect? <a class="issue-return" href="#issue-e63d39aa" title="Jump to section">↵</a></div>
+	and <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-break-3/#propdef-break-inside">break-inside: avoid</a>. <a class="issue-return" href="#issue-7a290c91" title="Jump to section">↵</a></div>
+   <div class="issue"> Identical to <a data-link-type="dfn" href="#capture-the-image">capture the image</a>,
+	except rather than a static image snapshot,
+	it’s a live rendering of the element,
+	reflecting the current size and appearance
+	in sync with the real element. <a class="issue-return" href="#issue-35a6e0aa" title="Jump to section">↵</a></div>
    <div class="issue">set this up properly <a class="issue-return" href="#issue-9da76ed0" title="Jump to section">↵</a></div>
    <div class="issue">set this up properly <a class="issue-return" href="#issue-9da76ed0①" title="Jump to section">↵</a></div>
    <div class="issue"> define this. <a class="issue-return" href="#issue-c52e7bf4" title="Jump to section">↵</a></div>
@@ -1736,6 +1757,12 @@ abandon the transition automatically. <a class="issue-return" href="#issue-52cf4
    <b><a href="#capture-the-image">#capture-the-image</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-capture-the-image">3. API</a> <a href="#ref-for-capture-the-image①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="capture-the-live-image">
+   <b><a href="#capture-the-live-image">#capture-the-live-image</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-capture-the-live-image">3. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="animate-a-page-transition">
