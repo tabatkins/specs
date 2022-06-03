@@ -173,11 +173,12 @@ with items named "element" and "image",
 both initially empty.
 
 They also have a <dfn attribute for=SameDocumentTransition>\[[Phase]]</dfn> internal slot,
-which is a [=/string=] chosen from "ready", "outgoing-prep", "started", "incoming-prep", and "finished";
+which is a [=/string=] chosen from
+"ready",
+"outgoing-prep",
+"started",
+and "incoming-prep";
 it is initially "ready".
-
-Issue: Is this object meant to be one-shot, or reusable?
-In other words, should it instead reset to "ready" when done?
 
 <div algorithm="SameDocumentTransition.start()">
 	The [=method steps=] for
@@ -246,7 +247,7 @@ In other words, should it instead reset to "ready" when done?
 		otherwise,
 		[=map/remove=] |incomingEls|[|tag|].
 
-	1. Set [=this's=] {{[[Phase]]}} internal slot to "finished",
+	1. Set [=this's=] {{[[Phase]]}} internal slot to "ready",
 		an [=unfreeze the page's rendering=].
 
 	1. [=Animate a page transition=]

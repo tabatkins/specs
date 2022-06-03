@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 863c1075f, updated Wed Jun 1 15:25:15 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-foo/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="7dcff1432b2a446d5c63ddbb2a44f132b56cddcd" name="document-revision">
+  <meta content="1aade85294acd13242d07f10d957be885eeabb85" name="document-revision">
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -925,10 +925,12 @@ and whose values are <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport 
 a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct">struct</a> with items named "element" and "image",
 both initially empty.</p>
    <p>They also have a <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-phase-slot"><code>[[Phase]]</code></dfn> internal slot,
-which is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string" id="ref-for-string">string</a> chosen from "ready", "outgoing-prep", "started", "incoming-prep", and "finished";
+which is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string" id="ref-for-string">string</a> chosen from
+"ready",
+"outgoing-prep",
+"started",
+and "incoming-prep";
 it is initially "ready".</p>
-   <p class="issue" id="issue-6e316d4c"><a class="self-link" href="#issue-6e316d4c"></a> Is this object meant to be one-shot, or reusable?
-In other words, should it instead reset to "ready" when done?</p>
    <div class="algorithm" data-algorithm="SameDocumentTransition.start()">
      The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps①">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export id="dom-samedocumenttransition-start"><code>start(cb)</code></dfn> are: 
     <ol>
@@ -978,7 +980,7 @@ if <var>outgoingEls</var>[<var>tag</var>] <a data-link-type="dfn" href="https://
 and set <var>elStruct</var>’s image to the result;
 otherwise, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-remove" id="ref-for-map-remove">remove</a> <var>incomingEls</var>[<var>tag</var>].</p>
      <li data-md>
-      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot④">[[Phase]]</a></code> internal slot to "finished",
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot④">[[Phase]]</a></code> internal slot to "ready",
 an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfreeze-the-pages-rendering">unfreeze the page’s rendering</a>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="#animate-a-page-transition" id="ref-for-animate-a-page-transition②">Animate a page transition</a> with outgoing elements <var>outgoingEls</var> and incoming elements <var>incomingEls</var>.</p>
@@ -1604,8 +1606,6 @@ right? <a class="issue-return" href="#issue-f3c41cf3" title="Jump to section">�
    <div class="issue"> Which of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-xywh">xywh()</a>/<a class="css" data-link-type="maybe" href="https://drafts.fxtf.org/css-masking-1/#funcdef-clip-rect">rect()</a>/<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-inset">inset()</a> should we use? <a class="issue-return" href="#issue-1c3f1c0f" title="Jump to section">↵</a></div>
    <div class="issue"> Why use a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> factory method
 rather than a constructor that takes a Document as a required arg? <a class="issue-return" href="#issue-9613dd8b" title="Jump to section">↵</a></div>
-   <div class="issue"> Is this object meant to be one-shot, or reusable?
-In other words, should it instead reset to "ready" when done? <a class="issue-return" href="#issue-6e316d4c" title="Jump to section">↵</a></div>
    <div class="issue"> Need to specify that if <var>cb</var> takes too long we can
 abandon the transition automatically. <a class="issue-return" href="#issue-52cf4245" title="Jump to section">↵</a></div>
    <div class="issue"> I’m not actually returning a Promise yet;
