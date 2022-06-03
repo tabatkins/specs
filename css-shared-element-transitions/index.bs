@@ -40,9 +40,8 @@ Pseudo-Elements
 ===============
 
 While the UA is [=animating a page transition=],
-it creates the following <dfn export>page-transition pseudo-elements</dfn>
-in a tree structure,
-to represent the transitioning pieces.
+it creates the following <dfn export>page-transition pseudo-elements</dfn>,
+to represent the various items being animated.
 
 Several of these selectors
 can represent multiple possible pseudo-elements,
@@ -64,6 +63,7 @@ with that identifier as its 'page-transition-tag' value.
 
 : <dfn>::page-transition</dfn>
 :: This pseudo-element is the parent of all the other [=page-transition pseudo-elements=].
+	Its [=originating element=] is the document's root element.
 
 	Issue: What functionality does this add?
 	Just, like, letting you filter/etc the whole subtree,
@@ -73,7 +73,8 @@ with that identifier as its 'page-transition-tag' value.
 ::	One of these pseudo-elements exists
 	for each element being animated by the page transition,
 	and holds the rest of the pseudo-elements
-	It's a child of the ''::page-transition'' pseudo-element.
+	It's a child of the ''::page-transition'' pseudo-element,
+	which is its [=originating element=].
 
 	Styles in the [=user-agent origin=]
 	animate this pseudo-element's 'width' and 'height'
@@ -90,7 +91,8 @@ with that identifier as its 'page-transition-tag' value.
 	for each element being animated by the page transition,
 	and holds the images of the outgoing and incoming elements.
 	It's a child of the ''::page-transition-container()'' pseudo-element
-	with the same tag.
+	with the same tag,
+	which is its [=originating element=].
 
 	Styles in the [=user-agent origin=]
 	animate this pseudo-element's 'width' and 'height'
@@ -104,7 +106,8 @@ with that identifier as its 'page-transition-tag' value.
 	It has [=natural dimensions=]
 	equal to the snapshot's size.
 	It's a child of the ''::page-transition-image-wrapper()'' pseudo-element
-	with the same tag.
+	with the same tag,
+	which is its [=originating element=].
 
 	Styles in the [=user-agent origin=]
 	set this pseudo-element's 'object-view-box' property

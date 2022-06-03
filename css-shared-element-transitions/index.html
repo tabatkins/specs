@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 863c1075f, updated Wed Jun 1 15:25:15 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-foo/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="fca7a63ba6e3eaccf54dca40371775166a10ffa8" name="document-revision">
+  <meta content="4d017b1735555bd9bee7fb1a2cfea7faa2a6c0ac" name="document-revision">
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -831,8 +831,8 @@ on screen, on paper, etc.
 	of the single-page Page Transition API,</p>
    <h2 class="heading settled" data-level="2" id="pseudo-elements"><span class="secno">2. </span><span class="content">Pseudo-Elements</span><a class="self-link" href="#pseudo-elements"></a></h2>
    <p>While the UA is <a data-link-type="dfn" href="#animate-a-page-transition" id="ref-for-animate-a-page-transition">animating a page transition</a>,
-it creates the following <a data-link-type="dfn">page-transition pseudo-elements</a> in a tree structure,
-to represent the transitioning pieces.</p>
+it creates the following <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="page-transition-pseudo-elements">page-transition pseudo-elements</dfn>,
+to represent the various items being animated.</p>
    <p>Several of these selectors
 can represent multiple possible pseudo-elements,
 one for each element being animated by the <a data-link-type="dfn">page transition</a>.
@@ -850,7 +850,8 @@ with that identifier as its <a class="property css" data-link-type="property">pa
    <dl>
     <dt data-md><dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="selectordef-page-transition">::page-transition</dfn>
     <dd data-md>
-     <p>This pseudo-element is the parent of all the other <a data-link-type="dfn">page-transition pseudo-elements</a>.</p>
+     <p>This pseudo-element is the parent of all the other <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements">page-transition pseudo-elements</a>.
+Its <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#originating-element" id="ref-for-originating-element">originating element</a> is the document’s root element.</p>
      <p class="issue" id="issue-b85b3b03"><a class="self-link" href="#issue-b85b3b03"></a> What functionality does this add?
 Just, like, letting you filter/etc the whole subtree,
 or something else?</p>
@@ -859,7 +860,8 @@ or something else?</p>
      <p>One of these pseudo-elements exists
 for each element being animated by the page transition,
 and holds the rest of the pseudo-elements
-It’s a child of the <a class="css" data-link-type="maybe" href="#selectordef-page-transition" id="ref-for-selectordef-page-transition">::page-transition</a> pseudo-element.</p>
+It’s a child of the <a class="css" data-link-type="maybe" href="#selectordef-page-transition" id="ref-for-selectordef-page-transition">::page-transition</a> pseudo-element,
+which is its <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#originating-element" id="ref-for-originating-element①">originating element</a>.</p>
      <p>Styles in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua">user-agent origin</a> animate this pseudo-element’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width</a> and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> from the size of the outgoing element’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box">border box</a> to that of the incoming element’s <span id="ref-for-border-box①">border box</span>.</p>
      <p class="issue" id="issue-f3c41cf3"><a class="self-link" href="#issue-f3c41cf3"></a> I think this is basically a no-op right now
 (totally subsumed in functionality by the image wrapper one),
@@ -871,7 +873,8 @@ right?</p>
 for each element being animated by the page transition,
 and holds the images of the outgoing and incoming elements.
 It’s a child of the <a class="css" data-link-type="maybe" href="#selectordef-page-transition-container-pt-tag-selector" id="ref-for-selectordef-page-transition-container-pt-tag-selector">::page-transition-container()</a> pseudo-element
-with the same tag.</p>
+with the same tag,
+which is its <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#originating-element" id="ref-for-originating-element②">originating element</a>.</p>
      <p>Styles in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①">user-agent origin</a> animate this pseudo-element’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width①">width</a> and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a> to the same size as its parent <a class="css" data-link-type="maybe" href="#selectordef-page-transition-container-pt-tag-selector" id="ref-for-selectordef-page-transition-container-pt-tag-selector①">::page-transition-container()</a>.</p>
     <dt data-md><dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="selectordef-page-transition-outgoing-image-pt-tag-selector">::page-transition-outgoing-image( <a class="production css" data-link-type="type" href="#typedef-pt-tag-selector" id="ref-for-typedef-pt-tag-selector③">&lt;pt-tag-selector></a> )</dfn>
     <dd data-md>
@@ -880,7 +883,8 @@ for each element being animated by the page transition,
 and is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#replaced-element" id="ref-for-replaced-element">replaced element</a> displaying the outgoing element’s snapshot image.
 It has <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-3/#natural-dimensions" id="ref-for-natural-dimensions">natural dimensions</a> equal to the snapshot’s size.
 It’s a child of the <a class="css" data-link-type="maybe" href="#selectordef-page-transition-image-wrapper-pt-tag-selector" id="ref-for-selectordef-page-transition-image-wrapper-pt-tag-selector">::page-transition-image-wrapper()</a> pseudo-element
-with the same tag.</p>
+with the same tag,
+which is its <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#originating-element" id="ref-for-originating-element③">originating element</a>.</p>
      <p>Styles in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua②">user-agent origin</a> set this pseudo-element’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box">object-view-box</a> property
 with an <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-xywh" id="ref-for-funcdef-basic-shape-xywh">xywh()</a> value
 such that the view box matches the outgoing element’s border box
@@ -1105,7 +1109,7 @@ an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfr
      To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="animate-a-page-transition">animate a page transition</dfn> given a map of <var>outgoingEls</var> and a map of <var>incomingEls</var>: 
     <ol>
      <li data-md>
-      <p>If there are currently any <a data-link-type="dfn">page-transition pseudo-elements</a> in the process of animating a page transition,
+      <p>If there are currently any <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements①">page-transition pseudo-elements</a> in the process of animating a page transition,
 remove them.</p>
      <li data-md>
       <p>Let <var>transition root pseudo</var> be a new <a class="css" data-link-type="maybe" href="#selectordef-page-transition" id="ref-for-selectordef-page-transition①">::page-transition</a> pseudo-element,
@@ -1264,6 +1268,7 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
    <li><a href="#selectordef-page-transition-image-wrapper-pt-tag-selector">::page-transition-image-wrapper( &lt;pt-tag-selector> )</a><span>, in § 2</span>
    <li><a href="#selectordef-page-transition-incoming-image-pt-tag-selector">::page-transition-incoming-image( &lt;pt-tag-selector> )</a><span>, in § 2</span>
    <li><a href="#selectordef-page-transition-outgoing-image-pt-tag-selector">::page-transition-outgoing-image( &lt;pt-tag-selector> )</a><span>, in § 2</span>
+   <li><a href="#page-transition-pseudo-elements">page-transition pseudo-elements</a><span>, in § 2</span>
    <li><a href="#dom-samedocumenttransition-phase-slot">[[Phase]]</a><span>, in § 3</span>
    <li><a href="#typedef-pt-tag-selector">&lt;pt-tag-selector></a><span>, in § 2</span>
    <li><a href="#samedocumenttransition">SameDocumentTransition</a><span>, in § 3</span>
@@ -1423,6 +1428,12 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
     <li><a href="#ref-for-x">2. Pseudo-Elements</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-originating-element">
+   <a href="https://drafts.csswg.org/selectors-4/#originating-element">https://drafts.csswg.org/selectors-4/#originating-element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-originating-element">2. Pseudo-Elements</a> <a href="#ref-for-originating-element①">(2)</a> <a href="#ref-for-originating-element②">(3)</a> <a href="#ref-for-originating-element③">(4)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-idl-DOMString">
    <a href="https://webidl.spec.whatwg.org/#idl-DOMString">https://webidl.spec.whatwg.org/#idl-DOMString</a><b>Referenced in:</b>
    <ul>
@@ -1559,6 +1570,11 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
      <li><span class="dfn-paneled" id="term-for-x">*</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[selectors-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-originating-element">originating element</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-idl-DOMString">DOMString</span>
@@ -1606,6 +1622,8 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-selectors-3">[SELECTORS-3]
    <dd>Tantek Çelik; et al. <a href="https://www.w3.org/TR/selectors-3/"><cite>Selectors Level 3</cite></a>. 6 November 2018. REC. URL: <a href="https://www.w3.org/TR/selectors-3/">https://www.w3.org/TR/selectors-3/</a>
+   <dt id="biblio-selectors-4">[SELECTORS-4]
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/selectors-4/"><cite>Selectors Level 4</cite></a>. 21 November 2018. WD. URL: <a href="https://www.w3.org/TR/selectors-4/">https://www.w3.org/TR/selectors-4/</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
@@ -1663,6 +1681,13 @@ abandon the transition automatically. <a class="issue-return" href="#issue-52cf4
    <div class="issue">set this up properly <a class="issue-return" href="#issue-9da76ed0①" title="Jump to section">↵</a></div>
    <div class="issue"> define this. <a class="issue-return" href="#issue-c52e7bf4" title="Jump to section">↵</a></div>
   </div>
+  <aside class="dfn-panel" data-for="page-transition-pseudo-elements">
+   <b><a href="#page-transition-pseudo-elements">#page-transition-pseudo-elements</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-page-transition-pseudo-elements">2. Pseudo-Elements</a>
+    <li><a href="#ref-for-page-transition-pseudo-elements①">3. API</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="typedef-pt-tag-selector">
    <b><a href="#typedef-pt-tag-selector">#typedef-pt-tag-selector</a></b><b>Referenced in:</b>
    <ul>
