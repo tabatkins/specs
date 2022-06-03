@@ -149,8 +149,6 @@ rather than a constructor that takes a Document as a required arg?
 
 <xmp class=idl>
 interface SameDocumentTransition {
-	undefined tag(DOMString tag, Element? el);
-	undefined ignoreCSSTaggedElements();
 	Promise<undefined> start(AsyncFunction cb);
 	undefined abandon();
 };
@@ -181,39 +179,6 @@ it is initially "ready".
 Issue: Is this object meant to be one-shot, or reusable?
 In other words, should it instead reset to "ready" when done?
 
-They also have a <dfn attribute for=SameDocumentTransition>\[[IgnoreCSS]]</dfn> internal slot,
-which is a boolean,
-initially false.
-
-<div algorithm="SameDocumentTransition.tag()">
-	The [=method steps=] for <dfn method for=SameDocumentTransition>tag(|tag|, |el|)</dfn> are:
-
-	1. If [=this's=] {{[[Phase]]}} internal slot is "ready",
-		let |map| be [=this's=] {{[[OutgoingElements]]}} value.
-		Otherwise, if it is "started",
-		let |map| be [=this's=] {{[[IncomingElements]]}} value.
-		Otherwise,
-		[=/throw=] an {{InvalidStateException}}.
-
-	2. If |el| is [=null=],
-		[=map/remove=] |map|[|tag|].
-		Otherwise,
-		set |map|[|tag|] to a [=CapturedElement=]
-		whose "element" item is |el|.
-</div>
-
-<div algorithm="SameDocumentTransition.ignoreCSSTaggedElements()">
-	The [=method steps=] for
-	<dfn method for=SameDocumentTransition>ignoreCSSTaggedElements()</dfn>
-	are:
-
-	1. If [=this's=] {{[[Phase]]}} internal slot
-		is "ready",
-		set [=this's=] {{[[IgnoreCSS]]}} internal slot to true.
-
-	2. Otherwise, [=/throw=] an {{InvalidStateException}}.
-</div>
-
 <div algorithm="SameDocumentTransition.start()">
 	The [=method steps=] for
 	<dfn method for=SameDocumentTransition>start(cb)</dfn>
@@ -226,8 +191,7 @@ initially false.
 
 	1. Let |outgoingEls| be [=this's=] {{[[OutgoingElements]]}} internal slot.
 
-	1. If [=this's=] {{[[IgnoreCSS]]}} internal slot is false,
-		then let |cssEls| be a [=/map=]
+	1. Let |cssEls| be a [=/map=]
 		whose keys are all the [=page transition tags=]
 		on the elements of the page,
 		and whose values are the elements
@@ -264,8 +228,7 @@ initially false.
 
 	1. Let |incomingEls| be [=this's=] {{[[IncomingElements]]}} internal slot.
 
-	1. If [=this's=] {{[[IgnoreCSS]]}} internal slot is false,
-		then let |cssEls| be a [=/map=]
+	1. Let |cssEls| be a [=/map=]
 		whose keys are all the [=page transition tags=]
 		on the elements of the page,
 		and whose values are the elements
@@ -307,10 +270,10 @@ initially false.
 </div>
 
 <div class=example>
-	If using the 'page-transition-tag' property
-	to tag elements that should be animated across the page transition,
-	and the default animations for the page transition are acceptable,
-	kicking off a transition can be done in a single line of script:
+	If the default animations for the page transition are acceptable,
+	then kicking off a transition
+	requires nothing more than setting 'page-transition-tag' in the page's CSS,
+	and a single line of script to start it:
 
 	<pre highlight=js>
 	document.createDocumentTransition()
@@ -327,7 +290,7 @@ initially false.
 		// Specify "outgoing" elements. The tag is used to match against
 		// "incoming" elements they should transition to, and to refer to
 		// the transitioning psuedo-element.
-		transition.tag("message", document.querySelector(".old-message"));
+		document.querySelector(".old-message").style.pageTransitionTag = "message";
 
 		// The start() call freezes the page's rendering, and triggers
 		// an async operation to capture snapshots for the offered elements.
@@ -342,7 +305,7 @@ initially false.
 			// Tagging elements during the .start() callback marks them as
 			// "incoming", to be matched up with the same-tagged "outgoing"
 			// elements marked previously and transitioned between.
-			transition.tag("message", document.querySelector(".new-message"));
+			document.querySelector(".new-message").style.pageTransitionTag = "message";
 
 			// Set up custom animations using WA-API on the next frame.
 			requestAnimationFrame(() => {

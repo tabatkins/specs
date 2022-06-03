@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 863c1075f, updated Wed Jun 1 15:25:15 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-foo/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="4d017b1735555bd9bee7fb1a2cfea7faa2a6c0ac" name="document-revision">
+  <meta content="d110f155ba4ef0a260a5164302d498171ce8090d" name="document-revision">
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -908,13 +908,11 @@ is defined in the <a data-link-type="dfn" href="#animate-a-page-transition" id="
    <p class="issue" id="issue-9613dd8b"><a class="self-link" href="#issue-9613dd8b"></a> Why use a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①">Document</a></code> factory method
 rather than a constructor that takes a Document as a required arg?</p>
 <pre class="idl highlight def"><c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="samedocumenttransition"><code><c- g>SameDocumentTransition</c-></code></dfn> {
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-tag" id="ref-for-dom-samedocumenttransition-tag"><c- g>tag</c-></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="SameDocumentTransition/tag(tag, el)" data-dfn-type="argument" data-export id="dom-samedocumenttransition-tag-tag-el-tag"><code><c- g>tag</c-></code><a class="self-link" href="#dom-samedocumenttransition-tag-tag-el-tag"></a></dfn>, <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element"><c- n>Element</c-></a>? <dfn class="idl-code" data-dfn-for="SameDocumentTransition/tag(tag, el)" data-dfn-type="argument" data-export id="dom-samedocumenttransition-tag-tag-el-el"><code><c- g>el</c-></code><a class="self-link" href="#dom-samedocumenttransition-tag-tag-el-el"></a></dfn>);
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined①"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-ignorecsstaggedelements" id="ref-for-dom-samedocumenttransition-ignorecsstaggedelements"><c- g>ignoreCSSTaggedElements</c-></a>();
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined②"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-start" id="ref-for-dom-samedocumenttransition-start"><c- g>start</c-></a>(<a data-link-type="idl-name" href="#callbackdef-asyncfunction" id="ref-for-callbackdef-asyncfunction"><c- n>AsyncFunction</c-></a> <dfn class="idl-code" data-dfn-for="SameDocumentTransition/start(cb)" data-dfn-type="argument" data-export id="dom-samedocumenttransition-start-cb-cb"><code><c- g>cb</c-></code><a class="self-link" href="#dom-samedocumenttransition-start-cb-cb"></a></dfn>);
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined③"><c- b>undefined</c-></a> <dfn class="idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export data-lt="abandon()" id="dom-samedocumenttransition-abandon"><code><c- g>abandon</c-></code><a class="self-link" href="#dom-samedocumenttransition-abandon"></a></dfn>();
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-start" id="ref-for-dom-samedocumenttransition-start"><c- g>start</c-></a>(<a data-link-type="idl-name" href="#callbackdef-asyncfunction" id="ref-for-callbackdef-asyncfunction"><c- n>AsyncFunction</c-></a> <dfn class="idl-code" data-dfn-for="SameDocumentTransition/start(cb)" data-dfn-type="argument" data-export id="dom-samedocumenttransition-start-cb-cb"><code><c- g>cb</c-></code><a class="self-link" href="#dom-samedocumenttransition-start-cb-cb"></a></dfn>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined①"><c- b>undefined</c-></a> <dfn class="idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export data-lt="abandon()" id="dom-samedocumenttransition-abandon"><code><c- g>abandon</c-></code><a class="self-link" href="#dom-samedocumenttransition-abandon"></a></dfn>();
 };
 
-<c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-asyncfunction"><code><c- g>AsyncFunction</c-></code></dfn> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined④"><c- b>undefined</c-></a>> ();
+<c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-asyncfunction"><code><c- g>AsyncFunction</c-></code></dfn> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined②"><c- b>undefined</c-></a>> ();
 </pre>
    <p>The <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition②">SameDocumentTransition</a></code> represents and controls
 a single same-document transition;
@@ -931,54 +929,24 @@ which is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string" 
 it is initially "ready".</p>
    <p class="issue" id="issue-6e316d4c"><a class="self-link" href="#issue-6e316d4c"></a> Is this object meant to be one-shot, or reusable?
 In other words, should it instead reset to "ready" when done?</p>
-   <p>They also have a <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-ignorecss-slot"><code>[[IgnoreCSS]]</code></dfn> internal slot,
-which is a boolean,
-initially false.</p>
-   <div class="algorithm" data-algorithm="SameDocumentTransition.tag()">
-     The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps①">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export id="dom-samedocumenttransition-tag"><code>tag(<var>tag</var>, <var>el</var>)</code></dfn> are: 
-    <ol>
-     <li data-md>
-      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot">[[Phase]]</a></code> internal slot is "ready",
-let <var>map</var> be <span id="ref-for-this①">this’s</span> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-outgoingelements-slot" id="ref-for-dom-samedocumenttransition-outgoingelements-slot">[[OutgoingElements]]</a></code> value.
-Otherwise, if it is "started",
-let <var>map</var> be <span id="ref-for-this②">this’s</span> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-incomingelements-slot" id="ref-for-dom-samedocumenttransition-incomingelements-slot">[[IncomingElements]]</a></code> value.
-Otherwise, <a data-link-type="dfn">throw</a> an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>.</p>
-     <li data-md>
-      <p>If <var>el</var> is <a data-link-type="dfn">null</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-remove" id="ref-for-map-remove">remove</a> <var>map</var>[<var>tag</var>].
-Otherwise,
-set <var>map</var>[<var>tag</var>] to a <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement">CapturedElement</a> whose "element" item is <var>el</var>.</p>
-    </ol>
-   </div>
-   <div class="algorithm" data-algorithm="SameDocumentTransition.ignoreCSSTaggedElements()">
-     The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps②">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export id="dom-samedocumenttransition-ignorecsstaggedelements"><code>ignoreCSSTaggedElements()</code></dfn> are: 
-    <ol>
-     <li data-md>
-      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot①">[[Phase]]</a></code> internal slot
-is "ready",
-set <span id="ref-for-this④">this’s</span> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-ignorecss-slot" id="ref-for-dom-samedocumenttransition-ignorecss-slot">[[IgnoreCSS]]</a></code> internal slot to true.</p>
-     <li data-md>
-      <p>Otherwise, <a data-link-type="dfn">throw</a> an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>.</p>
-    </ol>
-   </div>
    <div class="algorithm" data-algorithm="SameDocumentTransition.start()">
-     The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps③">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export id="dom-samedocumenttransition-start"><code>start(cb)</code></dfn> are: 
+     The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps①">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export id="dom-samedocumenttransition-start"><code>start(cb)</code></dfn> are: 
     <ol>
      <li data-md>
-      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot②">[[Phase]]</a></code> internal slot is anything but "ready", <a data-link-type="dfn">throw</a> an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>.</p>
+      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot">[[Phase]]</a></code> internal slot is anything but "ready", <a data-link-type="dfn">throw</a> an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>.</p>
      <li data-md>
-      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot③">[[Phase]]</a></code> internal slot to "outgoing-prep".</p>
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot①">[[Phase]]</a></code> internal slot to "outgoing-prep".</p>
      <li data-md>
-      <p>Let <var>outgoingEls</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-outgoingelements-slot" id="ref-for-dom-samedocumenttransition-outgoingelements-slot①">[[OutgoingElements]]</a></code> internal slot.</p>
+      <p>Let <var>outgoingEls</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-outgoingelements-slot" id="ref-for-dom-samedocumenttransition-outgoingelements-slot">[[OutgoingElements]]</a></code> internal slot.</p>
      <li data-md>
-      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-ignorecss-slot" id="ref-for-dom-samedocumenttransition-ignorecss-slot①">[[IgnoreCSS]]</a></code> internal slot is false,
-then let <var>cssEls</var> be a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map①">map</a> whose keys are all the <a data-link-type="dfn">page transition tags</a> on the elements of the page,
+      <p>Let <var>cssEls</var> be a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map①">map</a> whose keys are all the <a data-link-type="dfn">page transition tags</a> on the elements of the page,
 and whose values are the elements
 with that tag.
-If multiple elements have the same tag, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition">abandon the page transition</a> managed by <span id="ref-for-this⑨">this</span>.</p>
+If multiple elements have the same tag, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate">For each</a> <var>tag</var> -> <var>el</var> of <var>cssEls</var>,
 if <var>outgoingEls</var>[<var>tag</var>] does not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists">exist</a>,
-set <var>outgoingEls</var>[<var>tag</var>] to a <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement①">CapturedElement</a> whose "element" item is <var>el</var>.</p>
+set <var>outgoingEls</var>[<var>tag</var>] to a <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement">CapturedElement</a> whose "element" item is <var>el</var>.</p>
       <p class="note" role="note"><span>Note:</span> In other words,
 manually setting a tag via script
 overrides the tag set by CSS.</p>
@@ -987,26 +955,25 @@ overrides the tag set by CSS.</p>
 then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate①">for each</a> <var>elStruct</var> of <var>outgoingEls</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-getting-the-values" id="ref-for-map-getting-the-values">values</a>, <a data-link-type="dfn" href="#capture-the-image" id="ref-for-capture-the-image">capture the image</a> of <var>elStruct</var>’s element
 and set <var>elStruct</var>’s image to the result.</p>
      <li data-md>
-      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot④">[[Phase]]</a></code> internal slot to "started".</p>
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot②">[[Phase]]</a></code> internal slot to "started".</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#invoke-a-callback-function" id="ref-for-invoke-a-callback-function">Invoke</a> <var>cb</var>, and let <var>p</var> be the return value. <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#upon-fulfillment" id="ref-for-upon-fulfillment">Upon fulfillment</a> of <var>p</var>,
-run the rest of this algorithm’s steps. <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#upon-rejection" id="ref-for-upon-rejection">Upon rejection</a> of <var>p</var>, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition①">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①①">this</a>.</p>
+run the rest of this algorithm’s steps. <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#upon-rejection" id="ref-for-upon-rejection">Upon rejection</a> of <var>p</var>, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition①">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>.</p>
       <p class="issue" id="issue-52cf4245"><a class="self-link" href="#issue-52cf4245"></a> Need to specify that if <var>cb</var> takes too long we can
 abandon the transition automatically.</p>
      <li data-md>
-      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①②">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot⑤">[[Phase]]</a></code> internal slot to "incoming-prep".</p>
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot③">[[Phase]]</a></code> internal slot to "incoming-prep".</p>
      <li data-md>
-      <p>Let <var>incomingEls</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①③">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-incomingelements-slot" id="ref-for-dom-samedocumenttransition-incomingelements-slot①">[[IncomingElements]]</a></code> internal slot.</p>
+      <p>Let <var>incomingEls</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-incomingelements-slot" id="ref-for-dom-samedocumenttransition-incomingelements-slot">[[IncomingElements]]</a></code> internal slot.</p>
      <li data-md>
-      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①④">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-ignorecss-slot" id="ref-for-dom-samedocumenttransition-ignorecss-slot②">[[IgnoreCSS]]</a></code> internal slot is false,
-then let <var>cssEls</var> be a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map②">map</a> whose keys are all the <a data-link-type="dfn">page transition tags</a> on the elements of the page,
+      <p>Let <var>cssEls</var> be a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map②">map</a> whose keys are all the <a data-link-type="dfn">page transition tags</a> on the elements of the page,
 and whose values are the elements
 with that tag.
-If multiple elements have the same tag, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition②">abandon the page transition</a> managed by <span id="ref-for-this①⑤">this</span>.</p>
+If multiple elements have the same tag, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition②">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate②">For each</a> <var>tag</var> -> <var>el</var> of <var>cssEls</var>,
 if <var>incomingEls</var>[<var>tag</var>] does not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists①">exist</a>,
-set <var>incomingEls</var>[<var>tag</var>] to a <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement②">CapturedElement</a> whose "element" item is <var>el</var>.</p>
+set <var>incomingEls</var>[<var>tag</var>] to a <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement①">CapturedElement</a> whose "element" item is <var>el</var>.</p>
       <p class="note" role="note"><span>Note:</span> In other words,
 manually setting a tag via script
 overrides the tag set by CSS.</p>
@@ -1014,9 +981,9 @@ overrides the tag set by CSS.</p>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate③">For each</a> <var>tag</var> -> <var>elStruct</var> of <var>incomingEls</var>,
 if <var>outgoingEls</var>[<var>tag</var>] <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists②">exists</a>, <a data-link-type="dfn" href="#capture-the-image" id="ref-for-capture-the-image①">capture the image</a> of <var>elStruct</var>’s element
 and set <var>elStruct</var>’s image to the result;
-otherwise, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-remove" id="ref-for-map-remove①">remove</a> <var>incomingEls</var>[<var>tag</var>].</p>
+otherwise, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-remove" id="ref-for-map-remove">remove</a> <var>incomingEls</var>[<var>tag</var>].</p>
      <li data-md>
-      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑥">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot⑥">[[Phase]]</a></code> internal slot to "finished",
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot④">[[Phase]]</a></code> internal slot to "finished",
 an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfreeze-the-pages-rendering">unfreeze the page’s rendering</a>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="#animate-a-page-transition" id="ref-for-animate-a-page-transition②">Animate a page transition</a> with outgoing elements <var>outgoingEls</var> and incoming elements <var>incomingEls</var>.</p>
@@ -1024,12 +991,12 @@ an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfr
     <p class="issue" id="issue-cc78a612"><a class="self-link" href="#issue-cc78a612"></a> I’m not actually returning a Promise yet;
 	need to do a little bit of rearranging.</p>
    </div>
-   <div class="algorithm" data-algorithm="SinglePageTransition.abandon()"> The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps④">method steps</a> for <dfn class="idl-code" data-dfn-for="SinglePageTransition" data-dfn-type="method" data-export id="dom-singlepagetransition-abandon"><code>abandon()</code><a class="self-link" href="#dom-singlepagetransition-abandon"></a></dfn> are to <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition③">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a>. </div>
-   <div class="example" id="example-31cfedfe">
-    <a class="self-link" href="#example-31cfedfe"></a> If using the <a class="property css" data-link-type="property">page-transition-tag</a> property
-	to tag elements that should be animated across the page transition,
-	and the default animations for the page transition are acceptable,
-	kicking off a transition can be done in a single line of script: 
+   <div class="algorithm" data-algorithm="SinglePageTransition.abandon()"> The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps②">method steps</a> for <dfn class="idl-code" data-dfn-for="SinglePageTransition" data-dfn-type="method" data-export id="dom-singlepagetransition-abandon"><code>abandon()</code><a class="self-link" href="#dom-singlepagetransition-abandon"></a></dfn> are to <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition③">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this</a>. </div>
+   <div class="example" id="example-81d26dbb">
+    <a class="self-link" href="#example-81d26dbb"></a> If the default animations for the page transition are acceptable,
+	then kicking off a transition
+	requires nothing more than setting <a class="property css" data-link-type="property">page-transition-tag</a> in the page’s CSS,
+	and a single line of script to start it: 
 <pre class="highlight">document<c- p>.</c->createDocumentTransition<c- p>()</c->
   <c- p>.</c->start<c- p>(()=></c->coolFramework<c- p>.</c->changeTheDOMToPageB<c- p>());</c->
 </pre>
@@ -1041,7 +1008,7 @@ an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfr
   <c- c1>// Specify "outgoing" elements. The tag is used to match against</c->
   <c- c1>// "incoming" elements they should transition to, and to refer to</c->
   <c- c1>// the transitioning psuedo-element.</c->
-  transition<c- p>.</c->tag<c- p>(</c-><c- u>"message"</c-><c- p>,</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>".old-message"</c-><c- p>));</c->
+  document<c- p>.</c->querySelector<c- p>(</c-><c- u>".old-message"</c-><c- p>).</c->style<c- p>.</c->pageTransitionTag <c- o>=</c-> <c- u>"message"</c-><c- p>;</c->
 
   <c- c1>// The start() call freezes the page’s rendering, and triggers</c->
   <c- c1>// an async operation to capture snapshots for the offered elements.</c->
@@ -1056,7 +1023,7 @@ an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfr
     <c- c1>// Tagging elements during the .start() callback marks them as</c->
     <c- c1>// "incoming", to be matched up with the same-tagged "outgoing"</c->
     <c- c1>// elements marked previously and transitioned between.</c->
-    transition<c- p>.</c->tag<c- p>(</c-><c- u>"message"</c-><c- p>,</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>".new-message"</c-><c- p>));</c->
+    document<c- p>.</c->querySelector<c- p>(</c-><c- u>".new-message"</c-><c- p>).</c->style<c- p>.</c->pageTransitionTag <c- o>=</c-> <c- u>"message"</c-><c- p>;</c->
 
     <c- c1>// Set up custom animations using WA-API on the next frame.</c->
     requestAnimationFrame<c- p>(()</c-> <c- p>=></c-> <c- p>{</c->
@@ -1089,7 +1056,7 @@ an <a data-link-type="dfn" href="#unfreeze-the-pages-rendering" id="ref-for-unfr
 	if one has been created.</p>
    </div>
    <div class="algorithm" data-algorithm="capture the image">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="capture-the-image">capture the image</dfn> of an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element①">Element</a></code> <var>el</var>,
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="capture-the-image">capture the image</dfn> of an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element">Element</a></code> <var>el</var>,
 	... 
     <p class="issue" id="issue-18130b0c"><a class="self-link" href="#issue-18130b0c"></a> Flush style and layout the page,
 	then figure out <var>el</var>’s bounds
@@ -1259,8 +1226,6 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
    <li><a href="#capture-the-image">capture the image</a><span>, in § 3</span>
    <li><a href="#dom-document-createdocumenttransition">createDocumentTransition()</a><span>, in § 3</span>
    <li><a href="#freeze-the-pages-rendering">freeze the page’s rendering</a><span>, in § 3</span>
-   <li><a href="#dom-samedocumenttransition-ignorecss-slot">[[IgnoreCSS]]</a><span>, in § 3</span>
-   <li><a href="#dom-samedocumenttransition-ignorecsstaggedelements">ignoreCSSTaggedElements()</a><span>, in § 3</span>
    <li><a href="#dom-samedocumenttransition-incomingelements-slot">[[IncomingElements]]</a><span>, in § 3</span>
    <li><a href="#dom-samedocumenttransition-outgoingelements-slot">[[OutgoingElements]]</a><span>, in § 3</span>
    <li><a href="#selectordef-page-transition">::page-transition</a><span>, in § 2</span>
@@ -1273,7 +1238,6 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
    <li><a href="#typedef-pt-tag-selector">&lt;pt-tag-selector></a><span>, in § 2</span>
    <li><a href="#samedocumenttransition">SameDocumentTransition</a><span>, in § 3</span>
    <li><a href="#dom-samedocumenttransition-start">start(cb)</a><span>, in § 3</span>
-   <li><a href="#dom-samedocumenttransition-tag">tag(tag, el)</a><span>, in § 3</span>
    <li><a href="#unfreeze-the-pages-rendering">unfreeze the page’s rendering</a><span>, in § 3</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-propdef-isolation">
@@ -1377,7 +1341,7 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
   <aside class="dfn-panel" data-for="term-for-element">
    <a href="https://dom.spec.whatwg.org/#element">https://dom.spec.whatwg.org/#element</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-element">3. API</a> <a href="#ref-for-element①">(2)</a>
+    <li><a href="#ref-for-element">3. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-map-exists">
@@ -1401,7 +1365,7 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
   <aside class="dfn-panel" data-for="term-for-map-remove">
    <a href="https://infra.spec.whatwg.org/#map-remove">https://infra.spec.whatwg.org/#map-remove</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-map-remove">3. API</a> <a href="#ref-for-map-remove①">(2)</a>
+    <li><a href="#ref-for-map-remove">3. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-string">
@@ -1434,12 +1398,6 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
     <li><a href="#ref-for-originating-element">2. Pseudo-Elements</a> <a href="#ref-for-originating-element①">(2)</a> <a href="#ref-for-originating-element②">(3)</a> <a href="#ref-for-originating-element③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-idl-DOMString">
-   <a href="https://webidl.spec.whatwg.org/#idl-DOMString">https://webidl.spec.whatwg.org/#idl-DOMString</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-idl-DOMString">3. API</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-idl-promise">
    <a href="https://webidl.spec.whatwg.org/#idl-promise">https://webidl.spec.whatwg.org/#idl-promise</a><b>Referenced in:</b>
    <ul>
@@ -1455,19 +1413,19 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
   <aside class="dfn-panel" data-for="term-for-method-steps">
    <a href="https://webidl.spec.whatwg.org/#method-steps">https://webidl.spec.whatwg.org/#method-steps</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-method-steps">3. API</a> <a href="#ref-for-method-steps①">(2)</a> <a href="#ref-for-method-steps②">(3)</a> <a href="#ref-for-method-steps③">(4)</a> <a href="#ref-for-method-steps④">(5)</a>
+    <li><a href="#ref-for-method-steps">3. API</a> <a href="#ref-for-method-steps①">(2)</a> <a href="#ref-for-method-steps②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-this">
    <a href="https://webidl.spec.whatwg.org/#this">https://webidl.spec.whatwg.org/#this</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-this">3. API</a> <a href="#ref-for-this①">(2)</a> <a href="#ref-for-this②">(3)</a> <a href="#ref-for-this③">(4)</a> <a href="#ref-for-this④">(5)</a> <a href="#ref-for-this⑤">(6)</a> <a href="#ref-for-this⑥">(7)</a> <a href="#ref-for-this⑦">(8)</a> <a href="#ref-for-this⑧">(9)</a> <a href="#ref-for-this⑨">(10)</a> <a href="#ref-for-this①⓪">(11)</a> <a href="#ref-for-this①①">(12)</a> <a href="#ref-for-this①②">(13)</a> <a href="#ref-for-this①③">(14)</a> <a href="#ref-for-this①④">(15)</a> <a href="#ref-for-this①⑤">(16)</a> <a href="#ref-for-this①⑥">(17)</a> <a href="#ref-for-this①⑦">(18)</a>
+    <li><a href="#ref-for-this">3. API</a> <a href="#ref-for-this①">(2)</a> <a href="#ref-for-this②">(3)</a> <a href="#ref-for-this③">(4)</a> <a href="#ref-for-this④">(5)</a> <a href="#ref-for-this⑤">(6)</a> <a href="#ref-for-this⑥">(7)</a> <a href="#ref-for-this⑦">(8)</a> <a href="#ref-for-this⑧">(9)</a> <a href="#ref-for-this⑨">(10)</a> <a href="#ref-for-this①⓪">(11)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-undefined">
    <a href="https://webidl.spec.whatwg.org/#idl-undefined">https://webidl.spec.whatwg.org/#idl-undefined</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-idl-undefined">3. API</a> <a href="#ref-for-idl-undefined①">(2)</a> <a href="#ref-for-idl-undefined②">(3)</a> <a href="#ref-for-idl-undefined③">(4)</a> <a href="#ref-for-idl-undefined④">(5)</a>
+    <li><a href="#ref-for-idl-undefined">3. API</a> <a href="#ref-for-idl-undefined①">(2)</a> <a href="#ref-for-idl-undefined②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-upon-fulfillment">
@@ -1577,7 +1535,6 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-idl-DOMString">DOMString</span>
      <li><span class="dfn-paneled" id="term-for-idl-promise">Promise</span>
      <li><span class="dfn-paneled" id="term-for-invoke-a-callback-function">invoke</span>
      <li><span class="dfn-paneled" id="term-for-method-steps">method steps</span>
@@ -1633,8 +1590,6 @@ with a natural view box of <span class="issue" id="issue-9da76ed0①"><a class="
 };
 
 <c- b>interface</c-> <a href="#samedocumenttransition"><code><c- g>SameDocumentTransition</c-></code></a> {
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-tag"><c- g>tag</c-></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-samedocumenttransition-tag-tag-el-tag"><code><c- g>tag</c-></code></a>, <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element"><c- n>Element</c-></a>? <a href="#dom-samedocumenttransition-tag-tag-el-el"><code><c- g>el</c-></code></a>);
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-ignorecsstaggedelements"><c- g>ignoreCSSTaggedElements</c-></a>();
   <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-start"><c- g>start</c-></a>(<a data-link-type="idl-name" href="#callbackdef-asyncfunction"><c- n>AsyncFunction</c-></a> <a href="#dom-samedocumenttransition-start-cb-cb"><code><c- g>cb</c-></code></a>);
   <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> <a href="#dom-samedocumenttransition-abandon"><code><c- g>abandon</c-></code></a>();
 };
@@ -1740,43 +1695,25 @@ abandon the transition automatically. <a class="issue-return" href="#issue-52cf4
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-outgoingelements-slot">
    <b><a href="#dom-samedocumenttransition-outgoingelements-slot">#dom-samedocumenttransition-outgoingelements-slot</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-outgoingelements-slot">3. API</a> <a href="#ref-for-dom-samedocumenttransition-outgoingelements-slot①">(2)</a>
+    <li><a href="#ref-for-dom-samedocumenttransition-outgoingelements-slot">3. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-incomingelements-slot">
    <b><a href="#dom-samedocumenttransition-incomingelements-slot">#dom-samedocumenttransition-incomingelements-slot</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-incomingelements-slot">3. API</a> <a href="#ref-for-dom-samedocumenttransition-incomingelements-slot①">(2)</a>
+    <li><a href="#ref-for-dom-samedocumenttransition-incomingelements-slot">3. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="capturedelement">
    <b><a href="#capturedelement">#capturedelement</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-capturedelement">3. API</a> <a href="#ref-for-capturedelement①">(2)</a> <a href="#ref-for-capturedelement②">(3)</a>
+    <li><a href="#ref-for-capturedelement">3. API</a> <a href="#ref-for-capturedelement①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-phase-slot">
    <b><a href="#dom-samedocumenttransition-phase-slot">#dom-samedocumenttransition-phase-slot</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-phase-slot">3. API</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot②">(3)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot③">(4)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot④">(5)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑤">(6)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑥">(7)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="dom-samedocumenttransition-ignorecss-slot">
-   <b><a href="#dom-samedocumenttransition-ignorecss-slot">#dom-samedocumenttransition-ignorecss-slot</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-ignorecss-slot">3. API</a> <a href="#ref-for-dom-samedocumenttransition-ignorecss-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-ignorecss-slot②">(3)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="dom-samedocumenttransition-tag">
-   <b><a href="#dom-samedocumenttransition-tag">#dom-samedocumenttransition-tag</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-tag">3. API</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="dom-samedocumenttransition-ignorecsstaggedelements">
-   <b><a href="#dom-samedocumenttransition-ignorecsstaggedelements">#dom-samedocumenttransition-ignorecsstaggedelements</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-ignorecsstaggedelements">3. API</a>
+    <li><a href="#ref-for-dom-samedocumenttransition-phase-slot">3. API</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot②">(3)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot③">(4)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot④">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-start">
