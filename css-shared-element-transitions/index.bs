@@ -200,13 +200,8 @@ In other words, should it instead reset to "ready" when done?
 		[=abandon the page transition=] managed by [=this=].
 
 	1. [=map/For each=] |tag| -> |el| of |cssEls|,
-		if |outgoingEls|[|tag|] does not [=map/exist=],
 		set |outgoingEls|[|tag|] to a [=CapturedElement=]
 		whose "element" item is |el|.
-
-		Note: In other words,
-		manually setting a tag via script
-		overrides the tag set by CSS.
 
 	1. [=Freeze the page's rendering=],
 		then [=map/for each=] |elStruct| of |outgoingEls|'s [=map/values=],
@@ -237,7 +232,6 @@ In other words, should it instead reset to "ready" when done?
 		[=abandon the page transition=] managed by [=this=].
 
 	1. [=map/For each=] |tag| -> |el| of |cssEls|,
-		if |incomingEls|[|tag|] does not [=map/exist=],
 		set |incomingEls|[|tag|] to a [=CapturedElement=]
 		whose "element" item is |el|.
 
