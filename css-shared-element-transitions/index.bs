@@ -39,11 +39,90 @@ Introduction {#intro}
 Pseudo-Elements
 ===============
 
-::page-transition - The parent of all transition containers.
-::page-transition-container(tag) - Select the 'transition element' of a given page-transition-tag.
-::page-transition-image-wrapper(tag) - Select the 'image wrapper'.
-::page-transition-incoming-image(tag) - Select the incoming image.
-::page-transition-outgoing-image(tag) - Select the outgoing image.
+While the UA is [=animating a page transition=],
+it creates the following <dfn export>page-transition pseudo-elements</dfn>
+in a tree structure,
+to represent the transitioning pieces.
+
+Several of these selectors
+can represent multiple possible pseudo-elements,
+one for each element being animated by the [=page transition=].
+Each such pseudo-element has a tag,
+given by their corresponding element's 'page-transition-tag' property.
+and so the selectors take a <<pt-tag-selector>> argument
+to specify precisely which pseudo-elements are intended.
+This is defined as:
+
+<pre class=prod>
+<dfn>&lt;pt-tag-selector></dfn> = '*' | <<custom-ident>>
+</pre>
+
+For each of these, a ''*'' selects all such pseudo-elements,
+while a <<custom-ident>> selects the one such pseudo-element
+corresponding to the animating element
+with that identifier as its 'page-transition-tag' value.
+
+: <dfn>::page-transition</dfn>
+:: This pseudo-element is the parent of all the other [=page-transition pseudo-elements=].
+
+	Issue: What functionality does this add?
+	Just, like, letting you filter/etc the whole subtree,
+	or something else?
+
+: <dfn>::page-transition-container( <<pt-tag-selector>> )</dfn>
+::	One of these pseudo-elements exists
+	for each element being animated by the page transition,
+	and holds the rest of the pseudo-elements
+	It's a child of the ''::page-transition'' pseudo-element.
+
+	Styles in the [=user-agent origin=]
+	animate this pseudo-element's 'width' and 'height'
+	from the size of the outgoing element's [=border box=]
+	to that of the incoming element's [=border box=].
+
+	Issue: I think this is basically a no-op right now
+	(totally subsumed in functionality by the image wrapper one),
+	but will be useful when we have more complex page transition options in the future,
+	right?
+
+: <dfn>::page-transition-image-wrapper( <<pt-tag-selector>> )</dfn>
+::	One of these pseudo-elements exists
+	for each element being animated by the page transition,
+	and holds the images of the outgoing and incoming elements.
+	It's a child of the ''::page-transition-container()'' pseudo-element
+	with the same tag.
+
+	Styles in the [=user-agent origin=]
+	animate this pseudo-element's 'width' and 'height'
+	to the same size as its parent ''::page-transition-container()''.
+
+: <dfn>::page-transition-outgoing-image( <<pt-tag-selector>> )</dfn>
+:: 	One of these pseudo-elements exists
+	for each element being animated by the page transition,
+	and is a [=replaced element=]
+	displaying the outgoing element's snapshot image.
+	It has [=natural dimensions=]
+	equal to the snapshot's size.
+	It's a child of the ''::page-transition-image-wrapper()'' pseudo-element
+	with the same tag.
+
+	Styles in the [=user-agent origin=]
+	set this pseudo-element's 'object-view-box' property
+	with an ''xywh()'' value
+	such that the view box matches the outgoing element's border box
+	in the snapshot.
+
+	Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
+
+: <dfn>::page-transition-incoming-image( <<pt-tag-selector>> )</dfn>
+::	Identical to ''::page-transition-outgoing-image()'',
+	except it deals with the incoming element instead.
+
+
+The precise tree structure
+(in particular, the order of sibling pseudo-elements)
+is defined in the [=animate a page transition=] algorithm.
+
 
 
 API
