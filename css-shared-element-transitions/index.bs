@@ -236,10 +236,6 @@ it is initially "ready".
 		set |incomingEls|[|tag|] to a [=CapturedElement=]
 		whose "element" item is |el|.
 
-		Note: In other words,
-		manually setting a tag via script
-		overrides the tag set by CSS.
-
 	1. [=map/For each=] |tag| -> |elStruct| of |incomingEls|,
 		if |outgoingEls|[|tag|] [=map/exists=],
 		[=capture the image=] of |elStruct|'s element
