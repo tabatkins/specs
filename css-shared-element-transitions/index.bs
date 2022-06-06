@@ -11,6 +11,14 @@ Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/, w3cid 42199
 Abstract: This module defines the Single-Page Document-Transition API, along with associated properties and pseudo-elements.
 </pre>
 
+<pre class=link-defaults>
+spec:webidl; type:dfn; text:resolve
+spec:css-position-3; type:property
+	text: inset-block-start
+	text: inset-inline-start
+spec:css-shapes-3; type:function; text:rect()
+</pre>
+
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -65,7 +73,8 @@ as participating in a page transition.
 		with a <dfn dfn for>page transition tag</dfn>
 		equal to the <<custom-ident>>'s value.
 
-		The value <css>none</css> is invalid as a <<custom-ident>>.
+		The value <css>none</css>
+		is invalid as a <<custom-ident>>.
 </dl>
 
 
@@ -75,6 +84,12 @@ Pseudo-Elements {#pseudo}
 While the UA is [=animating a page transition=],
 it creates the following <dfn export>page-transition pseudo-elements</dfn>,
 to represent the various items being animated.
+
+Every [=page-transition pseudo-element=]
+has the document's root element as its [=originating element=].
+(So, for example, '':root::page-transition'' matches,
+but ''div::page-transition'' will not;
+the pseudos also inherit from the root element.)
 
 Several of these selectors
 can represent multiple possible pseudo-elements,
@@ -86,13 +101,18 @@ to specify precisely which pseudo-elements are intended.
 This is defined as:
 
 <pre class=prod>
-<dfn>&lt;pt-tag-selector></dfn> = '*' | <<custom-ident>>
+	<dfn>&lt;pt-tag-selector></dfn> = '*' | <<custom-ident>>
 </pre>
 
 For each of these, a ''*'' selects all such pseudo-elements,
 while a <<custom-ident>> selects the one such pseudo-element
 corresponding to the animating element
 with that identifier as its 'page-transition-tag' value.
+
+The specificity of a [=page-transition pseudo-element=] with a ''*'' tag
+is zero.
+(The specificity of one with a tag is as normal for pseudo-elements:
+equivalent to a [=type selector=].)
 
 : <dfn>::page-transition</dfn>
 :: This pseudo-element is the parent of all the other [=page-transition pseudo-elements=].
@@ -106,8 +126,7 @@ with that identifier as its 'page-transition-tag' value.
 ::	One of these pseudo-elements exists
 	for each element being animated by the page transition,
 	and holds the rest of the pseudo-elements
-	It's a child of the ''::page-transition'' pseudo-element,
-	which is its [=originating element=].
+	It's a child of the ''::page-transition'' pseudo-element.
 
 	Styles in the [=user-agent origin=]
 	animate this pseudo-element's 'width' and 'height'
@@ -124,8 +143,7 @@ with that identifier as its 'page-transition-tag' value.
 	for each element being animated by the page transition,
 	and holds the images of the outgoing and incoming elements.
 	It's a child of the ''::page-transition-container()'' pseudo-element
-	with the same tag,
-	which is its [=originating element=].
+	with the same tag.
 
 	Styles in the [=user-agent origin=]
 	animate this pseudo-element's 'width' and 'height'
@@ -139,8 +157,7 @@ with that identifier as its 'page-transition-tag' value.
 	It has [=natural dimensions=]
 	equal to the snapshot's size.
 	It's a child of the ''::page-transition-image-wrapper()'' pseudo-element
-	with the same tag,
-	which is its [=originating element=].
+	with the same tag.
 
 	Styles in the [=user-agent origin=]
 	animate this pseudo-element's 'width' and 'height'
@@ -161,6 +178,58 @@ The precise tree structure
 (in particular, the order of sibling pseudo-elements)
 is defined in the [=animate a page transition=] algorithm.
 
+Issue: Need to fill in some more spec infrastructure about paint layers and filtering;
+things in the normal top layer, like dialogs,
+should have the root's filters applied to them
+(if you sepia the page, dialogs should be sepia too),
+but the page transition paint layer should be a sibling to the root
+and not have its filters applied.
+(The transition pseudos will *interact* with the root's filters,
+via capturing images from there,
+but we don't want them to then be *double* sepia'd or whatever.)
+
+<div class=issue>
+	More properly integrate this UA stylesheet:
+
+	<xmp highlight=css>
+		::page-transition {
+		  position: fixed;
+		  inset: 0;
+		}
+
+		::page-transition-container(*) {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  will-change: transform;
+
+		  /* The transform applied to the container includes any translation necessary
+		     for the original element's transform-origin. */
+		  transform-origin: top left;
+		}
+
+		::page-transition-container(root) {
+		  right: 0;
+		  bottom: 0;
+		}
+
+		::page-transition-image-wrapper(*) {
+		  position: absolute;
+		  inset: 0;
+		  isolation: isolate;
+		}
+
+		::page-transition-incoming-image(*),
+		::page-transition-outgoing-image(*) {
+		  position: absolute;
+		  inset-block-start: 0;
+		  inline-size: 100%;
+		  block-size: auto;
+		  mix-blend-mode: plus-lighter;
+		  will-change: opacity;
+		}
+	</xmp>
+</div>
 
 
 API {#api}
@@ -169,136 +238,160 @@ API {#api}
 Single-page API:
 
 <xmp class=idl>
-partial interface Document {
-	SameDocumentTransition createDocumentTransition();
-};
-</xmp>
-
-<div algorithm="Document.createDocumentTransition()">
-	The [=method steps=] for <dfn method for=Document>createDocumentTransition()</dfn>
-	are to return a fresh {{SameDocumentTransition}} object.
-</div>
-
-Issue: Per discussion with Khushal and Vlad,
-seems like we actually want this to be a singleton,
-so it should probably be a
-readonly <code>Document.documentTransition</code> property.
-
-<xmp class=idl>
 interface SameDocumentTransition {
-	Promise<undefined> start(AsyncFunction cb);
+	constructor();
+	Promise<any> start(AsyncFunction cb);
 	undefined abandon();
 };
 
-callback AsyncFunction = Promise<undefined> ();
+callback AsyncFunction = Promise<any> ();
 </xmp>
 
 The {{SameDocumentTransition}} represents and controls
 a single same-document transition;
-that is, a [=page transition=] where the starting and ending document are the same.
+that is, a [=page transition=] where the starting and ending document are the same,
+but the document's DOM has changed between the two states.
 
-{{SameDocumentTransition}} objects have
-<dfn attribute for=SameDocumentTransition>\[[OutgoingElements]]</dfn>
-and <dfn attribute for=SameDocumentTransition>\[[IncomingElements]]</dfn>
-private slots,
-both of which are [=/maps=],
+{{SameDocumentTransition}} objects have a <dfn attribute for=SameDocumentTransition>\[[TaggedElements]]</dfn>
+private slot,
+which is a [=/map=],
 initially empty,
-whose keys are strings
+whose keys are [=page transition tags=]
 and whose values are <dfn>CapturedElement</dfn>s,
 a [=/struct=]
-with items named "element" and "image",
-both initially empty.
+with items named "outgoing image" (an image),
+"outgoing data" (a set of styles),
+and "incoming element" (an element),
+all initially empty.
 
 They also have a <dfn attribute for=SameDocumentTransition>\[[Phase]]</dfn> internal slot,
 which is a [=/string=] chosen from
-"ready",
-"outgoing-prep",
-"started",
+"idle",
+"outgoing-capture",
 "incoming-prep",
 and "running";
-it is initially "ready".
+it is initially "idle".
+
+They also have a <dfn attribute for=SameDocumentTransition>\[[TransitionPromise]]</dfn> internal slot,
+which is a {{Promise}}
+created when a page transition is started,
+and resolved when it's ended (successfully or unsuccessfully).
 
 <div algorithm="SameDocumentTransition.start()">
 	The [=method steps=] for
-	<dfn method for=SameDocumentTransition>start(cb)</dfn>
+	<dfn method for=SameDocumentTransition>start(|cb|)</dfn>
 	are:
 
-	1. If [=this's=] {{[[Phase]]}} internal slot is anything but "ready",
-		[=/throw=] an {{InvalidStateException}}.
+	1. If any {{SameDocumentTransition}} object in the document
+		([=this=] or any other)
+		has a {{[[Phase]]}} internal slot set a non-"idle" value,
+		[=throw=] an {{InvalidStateException}}.
 
-	1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-prep".
+	1. If multiple elements on the page have the same [=page transition tag=],
+		[=throw=] an {{InvalidStateException}}.
 
-	1. Let |outgoingEls| be [=this's=] {{[[OutgoingElements]]}} internal slot.
+	1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-capture".
 
-	1. Let |cssEls| be a [=/map=]
-		whose keys are all the [=page transition tags=]
-		on the elements of the page,
-		and whose values are the elements
-		with that tag.
-		If multiple elements have the same tag,
-		[=abandon the page transition=] managed by [=this=].
+	1. Let |realm| be [=this's=] [=relevant Realm=].
 
-	1. [=map/For each=] |tag| -> |el| of |cssEls|,
-		set |outgoingEls|[|tag|] to a [=CapturedElement=]
-		whose "element" item is |el|.
+	1. Let |p| be [=a new promise=] in |realm|.
+		Set [=this's=] {{[[TransitionPromise]]}} internal slot to |p|.
 
-	1. [=Freeze the page's rendering=],
-		then [=map/for each=] |elStruct| of |outgoingEls|'s [=map/values=],
-		[=capture the image=] of |elStruct|'s element
-		and set |elStruct|'s image to the result.
+	1. Let |taggedElements| be [=this's=] {{[[TaggedElements]]}} internal slot.
 
-	1. Set [=this's=] {{[[Phase]]}} internal slot to "started".
+	1. [=Freeze the page's rendering=].
 
-	1. [=/Invoke=] |cb|, and let |p| be the return value.
-		[=Upon fulfillment=] of |p|,
-		run the rest of this algorithm's steps.
-		[=Upon rejection=] of |p|,
-		[=abandon the page transition=] managed by [=this=].
+	1. Execute the following steps [=in parallel=]:
 
-		Issue: Need to specify that if |cb| takes too long we can
-		abandon the transition automatically.
+		1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value, in paint order:
 
-	1. Set [=this's=] {{[[Phase]]}} internal slot to "incoming-prep".
+			1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
+			1. Let |capture| be a new [=CapturedElement=] struct.
+			1. Set |capture|&apos;s "outgoing image"
+				to the result of [=capturing the image=] of |el|.
+			1. Set |capture|&apos;s "outgoing styles" to the following:
 
-	1. Let |incomingEls| be [=this's=] {{[[IncomingElements]]}} internal slot.
+				: 'transform'
+				:: A CSS transform that would translate |el|
+					from the document origin to its current location.
 
-	1. Let |cssEls| be a [=/map=]
-		whose keys are all the [=page transition tags=]
-		on the elements of the page,
-		and whose values are the elements
-		with that tag.
-		If multiple elements have the same tag,
-		[=abandon the page transition=] managed by [=this=].
+				: 'width'
+				: 'height'
+				:: The width and height of |el|'s border box.
 
-	1. [=map/For each=] |tag| -> |el| of |cssEls|,
-		set |incomingEls|[|tag|] to a [=CapturedElement=]
-		whose "element" item is |el|.
+				: 'object-view-box'
+				:: An 'object-view-box' value that,
+					when applied to the outgoing image,
+					will cause the view box to coincide with |el|'s [=border box=]
+					in the image.
 
-	1. [=map/For each=] |tag| -> |elStruct| of |incomingEls|,
-		if |outgoingEls|[|tag|] [=map/exists=],
-		[=capture the live image=] of |elStruct|'s element
-		and set |elStruct|'s image to the result;
-		otherwise,
-		[=map/remove=] |incomingEls|[|tag|].
+				: 'writing-mode'
+				:: The 'writing-mode' of |el|.
 
-	1. Set [=this's=] {{[[Phase]]}} internal slot to "running",
-		and [=unfreeze the page's rendering=].
+				: 'direction'
+				:: The 'direction' of |el|.
 
-	1. [=Animate a page transition=]
-		with outgoing elements |outgoingEls|
-		and incoming elements |incomingEls|.
+			1. Set |taggedElements|[|tag|] to |capture|.
 
-		When the transition is finished,
-		set [=this's=] {{[[Phase]]}} internal slot to "ready".
+			Note: As this step happens asynchronously,
+			it can race with author DOM modifications.
 
-	Issue: I'm not actually returning a Promise yet;
-	need to do a little bit of rearranging.
+		1. [=Queue a global task=] on the [=DOM manipulation task source=],
+			given |realm|&apos;s [=Realm/global object=],
+			to execute the following steps:
+
+			1. Set [=this's=] {{[[Phase]]}} internal slot to "incoming-prep".
+
+			1. [=/Invoke=] |cb|, and let |userP| be the return value.
+
+				[=Upon fulfillment=] of |userP|:
+
+				1. If multiple elements on the page have the same [=page transition tag=],
+					[=abandon the page transition=] managed by [=this=]
+					with an {{InvalidStateException}}.
+
+				1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value,
+					in paint order:
+
+					1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
+
+					1. If |taggedElements|[|tag|] does not exist,
+						set it to a new [=CapturedElement=] struct.
+
+					1. Let |capture| be |taggedElements|[|tag|].
+
+					1. Let |capture|&apos;s "incoming element" item be |el|.
+
+				1. [=In parallel=]:
+					1. [=Animate a page transition=] managed by [=this=].
+
+					1. [=Resolve=] |p| with |userP|.
+
+				[=Upon rejection=] of |userP|:
+
+				1. Let |reason| be the reason |userP| was rejected.
+
+				1. [=Abandon the page transition=] managed by [=this=]
+					with |reason|.
+
+				If the time from when |cb| is invoked
+				to when |userP| is fulfilled
+				is longer than an implementation-defined timeout period,
+				[=abandon the page transition=] managed by [=this=]
+				with a {{TimeoutError}}.
+
+	1. Return |p|.
 </div>
 
-<div algorithm="SinglePageTransition.abandon()">
+<div algorithm="SameDocumentTransition.abandon()">
 	The [=method steps=] for
-	<dfn method for=SinglePageTransition>abandon()</dfn>
-	are to [=abandon the page transition=] managed by [=this=].
+	<dfn method for=SameDocumentTransition>abandon()</dfn> are:
+
+	1. If [=this's=] {{[[Phase]]}} internal slot is not "idle",
+		[=abandon the page transition=] managed by [=this=]
+		with an {{AbortError}}.
+
+	2. Otherwise, do nothing.
 </div>
 
 <div class=example>
@@ -308,7 +401,7 @@ it is initially "ready".
 	and a single line of script to start it:
 
 	<pre highlight=js>
-	document.createDocumentTransition()
+	new SameDocumentTransition()
 		.start(()=>coolFramework.changeTheDOMToPageB());
 	</pre>
 
@@ -317,11 +410,11 @@ it is initially "ready".
 
 	<pre highlight=js>
 	async function doTransition() {
-		let transition = document.createDocumentTransition();
+		let transition = new SameDocumentTransition();
 
 		// Specify "outgoing" elements. The tag is used to match against
 		// "incoming" elements they should transition to, and to refer to
-		// the transitioning psuedo-element.
+		// the transitioning pseudo-element.
 		document.querySelector(".old-message").style.pageTransitionTag = "message";
 
 		// The start() call freezes the page's rendering, and triggers
@@ -347,12 +440,16 @@ it is initially "ready".
 				});
 			});
 
-			// When this callback returns, the browser will snapshot the
-			// "incoming" elements (without showing them to the user)
+			// When this callback returns, the browser will identify the
+			// incoming elements, and begin animating the page transition
+			// on the next frame.
 		});
 
-		// When .start()'s promise resolves, the page is unfrozen, and
-		// the transition animations are ready to start on the next frame.
+		// When .start()'s promise resolves, that means the transition is
+		// finished (either completed successfully or abandoned).
+		// It will fulfill with the return value of the callback,
+		// and reject with the error thrown by the callback,
+		// or possibly a TimeoutError or AbortError, if the UA abandoned it.
 	}
 	</pre>
 </div>
@@ -370,7 +467,7 @@ it is initially "ready".
 	This requires integration into the HTML lifetime cycle;
 	I haven't had to write text for that before,
 	but it should be similar or identical
-	to waht I need to
+	to the fixes I need to make to integrate IntersectionObserver properly.
 </div>
 
 <div algorithm>
@@ -380,13 +477,20 @@ it is initially "ready".
 
 <div algorithm>
 	To <dfn>abandon the page transition</dfn>
-	managed by a {{SameDocumentTransition}} |manager|,
-	...
+	managed by a {{SameDocumentTransition}} |manager|
+	with an error |error|:
 
-	Issue: Unfreeze the page if necessary,
-	kick it straight into "finished",
-	and reject the promise returned by .start(),
-	if one has been created.
+	1. If the page's rendering is currently frozen,
+		[=unfreeze the page's rendering=].
+
+	1. If there is currently a page transition being animated,
+		end it.
+		Remove all associated [=page-transition pseudo-elements from the document.
+
+	1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
+
+	1. [=Reject=] |manager|&apos;s {{[[TransitionPromise]]}}
+		with |error|.
 </div>
 
 <div algorithm>
@@ -419,51 +523,116 @@ it is initially "ready".
 
 <div algorithm>
 	To <dfn>animate a page transition</dfn>
-	given a map of |outgoingEls|
-	and a map of |incomingEls|:
+	given a {{SameDocumentTransition}} |manager|:
 
-	1. Let |transition root pseudo| be a new ''::page-transition'' pseudo-element,
+	1. Let |transition root| be a new ''::page-transition'' pseudo-element,
 		and place it in the [=page-transition paint layer=].
 
-	1. [=map/For each=] |tag| -> |incomingEl| of |incomingEls|,
-		ordered according to the paint order of |incomingEl|'s element:
+	1. Let |root image| be the result of
+		[=capturing the live image=] of the document's root element.
 
-		1. Let |outgoingEl| be |outgoingEls|[|tag|].
+		Create an anonymous replaced element
+		the same size as |root image|,
+		displaying |root image|,
+		as a child of |transition root|.
+		Treat is as an absolutely positioned element
+		with ''inset-block-start: 0''
+		and ''inset-inline-start: 0''.
 
-		1. Let |container pseudo| be a new ''::page-transition-container'' pseudo-element,
-			with the tag |tag|,
-			nested in |transition root pseudo|.
+	1. [=map/For each=] |tag| -> |el| of |manager|&apos;s {{[[TaggedElements]]}}:
 
-			It has a 'width' and 'height'
-			equal to the border box width and height
-			of |outgoingEl|'s element.
+		1. [=Create transition pseudo-elements=] from |tag| and |el|,
+			nested into |transition root|.
 
-		1. Let |wrapper pseudo| be a new ''::page-transition-image-wrapper'' pseudo-element,
-			with the tag |tag|,
-			nested in |container pseudo|.
-
-			It has the same width and height as |container pseudo|.
-
-		1. Let |outgoing pseudo| be a new ''::page-transition-outgoing-image'' pseudo-element,
-			with the tag |tag|,
-			nested in |wrapper pseudo|.
-
-			It is a replaced element,
-			displaying |outgoingEl|'s image,
-			with a natural view box of
-			<span class=issue>set this up properly</span>.
-
-		1. Let |incoming pseudo| be a new ''::page-transition-incoming-image'' pseudo-element,
-			with the tag |tag|,
-			nested in |wrapper pseudo|
-			(after |outgoing pseudo|).
-
-			It is a replaced element,
-			displaying |incomingEl|'s image,
-			with a natural view box of
-			<span class=issue>set this up properly</span>.
+	1. Issue: Wait one frame, per the example?
 
 	1. Start an animation with keyframes of:
 
-		Issue: define this.
+		<div class=issue>
+			Fill in proper Web Animations text for:
+
+			* animates 'opacity' on ''::page-transition-outgoing-image''
+				from 1 to 0
+			* animates 'opacity' on ''::page-transition-incoming-image''
+				from 0 to 1
+			* animates 'width', 'height', and 'transform' on ''::page-transition-container''
+				from their starting values
+				to the live values on "incoming element"
+				(if it exists)
+
+			All over a user-agent-defined duration,
+			presumably with a UA-defined curve.
+		</div>
+
+		Issue: We want authors to be able to override,
+		but there's no such thing as animation effects "at the UA level",
+		such that a user-level animation would automatically win.
+		Should we just test for the presence of a WebAnim targeting the pseudos in question,
+		and only create our own if they don't exist?
+		Or something else?
+</div>
+
+<div algorithm>
+	To <dfn>create transition pseudo-elements</dfn> from a tag |tag|
+	and a [=CapturedElement=] |el|,
+	nesting into the ''::page-transition'' pseudo-element |pt|:
+
+	1. Let |container| be a new ''::page-transition-container'' pseudo-element
+		with the tag |tag|,
+		inserted as a child of |pt|.
+
+	1. Let |width| be |el|&apos;s "outgoing data" 'width' property, if it exists;
+		otherwise, the current width of |el|&apos;s "incoming element"'s [=border box=].
+
+		Let |height| be |el|&apos;s "outgoing data" 'height' property, if it exists;
+		otherwise, the current height of |el|&apos;s "incoming element"'s [=border box=].
+
+		Let |transform| be |el|&apos;s "outgoing data" 'transform' property, if it exists;
+		otherwise, the transform that would translate |el|&apos;s "incoming element"
+		from the document origin
+		to its current position.
+
+		Let |writing-mode| and |direction| be the current value of those properties
+		on |el|&apos;s "incoming element",
+		if it exists;
+		otherwise, |el|&apos;s "outgoing data" corresponding property.
+
+		At the [=user-agent origin=],
+		set |container|&apos;s 'width', 'height', 'transform', 'writing-mode', and 'direction' properties
+		to |width|, |height|, |transform|, |writing-mode|, and |direction|.
+
+	1. Let |image wrapper| be a new ''::page-transition-image-wrapper'' pseudo-element
+		with the tag |tag|,
+		inserted as a child of |container|.
+
+		At the [=user-agent origin=],
+		set |image wrapper|&apos;s 'width', 'height', 'writing-mode', and 'direction' properties
+		to |width|, |height|, |writing-mode|, and |direction|.
+
+	1. If |el| has an "outgoing image",
+		then let |outgoing| be a new ''::page-transition-outgoing-image'' pseudo-element
+		with the tag |tag|,
+		inserted as a child of |image wrapper|.
+		This pseudo-element is a [=replaced element=],
+		displaying |el|&apos;s "outgoing image".
+
+		At the [=user-agent origin=],
+		set |outgoing|&apos;s 'object-view-box' property
+		to |el|&apos;s "outgoing data" 'object-view-box' property.
+
+	1. If |el| has an "incoming element",
+		then let |incoming| be a new ''::page-transition-incoming-image''
+		pseudo-element
+		with the tag |tag|,
+		inserted as a child of |image wrapper|
+		(after |outgoing|, if it exists).
+		This pseudo-element is a [=replaced element=],
+		displaying the [=capture the live image|live image=]
+		of |el|&apos;s "incoming element".
+
+		At the [=user-agent origin=],
+		set |incoming|&apos;s 'object-view-box' property
+		to a value that when applied to |incoming|,
+		will cause the view box to coincide with "incoming element"'s [=border box=]
+		in the image.
 </div>
