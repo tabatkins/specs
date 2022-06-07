@@ -1,11 +1,11 @@
 <pre class='metadata'>
-Title: CSS Foo Module Level 1
-Shortname: css-foo
+Title: CSS Shared Element Transitions Module Level 1
+Shortname: css-shared-element-transitions
 Level: 1
 Status: ED
 Group: csswg
-TR: https://www.w3.org/TR/css-foo/
-ED: https://drafts.csswg.org/css-foo/
+TR: https://www.w3.org/TR/css-shared-element-transitions/
+ED: https://drafts.csswg.org/css-shared-element-transitions/
 Work Status: exploring
 Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/, w3cid 42199
 Abstract: This module defines the Single-Page Document-Transition API, along with associated properties and pseudo-elements.
