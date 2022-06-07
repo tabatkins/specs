@@ -95,7 +95,7 @@ Several of these selectors
 can represent multiple possible pseudo-elements,
 one for each element being animated by the [=page transition=].
 Each such pseudo-element has a tag,
-given by their corresponding element's 'page-transition-tag' property.
+given by their corresponding element's 'page-transition-tag' property
 and so the selectors take a <<pt-tag-selector>> argument
 to specify precisely which pseudo-elements are intended.
 This is defined as:
@@ -125,13 +125,16 @@ equivalent to a [=type selector=].)
 : <dfn>::page-transition-container( <<pt-tag-selector>> )</dfn>
 ::	One of these pseudo-elements exists
 	for each element being animated by the page transition,
-	and holds the rest of the pseudo-elements
+	and holds the rest of the pseudo-elements.
 	It's a child of the ''::page-transition'' pseudo-element.
 
 	Styles in the [=user-agent origin=]
 	animate this pseudo-element's 'width' and 'height'
 	from the size of the outgoing element's [=border box=]
-	to that of the incoming element's [=border box=].
+	to that of the incoming element's [=border box=]. Also
+        the element's 'transform' is animated from the outgoing
+        element's screen space transform to the incoming element's
+        screen space transform.
 
 	Issue: I think this is basically a no-op right now
 	(totally subsumed in functionality by the image wrapper one),
@@ -145,9 +148,9 @@ equivalent to a [=type selector=].)
 	It's a child of the ''::page-transition-container()'' pseudo-element
 	with the same tag.
 
-	Styles in the [=user-agent origin=]
-	animate this pseudo-element's 'width' and 'height'
-	to the same size as its parent ''::page-transition-container()''.
+	Styles in the [=user-agent origin=] add ''isolation: isolate'' to this element.
+	The styles also ensure that this pseudo-element's 'width' and 'height'
+	match its parent ''::page-transition-container()''.
 
 : <dfn>::page-transition-outgoing-image( <<pt-tag-selector>> )</dfn>
 :: 	One of these pseudo-elements exists
@@ -160,12 +163,16 @@ equivalent to a [=type selector=].)
 	with the same tag.
 
 	Styles in the [=user-agent origin=]
-	animate this pseudo-element's 'width' and 'height'
+	animate this pseudo-element's 'width'
 	to the same size as its ancestor ''::page-transition-container()'',
 	and set this pseudo-element's 'object-view-box' property
 	with an ''xywh()'' value
 	such that the view box matches the outgoing element's border box
 	in the snapshot.
+
+        Note: The aim is to scale the image to match container width but retain
+        its aspect ratio. Styles on the page-transition-outgoing-image size it
+        to ensure this.
 
 	Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
 
@@ -312,8 +319,8 @@ and resolved when it's ended (successfully or unsuccessfully).
 			1. Set |capture|&apos;s "outgoing styles" to the following:
 
 				: 'transform'
-				:: A CSS transform that would translate |el|
-					from the document origin to its current location.
+				:: A CSS transform that would place |el|
+					from the document origin to its current quad.
 
 				: 'width'
 				: 'height'
@@ -463,7 +470,8 @@ and resolved when it's ended (successfully or unsuccessfully).
 	Issue: Do a full lifecycle update first--
 	run rAF,
 	flush styles,
-	and fully layout the page.
+	and fully layout the page. The result of this lifecycle
+        update are presented to the user.
 	This requires integration into the HTML lifetime cycle;
 	I haven't had to write text for that before,
 	but it should be similar or identical
