@@ -257,7 +257,7 @@ interface SameDocumentTransition {
 	constructor();
 	Promise<any> prepare(AsyncFunction cb);
 	undefined abandon();
-	Promise<any> finished;
+	readonly attribute Promise<any> finished;
 };
 
 callback AsyncFunction = Promise<any> ();
@@ -293,7 +293,7 @@ which is a {{Promise}}
 created when a page transition is started,
 and resolved when the phase is updated from incoming-prep to running.
 
-They also have a <dfn attribute for=SameDocumentTransition>\[[finished]]</dfn> slot,
+They also have a <dfn attribute for=SameDocumentTransition>\[[finished]]</dfn> attribute,
 which is a {{Promise}}
 created when a page transition is started,
 and resolved when it’s ended (successfully or unsuccessfully).
@@ -392,7 +392,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 	
 				1. Set [=this's=] {{[[Phase]]}} internal slot to "running".
 	
-				1. [=Resolve=] |ReadyPromise| with |readyP|.
+				1. [=Resolve=] {{[[ReadyPromise]]}} with |readyP|.
 
 				1. [=In parallel=]:
 					1. [=Animate a page transition=] managed by [=this=].
@@ -518,7 +518,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 
 	1. If there is currently a page transition being animated,
 		end it.
-		Remove all associated [=page-transition pseudo-elements from the document.
+		Remove all associated [=page-transition=] pseudo-elements from the document.
 
 	1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
 
