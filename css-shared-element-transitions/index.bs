@@ -77,6 +77,14 @@ as participating in a page transition.
 		is invalid as a <<custom-ident>>.
 </dl>
 
+The root element participates in a page transition by default using
+the following style in the [=user-agent origin=].
+
+<pre class=prod>
+	html {
+	    page-transition-tag: root;
+	}
+</pre>
 
 Pseudo-Elements {#pseudo}
 ===============
@@ -85,11 +93,11 @@ While the UA is [=animating a page transition=],
 it creates the following <dfn export>page-transition pseudo-elements</dfn>,
 to represent the various items being animated.
 
-Every [=page-transition pseudo-element=]
+The ''::page-transition'' pseudo-element
 has the document's root element as its [=originating element=].
 (So, for example, '':root::page-transition'' matches,
 but ''div::page-transition'' will not;
-the pseudos also inherit from the root element.)
+the pseudo also inherits from the root element.)
 
 Several of these selectors
 can represent multiple possible pseudo-elements,
@@ -118,14 +126,19 @@ equivalent to a [=type selector=].)
 :: This pseudo-element is the parent of all the other [=page-transition pseudo-elements=].
 	Its [=originating element=] is the document's root element.
 
+	Styles in the [=user-agent origin=] add ''position:fixed'' and ''inset:0'' to
+	this pseudo-element. The aim is to size the pseudo-element to cover the
+	complete viewport.
+
 	Issue: What functionality does this add?
 	Just, like, letting you filter/etc the whole subtree,
 	or something else?
 
 : <dfn>::page-transition-container( <<pt-tag-selector>> )</dfn>
 ::	One of these pseudo-elements exists
-	for each element being animated by the page transition,
-	and holds the rest of the pseudo-elements.
+	for each page-transition-tag in a page transition,
+	and holds the rest of the pseudo-elements corresponding
+	to this page-transition-tag.
 	It's a child of the ''::page-transition'' pseudo-element.
 
 	Styles in the [=user-agent origin=]
@@ -136,14 +149,9 @@ equivalent to a [=type selector=].)
         element's screen space transform to the incoming element's
         screen space transform.
 
-	Issue: I think this is basically a no-op right now
-	(totally subsumed in functionality by the image wrapper one),
-	but will be useful when we have more complex page transition options in the future,
-	right?
-
 : <dfn>::page-transition-image-wrapper( <<pt-tag-selector>> )</dfn>
 ::	One of these pseudo-elements exists
-	for each element being animated by the page transition,
+	for each page-transition-tag being in a page transition,
 	and holds the images of the outgoing and incoming elements.
 	It's a child of the ''::page-transition-container()'' pseudo-element
 	with the same tag.
@@ -162,17 +170,17 @@ equivalent to a [=type selector=].)
 	It's a child of the ''::page-transition-image-wrapper()'' pseudo-element
 	with the same tag.
 
-	Styles in the [=user-agent origin=]
-	animate this pseudo-element's 'width'
-	to the same size as its ancestor ''::page-transition-container()'',
-	and set this pseudo-element's 'object-view-box' property
-	with an ''xywh()'' value
-	such that the view box matches the outgoing element's border box
-	in the snapshot.
+	Styles in the [=user-agent origin=] add ''position: absolute'',
+	''inset-block-start: 0'', ''inline-size: 100%'' and ''block-size: auto'' to
+	this element.  The aim is to scale the image to match container width but
+	retain its aspect ratio.
 
-        Note: The aim is to scale the image to match container width but retain
-        its aspect ratio. Styles on the page-transition-outgoing-image size it
-        to ensure this.
+	Styles in the [=user-agent origin=] animate this element's opacity from 1 to 0
+	with a ''mix-blend-mode: plus-lighter''.
+
+	Styles in the [=user-agent origin=] set this pseudo-element's 'object-view-box'
+	property with an ''xywh()'' value such that the view box matches the outgoing
+	element's border box in the snapshot.
 
 	Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
 
@@ -247,8 +255,9 @@ Single-page API:
 <xmp class=idl>
 interface SameDocumentTransition {
 	constructor();
-	Promise<any> start(AsyncFunction cb);
+	Promise<any> prepare(AsyncFunction cb);
 	undefined abandon();
+	Promise<any> finished;
 };
 
 callback AsyncFunction = Promise<any> ();
@@ -279,19 +288,24 @@ which is a [=/string=] chosen from
 and "running";
 it is initially "idle".
 
-They also have a <dfn attribute for=SameDocumentTransition>\[[TransitionPromise]]</dfn> internal slot,
+They also have a <dfn attribute for=SameDocumentTransition>\[[ReadyPromise]]</dfn> internal slot,
 which is a {{Promise}}
 created when a page transition is started,
-and resolved when it's ended (successfully or unsuccessfully).
+and resolved when the phase is updated from incoming-prep to running.
 
-<div algorithm="SameDocumentTransition.start()">
+They also have a <dfn attribute for=SameDocumentTransition>\[[finished]]</dfn> slot,
+which is a {{Promise}}
+created when a page transition is started,
+and resolved when it’s ended (successfully or unsuccessfully).
+
+<div algorithm="SameDocumentTransition.prepare()">
 	The [=method steps=] for
-	<dfn method for=SameDocumentTransition>start(|cb|)</dfn>
+	<dfn method for=SameDocumentTransition>prepare(|cb|)</dfn>
 	are:
 
 	1. If any {{SameDocumentTransition}} object in the document
 		([=this=] or any other)
-		has a {{[[Phase]]}} internal slot set a non-"idle" value,
+		has a {{[[Phase]]}} internal slot set to a non-"idle" value,
 		[=throw=] an {{InvalidStateException}}.
 
 	1. If multiple elements on the page have the same [=page transition tag=],
@@ -301,8 +315,11 @@ and resolved when it's ended (successfully or unsuccessfully).
 
 	1. Let |realm| be [=this's=] [=relevant Realm=].
 
-	1. Let |p| be [=a new promise=] in |realm|.
-		Set [=this's=] {{[[TransitionPromise]]}} internal slot to |p|.
+	1. Let |readyP| be [=a new promise=] in |realm|.
+		Set [=this's=] {{[[ReadyPromise]]}} internal slot to |readyP|.
+	
+	1. Let |finishedP| be [=a new promise=] in |realm|.
+		Set [=this's=] {{[[finished]]}} slot to |finishedP|.
 
 	1. Let |taggedElements| be [=this's=] {{[[TaggedElements]]}} internal slot.
 
@@ -321,10 +338,12 @@ and resolved when it's ended (successfully or unsuccessfully).
 				: 'transform'
 				:: A CSS transform that would place |el|
 					from the document origin to its current quad.
+				:: This value is identity for the root element.
 
 				: 'width'
 				: 'height'
 				:: The width and height of |el|'s border box.
+				:: This value is the bounds of the initial containing block for the root element.
 
 				: 'object-view-box'
 				:: An 'object-view-box' value that,
@@ -342,6 +361,8 @@ and resolved when it's ended (successfully or unsuccessfully).
 
 			Note: As this step happens asynchronously,
 			it can race with author DOM modifications.
+		
+		1. [=Create transition pseudo-elements=] using |taggedElements|.
 
 		1. [=Queue a global task=] on the [=DOM manipulation task source=],
 			given |realm|&apos;s [=Realm/global object=],
@@ -368,11 +389,15 @@ and resolved when it's ended (successfully or unsuccessfully).
 					1. Let |capture| be |taggedElements|[|tag|].
 
 					1. Let |capture|&apos;s "incoming element" item be |el|.
+	
+				1. Set [=this's=] {{[[Phase]]}} internal slot to "running".
+	
+				1. [=Resolve=] |ReadyPromise| with |readyP|.
 
 				1. [=In parallel=]:
 					1. [=Animate a page transition=] managed by [=this=].
 
-					1. [=Resolve=] |p| with |userP|.
+					1. [=Resolve=] |finished| with |finishedP|.
 
 				[=Upon rejection=] of |userP|:
 
@@ -387,7 +412,7 @@ and resolved when it's ended (successfully or unsuccessfully).
 				[=abandon the page transition=] managed by [=this=]
 				with a {{TimeoutError}}.
 
-	1. Return |p|.
+	1. Return |readyP|.
 </div>
 
 <div algorithm="SameDocumentTransition.abandon()">
@@ -497,7 +522,10 @@ and resolved when it's ended (successfully or unsuccessfully).
 
 	1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
 
-	1. [=Reject=] |manager|&apos;s {{[[TransitionPromise]]}}
+	1. [=Reject=] |manager|&apos;s {{[[ReadyPromise]]}}
+		with |error|.
+	
+	1. [=Reject=] |manager|&apos;s {{[[finished]]}}
 		with |error|.
 </div>
 
@@ -513,8 +541,14 @@ and resolved when it's ended (successfully or unsuccessfully).
 	If it has children that are also tagged for capture,
 	skip their painting.
 	For this purpose, the element is treated as ''isolation: isolate'',
-	''contain: paint'',
+	''contain: layout'',
 	and ''break-inside: avoid''.
+	
+	Issue: Clarify that the UA may clip the painting because of platform constraints,
+	for instance if the ink overflow bounds exceed max texture size.
+	
+	Issue: Clarify the clipping behaviour for root elements. Should these be clipped
+	to the viewport by default?
 </div>
 
 <div algorithm>
