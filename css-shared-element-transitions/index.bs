@@ -101,7 +101,7 @@ the pseudo also inherits from the root element.)
 
 Several of these selectors
 can represent multiple possible pseudo-elements,
-one for each element being animated by the [=page transition=].
+one for each element generated for a transition.
 Each such pseudo-element has a tag,
 given by their corresponding element's 'page-transition-tag' property
 and so the selectors take a <<pt-tag-selector>> argument
@@ -265,7 +265,7 @@ callback AsyncFunction = Promise<any> ();
 
 The {{SameDocumentTransition}} represents and controls
 a single same-document transition;
-that is, a [=page transition=] where the starting and ending document are the same,
+that is, a transition where the starting and ending document are the same,
 but the document's DOM has changed between the two states.
 
 {{SameDocumentTransition}} objects have a <dfn attribute for=SameDocumentTransition>\[[TaggedElements]]</dfn>
@@ -319,7 +319,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 		Set [=this's=] {{[[ReadyPromise]]}} internal slot to |readyP|.
 	
 	1. Let |finishedP| be [=a new promise=] in |realm|.
-		Set [=this's=] {{[[finished]]}} slot to |finishedP|.
+		Set [=this's=] {{[[finished]]}} attribute to |finishedP|.
 
 	1. Let |taggedElements| be [=this's=] {{[[TaggedElements]]}} internal slot.
 
@@ -397,7 +397,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 				1. [=In parallel=]:
 					1. [=Animate a page transition=] managed by [=this=].
 
-					1. [=Resolve=] |finished| with |finishedP|.
+					1. [=Resolve=] {{[[finished]]}} with |finishedP|.
 
 				[=Upon rejection=] of |userP|:
 
