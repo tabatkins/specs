@@ -11,6 +11,7 @@ Abstract: This specification defines 'anchor positioning', where a positioned el
 </pre>
 
 <pre class=link-defaults>
+spec:css-break-4; type:dfn; text:fragment
 spec:css-display-3; type:dfn; text:element
 spec:css-position-3; type:dfn; text:inset-modified containing block
 </pre>
@@ -127,6 +128,10 @@ that would align the edge
 of the positioned elements' [=inset-modified containing block=]
 corresponding to the property the function appears in
 with the specified border edge of the [=target anchor element=].
+
+If the [=target anchor element=] is [=fragmented=],
+the axis-aligned bounding rectangle
+of the fragments' border boxes is used instead.
 
 Issue: Do we need to control which box we're referring to,
 so you can align to padding or content edge?
