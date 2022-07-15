@@ -266,26 +266,31 @@ That name is not necessarily unique on the page, however;
 even if it is, the [=anchor element=] in question
 might not be capable of anchoring the positioned element.
 
-To determine the <dfn>target [=anchor element=]</dfn>,
-find the first element in tree order
-which satisfies the following conditions:
+<div algorithm>
+	To determine the <dfn>target [=anchor element=]</dfn>,
+	find the first element |el| in tree order
+	which satisfies the following conditions:
 
-* is an [=anchor element=] with the given [=anchor name=]
-* is a descendant of the querying element's [=containing block=],
-	or the quering element's [=containing block=] is the [=initial containing block=]
-* if it has the same [=containing block=] as the querying element,
-	it is not itself [=positioned=]
-* if it has a different [=containing block=] from the querying element,
-	the last [=containing block=] in its [=containing block chain=]
-	before reaching the querying element's [=containing block=]
-	is not, itself, [=positioned=]
+	* |el| is an [=anchor element=] with the given [=anchor name=]
+	* |el| is a descendant of the querying element's [=containing block=],
+		or the quering element's [=containing block=] is the [=initial containing block=]
+	* if |el| has the same [=containing block=] as the querying element,
+		|el| is not [=positioned=]
+	* if |el| has a different [=containing block=] from the querying element,
+		the last [=containing block=] in |el|'s [=containing block chain=]
+		before reaching the querying element's [=containing block=]
+		is not [=positioned=]
 
-Note: There might not be any such element.
+	Note: There might not be any such element.
 
-Note: These conditions ensure that the [=anchor element=]
-is laid out strictly before the element using ''anchor()'' or ''anchor-size()'',
-so there is no possible circularity between the position and/or size
-of the two elements.
+	Note: Because positioned elements
+	are laid out strictly after non-positioned elements
+	in the same containing block,
+	these conditions ensure that the [=anchor element=]
+	is laid out strictly before the element using ''anchor()'' or ''anchor-size()'',
+	so there is no possible circularity between the position and/or size
+	of the two elements.
+</div>
 
 
 Anchor Queries {#queries}
