@@ -138,7 +138,13 @@ equivalent to a [=type selector=].)
 	for each page-transition-tag in a page transition,
 	and holds the rest of the pseudo-elements corresponding
 	to this page-transition-tag.
-	It's a child of the ''::page-transition'' pseudo-element.
+
+	Its [=originating element=] is the ''::page-transition''
+	pseudo-element.
+
+	Styles in the [=user-agent origin=] add ''position:absolute'',
+	''top: 0'' and ''left: 0'' to position this pseudo-element
+	relative to the ancestor ''::page-transition'' pseudo-element.
 
 	Styles in the [=user-agent origin=]
 	animate this pseudo-element's 'width' and 'height'
@@ -152,8 +158,9 @@ equivalent to a [=type selector=].)
 ::	One of these pseudo-elements exists
 	for each page-transition-tag being in a page transition,
 	and holds the images of the outgoing and incoming elements.
-	It's a child of the ''::page-transition-container()'' pseudo-element
-	with the same tag.
+
+	Its [=originating element=] is the ''::page-transition-container()''
+	pseudo-element with the same tag.
 
 	Styles in the [=user-agent origin=] add ''isolation: isolate'' to this element.
 	The styles also ensure that this pseudo-element's 'width' and 'height'
@@ -166,8 +173,9 @@ equivalent to a [=type selector=].)
 	displaying the outgoing element's snapshot image.
 	It has [=natural dimensions=]
 	equal to the snapshot's size.
-	It's a child of the ''::page-transition-image-wrapper()'' pseudo-element
-	with the same tag.
+
+	Its [=originating element=] is the ''::page-transition-image-wrapper()''
+	pseudo-element with the same tag.
 
 	Styles in the [=user-agent origin=] add ''position: absolute'',
 	''inset-block-start: 0'', ''inline-size: 100%'' and ''block-size: auto'' to
@@ -193,7 +201,7 @@ equivalent to a [=type selector=].)
 
 The precise tree structure
 (in particular, the order of sibling pseudo-elements)
-is defined in the [=animate a page transition=] algorithm.
+is defined in the [=Create transition pseudo-elements=] algorithm.
 
 Issue: Need to fill in some more spec infrastructure about paint layers and filtering;
 things in the normal top layer, like dialogs,
@@ -204,49 +212,6 @@ and not have its filters applied.
 (The transition pseudos will *interact* with the root's filters,
 via capturing images from there,
 but we don't want them to then be *double* sepia'd or whatever.)
-
-<div class=issue>
-	More properly integrate this UA stylesheet:
-
-	<xmp highlight=css>
-		::page-transition {
-		  position: fixed;
-		  inset: 0;
-		}
-
-		::page-transition-container(*) {
-		  position: absolute;
-		  top: 0;
-		  left: 0;
-		  will-change: transform;
-
-		  /* The transform applied to the container includes any translation necessary
-		     for the original element's transform-origin. */
-		  transform-origin: top left;
-		}
-
-		::page-transition-container(root) {
-		  right: 0;
-		  bottom: 0;
-		}
-
-		::page-transition-image-wrapper(*) {
-		  position: absolute;
-		  inset: 0;
-		  isolation: isolate;
-		}
-
-		::page-transition-incoming-image(*),
-		::page-transition-outgoing-image(*) {
-		  position: absolute;
-		  inset-block-start: 0;
-		  inline-size: 100%;
-		  block-size: auto;
-		  mix-blend-mode: plus-lighter;
-		  will-change: opacity;
-		}
-	</xmp>
-</div>
 
 
 API {#api}
@@ -278,7 +243,7 @@ whose keys are [=page transition tags=]
 and whose values are <dfn>CapturedElement</dfn>s,
 a [=/struct=]
 with items named "outgoing image" (an image),
-"outgoing data" (a set of styles),
+"outgoing styles" (a set of styles),
 and "incoming element" (an element),
 all initially empty.
 
@@ -364,7 +329,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 			Note: As this step happens asynchronously,
 			it can race with author DOM modifications.
 		
-		1. [=Create transition pseudo-elements=] using |taggedElements|.
+		1. [=Create transition pseudo-elements=] managed by [=this=].
 
 		1. [=Queue a global task=] on the [=DOM manipulation task source=],
 			given |realm|&apos;s [=Realm/global object=],
@@ -394,11 +359,17 @@ and resolved when it’s ended (successfully or unsuccessfully).
 	
 				1. Set [=this's=] {{[[Phase]]}} internal slot to "running".
 	
+				1. [=Create transition pseudo-elements=] managed by [=this=].
+	
+				1. [=Animate a page transition=] managed by [=this=].
+	
 				1. [=Resolve=] {{[[ReadyPromise]]}} with |readyP|.
 
 				1. [=In parallel=]:
-					1. [=Animate a page transition=] managed by [=this=].
-
+					1. [=finish a page transition=] managed by [=this=].
+	
+					1. Set [=this's=] {{[[Phase]]}} internal slot to "idle".
+	
 					1. [=Resolve=] {{[[finished]]}} with |finishedP|.
 
 				[=Upon rejection=] of |userP|:
@@ -451,9 +422,9 @@ and resolved when it’s ended (successfully or unsuccessfully).
 		// the transitioning pseudo-element.
 		document.querySelector(".old-message").style.pageTransitionTag = "message";
 
-		// The start() call freezes the page's rendering, and triggers
+		// The prepare() call freezes the page's rendering, and triggers
 		// an async operation to capture snapshots for the offered elements.
-		await transition.start(async () => {
+		await transition.prepare(async () => {
 			// This callback is invoked by the browser when "outgoing"
 			// capture  finishes and the DOM can be switched to the new
 			// state. No frames are rendered until this callback returns.
@@ -465,25 +436,21 @@ and resolved when it’s ended (successfully or unsuccessfully).
 			// "incoming", to be matched up with the same-tagged "outgoing"
 			// elements marked previously and transitioned between.
 			document.querySelector(".new-message").style.pageTransitionTag = "message";
-
-			// Set up custom animations using WA-API on the next frame.
-			requestAnimationFrame(() => {
-				document.documentElement.animate(keyframes, {
-				...animationOptions,
-				pseudoElement: "::page-transition-container(message)",
-				});
-			});
-
-			// When this callback returns, the browser will identify the
-			// incoming elements, and begin animating the page transition
-			// on the next frame.
 		});
-
-		// When .start()'s promise resolves, that means the transition is
+		
+		// When the promise returned by prepare() resolves, all pseudo-elements
+		// for this transition have been generated. They can now be accessed
+		// in script to set up custom animations.
+		document.documentElement.animate(
+			keyframes,
+			{...animationOptions,
+			 pseudoElement: "::page-transition-container(message)",
+			}
+		);
+		
+		// When the finished promise resolves, that means the transition is
 		// finished (either completed successfully or abandoned).
-		// It will fulfill with the return value of the callback,
-		// and reject with the error thrown by the callback,
-		// or possibly a TimeoutError or AbortError, if the UA abandoned it.
+		await transition.finished;
 	}
 	</pre>
 </div>
@@ -520,7 +487,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 
 	1. If there is currently a page transition being animated,
 		end it.
-		Remove all associated [=page-transition=] pseudo-elements from the document.
+		Remove all associated [=page-transition pseudo-elements=] from the document.
 
 	1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
 
@@ -568,52 +535,79 @@ and resolved when it’s ended (successfully or unsuccessfully).
 <div algorithm>
 	To <dfn>animate a page transition</dfn>
 	given a {{SameDocumentTransition}} |manager|:
+	
+	1. Generate a <<keyframe>> named "page-transition-fade-out" in
+		[=user-agent origin=] as follows:
+	
+		<pre class=prod>
+			::@keyframes page-transition-fade-out {
+  				to { opacity: 0; }
+			}
+		</pre>
+	
+	1. Generate a <<keyframe>> named "page-transition-fade-in|" in
+		[=user-agent origin=] as follows:
+	
+		<pre class=prod>
+			::@keyframes page-transition-fade-in {
+  				from { opacity: 0; }
+			}
+		</pre>
+	
+	1. Apply the following styles in [=user-agent origin=]:
+		
+		<pre class=prod>
+			html::page-transition-outgoing-image(*) {
+				animation: page-transition-fade-out 0.25s both;
+			}
+			
+			html::page-transition-incoming-image(*) {
+				animation: page-transition-fade-in 0.25s both;
+			}
+		</pre>
 
-	1. Let |transition root| be a new ''::page-transition'' pseudo-element,
-		and place it in the [=page-transition paint layer=].
-
-	1. Let |root image| be the result of
-		[=capturing the live image=] of the document's root element.
-
-		Create an anonymous replaced element
-		the same size as |root image|,
-		displaying |root image|,
-		as a child of |transition root|.
-		Treat is as an absolutely positioned element
-		with ''inset-block-start: 0''
-		and ''inset-inline-start: 0''.
-
-	1. [=map/For each=] |tag| -> |el| of |manager|&apos;s {{[[TaggedElements]]}}:
-
-		1. [=Create transition pseudo-elements=] from |tag| and |el|,
-			nested into |transition root|.
-
-	1. Issue: Wait one frame, per the example?
-
-	1. Start an animation with keyframes of:
-
-		<div class=issue>
-			Fill in proper Web Animations text for:
-
-			* animates 'opacity' on ''::page-transition-outgoing-image''
-				from 1 to 0
-			* animates 'opacity' on ''::page-transition-incoming-image''
-				from 0 to 1
-			* animates 'width', 'height', and 'transform' on ''::page-transition-container''
-				from their starting values
-				to the live values on "incoming element"
-				(if it exists)
-
-			All over a user-agent-defined duration,
-			presumably with a UA-defined curve.
-		</div>
-
-		Issue: We want authors to be able to override,
-		but there's no such thing as animation effects "at the UA level",
-		such that a user-level animation would automatically win.
-		Should we just test for the presence of a WebAnim targeting the pseudos in question,
-		and only create our own if they don't exist?
-		Or something else?
+	1. [=map/For each=] |tag| -> |CapturedElement| of |manager|&apos;s {{[[TaggedElements]]}}:
+	
+		1. If |CapturedElement| has an "outgoing image" and "incoming element":
+			Let 'transform' be |CapturedElement|&apos;s "outgoing styles"'s 'transform' property.
+			Let 'width' be |CapturedElement|&apos;s "outgoing styles"'s 'width' property.
+			Let 'height' be |CapturedElement|&apos;s "outgoing styles"'s 'height' property.
+	
+			Generate a <<keyframe>> named "page-transition-container-anim-|tag|" in
+			[=user-agent origin=] as follows:
+	
+			<pre class=prod>
+				@keyframes page-transition-container-anim-|tag| {
+					from {
+						transform: |transform|;
+						width: |width|;
+						height: |height|;
+					}
+				}
+			</pre>
+	
+		1. Apply the following styles in [=user-agent origin=]:
+	
+			<pre class=prod>
+				html::page-transition-container(|tag|) {
+					animation: page-transition-container-anim-|tag| 0.25s both;
+				}
+			</pre>
+</div>
+	
+<div algorithm>
+	To <dfn>finish a page transition</dfn> given a {{SameDocumentTransition}} |manager|:
+	
+	1. After step 14 of <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering">Update the Rendering</a>
+		step of the Processing Model,
+		for each associated [=page-transition pseudo-elements=]:
+		
+			1. Check whether there is an active animation associated with this pseudo-element.
+				Issue: Clarify this more.
+	
+	1. If any [=page-transition pseudo-elements=] has an active animation, repeat step 1 at the next
+		<a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>;
+		else remove all associated [=page-transition pseudo-elements=].
 </div>
 
 <div algorithm>
