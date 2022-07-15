@@ -8,7 +8,7 @@
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version f1c9d5eb9, updated Fri Jul 15 11:39:35 2022 -0700" name="generator">
   <link href="http://tabatkins.github.io/specs/css-anchor-position" rel="canonical">
-  <meta content="22773a994603ac75eb4faf7391e2fa9cd92c7ad0" name="document-revision">
+  <meta content="593216b87285b8ed00fb665255c9117e2d2f3b1c" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -834,7 +834,7 @@ the <a class="property css" data-link-type="property" href="#propdef-anchor-scro
       <td>none
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td>positioned elements
+      <td><a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position④">absolutely-positioned</a> elements
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
       <td>no
@@ -874,7 +874,7 @@ to the translation caused by <a class="css" data-link-type="propdesc" href="http
    </dl>
    <p class="issue" id="issue-6bb3fd61"><a class="self-link" href="#issue-6bb3fd61"></a> Name TBD, this probably isn’t the final name.</p>
    <h3 class="heading settled" data-level="2.3" id="anchor-size"><span class="secno">2.3. </span><span class="content">Anchor-based Sizing: the <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size①">anchor-size()</a> function</span><a class="self-link" href="#anchor-size"></a></h3>
-   <p>An <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position④">absolutely-positioned</a> element
+   <p>An <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position⑤">absolutely-positioned</a> element
 can use the <dfn class="dfn-paneled css" data-dfn-type="function" data-export id="funcdef-anchor-size">anchor-size()</dfn> function
 in its <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#sizing-property" id="ref-for-sizing-property">sizing properties</a> to refer to the size of one or more <a data-link-type="dfn" href="#anchor-element" id="ref-for-anchor-element④">anchor elements</a>.
 The <a class="css" data-link-type="maybe" href="#funcdef-anchor-size" id="ref-for-funcdef-anchor-size②">anchor-size()</a> function resolves to a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value③" title="Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | q | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw">&lt;length></a>.</p>
@@ -980,7 +980,7 @@ of one or more <a data-link-type="dfn" href="#anchor-element" id="ref-for-anchor
    <p><a data-link-type="dfn" href="#anchor-query" id="ref-for-anchor-query">Anchor queries</a> are <dfn class="dfn-paneled" data-dfn-type="dfn" data-local-lt="invalid|valid" data-lt="valid anchor query|invalid anchor query" data-noexport id="valid-anchor-query">valid</dfn> only if all of the following conditions are true:</p>
    <ul>
     <li data-md>
-     <p>Their function is used on an element that is <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position⑤">absolutely-positioned</a>.</p>
+     <p>Their function is used on an element that is <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position⑥">absolutely-positioned</a>.</p>
     <li data-md>
      <p>If representing an <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①④">anchor()</a> function,
 the function is being used in an <a data-link-type="dfn" href="https://drafts.csswg.org/css-logical-1/#inset-properties" id="ref-for-inset-properties③">inset property</a>.</p>
@@ -1000,7 +1000,7 @@ The <a data-link-type="dfn" href="#anchor-element" id="ref-for-anchor-element①
 so positioning an element in any particular fashion
 (such as above the anchor, or the right of the anchor)
 might result in the positioned element overflowing its <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#containing-block" id="ref-for-containing-block①②">containing block</a> or being positioned partially off screen.</p>
-   <p>To ameliorate this, an <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position⑥">absolutely positioned</a> element
+   <p>To ameliorate this, an <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position⑦">absolutely positioned</a> element
 can use the <a class="property css" data-link-type="property" href="#propdef-position-fallback" id="ref-for-propdef-position-fallback">position-fallback</a> property
 to refer to a <a class="css" data-link-type="maybe" href="#at-ruledef-position-fallback" id="ref-for-at-ruledef-position-fallback">@position-fallback</a> block,
 giving a list of possible style rules to try out.
@@ -1021,7 +1021,7 @@ to overflow its <a data-link-type="dfn" href="https://drafts.csswg.org/css-displ
       <td>none
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td><a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position⑦">absolutely-positioned</a> elements
+      <td><a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position⑧">absolutely-positioned</a> elements
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
       <td>no
@@ -1415,10 +1415,11 @@ This limit must be <em>at least</em> five.</p>
    <ul>
     <li><a href="#ref-for-absolute-position">2. Anchoring</a> <a href="#ref-for-absolute-position①">(2)</a> <a href="#ref-for-absolute-position②">(3)</a>
     <li><a href="#ref-for-absolute-position③">2.1. Anchor-based Positioning: the anchor() function</a>
-    <li><a href="#ref-for-absolute-position④">2.3. Anchor-based Sizing: the anchor-size() function</a>
-    <li><a href="#ref-for-absolute-position⑤">2.5. Anchor Queries</a>
-    <li><a href="#ref-for-absolute-position⑥">3. Fallback Sizing/Positioning</a>
-    <li><a href="#ref-for-absolute-position⑦">3.1. The position-fallback Property</a>
+    <li><a href="#ref-for-absolute-position④">2.2. Anchoring to a Scrolled Position: the anchor-scroll property</a>
+    <li><a href="#ref-for-absolute-position⑤">2.3. Anchor-based Sizing: the anchor-size() function</a>
+    <li><a href="#ref-for-absolute-position⑥">2.5. Anchor Queries</a>
+    <li><a href="#ref-for-absolute-position⑦">3. Fallback Sizing/Positioning</a>
+    <li><a href="#ref-for-absolute-position⑧">3.1. The position-fallback Property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-absolute-position">
@@ -1426,10 +1427,11 @@ This limit must be <em>at least</em> five.</p>
    <ul>
     <li><a href="#ref-for-absolute-position">2. Anchoring</a> <a href="#ref-for-absolute-position①">(2)</a> <a href="#ref-for-absolute-position②">(3)</a>
     <li><a href="#ref-for-absolute-position③">2.1. Anchor-based Positioning: the anchor() function</a>
-    <li><a href="#ref-for-absolute-position④">2.3. Anchor-based Sizing: the anchor-size() function</a>
-    <li><a href="#ref-for-absolute-position⑤">2.5. Anchor Queries</a>
-    <li><a href="#ref-for-absolute-position⑥">3. Fallback Sizing/Positioning</a>
-    <li><a href="#ref-for-absolute-position⑦">3.1. The position-fallback Property</a>
+    <li><a href="#ref-for-absolute-position④">2.2. Anchoring to a Scrolled Position: the anchor-scroll property</a>
+    <li><a href="#ref-for-absolute-position⑤">2.3. Anchor-based Sizing: the anchor-size() function</a>
+    <li><a href="#ref-for-absolute-position⑥">2.5. Anchor Queries</a>
+    <li><a href="#ref-for-absolute-position⑦">3. Fallback Sizing/Positioning</a>
+    <li><a href="#ref-for-absolute-position⑧">3.1. The position-fallback Property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-absolute-position">
@@ -1437,10 +1439,11 @@ This limit must be <em>at least</em> five.</p>
    <ul>
     <li><a href="#ref-for-absolute-position">2. Anchoring</a> <a href="#ref-for-absolute-position①">(2)</a> <a href="#ref-for-absolute-position②">(3)</a>
     <li><a href="#ref-for-absolute-position③">2.1. Anchor-based Positioning: the anchor() function</a>
-    <li><a href="#ref-for-absolute-position④">2.3. Anchor-based Sizing: the anchor-size() function</a>
-    <li><a href="#ref-for-absolute-position⑤">2.5. Anchor Queries</a>
-    <li><a href="#ref-for-absolute-position⑥">3. Fallback Sizing/Positioning</a>
-    <li><a href="#ref-for-absolute-position⑦">3.1. The position-fallback Property</a>
+    <li><a href="#ref-for-absolute-position④">2.2. Anchoring to a Scrolled Position: the anchor-scroll property</a>
+    <li><a href="#ref-for-absolute-position⑤">2.3. Anchor-based Sizing: the anchor-size() function</a>
+    <li><a href="#ref-for-absolute-position⑥">2.5. Anchor Queries</a>
+    <li><a href="#ref-for-absolute-position⑦">3. Fallback Sizing/Positioning</a>
+    <li><a href="#ref-for-absolute-position⑧">3.1. The position-fallback Property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-bottom">
@@ -1746,7 +1749,7 @@ This limit must be <em>at least</em> five.</p>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-anchor-scroll" id="ref-for-propdef-anchor-scroll④">anchor-scroll</a>
       <td>none | &lt;dashed-ident>
       <td>none
-      <td>positioned elements
+      <td>absolutely-positioned elements
       <td>no
       <td>n/a
       <td>discrete

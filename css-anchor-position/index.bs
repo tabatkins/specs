@@ -206,7 +206,7 @@ Name: anchor-scroll
 Value: none | <<dashed-ident>>
 Initial: none
 Inherited: no
-Applies to: positioned elements
+Applies to: [=absolutely-positioned=] elements
 Animation type: discrete
 </pre>
 
