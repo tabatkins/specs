@@ -71,12 +71,6 @@ The ''anchor()'' function has three arguments:
 * the <<dashed-ident>> specifies the [=anchor name=] of the [=anchor element=]
 	it will be drawing positioning information from.
 
-	Issue: Do we need the ability to refer to multiple anchors?
-	Like, leftmost among all with a given name,
-	or leftmost between two given names?
-	Think about if it's possible to do google-docs style comments
-	with minimal or zero scripting.
-
 * the <<anchor-side>> value
 	refers to the position of the corresponding side
 	of the [=target anchor element=].
@@ -211,7 +205,9 @@ the 'anchor-scroll' property can be used to indicate this.
 Name: anchor-scroll
 Value: none | <<dashed-ident>>
 Initial: none
+Inherited: no
 Applies to: positioned elements
+Animation type: discrete
 </pre>
 
 'anchor-scroll' allows a [=positioned=] element
