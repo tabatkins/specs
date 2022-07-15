@@ -522,7 +522,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 
 <div algorithm>
 	To <dfn>capture the live image</dfn>
-	of an {{Element}} |el|,
+	of an {{Element}} el,
 	...
 
 	Issue: Identical to [=capture the image=],
@@ -596,7 +596,8 @@ and resolved when it’s ended (successfully or unsuccessfully).
 </div>
 	
 <div algorithm>
-	To <dfn>finish a page transition</dfn> given a {{SameDocumentTransition}} |manager|:
+	To <dfn>finish a page transition</dfn>
+	given a {{SameDocumentTransition}} manager:
 	
 	1. After step 14 of <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering">Update the Rendering</a>
 		step of the Processing Model,
