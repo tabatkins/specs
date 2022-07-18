@@ -198,21 +198,30 @@ equivalent to a [=type selector=].)
 	Styles in the [=user-agent origin=] animate this element's opacity from 0 to 1
 	with a ''mix-blend-mode: plus-lighter''.
 
-
 The precise tree structure
 (in particular, the order of sibling pseudo-elements)
 is defined in the [=Create transition pseudo-elements=] algorithm.
 
-Issue: Need to fill in some more spec infrastructure about paint layers and filtering;
-things in the normal top layer, like dialogs,
-should have the root's filters applied to them
-(if you sepia the page, dialogs should be sepia too),
-but the page transition paint layer should be a sibling to the root
-and not have its filters applied.
-(The transition pseudos will *interact* with the root's filters,
-via capturing images from there,
-but we don't want them to then be *double* sepia'd or whatever.)
+New Stacking Layer {#new-stacking-layer}
+===============
 
+This specification introduces a new stacking layer to the
+<a href="https://www.w3.org/TR/CSS2/zindex.html">Elaborate description of Stacking Contexts</a>.
+
+The ''::page-transition'' pseudo-element generates a new stacking context
+called <dfn>page-transition layer</dfn> with the following characteristics:
+
+1. Its parent stacking context is the root stacking context.
+
+1. If the ''page-transition'' pseudo-element exists, a new stacking
+	context is created for the
+	<a href="https://dom.spec.whatwg.org/#concept-tree-root">root</a>
+	and <a href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</a>
+	elements.
+	The ''page-transitioon layer'' is a sibling of this stacking context.
+
+Issue: Do we need to clarify that the stacking context for the root and top
+layer elements has filters and effects which apply to the root?
 
 API {#api}
 ====
