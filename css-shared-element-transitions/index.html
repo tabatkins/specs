@@ -7,7 +7,7 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version d4e9716, updated Fri Jul 1 13:16:45 2022 -0700" name="generator">
+  <meta content="Bikeshed version f1c9d5e, updated Fri Jul 15 11:39:35 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-shared-element-transitions/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
 <style>
@@ -746,7 +746,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Shared Element Transitions Module Level 1</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-15">15 July 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-18">18 July 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -802,7 +802,8 @@ on screen, on paper, etc.
       <li><a href="#page-transition-tag-prop"><span class="secno">2.1</span> <span class="content">Tagging Elements For Transition: the <span class="property">page-transition-tag</span> property</span></a>
      </ol>
     <li><a href="#pseudo"><span class="secno">3</span> <span class="content">Pseudo-Elements</span></a>
-    <li><a href="#api"><span class="secno">4</span> <span class="content">API</span></a>
+    <li><a href="#new-stacking-layer"><span class="secno">4</span> <span class="content">New Stacking Layer</span></a>
+    <li><a href="#api"><span class="secno">5</span> <span class="content">API</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
      <ol class="toc">
@@ -978,7 +979,19 @@ and not have its filters applied.
 (The transition pseudos will *interact* with the root’s filters,
 via capturing images from there,
 but we don’t want them to then be *double* sepia’d or whatever.)</p>
-   <h2 class="heading settled" data-level="4" id="api"><span class="secno">4. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
+   <h2 class="heading settled" data-level="4" id="new-stacking-layer"><span class="secno">4. </span><span class="content">New Stacking Layer</span><a class="self-link" href="#new-stacking-layer"></a></h2>
+   <p>This specification introduces a new stacking layer to the <a href="https://www.w3.org/TR/CSS2/zindex.html">Elaborate description of Stacking Contexts</a>.</p>
+   <p>The <a class="css" data-link-type="maybe" href="#selectordef-page-transition" id="ref-for-selectordef-page-transition③">::page-transition</a> pseudo-element generates a new stacking context
+called <dfn data-dfn-type="dfn" data-noexport id="page-transition-layer">page-transition layer<a class="self-link" href="#page-transition-layer"></a></dfn> with the following characteristics:</p>
+   <ol>
+    <li data-md>
+     <p>Its parent stacking context is the root stacking context.</p>
+    <li data-md>
+     <p>If the <span class="css">page-transition</span> pseudo-element exists, a new stacking
+context is created for the <a href="https://dom.spec.whatwg.org/#concept-tree-root">root</a> and <a href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</a> elements.
+The <span class="css">page-transitioon layer</span> is a sibling of the stacking context.</p>
+   </ol>
+   <h2 class="heading settled" data-level="5" id="api"><span class="secno">5. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
    <p>Single-page API:</p>
 <pre class="idl highlight def"><c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="samedocumenttransition"><code><c- g>SameDocumentTransition</c-></code></dfn> {
   <dfn class="idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="constructor" data-export data-lt="SameDocumentTransition()|constructor()" id="dom-samedocumenttransition-samedocumenttransition"><code><c- g>constructor</c-></code><a class="self-link" href="#dom-samedocumenttransition-samedocumenttransition"></a></dfn>();
@@ -1332,8 +1345,8 @@ else remove all associated <span id="ref-for-page-transition-pseudo-elements⑤"
      To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-transition-pseudo-elements">create transition pseudo-elements</dfn> given a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition⑥">SameDocumentTransition</a></code> <var>manager</var>: 
     <ol>
      <li data-md>
-      <p>Create a new <a class="css" data-link-type="maybe" href="#selectordef-page-transition" id="ref-for-selectordef-page-transition③">::page-transition</a> pseudo-element,
-if it doesn’t exist. Let <var>pt</var> be the <span class="css" id="ref-for-selectordef-page-transition④">::page-transition</span> pseudo-element.</p>
+      <p>Create a new <a class="css" data-link-type="maybe" href="#selectordef-page-transition" id="ref-for-selectordef-page-transition④">::page-transition</a> pseudo-element,
+if it doesn’t exist. Let <var>pt</var> be the <span class="css" id="ref-for-selectordef-page-transition⑤">::page-transition</span> pseudo-element.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate③">For each</a> <var>tag</var> -> <var>CapturedElement</var> of <var>manager</var>’s <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-taggedelements-slot" id="ref-for-dom-samedocumenttransition-taggedelements-slot②">[[TaggedElements]]</a></code>:</p>
       <ol>
@@ -1482,43 +1495,44 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#dom-samedocumenttransition-abandon">abandon()</a><span>, in § 4</span>
-   <li><a href="#abandon-the-page-transition">abandon the page transition</a><span>, in § 4</span>
-   <li><a href="#animate-a-page-transition">animate a page transition</a><span>, in § 4</span>
-   <li><a href="#callbackdef-asyncfunction">AsyncFunction</a><span>, in § 4</span>
-   <li><a href="#capturedelement">CapturedElement</a><span>, in § 4</span>
-   <li><a href="#capture-the-image">capture the image</a><span>, in § 4</span>
-   <li><a href="#capture-the-live-image">capture the live image</a><span>, in § 4</span>
-   <li><a href="#dom-samedocumenttransition-samedocumenttransition">constructor()</a><span>, in § 4</span>
-   <li><a href="#create-transition-pseudo-elements">create transition pseudo-elements</a><span>, in § 4</span>
+   <li><a href="#dom-samedocumenttransition-abandon">abandon()</a><span>, in § 5</span>
+   <li><a href="#abandon-the-page-transition">abandon the page transition</a><span>, in § 5</span>
+   <li><a href="#animate-a-page-transition">animate a page transition</a><span>, in § 5</span>
+   <li><a href="#callbackdef-asyncfunction">AsyncFunction</a><span>, in § 5</span>
+   <li><a href="#capturedelement">CapturedElement</a><span>, in § 5</span>
+   <li><a href="#capture-the-image">capture the image</a><span>, in § 5</span>
+   <li><a href="#capture-the-live-image">capture the live image</a><span>, in § 5</span>
+   <li><a href="#dom-samedocumenttransition-samedocumenttransition">constructor()</a><span>, in § 5</span>
+   <li><a href="#create-transition-pseudo-elements">create transition pseudo-elements</a><span>, in § 5</span>
    <li><a href="#valdef-page-transition-tag-custom-ident">&lt;custom-ident></a><span>, in § 2.1</span>
-   <li><a href="#finish-a-page-transition">finish a page transition</a><span>, in § 4</span>
-   <li><a href="#dom-samedocumenttransition-finished-slot">[[finished]]</a><span>, in § 4</span>
-   <li><a href="#dom-samedocumenttransition-finished">finished</a><span>, in § 4</span>
-   <li><a href="#freeze-the-pages-rendering">freeze the page’s rendering</a><span>, in § 4</span>
+   <li><a href="#finish-a-page-transition">finish a page transition</a><span>, in § 5</span>
+   <li><a href="#dom-samedocumenttransition-finished-slot">[[finished]]</a><span>, in § 5</span>
+   <li><a href="#dom-samedocumenttransition-finished">finished</a><span>, in § 5</span>
+   <li><a href="#freeze-the-pages-rendering">freeze the page’s rendering</a><span>, in § 5</span>
    <li><a href="#valdef-page-transition-tag-none">none</a><span>, in § 2.1</span>
    <li><a href="#selectordef-page-transition">::page-transition</a><span>, in § 3</span>
    <li><a href="#selectordef-page-transition-container-pt-tag-selector">::page-transition-container( &lt;pt-tag-selector> )</a><span>, in § 3</span>
    <li><a href="#selectordef-page-transition-image-wrapper-pt-tag-selector">::page-transition-image-wrapper( &lt;pt-tag-selector> )</a><span>, in § 3</span>
    <li><a href="#selectordef-page-transition-incoming-image-pt-tag-selector">::page-transition-incoming-image( &lt;pt-tag-selector> )</a><span>, in § 3</span>
+   <li><a href="#page-transition-layer">page-transition layer</a><span>, in § 4</span>
    <li><a href="#selectordef-page-transition-outgoing-image-pt-tag-selector">::page-transition-outgoing-image( &lt;pt-tag-selector> )</a><span>, in § 3</span>
    <li><a href="#page-transition-pseudo-elements">page-transition pseudo-elements</a><span>, in § 3</span>
    <li><a href="#page-transition-tag">page transition tag</a><span>, in § 2.1</span>
    <li><a href="#propdef-page-transition-tag">page-transition-tag</a><span>, in § 2.1</span>
-   <li><a href="#dom-samedocumenttransition-phase-slot">[[Phase]]</a><span>, in § 4</span>
-   <li><a href="#dom-samedocumenttransition-prepare">prepare(cb)</a><span>, in § 4</span>
+   <li><a href="#dom-samedocumenttransition-phase-slot">[[Phase]]</a><span>, in § 5</span>
+   <li><a href="#dom-samedocumenttransition-prepare">prepare(cb)</a><span>, in § 5</span>
    <li><a href="#typedef-pt-tag-selector">&lt;pt-tag-selector></a><span>, in § 3</span>
-   <li><a href="#dom-samedocumenttransition-readypromise-slot">[[ReadyPromise]]</a><span>, in § 4</span>
-   <li><a href="#samedocumenttransition">SameDocumentTransition</a><span>, in § 4</span>
-   <li><a href="#dom-samedocumenttransition-samedocumenttransition">SameDocumentTransition()</a><span>, in § 4</span>
-   <li><a href="#dom-samedocumenttransition-taggedelements-slot">[[TaggedElements]]</a><span>, in § 4</span>
-   <li><a href="#unfreeze-the-pages-rendering">unfreeze the page’s rendering</a><span>, in § 4</span>
+   <li><a href="#dom-samedocumenttransition-readypromise-slot">[[ReadyPromise]]</a><span>, in § 5</span>
+   <li><a href="#samedocumenttransition">SameDocumentTransition</a><span>, in § 5</span>
+   <li><a href="#dom-samedocumenttransition-samedocumenttransition">SameDocumentTransition()</a><span>, in § 5</span>
+   <li><a href="#dom-samedocumenttransition-taggedelements-slot">[[TaggedElements]]</a><span>, in § 5</span>
+   <li><a href="#unfreeze-the-pages-rendering">unfreeze the page’s rendering</a><span>, in § 5</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-propdef-isolation">
    <a href="https://drafts.fxtf.org/compositing-2/#propdef-isolation">https://drafts.fxtf.org/compositing-2/#propdef-isolation</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-isolation">3. Pseudo-Elements</a>
-    <li><a href="#ref-for-propdef-isolation①">4. API</a>
+    <li><a href="#ref-for-propdef-isolation①">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-mix-blend-mode">
@@ -1531,13 +1545,13 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
    <a href="https://drafts.csswg.org/css-box-4/#border-box">https://drafts.csswg.org/css-box-4/#border-box</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-border-box">3. Pseudo-Elements</a> <a href="#ref-for-border-box①">(2)</a>
-    <li><a href="#ref-for-border-box②">4. API</a> <a href="#ref-for-border-box③">(2)</a> <a href="#ref-for-border-box④">(3)</a> <a href="#ref-for-border-box⑤">(4)</a> <a href="#ref-for-border-box⑥">(5)</a>
+    <li><a href="#ref-for-border-box②">5. API</a> <a href="#ref-for-border-box③">(2)</a> <a href="#ref-for-border-box④">(3)</a> <a href="#ref-for-border-box⑤">(4)</a> <a href="#ref-for-border-box⑥">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-break-inside">
    <a href="https://drafts.csswg.org/css-break-3/#propdef-break-inside">https://drafts.csswg.org/css-break-3/#propdef-break-inside</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-break-inside">4. API</a>
+    <li><a href="#ref-for-propdef-break-inside">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-cascade-origin-ua">
@@ -1545,20 +1559,20 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
    <ul>
     <li><a href="#ref-for-cascade-origin-ua">2.1. Tagging Elements For Transition: the page-transition-tag property</a>
     <li><a href="#ref-for-cascade-origin-ua①">3. Pseudo-Elements</a> <a href="#ref-for-cascade-origin-ua②">(2)</a> <a href="#ref-for-cascade-origin-ua③">(3)</a> <a href="#ref-for-cascade-origin-ua④">(4)</a> <a href="#ref-for-cascade-origin-ua⑤">(5)</a> <a href="#ref-for-cascade-origin-ua⑥">(6)</a> <a href="#ref-for-cascade-origin-ua⑦">(7)</a> <a href="#ref-for-cascade-origin-ua⑧">(8)</a>
-    <li><a href="#ref-for-cascade-origin-ua⑨">4. API</a> <a href="#ref-for-cascade-origin-ua①⓪">(2)</a> <a href="#ref-for-cascade-origin-ua①①">(3)</a> <a href="#ref-for-cascade-origin-ua①②">(4)</a> <a href="#ref-for-cascade-origin-ua①③">(5)</a> <a href="#ref-for-cascade-origin-ua①④">(6)</a> <a href="#ref-for-cascade-origin-ua①⑤">(7)</a> <a href="#ref-for-cascade-origin-ua①⑥">(8)</a>
+    <li><a href="#ref-for-cascade-origin-ua⑨">5. API</a> <a href="#ref-for-cascade-origin-ua①⓪">(2)</a> <a href="#ref-for-cascade-origin-ua①①">(3)</a> <a href="#ref-for-cascade-origin-ua①②">(4)</a> <a href="#ref-for-cascade-origin-ua①③">(5)</a> <a href="#ref-for-cascade-origin-ua①④">(6)</a> <a href="#ref-for-cascade-origin-ua①⑤">(7)</a> <a href="#ref-for-cascade-origin-ua①⑥">(8)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-contain">
    <a href="https://drafts.csswg.org/css-contain-2/#propdef-contain">https://drafts.csswg.org/css-contain-2/#propdef-contain</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-contain">4. API</a>
+    <li><a href="#ref-for-propdef-contain">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-replaced-element">
    <a href="https://drafts.csswg.org/css-display-3/#replaced-element">https://drafts.csswg.org/css-display-3/#replaced-element</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-replaced-element">3. Pseudo-Elements</a>
-    <li><a href="#ref-for-replaced-element①">4. API</a> <a href="#ref-for-replaced-element②">(2)</a>
+    <li><a href="#ref-for-replaced-element①">5. API</a> <a href="#ref-for-replaced-element②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-natural-dimensions">
@@ -1571,7 +1585,7 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
    <a href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box">https://drafts.csswg.org/css-images-4/#propdef-object-view-box</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-object-view-box">3. Pseudo-Elements</a>
-    <li><a href="#ref-for-propdef-object-view-box①">4. API</a> <a href="#ref-for-propdef-object-view-box②">(2)</a> <a href="#ref-for-propdef-object-view-box③">(3)</a> <a href="#ref-for-propdef-object-view-box④">(4)</a> <a href="#ref-for-propdef-object-view-box⑤">(5)</a>
+    <li><a href="#ref-for-propdef-object-view-box①">5. API</a> <a href="#ref-for-propdef-object-view-box②">(2)</a> <a href="#ref-for-propdef-object-view-box③">(3)</a> <a href="#ref-for-propdef-object-view-box④">(4)</a> <a href="#ref-for-propdef-object-view-box⑤">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-block-size">
@@ -1626,27 +1640,27 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
    <a href="https://drafts.csswg.org/css-sizing-3/#propdef-height">https://drafts.csswg.org/css-sizing-3/#propdef-height</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-height">3. Pseudo-Elements</a> <a href="#ref-for-propdef-height①">(2)</a>
-    <li><a href="#ref-for-propdef-height②">4. API</a> <a href="#ref-for-propdef-height③">(2)</a> <a href="#ref-for-propdef-height④">(3)</a> <a href="#ref-for-propdef-height⑤">(4)</a> <a href="#ref-for-propdef-height⑥">(5)</a>
+    <li><a href="#ref-for-propdef-height②">5. API</a> <a href="#ref-for-propdef-height③">(2)</a> <a href="#ref-for-propdef-height④">(3)</a> <a href="#ref-for-propdef-height⑤">(4)</a> <a href="#ref-for-propdef-height⑥">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-width">
    <a href="https://drafts.csswg.org/css-sizing-3/#propdef-width">https://drafts.csswg.org/css-sizing-3/#propdef-width</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-width">3. Pseudo-Elements</a> <a href="#ref-for-propdef-width①">(2)</a>
-    <li><a href="#ref-for-propdef-width②">4. API</a> <a href="#ref-for-propdef-width③">(2)</a> <a href="#ref-for-propdef-width④">(3)</a> <a href="#ref-for-propdef-width⑤">(4)</a> <a href="#ref-for-propdef-width⑥">(5)</a>
+    <li><a href="#ref-for-propdef-width②">5. API</a> <a href="#ref-for-propdef-width③">(2)</a> <a href="#ref-for-propdef-width④">(3)</a> <a href="#ref-for-propdef-width⑤">(4)</a> <a href="#ref-for-propdef-width⑥">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-transform">
    <a href="https://drafts.csswg.org/css-transforms-1/#propdef-transform">https://drafts.csswg.org/css-transforms-1/#propdef-transform</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-transform">3. Pseudo-Elements</a>
-    <li><a href="#ref-for-propdef-transform①">4. API</a> <a href="#ref-for-propdef-transform②">(2)</a> <a href="#ref-for-propdef-transform③">(3)</a> <a href="#ref-for-propdef-transform④">(4)</a> <a href="#ref-for-propdef-transform⑤">(5)</a>
+    <li><a href="#ref-for-propdef-transform①">5. API</a> <a href="#ref-for-propdef-transform②">(2)</a> <a href="#ref-for-propdef-transform③">(3)</a> <a href="#ref-for-propdef-transform④">(4)</a> <a href="#ref-for-propdef-transform⑤">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-mult-zero-plus">
    <a href="https://drafts.csswg.org/css-values-4/#mult-zero-plus">https://drafts.csswg.org/css-values-4/#mult-zero-plus</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-mult-zero-plus">4. API</a> <a href="#ref-for-mult-zero-plus①">(2)</a>
+    <li><a href="#ref-for-mult-zero-plus">5. API</a> <a href="#ref-for-mult-zero-plus①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-identifier-value">
@@ -1661,73 +1675,73 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
    <ul>
     <li><a href="#ref-for-comb-one">2.1. Tagging Elements For Transition: the page-transition-tag property</a>
     <li><a href="#ref-for-comb-one①">3. Pseudo-Elements</a>
-    <li><a href="#ref-for-comb-one②">4. API</a> <a href="#ref-for-comb-one③">(2)</a> <a href="#ref-for-comb-one④">(3)</a> <a href="#ref-for-comb-one⑤">(4)</a> <a href="#ref-for-comb-one⑥">(5)</a> <a href="#ref-for-comb-one⑦">(6)</a> <a href="#ref-for-comb-one⑧">(7)</a> <a href="#ref-for-comb-one⑨">(8)</a> <a href="#ref-for-comb-one①⓪">(9)</a> <a href="#ref-for-comb-one①①">(10)</a> <a href="#ref-for-comb-one①②">(11)</a> <a href="#ref-for-comb-one①③">(12)</a>
+    <li><a href="#ref-for-comb-one②">5. API</a> <a href="#ref-for-comb-one③">(2)</a> <a href="#ref-for-comb-one④">(3)</a> <a href="#ref-for-comb-one⑤">(4)</a> <a href="#ref-for-comb-one⑥">(5)</a> <a href="#ref-for-comb-one⑦">(6)</a> <a href="#ref-for-comb-one⑧">(7)</a> <a href="#ref-for-comb-one⑨">(8)</a> <a href="#ref-for-comb-one①⓪">(9)</a> <a href="#ref-for-comb-one①①">(10)</a> <a href="#ref-for-comb-one①②">(11)</a> <a href="#ref-for-comb-one①③">(12)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-direction">
    <a href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction">https://drafts.csswg.org/css-writing-modes-3/#propdef-direction</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-direction">4. API</a> <a href="#ref-for-propdef-direction①">(2)</a> <a href="#ref-for-propdef-direction②">(3)</a>
+    <li><a href="#ref-for-propdef-direction">5. API</a> <a href="#ref-for-propdef-direction①">(2)</a> <a href="#ref-for-propdef-direction②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-writing-mode">
    <a href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode">https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-writing-mode">4. API</a> <a href="#ref-for-propdef-writing-mode①">(2)</a> <a href="#ref-for-propdef-writing-mode②">(3)</a>
+    <li><a href="#ref-for-propdef-writing-mode">5. API</a> <a href="#ref-for-propdef-writing-mode①">(2)</a> <a href="#ref-for-propdef-writing-mode②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-element">
    <a href="https://dom.spec.whatwg.org/#element">https://dom.spec.whatwg.org/#element</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-element">4. API</a> <a href="#ref-for-element①">(2)</a>
+    <li><a href="#ref-for-element">5. API</a> <a href="#ref-for-element①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-realm-global">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global">https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-realm-global">4. API</a>
+    <li><a href="#ref-for-concept-realm-global">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-in-parallel">
    <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-in-parallel">4. API</a> <a href="#ref-for-in-parallel①">(2)</a>
+    <li><a href="#ref-for-in-parallel">5. API</a> <a href="#ref-for-in-parallel①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-queue-a-global-task">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task">https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-queue-a-global-task">4. API</a>
+    <li><a href="#ref-for-queue-a-global-task">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-relevant-realm">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-relevant-realm">4. API</a>
+    <li><a href="#ref-for-concept-relevant-realm">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-map-iterate">
    <a href="https://infra.spec.whatwg.org/#map-iterate">https://infra.spec.whatwg.org/#map-iterate</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-map-iterate">4. API</a> <a href="#ref-for-map-iterate①">(2)</a> <a href="#ref-for-map-iterate②">(3)</a> <a href="#ref-for-map-iterate③">(4)</a>
+    <li><a href="#ref-for-map-iterate">5. API</a> <a href="#ref-for-map-iterate①">(2)</a> <a href="#ref-for-map-iterate②">(3)</a> <a href="#ref-for-map-iterate③">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-ordered-map">
    <a href="https://infra.spec.whatwg.org/#ordered-map">https://infra.spec.whatwg.org/#ordered-map</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-ordered-map">4. API</a>
+    <li><a href="#ref-for-ordered-map">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-string">
    <a href="https://infra.spec.whatwg.org/#string">https://infra.spec.whatwg.org/#string</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-string">4. API</a>
+    <li><a href="#ref-for-string">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-struct">
    <a href="https://infra.spec.whatwg.org/#struct">https://infra.spec.whatwg.org/#struct</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-struct">4. API</a>
+    <li><a href="#ref-for-struct">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-x">
@@ -1751,138 +1765,138 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
   <aside class="dfn-panel" data-for="term-for-aborterror">
    <a href="https://webidl.spec.whatwg.org/#aborterror">https://webidl.spec.whatwg.org/#aborterror</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-aborterror">4. API</a>
+    <li><a href="#ref-for-aborterror">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-promise">
    <a href="https://webidl.spec.whatwg.org/#idl-promise">https://webidl.spec.whatwg.org/#idl-promise</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-idl-promise">4. API</a> <a href="#ref-for-idl-promise①">(2)</a> <a href="#ref-for-idl-promise②">(3)</a> <a href="#ref-for-idl-promise③">(4)</a> <a href="#ref-for-idl-promise④">(5)</a>
+    <li><a href="#ref-for-idl-promise">5. API</a> <a href="#ref-for-idl-promise①">(2)</a> <a href="#ref-for-idl-promise②">(3)</a> <a href="#ref-for-idl-promise③">(4)</a> <a href="#ref-for-idl-promise④">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-timeouterror">
    <a href="https://webidl.spec.whatwg.org/#timeouterror">https://webidl.spec.whatwg.org/#timeouterror</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-timeouterror">4. API</a>
+    <li><a href="#ref-for-timeouterror">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-a-new-promise">
    <a href="https://webidl.spec.whatwg.org/#a-new-promise">https://webidl.spec.whatwg.org/#a-new-promise</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-a-new-promise">4. API</a> <a href="#ref-for-a-new-promise①">(2)</a>
+    <li><a href="#ref-for-a-new-promise">5. API</a> <a href="#ref-for-a-new-promise①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-any">
    <a href="https://webidl.spec.whatwg.org/#idl-any">https://webidl.spec.whatwg.org/#idl-any</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-idl-any">4. API</a> <a href="#ref-for-idl-any①">(2)</a> <a href="#ref-for-idl-any②">(3)</a>
+    <li><a href="#ref-for-idl-any">5. API</a> <a href="#ref-for-idl-any①">(2)</a> <a href="#ref-for-idl-any②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-invoke-a-callback-function">
    <a href="https://webidl.spec.whatwg.org/#invoke-a-callback-function">https://webidl.spec.whatwg.org/#invoke-a-callback-function</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-invoke-a-callback-function">4. API</a>
+    <li><a href="#ref-for-invoke-a-callback-function">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-method-steps">
    <a href="https://webidl.spec.whatwg.org/#method-steps">https://webidl.spec.whatwg.org/#method-steps</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-method-steps">4. API</a> <a href="#ref-for-method-steps①">(2)</a>
+    <li><a href="#ref-for-method-steps">5. API</a> <a href="#ref-for-method-steps①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-reject">
    <a href="https://webidl.spec.whatwg.org/#reject">https://webidl.spec.whatwg.org/#reject</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-reject">4. API</a> <a href="#ref-for-reject①">(2)</a>
+    <li><a href="#ref-for-reject">5. API</a> <a href="#ref-for-reject①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-resolve">
    <a href="https://webidl.spec.whatwg.org/#resolve">https://webidl.spec.whatwg.org/#resolve</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-resolve">4. API</a> <a href="#ref-for-resolve①">(2)</a>
+    <li><a href="#ref-for-resolve">5. API</a> <a href="#ref-for-resolve①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-this">
    <a href="https://webidl.spec.whatwg.org/#this">https://webidl.spec.whatwg.org/#this</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-this">4. API</a> <a href="#ref-for-this①">(2)</a> <a href="#ref-for-this②">(3)</a> <a href="#ref-for-this③">(4)</a> <a href="#ref-for-this④">(5)</a> <a href="#ref-for-this⑤">(6)</a> <a href="#ref-for-this⑥">(7)</a> <a href="#ref-for-this⑦">(8)</a> <a href="#ref-for-this⑧">(9)</a> <a href="#ref-for-this⑨">(10)</a> <a href="#ref-for-this①⓪">(11)</a> <a href="#ref-for-this①①">(12)</a> <a href="#ref-for-this①②">(13)</a> <a href="#ref-for-this①③">(14)</a> <a href="#ref-for-this①④">(15)</a> <a href="#ref-for-this①⑤">(16)</a> <a href="#ref-for-this①⑥">(17)</a> <a href="#ref-for-this①⑦">(18)</a>
+    <li><a href="#ref-for-this">5. API</a> <a href="#ref-for-this①">(2)</a> <a href="#ref-for-this②">(3)</a> <a href="#ref-for-this③">(4)</a> <a href="#ref-for-this④">(5)</a> <a href="#ref-for-this⑤">(6)</a> <a href="#ref-for-this⑥">(7)</a> <a href="#ref-for-this⑦">(8)</a> <a href="#ref-for-this⑧">(9)</a> <a href="#ref-for-this⑨">(10)</a> <a href="#ref-for-this①⓪">(11)</a> <a href="#ref-for-this①①">(12)</a> <a href="#ref-for-this①②">(13)</a> <a href="#ref-for-this①③">(14)</a> <a href="#ref-for-this①④">(15)</a> <a href="#ref-for-this①⑤">(16)</a> <a href="#ref-for-this①⑥">(17)</a> <a href="#ref-for-this①⑦">(18)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-throw">
    <a href="https://webidl.spec.whatwg.org/#dfn-throw">https://webidl.spec.whatwg.org/#dfn-throw</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-throw">4. API</a> <a href="#ref-for-dfn-throw①">(2)</a>
+    <li><a href="#ref-for-dfn-throw">5. API</a> <a href="#ref-for-dfn-throw①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-undefined">
    <a href="https://webidl.spec.whatwg.org/#idl-undefined">https://webidl.spec.whatwg.org/#idl-undefined</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-idl-undefined">4. API</a>
+    <li><a href="#ref-for-idl-undefined">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-upon-fulfillment">
    <a href="https://webidl.spec.whatwg.org/#upon-fulfillment">https://webidl.spec.whatwg.org/#upon-fulfillment</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-upon-fulfillment">4. API</a>
+    <li><a href="#ref-for-upon-fulfillment">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-upon-rejection">
    <a href="https://webidl.spec.whatwg.org/#upon-rejection">https://webidl.spec.whatwg.org/#upon-rejection</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-upon-rejection">4. API</a>
+    <li><a href="#ref-for-upon-rejection">5. API</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
-    <a data-link-type="biblio">[compositing-2]</a> defines the following terms:
+    <a data-link-type="biblio">[COMPOSITING-2]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-isolation">isolation</span>
      <li><span class="dfn-paneled" id="term-for-propdef-mix-blend-mode">mix-blend-mode</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-box-4]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-BOX-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-border-box">border box</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-break-3]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-BREAK-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-break-inside">break-inside</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-cascade-5]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-CASCADE-5]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-cascade-origin-ua">user-agent origin</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-contain-2]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-CONTAIN-2]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-contain">contain</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-display-3]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-DISPLAY-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-replaced-element">replaced element</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-images-3]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-IMAGES-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-natural-dimensions">natural dimension</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-images-4]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-IMAGES-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-object-view-box">object-view-box</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-logical-1]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-LOGICAL-1]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-block-size">block-size</span>
      <li><span class="dfn-paneled" id="term-for-propdef-inline-size">inline-size</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-position-3]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-POSITION-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-inset-block-start">inset-block-start</span>
      <li><span class="dfn-paneled" id="term-for-propdef-left">left</span>
@@ -1890,36 +1904,36 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
      <li><span class="dfn-paneled" id="term-for-propdef-top">top</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-shapes-1]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-SHAPES-1]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-funcdef-basic-shape-inset">inset()</span>
      <li><span class="dfn-paneled" id="term-for-funcdef-basic-shape-xywh">xywh()</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-sizing-3]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-SIZING-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-height">height</span>
      <li><span class="dfn-paneled" id="term-for-propdef-width">width</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-transforms-1]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-TRANSFORMS-1]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-transform">transform</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-values-4]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-mult-zero-plus">*</span>
      <li><span class="dfn-paneled" id="term-for-identifier-value">&lt;custom-ident></span>
      <li><span class="dfn-paneled" id="term-for-comb-one">|</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-writing-modes-3]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-WRITING-MODES-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-direction">direction</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[css-writing-modes-4]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-WRITING-MODES-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-writing-mode">writing-mode</span>
     </ul>
@@ -1945,12 +1959,12 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
      <li><span class="dfn-paneled" id="term-for-struct">struct</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[selectors-3]</a> defines the following terms:
+    <a data-link-type="biblio">[SELECTORS-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-x">*</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[selectors-4]</a> defines the following terms:
+    <a data-link-type="biblio">[SELECTORS-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-originating-element">originating element</span>
      <li><span class="dfn-paneled" id="term-for-type-selector">type selector</span>
@@ -1980,35 +1994,35 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
    <dt id="biblio-compositing-2">[COMPOSITING-2]
    <dd>Compositing and Blending Level 2 URL: <a href="https://drafts.fxtf.org/compositing-2/">https://drafts.fxtf.org/compositing-2/</a>
    <dt id="biblio-css-box-4">[CSS-BOX-4]
-   <dd>Elika Etemad. <a href="https://www.w3.org/TR/css-box-4/"><cite>CSS Box Model Module Level 4</cite></a>. 21 April 2020. WD. URL: <a href="https://www.w3.org/TR/css-box-4/">https://www.w3.org/TR/css-box-4/</a>
+   <dd>Elika Etemad. <a href="https://drafts.csswg.org/css-box-4/"><cite>CSS Box Model Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-box-4/">https://drafts.csswg.org/css-box-4/</a>
    <dt id="biblio-css-break-3">[CSS-BREAK-3]
-   <dd>Rossen Atanassov; Elika Etemad. <a href="https://www.w3.org/TR/css-break-3/"><cite>CSS Fragmentation Module Level 3</cite></a>. 4 December 2018. CR. URL: <a href="https://www.w3.org/TR/css-break-3/">https://www.w3.org/TR/css-break-3/</a>
+   <dd>Rossen Atanassov; Elika Etemad. <a href="https://drafts.csswg.org/css-break/"><cite>CSS Fragmentation Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-break/">https://drafts.csswg.org/css-break/</a>
    <dt id="biblio-css-cascade-5">[CSS-CASCADE-5]
-   <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. 13 January 2022. CR. URL: <a href="https://www.w3.org/TR/css-cascade-5/">https://www.w3.org/TR/css-cascade-5/</a>
+   <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-cascade-5/">https://drafts.csswg.org/css-cascade-5/</a>
    <dt id="biblio-css-contain-2">[CSS-CONTAIN-2]
-   <dd>Tab Atkins Jr.; Florian Rivoal; Vladimir Levin. <a href="https://www.w3.org/TR/css-contain-2/"><cite>CSS Containment Module Level 2</cite></a>. 16 December 2020. WD. URL: <a href="https://www.w3.org/TR/css-contain-2/">https://www.w3.org/TR/css-contain-2/</a>
+   <dd>Tab Atkins Jr.; Florian Rivoal; Vladimir Levin. <a href="https://drafts.csswg.org/css-contain-2/"><cite>CSS Containment Module Level 2</cite></a>. URL: <a href="https://drafts.csswg.org/css-contain-2/">https://drafts.csswg.org/css-contain-2/</a>
    <dt id="biblio-css-display-3">[CSS-DISPLAY-3]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-display-3/"><cite>CSS Display Module Level 3</cite></a>. 3 September 2021. CR. URL: <a href="https://www.w3.org/TR/css-display-3/">https://www.w3.org/TR/css-display-3/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-display/"><cite>CSS Display Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-display/">https://drafts.csswg.org/css-display/</a>
    <dt id="biblio-css-images-3">[CSS-IMAGES-3]
-   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://www.w3.org/TR/css-images-3/"><cite>CSS Images Module Level 3</cite></a>. 17 December 2020. CR. URL: <a href="https://www.w3.org/TR/css-images-3/">https://www.w3.org/TR/css-images-3/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://drafts.csswg.org/css-images-3/"><cite>CSS Images Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-images-3/">https://drafts.csswg.org/css-images-3/</a>
    <dt id="biblio-css-images-4">[CSS-IMAGES-4]
-   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://www.w3.org/TR/css-images-4/"><cite>CSS Image Values and Replaced Content Module Level 4</cite></a>. 13 April 2017. WD. URL: <a href="https://www.w3.org/TR/css-images-4/">https://www.w3.org/TR/css-images-4/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://drafts.csswg.org/css-images-4/"><cite>CSS Image Values and Replaced Content Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-images-4/">https://drafts.csswg.org/css-images-4/</a>
    <dt id="biblio-css-logical-1">[CSS-LOGICAL-1]
-   <dd>Rossen Atanassov; Elika Etemad. <a href="https://www.w3.org/TR/css-logical-1/"><cite>CSS Logical Properties and Values Level 1</cite></a>. 27 August 2018. WD. URL: <a href="https://www.w3.org/TR/css-logical-1/">https://www.w3.org/TR/css-logical-1/</a>
+   <dd>Rossen Atanassov; Elika Etemad. <a href="https://drafts.csswg.org/css-logical-1/"><cite>CSS Logical Properties and Values Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-logical-1/">https://drafts.csswg.org/css-logical-1/</a>
    <dt id="biblio-css-position-3">[CSS-POSITION-3]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-position-3/"><cite>CSS Positioned Layout Module Level 3</cite></a>. 16 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-position-3/">https://www.w3.org/TR/css-position-3/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-position/"><cite>CSS Positioned Layout Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-position/">https://drafts.csswg.org/css-position/</a>
    <dt id="biblio-css-shapes-1">[CSS-SHAPES-1]
-   <dd>Vincent Hardy; Rossen Atanassov; Alan Stearns. <a href="https://www.w3.org/TR/css-shapes-1/"><cite>CSS Shapes Module Level 1</cite></a>. 20 March 2014. CR. URL: <a href="https://www.w3.org/TR/css-shapes-1/">https://www.w3.org/TR/css-shapes-1/</a>
+   <dd>Vincent Hardy; Rossen Atanassov; Alan Stearns. <a href="https://drafts.csswg.org/css-shapes/"><cite>CSS Shapes Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-shapes/">https://drafts.csswg.org/css-shapes/</a>
    <dt id="biblio-css-sizing-3">[CSS-SIZING-3]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-sizing-3/"><cite>CSS Box Sizing Module Level 3</cite></a>. 17 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-sizing-3/">https://www.w3.org/TR/css-sizing-3/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-sizing-3/"><cite>CSS Box Sizing Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-sizing-3/">https://drafts.csswg.org/css-sizing-3/</a>
    <dt id="biblio-css-transforms-1">[CSS-TRANSFORMS-1]
-   <dd>Simon Fraser; et al. <a href="https://www.w3.org/TR/css-transforms-1/"><cite>CSS Transforms Module Level 1</cite></a>. 14 February 2019. CR. URL: <a href="https://www.w3.org/TR/css-transforms-1/">https://www.w3.org/TR/css-transforms-1/</a>
+   <dd>Simon Fraser; et al. <a href="https://drafts.csswg.org/css-transforms/"><cite>CSS Transforms Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-transforms/">https://drafts.csswg.org/css-transforms/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. 16 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-4/">https://drafts.csswg.org/css-values-4/</a>
    <dt id="biblio-css-writing-modes-3">[CSS-WRITING-MODES-3]
-   <dd>Elika Etemad; Koji Ishii. <a href="https://www.w3.org/TR/css-writing-modes-3/"><cite>CSS Writing Modes Level 3</cite></a>. 10 December 2019. REC. URL: <a href="https://www.w3.org/TR/css-writing-modes-3/">https://www.w3.org/TR/css-writing-modes-3/</a>
+   <dd>Elika Etemad; Koji Ishii. <a href="https://drafts.csswg.org/css-writing-modes-3/"><cite>CSS Writing Modes Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-writing-modes-3/">https://drafts.csswg.org/css-writing-modes-3/</a>
    <dt id="biblio-css-writing-modes-4">[CSS-WRITING-MODES-4]
-   <dd>Elika Etemad; Koji Ishii. <a href="https://www.w3.org/TR/css-writing-modes-4/"><cite>CSS Writing Modes Level 4</cite></a>. 30 July 2019. CR. URL: <a href="https://www.w3.org/TR/css-writing-modes-4/">https://www.w3.org/TR/css-writing-modes-4/</a>
+   <dd>Elika Etemad; Koji Ishii. <a href="https://drafts.csswg.org/css-writing-modes-4/"><cite>CSS Writing Modes Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-writing-modes-4/">https://drafts.csswg.org/css-writing-modes-4/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-html">[HTML]
@@ -2018,9 +2032,9 @@ will cause the view box to coincide with "incoming element"'s <a data-link-type=
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-selectors-3">[SELECTORS-3]
-   <dd>Tantek Çelik; et al. <a href="https://www.w3.org/TR/selectors-3/"><cite>Selectors Level 3</cite></a>. 6 November 2018. REC. URL: <a href="https://www.w3.org/TR/selectors-3/">https://www.w3.org/TR/selectors-3/</a>
+   <dd>Tantek Çelik; et al. <a href="https://drafts.csswg.org/selectors-3/"><cite>Selectors Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/selectors-3/">https://drafts.csswg.org/selectors-3/</a>
    <dt id="biblio-selectors-4">[SELECTORS-4]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/selectors-4/"><cite>Selectors Level 4</cite></a>. 7 May 2022. WD. URL: <a href="https://www.w3.org/TR/selectors-4/">https://www.w3.org/TR/selectors-4/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/selectors/"><cite>Selectors Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/selectors/">https://drafts.csswg.org/selectors/</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
@@ -2108,26 +2122,26 @@ but we don’t want them to then be *double* sepia’d or whatever.) <a class="i
    <ul>
     <li><a href="#ref-for-propdef-page-transition-tag">2.1. Tagging Elements For Transition: the page-transition-tag property</a> <a href="#ref-for-propdef-page-transition-tag①">(2)</a>
     <li><a href="#ref-for-propdef-page-transition-tag②">3. Pseudo-Elements</a> <a href="#ref-for-propdef-page-transition-tag③">(2)</a> <a href="#ref-for-propdef-page-transition-tag④">(3)</a>
-    <li><a href="#ref-for-propdef-page-transition-tag⑤">4. API</a> <a href="#ref-for-propdef-page-transition-tag⑥">(2)</a> <a href="#ref-for-propdef-page-transition-tag⑦">(3)</a> <a href="#ref-for-propdef-page-transition-tag⑧">(4)</a> <a href="#ref-for-propdef-page-transition-tag⑨">(5)</a>
+    <li><a href="#ref-for-propdef-page-transition-tag⑤">5. API</a> <a href="#ref-for-propdef-page-transition-tag⑥">(2)</a> <a href="#ref-for-propdef-page-transition-tag⑦">(3)</a> <a href="#ref-for-propdef-page-transition-tag⑧">(4)</a> <a href="#ref-for-propdef-page-transition-tag⑨">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-page-transition-tag-none">
    <b><a href="#valdef-page-transition-tag-none">#valdef-page-transition-tag-none</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valdef-page-transition-tag-none">4. API</a> <a href="#ref-for-valdef-page-transition-tag-none①">(2)</a>
+    <li><a href="#ref-for-valdef-page-transition-tag-none">5. API</a> <a href="#ref-for-valdef-page-transition-tag-none①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="page-transition-tag">
    <b><a href="#page-transition-tag">#page-transition-tag</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-page-transition-tag">4. API</a> <a href="#ref-for-page-transition-tag①">(2)</a> <a href="#ref-for-page-transition-tag②">(3)</a>
+    <li><a href="#ref-for-page-transition-tag">5. API</a> <a href="#ref-for-page-transition-tag①">(2)</a> <a href="#ref-for-page-transition-tag②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="page-transition-pseudo-elements">
    <b><a href="#page-transition-pseudo-elements">#page-transition-pseudo-elements</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-page-transition-pseudo-elements">3. Pseudo-Elements</a> <a href="#ref-for-page-transition-pseudo-elements①">(2)</a>
-    <li><a href="#ref-for-page-transition-pseudo-elements②">4. API</a> <a href="#ref-for-page-transition-pseudo-elements③">(2)</a> <a href="#ref-for-page-transition-pseudo-elements④">(3)</a> <a href="#ref-for-page-transition-pseudo-elements⑤">(4)</a>
+    <li><a href="#ref-for-page-transition-pseudo-elements②">5. API</a> <a href="#ref-for-page-transition-pseudo-elements③">(2)</a> <a href="#ref-for-page-transition-pseudo-elements④">(3)</a> <a href="#ref-for-page-transition-pseudo-elements⑤">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="typedef-pt-tag-selector">
@@ -2140,7 +2154,8 @@ but we don’t want them to then be *double* sepia’d or whatever.) <a class="i
    <b><a href="#selectordef-page-transition">#selectordef-page-transition</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-selectordef-page-transition">3. Pseudo-Elements</a> <a href="#ref-for-selectordef-page-transition①">(2)</a> <a href="#ref-for-selectordef-page-transition②">(3)</a>
-    <li><a href="#ref-for-selectordef-page-transition③">4. API</a> <a href="#ref-for-selectordef-page-transition④">(2)</a>
+    <li><a href="#ref-for-selectordef-page-transition③">4. New Stacking Layer</a>
+    <li><a href="#ref-for-selectordef-page-transition④">5. API</a> <a href="#ref-for-selectordef-page-transition⑤">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="selectordef-page-transition-container-pt-tag-selector">
@@ -2164,105 +2179,105 @@ but we don’t want them to then be *double* sepia’d or whatever.) <a class="i
   <aside class="dfn-panel" data-for="samedocumenttransition">
    <b><a href="#samedocumenttransition">#samedocumenttransition</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-samedocumenttransition">4. API</a> <a href="#ref-for-samedocumenttransition①">(2)</a> <a href="#ref-for-samedocumenttransition②">(3)</a> <a href="#ref-for-samedocumenttransition③">(4)</a> <a href="#ref-for-samedocumenttransition④">(5)</a> <a href="#ref-for-samedocumenttransition⑤">(6)</a> <a href="#ref-for-samedocumenttransition⑥">(7)</a>
+    <li><a href="#ref-for-samedocumenttransition">5. API</a> <a href="#ref-for-samedocumenttransition①">(2)</a> <a href="#ref-for-samedocumenttransition②">(3)</a> <a href="#ref-for-samedocumenttransition③">(4)</a> <a href="#ref-for-samedocumenttransition④">(5)</a> <a href="#ref-for-samedocumenttransition⑤">(6)</a> <a href="#ref-for-samedocumenttransition⑥">(7)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="callbackdef-asyncfunction">
    <b><a href="#callbackdef-asyncfunction">#callbackdef-asyncfunction</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-callbackdef-asyncfunction">4. API</a>
+    <li><a href="#ref-for-callbackdef-asyncfunction">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-taggedelements-slot">
    <b><a href="#dom-samedocumenttransition-taggedelements-slot">#dom-samedocumenttransition-taggedelements-slot</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-taggedelements-slot">4. API</a> <a href="#ref-for-dom-samedocumenttransition-taggedelements-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-taggedelements-slot②">(3)</a>
+    <li><a href="#ref-for-dom-samedocumenttransition-taggedelements-slot">5. API</a> <a href="#ref-for-dom-samedocumenttransition-taggedelements-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-taggedelements-slot②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="capturedelement">
    <b><a href="#capturedelement">#capturedelement</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-capturedelement">4. API</a> <a href="#ref-for-capturedelement①">(2)</a>
+    <li><a href="#ref-for-capturedelement">5. API</a> <a href="#ref-for-capturedelement①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-phase-slot">
    <b><a href="#dom-samedocumenttransition-phase-slot">#dom-samedocumenttransition-phase-slot</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-phase-slot">4. API</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot②">(3)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot③">(4)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot④">(5)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑤">(6)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑥">(7)</a>
+    <li><a href="#ref-for-dom-samedocumenttransition-phase-slot">5. API</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot②">(3)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot③">(4)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot④">(5)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑤">(6)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑥">(7)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-readypromise-slot">
    <b><a href="#dom-samedocumenttransition-readypromise-slot">#dom-samedocumenttransition-readypromise-slot</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-readypromise-slot">4. API</a> <a href="#ref-for-dom-samedocumenttransition-readypromise-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-readypromise-slot②">(3)</a>
+    <li><a href="#ref-for-dom-samedocumenttransition-readypromise-slot">5. API</a> <a href="#ref-for-dom-samedocumenttransition-readypromise-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-readypromise-slot②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-finished-slot">
    <b><a href="#dom-samedocumenttransition-finished-slot">#dom-samedocumenttransition-finished-slot</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-finished-slot">4. API</a> <a href="#ref-for-dom-samedocumenttransition-finished-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-finished-slot②">(3)</a>
+    <li><a href="#ref-for-dom-samedocumenttransition-finished-slot">5. API</a> <a href="#ref-for-dom-samedocumenttransition-finished-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-finished-slot②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-prepare">
    <b><a href="#dom-samedocumenttransition-prepare">#dom-samedocumenttransition-prepare</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-prepare">4. API</a>
+    <li><a href="#ref-for-dom-samedocumenttransition-prepare">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-abandon">
    <b><a href="#dom-samedocumenttransition-abandon">#dom-samedocumenttransition-abandon</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-abandon">4. API</a>
+    <li><a href="#ref-for-dom-samedocumenttransition-abandon">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="freeze-the-pages-rendering">
    <b><a href="#freeze-the-pages-rendering">#freeze-the-pages-rendering</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-freeze-the-pages-rendering">4. API</a>
+    <li><a href="#ref-for-freeze-the-pages-rendering">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="unfreeze-the-pages-rendering">
    <b><a href="#unfreeze-the-pages-rendering">#unfreeze-the-pages-rendering</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-unfreeze-the-pages-rendering">4. API</a>
+    <li><a href="#ref-for-unfreeze-the-pages-rendering">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="abandon-the-page-transition">
    <b><a href="#abandon-the-page-transition">#abandon-the-page-transition</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-abandon-the-page-transition">4. API</a> <a href="#ref-for-abandon-the-page-transition①">(2)</a> <a href="#ref-for-abandon-the-page-transition②">(3)</a> <a href="#ref-for-abandon-the-page-transition③">(4)</a>
+    <li><a href="#ref-for-abandon-the-page-transition">5. API</a> <a href="#ref-for-abandon-the-page-transition①">(2)</a> <a href="#ref-for-abandon-the-page-transition②">(3)</a> <a href="#ref-for-abandon-the-page-transition③">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="capture-the-image">
    <b><a href="#capture-the-image">#capture-the-image</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-capture-the-image">4. API</a> <a href="#ref-for-capture-the-image①">(2)</a>
+    <li><a href="#ref-for-capture-the-image">5. API</a> <a href="#ref-for-capture-the-image①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="capture-the-live-image">
    <b><a href="#capture-the-live-image">#capture-the-live-image</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-capture-the-live-image">4. API</a>
+    <li><a href="#ref-for-capture-the-live-image">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="animate-a-page-transition">
    <b><a href="#animate-a-page-transition">#animate-a-page-transition</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-animate-a-page-transition">3. Pseudo-Elements</a>
-    <li><a href="#ref-for-animate-a-page-transition①">4. API</a>
+    <li><a href="#ref-for-animate-a-page-transition①">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="finish-a-page-transition">
    <b><a href="#finish-a-page-transition">#finish-a-page-transition</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-finish-a-page-transition">4. API</a>
+    <li><a href="#ref-for-finish-a-page-transition">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="create-transition-pseudo-elements">
    <b><a href="#create-transition-pseudo-elements">#create-transition-pseudo-elements</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-create-transition-pseudo-elements">3. Pseudo-Elements</a>
-    <li><a href="#ref-for-create-transition-pseudo-elements①">4. API</a> <a href="#ref-for-create-transition-pseudo-elements②">(2)</a>
+    <li><a href="#ref-for-create-transition-pseudo-elements①">5. API</a> <a href="#ref-for-create-transition-pseudo-elements②">(2)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
