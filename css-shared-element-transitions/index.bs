@@ -93,66 +93,93 @@ While the UA is [=animating a page transition=],
 it creates the following <dfn export>page-transition pseudo-elements</dfn>,
 to represent the various items being animated.
 
-The ''::page-transition'' pseudo-element
-has the document's root element as its [=originating element=].
-(So, for example, '':root::page-transition'' matches,
-but ''div::page-transition'' will not;
-the pseudo also inherits from the root element.)
+The ''::page-transition'' pseudo-element acts as a grouping element for other
+[=page-transition pseudo-elements=] and has the document's root element as its
+[=originating element=].
 
-There can be multiple possible pseudo-elements of the same type,
-one for each 'page-transition-tag' participating in a transition.
-Each such pseudo-element has a tag,
-given by their corresponding 'page-transition-tag' property
-and so the selectors take a <<pt-tag-selector>> argument
-to specify precisely which pseudo-elements are intended.
-This is defined as:
+<p class="note">For example, '':root::page-transition'' selector matches this
+pseudo-element, but ''div::page-transition'' does not. This pseudo-element also
+inherits from the root element.</p>
+
+Other [=page-transition pseudo-elements=] take a <<pt-tag-selector>> argument
+to specify which elements tagged with ''page-transition-tag'' are affected.
+
+There can be multiple pseudo-elements of the same type,
+one for each ''page-transition-tag'' participating in a transition.
+
+
+The <<pt-tag-selector>> is defined as follows:
 
 <pre class=prod>
 	<dfn>&lt;pt-tag-selector></dfn> = '*' | <<custom-ident>>
 </pre>
 
-For each of these, a ''*'' selects all such pseudo-elements,
-while a <<custom-ident>> selects the one such pseudo-element
-corresponding to the animating element
-with that identifier as its 'page-transition-tag' value.
+A value of ''*'' makes the corresponding selector apply to all pseudo elements
+of the specified type. The specificity of a page-transition selector with a
+''*'' argument is zero.
 
-The specificity of a [=page-transition pseudo-element=] with a ''*'' tag
-is zero.
-(The specificity of one with a tag is as normal for pseudo-elements:
-equivalent to a [=type selector=].)
+The <<custom-ident>> value makes the corresponding selector apply to exactly
+one pseudo element of the specified type, namely the pseudo-element that is
+created as a result of the ''page-transition-tag'' property on an element with
+the same <<custom-ident>> value. The specificity of a page-transition selector
+with a <<custom-ident>> argument is the same as for other pseudo-elements, and
+is equivalent to a [=type selector=].
+
+The following describes all of the [=page-transition pseudo-elements=] and their function:
 
 : <dfn>::page-transition</dfn>
-:: This pseudo-element is the parent of all the other [=page-transition pseudo-elements=].
-	Its [=originating element=] is the document's root element.
+:: This pseudo-element is the grouping container of all the other
+  [=page-transition pseudo-elements=].  Its [=originating element=] is the
+  document's root element.
 
-	Styles in the [=user-agent origin=] add ''position:fixed'' and ''inset:0'' to
-	this pseudo-element. The aim is to size the pseudo-element to cover the
-	complete viewport.
+	The following [=user-agent origin=] styles apply to this element:
 
-	Issue: What functionality does this add?
-	Just, like, letting you filter/etc the whole subtree,
-	or something else?
+  <pre><code highlight=css>
+  html::page-transition {
+    position: fixed;
+    inset: 0;
+  }
+  </code></pre>
+	
+  Note: The aim of the style is to size the pseudo-element to cover the
+  complete viewport.
+
+  Issue: Is this needed? For multiple independent transitions this could be
+  useful to separate which transition is represented in the particular
+  :page-transition subtree.
 
 : <dfn>::page-transition-container( <<pt-tag-selector>> )</dfn>
 ::	One of these pseudo-elements exists
-	for each page-transition-tag in a page transition,
+	for each ''page-transition-tag'' in a page transition,
 	and holds the rest of the pseudo-elements corresponding
-	to this page-transition-tag.
+	to this ''page-transition-tag''.
 
 	Its [=originating element=] is the ''::page-transition''
 	pseudo-element.
 
-	Styles in the [=user-agent origin=] add ''position:absolute'',
-	''top: 0'' and ''left: 0'' to position this pseudo-element
-	relative to the ancestor ''::page-transition'' pseudo-element.
+  The following [=user-agent origin=] styles apply to this element:
 
-	Styles in the [=user-agent origin=]
-	animate this pseudo-element's 'width' and 'height'
-	from the size of the outgoing element's [=border box=]
-	to that of the incoming element's [=border box=]. Also
-        the element's 'transform' is animated from the outgoing
-        element's screen space transform to the incoming element's
-        screen space transform.
+  <pre><code highlight=css>
+  html::page-transition-container(*) {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  </code></pre>
+
+  Note: The aim of the style is to position the element relative to its
+  ::page-transition parent.
+
+  Issue: The selector for this and subsequently defined pseudo-elements is
+  likely to change to indicate position in the pseudo-tree hierarchy.
+
+  In addition to above, styles in the [=user-agent origin=] animate this
+  pseudo-element's 'width' and 'height' from the size of the outgoing element's
+  [=border box=] to that of the incoming element's [=border box=]. Also the
+  element's 'transform' is animated from the outgoing element's screen space
+  transform to the incoming element's screen space transform. This style is
+  generated dynamically since the values of animated properties are determined
+  at the time that the transition begins.
 
 : <dfn>::page-transition-image-wrapper( <<pt-tag-selector>> )</dfn>
 ::	One of these pseudo-elements exists
@@ -162,28 +189,55 @@ equivalent to a [=type selector=].)
 	Its [=originating element=] is the ''::page-transition-container()''
 	pseudo-element with the same tag.
 
-	Styles in the [=user-agent origin=] add ''isolation: isolate'' to this element.
-	The styles also ensure that this pseudo-element's 'width' and 'height'
-	match its parent ''::page-transition-container()''.
+  The following [=user-agent origin=] styles apply to this element:
+
+  <pre><code highlight=css>
+  html::page-transition-image-wrapper(*) {
+    position: absolute;
+    inset: 0;
+    isolation: isolate;
+  }
+  </code></pre>
+
+  Note: The aim of the style is to position the element to occpy the same space
+  as its ::page-transition-container element and provide isolation for
+  blending.
+
+  Issue: Is isolation always required?
 
 : <dfn>::page-transition-outgoing-image( <<pt-tag-selector>> )</dfn>
 :: 	One of these pseudo-elements exists
-	for each element being animated by the page transition,
-	and is a [=replaced element=]
-	displaying the outgoing element's snapshot image.
-	It has [=natural dimensions=]
-	equal to the snapshot's size.
+  for each element being animated by the page transition, and is a
+  [=replaced element=] displaying the outgoing element's snapshot image.  It
+  has [=natural dimensions=] equal to the snapshot's size.
 
 	Its [=originating element=] is the ''::page-transition-image-wrapper()''
 	pseudo-element with the same tag.
 
-	Styles in the [=user-agent origin=] add ''position: absolute'',
-	''inset-block-start: 0'', ''inline-size: 100%'' and ''block-size: auto'' to
-	this element.  The aim is to scale the image to match container width but
-	retain its aspect ratio.
+  The following [=user-agent origin=] styles apply to this element:
 
-	Styles in the [=user-agent origin=] animate this element's opacity from 1 to 0
-	with a ''mix-blend-mode: plus-lighter''.
+  <pre><code highlight=css>
+  html::page-transition-outgoing-image(*) {
+    position: absolute;
+    inset-block-start: 0;
+    inline-size: 100%;
+    block-size: auto;
+
+    mix-blend-mode: plus-lighter;
+  }
+  </code></pre>
+
+  Note: The aim of the style is to match the element's inline size while
+  retaining the aspect ratio. It is also placed at the block start. The
+  mix-blend-mode value of plus-lighter ensures that the blending of identical
+  pixels from the outgoing and incoming images results in the same color value
+  as those pixels.
+
+  In addition to above, the following [=user-agent origin=] styles apply:
+
+----------------- VMPSTR STOPPED REVIEW HERE ----------------------
+
+  * in the [=user-agent origin=] animate this element's opacity from 1 to 0.
 
 	Styles in the [=user-agent origin=] set this pseudo-element's 'object-view-box'
 	property with an ''xywh()'' value such that the view box matches the outgoing
