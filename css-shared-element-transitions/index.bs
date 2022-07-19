@@ -202,6 +202,10 @@ The precise tree structure
 (in particular, the order of sibling pseudo-elements)
 is defined in the [=Create transition pseudo-elements=] algorithm.
 
+Styles applied to these pseudo-elements are limited to styles in the
+[=user-agent origin=] unless the {{[[Phase]]}} associated with them is
+set to "running".
+
 New Stacking Layer {#new-stacking-layer}
 ===============
 
@@ -286,6 +290,11 @@ and resolved when it’s ended (successfully or unsuccessfully).
 
 	1. If multiple elements on the page have the same [=page transition tag=],
 		[=throw=] an {{InvalidStateException}}.
+	
+	1. [=map/For each=] element |el| with a non-''page-transition-tag/none'',
+		if |el| does not have layout containment applied or,
+		if |el| does not forbid fragmentation,
+		[=throw=] an {{InvalidStateException}}.
 
 	1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-capture".
 
@@ -298,11 +307,15 @@ and resolved when it’s ended (successfully or unsuccessfully).
 		Set [=this's=] {{[[finished]]}} attribute to |finishedP|.
 
 	1. Let |taggedElements| be [=this's=] {{[[TaggedElements]]}} internal slot.
-
-	1. [=Freeze the page's rendering=].
-
-	1. Execute the following steps [=in parallel=]:
-
+	
+	1. Schedule a <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>.
+		Note: Defering the subsequent step to the next rendering opportunity allows DOM mutations made by the author when
+		triggerin the transition to be presented to the user and captured in the snapshots.
+	
+	1. Execute the following steps after step 14 of
+		<a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>
+		at the next <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>:
+	
 		1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value, in paint order:
 
 			1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
@@ -335,10 +348,11 @@ and resolved when it’s ended (successfully or unsuccessfully).
 
 			1. Set |taggedElements|[|tag|] to |capture|.
 
-			Note: As this step happens asynchronously,
-			it can race with author DOM modifications.
-		
 		1. [=Create transition pseudo-elements=] managed by [=this=].
+	
+		1. Suppress rendering opportunities for [=this's=] Document.
+			Note: This behaviour is equivalent to when the Document state is
+			<a href="https://html.spec.whatwg.org/multipage/dom.html#render-blocked">render-blocked</a>.
 
 		1. [=Queue a global task=] on the [=DOM manipulation task source=],
 			given |realm|&apos;s [=Realm/global object=],
@@ -349,6 +363,8 @@ and resolved when it’s ended (successfully or unsuccessfully).
 			1. [=/Invoke=] |cb|, and let |userP| be the return value.
 
 				[=Upon fulfillment=] of |userP|:
+	
+				1. Stop suppressing rendering opportunities for [=this's=] Document.
 
 				1. If multiple elements on the page have the same [=page transition tag=],
 					[=abandon the page transition=] managed by [=this=]
@@ -365,20 +381,20 @@ and resolved when it’s ended (successfully or unsuccessfully).
 					1. Let |capture| be |taggedElements|[|tag|].
 
 					1. Let |capture|&apos;s "incoming element" item be |el|.
-	
+
 				1. Set [=this's=] {{[[Phase]]}} internal slot to "running".
-	
+
 				1. [=Create transition pseudo-elements=] managed by [=this=].
 	
 				1. [=Animate a page transition=] managed by [=this=].
-	
+
 				1. [=Resolve=] {{[[ReadyPromise]]}} with |readyP|.
 
 				1. [=In parallel=]:
 					1. [=finish a page transition=] managed by [=this=].
-	
+
 					1. Set [=this's=] {{[[Phase]]}} internal slot to "idle".
-	
+
 					1. [=Resolve=] {{[[finished]]}} with |finishedP|.
 
 				[=Upon rejection=] of |userP|:
@@ -393,6 +409,9 @@ and resolved when it’s ended (successfully or unsuccessfully).
 				is longer than an implementation-defined timeout period,
 				[=abandon the page transition=] managed by [=this=]
 				with a {{TimeoutError}}.
+	
+		Note: This step needs to happen asynchronously to allow an
+			async implementation of [=capturing the image=] algorithm.
 
 	1. Return |readyP|.
 </div>
@@ -467,32 +486,12 @@ and resolved when it’s ended (successfully or unsuccessfully).
 <hr>
 
 <div algorithm>
-	To <dfn>freeze the page's rendering</dfn>,
-	...
-
-	Issue: Do a full lifecycle update first--
-	run rAF,
-	flush styles,
-	and fully layout the page. The result of this lifecycle
-        update are presented to the user.
-	This requires integration into the HTML lifetime cycle;
-	I haven't had to write text for that before,
-	but it should be similar or identical
-	to the fixes I need to make to integrate IntersectionObserver properly.
-</div>
-
-<div algorithm>
-	To <dfn>unfreeze the page's rendering</dfn>,
-	...
-</div>
-
-<div algorithm>
 	To <dfn>abandon the page transition</dfn>
 	managed by a {{SameDocumentTransition}} |manager|
 	with an error |error|:
 
-	1. If the page's rendering is currently frozen,
-		[=unfreeze the page's rendering=].
+	1. Stop suppressing rendering opportunities for [=this's=] Document, if
+		currently suppressed.
 
 	1. If there is currently a page transition being animated,
 		end it.
@@ -510,6 +509,8 @@ and resolved when it’s ended (successfully or unsuccessfully).
 <div algorithm>
 	To <dfn>capture the image</dfn>
 	of an {{Element}} |el|,
+	
+	
 	...
 
 	Issue: Figure out |el|'s bounds
@@ -602,6 +603,9 @@ and resolved when it’s ended (successfully or unsuccessfully).
 					animation: page-transition-container-anim-|tag| 0.25s both;
 				}
 			</pre>
+	
+	Issue: Need to clarify re-targeting the animation if computed properties for
+		incoming elements change.
 </div>
 	
 <div algorithm>
