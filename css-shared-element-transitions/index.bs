@@ -80,11 +80,11 @@ as participating in a page transition.
 The root element participates in a page transition by default using
 the following style in the [=user-agent origin=].
 
-<pre class=prod>
+<pre><code highlight=css>
 	html {
 	    page-transition-tag: root;
 	}
-</pre>
+ </code></pre>
 
 Pseudo-Elements {#pseudo}
 ===============
@@ -225,7 +225,7 @@ called <dfn>page-transition layer</dfn> with the following characteristics:
 	The ''page-transitioon layer'' is a sibling of this stacking context.
 
 Issue: Do we need to clarify that the stacking context for the root and top
-layer elements has filters and effects which apply to the root?
+layer elements has filters and effects coming from the root element's style?
 
 API {#api}
 ====
@@ -310,7 +310,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 	
 	1. Schedule a <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>.
 		Note: Defering the subsequent step to the next rendering opportunity allows DOM mutations made by the author when
-		triggerin the transition to be presented to the user and captured in the snapshots.
+		triggering the transition to be presented to the user and captured in the snapshots.
 	
 	1. Execute the following steps after step 14 of
 		<a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>
@@ -351,8 +351,8 @@ and resolved when it’s ended (successfully or unsuccessfully).
 		1. [=Create transition pseudo-elements=] managed by [=this=].
 	
 		1. Suppress rendering opportunities for [=this's=] Document.
-			Note: This behaviour is equivalent to when the Document state is
-			<a href="https://html.spec.whatwg.org/multipage/dom.html#render-blocked">render-blocked</a>.
+			Note: The aim is to prevent unintended DOM updates from being presented to the
+			user after a cached snapshot for the elements has been captured.
 
 		1. [=Queue a global task=] on the [=DOM manipulation task source=],
 			given |realm|&apos;s [=Realm/global object=],
@@ -365,10 +365,22 @@ and resolved when it’s ended (successfully or unsuccessfully).
 				[=Upon fulfillment=] of |userP|:
 	
 				1. Stop suppressing rendering opportunities for [=this's=] Document.
+					Note: Resuming rendering opportunities is delayed until fulfillment of
+					userP to allow asynchronous loading of the incoming DOM.
 
 				1. If multiple elements on the page have the same [=page transition tag=],
 					[=abandon the page transition=] managed by [=this=]
 					with an {{InvalidStateException}}.
+	
+				1. [=map/For each=] element |el| with a non-''page-transition-tag/none'',
+					if |el| does not have layout containment applied or,
+					if |el| does not forbid fragmentation,
+					[=abandon the page transition=] managed by [=this=]
+					with an {{InvalidStateException}}.
+					
+					Issue: What to do if this state changes during the transition animation?
+					Abandon the transition or just remove the ::page-transition-incoming-element
+					and update the animation styles.
 
 				1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value,
 					in paint order:
@@ -548,25 +560,25 @@ and resolved when it’s ended (successfully or unsuccessfully).
 	
 	1. Generate a <<keyframe>> named "page-transition-fade-out" in
 		[=user-agent origin=] as follows:
-	
-		<pre class=prod>
-			::@keyframes page-transition-fade-out {
+
+		<pre><code highlight=css>
+			@keyframes page-transition-fade-out {
   				to { opacity: 0; }
 			}
-		</pre>
+		</code></pre>
 	
-	1. Generate a <<keyframe>> named "page-transition-fade-in|" in
+	1. Generate a <<keyframe>> named "page-transition-fade-in" in
 		[=user-agent origin=] as follows:
 	
-		<pre class=prod>
-			::@keyframes page-transition-fade-in {
+		<pre><code highlight=css>
+			@keyframes page-transition-fade-in {
   				from { opacity: 0; }
 			}
-		</pre>
+		</code></pre>
 	
 	1. Apply the following styles in [=user-agent origin=]:
 		
-		<pre class=prod>
+		<pre><code highlight=css>
 			html::page-transition-outgoing-image(*) {
 				animation: page-transition-fade-out 0.25s both;
 			}
@@ -574,7 +586,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 			html::page-transition-incoming-image(*) {
 				animation: page-transition-fade-in 0.25s both;
 			}
-		</pre>
+		</code></pre>
 
 	1. [=map/For each=] |tag| -> |CapturedElement| of |manager|&apos;s {{[[TaggedElements]]}}:
 	
@@ -586,7 +598,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 			Generate a <<keyframe>> named "page-transition-container-anim-|tag|" in
 			[=user-agent origin=] as follows:
 	
-			<pre class=prod>
+			<pre><code highlight=css>
 				@keyframes page-transition-container-anim-|tag| {
 					from {
 						transform: |transform|;
@@ -594,17 +606,22 @@ and resolved when it’s ended (successfully or unsuccessfully).
 						height: |height|;
 					}
 				}
-			</pre>
+			</code></pre>
 	
 		1. Apply the following styles in [=user-agent origin=]:
 	
-			<pre class=prod>
+			<pre><code highlight=css>
 				html::page-transition-container(|tag|) {
 					animation: page-transition-container-anim-|tag| 0.25s both;
 				}
-			</pre>
+			</code></pre>
 	
-	Issue: Need to clarify re-targeting the animation if computed properties for
+	Issue: How are keyframes scoped to user-agent origin? We could decide
+		scope based on whether `animation-name` in the computed style
+		came from a developer or UA stylesheet.
+		But we do want developers to be able to
+	
+	Issue: We should retarget the animation if computed properties for
 		incoming elements change.
 </div>
 	
