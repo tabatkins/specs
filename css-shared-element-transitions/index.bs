@@ -194,7 +194,6 @@ The following describes all of the [=page-transition pseudo-elements=] and their
   html::page-transition-image-wrapper(*) {
     position: absolute;
     inset: 0;
-    isolation: isolate;
   }
   </code></pre>
 
