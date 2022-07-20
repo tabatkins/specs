@@ -203,7 +203,7 @@ In addition to above, styles in the [=user-agent origin=] add `isolation: isolat
   as its ::page-transition-container element and provide isolation for
   blending.
 
-  Issue: Is isolation always required?
+  Issue: Isolation is only necessary to get the right cross-fade between incoming and outgoing image pixels. Would it be simpler to always add it and try to optimize in the implementation?
 
 : <dfn>::page-transition-outgoing-image( <<pt-tag-selector>> )</dfn>
 :: 	One of these pseudo-elements exists
