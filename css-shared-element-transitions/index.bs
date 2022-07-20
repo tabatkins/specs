@@ -235,13 +235,10 @@ In addition to above, styles in the [=user-agent origin=] add `isolation: isolat
 
   In addition to above, [=user-agent origin=] styles added to animate these pseudo-elements are details in [=Animate a page transition=].
 
------------------ VMPSTR STOPPED REVIEW HERE ----------------------
+  * Animation is set up to animate this element's opacity from 1 to 0.
 
-  * in the [=user-agent origin=] animate this element's opacity from 1 to 0.
-
-	Styles in the [=user-agent origin=] set this pseudo-element's 'object-view-box'
-	property with an ''xywh()'' value such that the view box matches the outgoing
-	element's border box in the snapshot.
+  * The 'object-view-box' property is set to match the outgoing element's
+    border box in the snapshot.
 
 	Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
 
@@ -249,12 +246,12 @@ In addition to above, styles in the [=user-agent origin=] add `isolation: isolat
 ::	Identical to ''::page-transition-outgoing-image()'',
 	except it deals with the incoming element instead.
 
-	Styles in the [=user-agent origin=] animate this element's opacity from 0 to 1
-	with a ''mix-blend-mode: plus-lighter''.
+  This element has styles similar to ''::page-transition-outgoing-image' except
+  that opacity animates from 0 to 1.
 
-The precise tree structure
-(in particular, the order of sibling pseudo-elements)
-is defined in the [=Create transition pseudo-elements=] algorithm.
+The precise tree structure, and in particular the order of sibling
+pseudo-elements, is defined in the [=Create transition pseudo-elements=]
+algorithm.
 
 Styles applied to these pseudo-elements are limited to styles in the
 [=user-agent origin=] unless the {{[[Phase]]}} associated with them is
@@ -278,6 +275,12 @@ called <dfn>page-transition layer</dfn> with the following characteristics:
 	elements.
 	The ''page-transitioon layer'' is a sibling of this stacking context.
 
+Note: The intent of the feature is to be able to capture the contents of the
+page, which includes the top layer elements. In order to accomplish that, the
+''page-transition layer'' cannot be a part of the captured top layer context,
+since that results in a circular dependecy. Instead, this stacking context is a
+sibling of other page contents.
+
 Issue: Do we need to clarify that the stacking context for the root and top
 layer elements has filters and effects which apply to the root?
 
@@ -298,44 +301,36 @@ callback AsyncFunction = Promise<any> ();
 </xmp>
 
 The {{SameDocumentTransition}} represents and controls
-a single same-document transition;
-that is, a transition where the starting and ending document are the same,
-but the document's DOM has changed between the two states.
+a single same-document transition. That is, it controls a transition where the
+starting and ending document are the same, possibly with changes to the
+document's DOM structure.
 
 {{SameDocumentTransition}} objects have a <dfn attribute for=SameDocumentTransition>\[[TaggedElements]]</dfn>
-private slot,
-which is a [=/map=],
-initially empty,
-whose keys are [=page transition tags=]
-and whose values are <dfn>CapturedElement</dfn>s,
-a [=/struct=]
-with items named "outgoing image" (an image),
-"outgoing styles" (a set of styles),
-and "incoming element" (an element),
-all initially empty.
+private slot, which is a [=/map=], whose keys are [=page
+transition tags=] and whose values are <dfn>CapturedElement</dfn>s, a
+[=/struct=] with items named "outgoing image" (an image), "outgoing styles" (a
+set of styles), and "incoming element" (an element). All of the slots are
+initially empty.
 
-They also have a <dfn attribute for=SameDocumentTransition>\[[Phase]]</dfn> internal slot,
-which is a [=/string=] chosen from
-"idle",
-"outgoing-capture",
-"incoming-prep",
-and "running";
-it is initially "idle".
+Additionally the following structures exist:
 
-They also have a <dfn attribute for=SameDocumentTransition>\[[ReadyPromise]]</dfn> internal slot,
-which is a {{Promise}}
-created when a page transition is started,
-and resolved when the phase is updated from incoming-prep to running.
+* A <dfn attribute for=SameDocumentTransition>\[[Phase]]</dfn> internal slot,0
+  which is a [=/string=] chosen from "idle", "outgoing-capture",
+  "incoming-prep", and "running". The initial value is "idle".
 
-They also have a <dfn attribute for=SameDocumentTransition>\[[finished]]</dfn> attribute,
-which is a {{Promise}}
-created when a page transition is started,
-and resolved when it’s ended (successfully or unsuccessfully).
+* A <dfn attribute for=SameDocumentTransition>\[[ReadyPromise]]</dfn>
+  internal slot, which is a {{Promise}} created when a page transition is
+  started, and resolved when the phase is updated from "incoming-prep" to
+  "running".
+
+* A <dfn attribute for=SameDocumentTransition>\[[finished]]</dfn> attribute,
+  which is a {{Promise}} created when a page transition is started, and
+  resolved when it’s ended (successfully or unsuccessfully).
 
 <div algorithm="SameDocumentTransition.prepare()">
 	The [=method steps=] for
 	<dfn method for=SameDocumentTransition>prepare(|cb|)</dfn>
-	are:
+	are as follows:
 
 	1. If any {{SameDocumentTransition}} object in the document
 		([=this=] or any other)
