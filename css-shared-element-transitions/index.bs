@@ -358,6 +358,7 @@ Additionally the following structures exist:
   1. Let |taggedElements| be [=this's=] {{[[TaggedElements]]}} internal slot.
   
   1. Schedule a <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>.
+
     Note: Defering the subsequent step to the next rendering opportunity allows DOM mutations made by the author when
     triggerin the transition to be presented to the user and captured in the snapshots.
   
@@ -365,7 +366,7 @@ Additionally the following structures exist:
     <a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>
     at the next <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>:
   
-    1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value, in paint order:
+    1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value, in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:
 
       1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
       1. Let |capture| be a new [=CapturedElement=] struct.
