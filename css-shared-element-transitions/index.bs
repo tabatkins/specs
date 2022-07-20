@@ -197,13 +197,18 @@ The following describes all of the [=page-transition pseudo-elements=] and their
     }
     </code></pre>
 
-In addition to above, styles in the [=user-agent origin=] add `isolation: isolate` to this pseudo-element if it has both [=page-transition-incoming-image] and [=page-transition-outgoing-image] as descendants.
+In addition to above, styles in the [=user-agent origin=] add `isolation:
+isolate` to this pseudo-element if it has both
+[=page-transition-incoming-image=] and [=page-transition-outgoing-image=] as
+descendants.
 
     Note: The aim of the style is to position the element to occpy the same space
     as its ::page-transition-container element and provide isolation for
     blending.
 
-    Issue: Isolation is only necessary to get the right cross-fade between incoming and outgoing image pixels. Would it be simpler to always add it and try to optimize in the implementation?
+    Issue: Isolation is only necessary to get the right cross-fade between
+    incoming and outgoing image pixels. Would it be simpler to always add it
+    and try to optimize in the implementation?
 
 : <dfn>::page-transition-outgoing-image( <<pt-tag-selector>> )</dfn>
 ::   One of these pseudo-elements exists
