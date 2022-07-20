@@ -169,9 +169,6 @@ The following describes all of the [=page-transition pseudo-elements=] and their
     Note: The aim of the style is to position the element relative to its
     ::page-transition parent.
 
-    Issue: The selector for this and subsequently defined pseudo-elements is
-    likely to change to indicate position in the pseudo-tree hierarchy.
-
     In addition to above, styles in the [=user-agent origin=] animate this
     pseudo-element's 'width' and 'height' from the size of the outgoing element's
     [=border box=] to that of the incoming element's [=border box=]. Also the
@@ -179,6 +176,9 @@ The following describes all of the [=page-transition pseudo-elements=] and their
     transform to the incoming element's screen space transform. This style is
     generated dynamically since the values of animated properties are determined
     at the time that the transition begins.
+
+    Issue: The selector for this and subsequently defined pseudo-elements is
+    likely to change to indicate position in the pseudo-tree hierarchy.
 
 : <dfn>::page-transition-image-wrapper( <<pt-tag-selector>> )</dfn>
 ::  One of these pseudo-elements exists
@@ -197,12 +197,12 @@ The following describes all of the [=page-transition pseudo-elements=] and their
     }
     </code></pre>
 
-In addition to above, styles in the [=user-agent origin=] add `isolation:
-isolate` to this pseudo-element if it has both
-[=page-transition-incoming-image=] and [=page-transition-outgoing-image=] as
-descendants.
+    In addition to above, styles in the [=user-agent origin=] add ''isolation:
+    isolate'' to this pseudo-element if it has both
+    [=page-transition-incoming-image=] and [=page-transition-outgoing-image=] as
+    descendants.
 
-    Note: The aim of the style is to position the element to occpy the same space
+    Note: The aim of the style is to position the element to occupy the same space
     as its ::page-transition-container element and provide isolation for
     blending.
 
@@ -211,7 +211,7 @@ descendants.
     and try to optimize in the implementation?
 
 : <dfn>::page-transition-outgoing-image( <<pt-tag-selector>> )</dfn>
-::   One of these pseudo-elements exists
+::  One of these pseudo-elements exists
     for each element being animated by the page transition, and is a
     [=replaced element=] displaying the outgoing element's snapshot image.  It
     has [=natural dimensions=] equal to the snapshot's size.
@@ -227,32 +227,28 @@ descendants.
       inset-block-start: 0;
       inline-size: 100%;
       block-size: auto;
-
-      mix-blend-mode: plus-lighter;
     }
     </code></pre>
 
     Note: The aim of the style is to match the element's inline size while
-    retaining the aspect ratio. It is also placed at the block start. The
-    mix-blend-mode value of plus-lighter ensures that the blending of identical
+    retaining the aspect ratio. It is also placed at the block start.
+
+    In addition to above, styles in the [=user-agent origin=] add
+    ''mix-blend-mode:plus-lighter'' to this pseudo element if the ancestor
+    [=::page-transition-image-wrapper=] has both
+    [=page-transition-incoming-image=] and [=page-transition-outgoing-image=] as
+    descendants.
+
+    Note: mix-blend-mode value of plus-lighter ensures that the blending of identical
     pixels from the outgoing and incoming images results in the same color value
     as those pixels.
 
-    In addition to above, [=user-agent origin=] styles added to animate these pseudo-elements are details in [=Animate a page transition=].
-
-    * Animation is set up to animate this element's opacity from 1 to 0.
-
-    * The 'object-view-box' property is set to match the outgoing element's
-        border box in the snapshot.
-
-    Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
+    Additional [=user-agent origin=] styles added to animate these pseudo-elements
+    are detailed in [=Animate a page transition=].
 
 : <dfn>::page-transition-incoming-image( <<pt-tag-selector>> )</dfn>
 ::  Identical to ''::page-transition-outgoing-image()'',
     except it deals with the incoming element instead.
-
-    This element has styles similar to ''::page-transition-outgoing-image' except
-    that opacity animates from 0 to 1.
 
 The precise tree structure, and in particular the order of sibling
 pseudo-elements, is defined in the [=Create transition pseudo-elements=]
@@ -337,15 +333,15 @@ Additionally the following structures exist:
     <dfn method for=SameDocumentTransition>prepare(|cb|)</dfn>
     are as follows:
 
-  1. If any {{SameDocumentTransition}} object in the document
+    1. If any {{SameDocumentTransition}} object in the document
         ([=this=] or any other)
         has a {{[[Phase]]}} internal slot set to a non-"idle" value,
         [=throw=] an {{InvalidStateException}}.
 
-  1. If multiple elements on the page have the same [=page transition tag=],
+    1. If multiple elements on the page have the same [=page transition tag=],
         [=throw=] an {{InvalidStateException}}.
         
-	1. If multiple elements on the page have the same [=page transition tag=],
+    1. If multiple elements on the page have the same [=page transition tag=],
 		[=throw=] an {{InvalidStateException}}.
 	
 	1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
@@ -353,9 +349,9 @@ Additionally the following structures exist:
 	
 	    1. |el| does not have layout containment applied.
 	
-      1. |el| does not forbid fragmentation.
+        1. |el| does not forbid fragmentation.
 	
-      1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
+        1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
       
     1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-capture".
 
@@ -372,7 +368,7 @@ Additionally the following structures exist:
     1. Schedule a <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>.
 
         Note: Defering the subsequent step to the next rendering opportunity allows DOM mutations made by the author when
-        triggerin the transition to be presented to the user and captured in the snapshots.
+        triggering the transition to be presented to the user and captured in the snapshots.
     
     1. Execute the following steps after step 14 of
         <a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>
@@ -383,7 +379,7 @@ Additionally the following structures exist:
             1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
             1. Let |capture| be a new [=CapturedElement=] struct.
             1. Set |capture|&apos;s "outgoing image"
-            to the result of [=capturing the image=] of |el|.
+                to the result of [=capturing the image=] of |el|.
             1. Set |capture|&apos;s "outgoing styles" to the following:
 
                 : 'transform'
@@ -408,92 +404,91 @@ Additionally the following structures exist:
                 : 'direction'
                 :: The 'direction' of |el|.
 
-          1. Set |taggedElements|[|tag|] to |capture|.
+            1. Set |taggedElements|[|tag|] to |capture|.
           
-		  1. [=Create transition pseudo-elements=] managed by [=this=].
+        1. [=Create transition pseudo-elements=] managed by [=this=].
 	
-		  1. Suppress rendering opportunities for [=this's=] Document.
+		1. Suppress rendering opportunities for [=this's=] Document.
 	
-			Note: The aim is to prevent unintended DOM updates from being presented to the
+            Note: The aim is to prevent unintended DOM updates from being presented to the
 			user after a cached snapshot for the elements has been captured. We wait for
 			one rendering opportunity after prepare to present DOM mutations made by the
 			author before prepare to be presented to the user. This is also the content
 			captured in snapshots.
 
-      1. [=Queue a global task=] on the [=DOM manipulation task source=],
-          given |realm|&apos;s [=Realm/global object=],
-          to execute the following steps:
+        1. [=Queue a global task=] on the [=DOM manipulation task source=],
+            given |realm|&apos;s [=Realm/global object=],
+            to execute the following steps:
 
-      1. Set [=this's=] {{[[Phase]]}} internal slot to "incoming-prep".
+            1. Set [=this's=] {{[[Phase]]}} internal slot to "incoming-prep".
+    
+            1. [=/Invoke=] |cb|, and let |userP| be the return value.
 
-      1. [=/Invoke=] |cb|, and let |userP| be the return value.
-
-			[=Upon fulfillment=] of |userP|:
+                [=Upon fulfillment=] of |userP|:
 	
-			    1. Stop suppressing rendering opportunities for [=this's=] Document.
+                1. Stop suppressing rendering opportunities for [=this's=] Document.
 	
-					    Note: Resuming rendering opportunities is delayed until fulfillment of
-					    userP to allow asynchronous loading of the incoming DOM.
+                    Note: Resuming rendering opportunities is delayed until fulfillment of
+                    userP to allow asynchronous loading of the incoming DOM.
 
-				  1. If multiple elements on the page have the same [=page transition tag=],
-					    [=abandon the page transition=] managed by [=this=]
-					    with an {{InvalidStateException}}.
+                1. If multiple elements on the page have the same [=page transition tag=],
+                    [=abandon the page transition=] managed by [=this=]
+                    with an {{InvalidStateException}}.
 	
-				  1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
-					    [=abandon the page transition=] managed by [=this=] with an {{InvalidStateException}}
-					    if any of the following conditions is true:
+                1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
+				    [=abandon the page transition=] managed by [=this=] with an {{InvalidStateException}}
+                    if any of the following conditions is true:
 
-					    1. |el| does not have layout containment applied.
+                    1. |el| does not have layout containment applied.
 
-					    1. |el| does not forbid fragmentation.
+                    1. |el| does not forbid fragmentation.
 
-					    1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
+                    1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
 
-          1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value,
-                in paint order:
+                1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value,
+                    in paint order:
 
-              1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
+                    1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
 
-              1. If |taggedElements|[|tag|] does not exist,
-                    set it to a new [=CapturedElement=] struct.
+                    1. If |taggedElements|[|tag|] does not exist,
+                        set it to a new [=CapturedElement=] struct.
 
-              1. Let |capture| be |taggedElements|[|tag|].
+                    1. Let |capture| be |taggedElements|[|tag|].
 
-              1. Let |capture|&apos;s "incoming element" item be |el|.
+                    1. Let |capture|&apos;s "incoming element" item be |el|.
 
-          1. Set [=this's=] {{[[Phase]]}} internal slot to "running".
+                1. Set [=this's=] {{[[Phase]]}} internal slot to "running".
 
-				  1. [=Create transition pseudo-elements=] managed by [=this=].
-	
-				  1. [=Animate a page transition=] managed by [=this=].
-	
-					    Note: This will require running document lifecycle phases to compute
-						  information calculated during style/layout.
+                1. [=Create transition pseudo-elements=] managed by [=this=].
 
-          1. [=Resolve=] {{[[ReadyPromise]]}} with |readyP|.
+                1. [=Animate a page transition=] managed by [=this=].
+
+                    Note: This will require running document lifecycle phases to compute
+                    information calculated during style/layout.
+
+                1. [=Resolve=] {{[[ReadyPromise]]}} with |readyP|.
               
-				  1. At each next rendering opportunity, run the [=update transition DOM=] steps
-					    for [=this=] after step 14 of
-					    <a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>.
+                1. At each next rendering opportunity, run the [=update transition DOM=] steps
+                    for [=this=] after step 14 of
+                    <a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>.
 	
 					Issue: This should likely move to the html spec.
 
-      [=Upon rejection=] of |userP|:
+                [=Upon rejection=] of |userP|:
 
-           1. Let |reason| be the reason |userP| was rejected.
+                    1. Let |reason| be the reason |userP| was rejected.
 
-           1. [=Abandon the page transition=] managed by [=this=]
-                with |reason|.
+                    1. [=Abandon the page transition=] managed by [=this=]
+                        with |reason|.
 
-              If the time from when |cb| is invoked
-              to when |userP| is fulfilled
-              is longer than an implementation-defined timeout period,
-              [=abandon the page transition=] managed by [=this=]
-              with a {{TimeoutError}}.
+                        If the time from when |cb| is invoked
+                        to when |userP| is fulfilled
+                        is longer than an implementation-defined timeout period,
+                        [=abandon the page transition=] managed by [=this=]
+                        with a {{TimeoutError}}.
     
-        Note: This step needs to happen asynchronously to allow an
-          async implementation of [=capturing the image=] algorithm.
-
+                        Note: This step needs to happen asynchronously to allow an
+                        async implementation of [=capturing the image=] algorithm.
     1. Return |readyP|.
 </div>
 
@@ -653,7 +648,9 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 			will cause the view box to coincide with "incoming element"'s [=border box=]
 			in the image.
 	
-		1. Issue: Also clarify updating the animation based on new bounds/transform.
+		1. ...
+            Issue: Also clarify updating the animation based on new bounds/transform to
+            get c0 continuity.
 			
 </div>
 
@@ -793,6 +790,8 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 			At the [=user-agent origin=],
 			set |outgoing|&apos;s 'object-view-box' property
 			to |CapturedData|&apos;s "outgoing data" 'object-view-box' property.
+    
+            Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
 
 		1. If |CapturedData| has an "incoming element",
 			then create be a new ''::page-transition-incoming-image''
