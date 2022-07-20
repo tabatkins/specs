@@ -14,34 +14,34 @@ Abstract: This module defines the Single-Page Document-Transition API, along wit
 <pre class=link-defaults>
 spec:webidl; type:dfn; text:resolve
 spec:css-position-3; type:property
-	text: inset-block-start
-	text: inset-inline-start
+  text: inset-block-start
+  text: inset-inline-start
 spec:css-shapes-3; type:function; text:rect()
 </pre>
 
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
-	padding: .5em;
-	border: thin solid #ddd; border-radius: .5em;
-	margin: .5em calc(-0.5em - 1px);
+  padding: .5em;
+  border: thin solid #ddd; border-radius: .5em;
+  margin: .5em calc(-0.5em - 1px);
 }
 [data-algorithm]:not(.heading) > :first-child {
-	margin-top: 0;
+  margin-top: 0;
 }
 [data-algorithm]:not(.heading) > :last-child {
-	margin-bottom: 0;
+  margin-bottom: 0;
 }
 [data-algorithm] [data-algorithm] {
-		margin: 1em 0;
+    margin: 1em 0;
 }
 </style>
 
 Introduction {#intro}
 =====================
 
-	This spec describes the CSS and JS mechanics
-	of the single-page Page Transition API.
+  This spec describes the CSS and JS mechanics
+  of the single-page Page Transition API.
 
 
 Page Transitions {#page-transitions}
@@ -64,26 +64,26 @@ The 'page-transition-tag' property "tags" an element
 as participating in a page transition.
 
 <dl dfn-type=value dfn-for=page-transition-tag>
-	: <dfn>none</dfn>
-	:: The element will not participate in a page transition.
+  : <dfn>none</dfn>
+  :: The element will not participate in a page transition.
 
-	: <dfn><<custom-ident>></dfn>
-	:: The element can participate in a page transition,
-		as either an outgoing or incoming element,
-		with a <dfn dfn for>page transition tag</dfn>
-		equal to the <<custom-ident>>'s value.
+  : <dfn><<custom-ident>></dfn>
+  :: The element can participate in a page transition,
+    as either an outgoing or incoming element,
+    with a <dfn dfn for>page transition tag</dfn>
+    equal to the <<custom-ident>>'s value.
 
-		The value <css>none</css>
-		is invalid as a <<custom-ident>>.
+    The value <css>none</css>
+    is invalid as a <<custom-ident>>.
 </dl>
 
 The root element participates in a page transition by default using
 the following style in the [=user-agent origin=].
 
 <pre class=prod>
-	html {
-	    page-transition-tag: root;
-	}
+  html {
+      page-transition-tag: root;
+  }
 </pre>
 
 Pseudo-Elements {#pseudo}
@@ -110,7 +110,7 @@ one for each ''page-transition-tag'' participating in a transition.
 The <<pt-tag-selector>> is defined as follows:
 
 <pre class=prod>
-	<dfn>&lt;pt-tag-selector></dfn> = '*' | <<custom-ident>>
+  <dfn>&lt;pt-tag-selector></dfn> = '*' | <<custom-ident>>
 </pre>
 
 A value of ''*'' makes the corresponding selector apply to all pseudo elements
@@ -131,7 +131,7 @@ The following describes all of the [=page-transition pseudo-elements=] and their
   [=page-transition pseudo-elements=].  Its [=originating element=] is the
   document's root element.
 
-	The following [=user-agent origin=] styles apply to this element:
+  The following [=user-agent origin=] styles apply to this element:
 
   <pre><code highlight=css>
   html::page-transition {
@@ -139,7 +139,7 @@ The following describes all of the [=page-transition pseudo-elements=] and their
     inset: 0;
   }
   </code></pre>
-	
+  
   Note: The aim of the style is to size the pseudo-element to cover the
   complete viewport.
 
@@ -148,13 +148,13 @@ The following describes all of the [=page-transition pseudo-elements=] and their
   :page-transition subtree.
 
 : <dfn>::page-transition-container( <<pt-tag-selector>> )</dfn>
-::	One of these pseudo-elements exists
-	for each ''page-transition-tag'' in a page transition,
-	and holds the rest of the pseudo-elements corresponding
-	to this ''page-transition-tag''.
+::  One of these pseudo-elements exists
+  for each ''page-transition-tag'' in a page transition,
+  and holds the rest of the pseudo-elements corresponding
+  to this ''page-transition-tag''.
 
-	Its [=originating element=] is the ''::page-transition''
-	pseudo-element.
+  Its [=originating element=] is the ''::page-transition''
+  pseudo-element.
 
   The following [=user-agent origin=] styles apply to this element:
 
@@ -181,12 +181,12 @@ The following describes all of the [=page-transition pseudo-elements=] and their
   at the time that the transition begins.
 
 : <dfn>::page-transition-image-wrapper( <<pt-tag-selector>> )</dfn>
-::	One of these pseudo-elements exists
-	for each page-transition-tag being in a page transition,
-	and holds the images of the outgoing and incoming elements.
+::  One of these pseudo-elements exists
+  for each page-transition-tag being in a page transition,
+  and holds the images of the outgoing and incoming elements.
 
-	Its [=originating element=] is the ''::page-transition-container()''
-	pseudo-element with the same tag.
+  Its [=originating element=] is the ''::page-transition-container()''
+  pseudo-element with the same tag.
 
   The following [=user-agent origin=] styles apply to this element:
 
@@ -206,13 +206,13 @@ In addition to above, styles in the [=user-agent origin=] add `isolation: isolat
   Issue: Isolation is only necessary to get the right cross-fade between incoming and outgoing image pixels. Would it be simpler to always add it and try to optimize in the implementation?
 
 : <dfn>::page-transition-outgoing-image( <<pt-tag-selector>> )</dfn>
-:: 	One of these pseudo-elements exists
+::   One of these pseudo-elements exists
   for each element being animated by the page transition, and is a
   [=replaced element=] displaying the outgoing element's snapshot image.  It
   has [=natural dimensions=] equal to the snapshot's size.
 
-	Its [=originating element=] is the ''::page-transition-image-wrapper()''
-	pseudo-element with the same tag.
+  Its [=originating element=] is the ''::page-transition-image-wrapper()''
+  pseudo-element with the same tag.
 
   The following [=user-agent origin=] styles apply to this element:
 
@@ -240,11 +240,11 @@ In addition to above, styles in the [=user-agent origin=] add `isolation: isolat
   * The 'object-view-box' property is set to match the outgoing element's
     border box in the snapshot.
 
-	Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
+  Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
 
 : <dfn>::page-transition-incoming-image( <<pt-tag-selector>> )</dfn>
-::	Identical to ''::page-transition-outgoing-image()'',
-	except it deals with the incoming element instead.
+::  Identical to ''::page-transition-outgoing-image()'',
+  except it deals with the incoming element instead.
 
   This element has styles similar to ''::page-transition-outgoing-image' except
   that opacity animates from 0 to 1.
@@ -269,11 +269,11 @@ called <dfn>page-transition layer</dfn> with the following characteristics:
 1. Its parent stacking context is the root stacking context.
 
 1. If the ''page-transition'' pseudo-element exists, a new stacking
-	context is created for the
-	<a href="https://dom.spec.whatwg.org/#concept-tree-root">root</a>
-	and <a href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</a>
-	elements.
-	The ''page-transitioon layer'' is a sibling of this stacking context.
+  context is created for the
+  <a href="https://dom.spec.whatwg.org/#concept-tree-root">root</a>
+  and <a href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</a>
+  elements.
+  The ''page-transitioon layer'' is a sibling of this stacking context.
 
 Note: The intent of the feature is to be able to capture the contents of the
 page, which includes the top layer elements. In order to accomplish that, the
@@ -291,10 +291,10 @@ Single-page API:
 
 <xmp class=idl>
 interface SameDocumentTransition {
-	constructor();
-	Promise<any> prepare(AsyncFunction cb);
-	undefined abandon();
-	readonly attribute Promise<any> finished;
+  constructor();
+  Promise<any> prepare(AsyncFunction cb);
+  undefined abandon();
+  readonly attribute Promise<any> finished;
 };
 
 callback AsyncFunction = Promise<any> ();
@@ -328,418 +328,418 @@ Additionally the following structures exist:
   resolved when it’s ended (successfully or unsuccessfully).
 
 <div algorithm="SameDocumentTransition.prepare()">
-	The [=method steps=] for
-	<dfn method for=SameDocumentTransition>prepare(|cb|)</dfn>
-	are as follows:
+  The [=method steps=] for
+  <dfn method for=SameDocumentTransition>prepare(|cb|)</dfn>
+  are as follows:
 
-	1. If any {{SameDocumentTransition}} object in the document
-		([=this=] or any other)
-		has a {{[[Phase]]}} internal slot set to a non-"idle" value,
-		[=throw=] an {{InvalidStateException}}.
+  1. If any {{SameDocumentTransition}} object in the document
+    ([=this=] or any other)
+    has a {{[[Phase]]}} internal slot set to a non-"idle" value,
+    [=throw=] an {{InvalidStateException}}.
 
-	1. If multiple elements on the page have the same [=page transition tag=],
-		[=throw=] an {{InvalidStateException}}.
-	
-	1. [=map/For each=] element |el| with a non-''page-transition-tag/none'',
-		if |el| does not have layout containment applied or,
-		if |el| does not forbid fragmentation,
-		[=throw=] an {{InvalidStateException}}.
+  1. If multiple elements on the page have the same [=page transition tag=],
+    [=throw=] an {{InvalidStateException}}.
+  
+  1. [=map/For each=] element |el| with a non-''page-transition-tag/none'',
+    if |el| does not have layout containment applied or,
+    if |el| does not forbid fragmentation,
+    [=throw=] an {{InvalidStateException}}.
 
-	1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-capture".
+  1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-capture".
 
-	1. Let |realm| be [=this's=] [=relevant Realm=].
+  1. Let |realm| be [=this's=] [=relevant Realm=].
 
-	1. Let |readyP| be [=a new promise=] in |realm|.
-		Set [=this's=] {{[[ReadyPromise]]}} internal slot to |readyP|.
-	
-	1. Let |finishedP| be [=a new promise=] in |realm|.
-		Set [=this's=] {{[[finished]]}} attribute to |finishedP|.
+  1. Let |readyP| be [=a new promise=] in |realm|.
+    Set [=this's=] {{[[ReadyPromise]]}} internal slot to |readyP|.
+  
+  1. Let |finishedP| be [=a new promise=] in |realm|.
+    Set [=this's=] {{[[finished]]}} attribute to |finishedP|.
 
-	1. Let |taggedElements| be [=this's=] {{[[TaggedElements]]}} internal slot.
-	
-	1. Schedule a <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>.
-		Note: Defering the subsequent step to the next rendering opportunity allows DOM mutations made by the author when
-		triggerin the transition to be presented to the user and captured in the snapshots.
-	
-	1. Execute the following steps after step 14 of
-		<a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>
-		at the next <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>:
-	
-		1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value, in paint order:
+  1. Let |taggedElements| be [=this's=] {{[[TaggedElements]]}} internal slot.
+  
+  1. Schedule a <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>.
+    Note: Defering the subsequent step to the next rendering opportunity allows DOM mutations made by the author when
+    triggerin the transition to be presented to the user and captured in the snapshots.
+  
+  1. Execute the following steps after step 14 of
+    <a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>
+    at the next <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>:
+  
+    1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value, in paint order:
 
-			1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
-			1. Let |capture| be a new [=CapturedElement=] struct.
-			1. Set |capture|&apos;s "outgoing image"
-				to the result of [=capturing the image=] of |el|.
-			1. Set |capture|&apos;s "outgoing styles" to the following:
+      1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
+      1. Let |capture| be a new [=CapturedElement=] struct.
+      1. Set |capture|&apos;s "outgoing image"
+        to the result of [=capturing the image=] of |el|.
+      1. Set |capture|&apos;s "outgoing styles" to the following:
 
-				: 'transform'
-				:: A CSS transform that would place |el|
-					from the document origin to its current quad.
-				:: This value is identity for the root element.
+        : 'transform'
+        :: A CSS transform that would place |el|
+          from the document origin to its current quad.
+        :: This value is identity for the root element.
 
-				: 'width'
-				: 'height'
-				:: The width and height of |el|'s border box.
-				:: This value is the bounds of the initial containing block for the root element.
+        : 'width'
+        : 'height'
+        :: The width and height of |el|'s border box.
+        :: This value is the bounds of the initial containing block for the root element.
 
-				: 'object-view-box'
-				:: An 'object-view-box' value that,
-					when applied to the outgoing image,
-					will cause the view box to coincide with |el|'s [=border box=]
-					in the image.
+        : 'object-view-box'
+        :: An 'object-view-box' value that,
+          when applied to the outgoing image,
+          will cause the view box to coincide with |el|'s [=border box=]
+          in the image.
 
-				: 'writing-mode'
-				:: The 'writing-mode' of |el|.
+        : 'writing-mode'
+        :: The 'writing-mode' of |el|.
 
-				: 'direction'
-				:: The 'direction' of |el|.
+        : 'direction'
+        :: The 'direction' of |el|.
 
-			1. Set |taggedElements|[|tag|] to |capture|.
+      1. Set |taggedElements|[|tag|] to |capture|.
 
-		1. [=Create transition pseudo-elements=] managed by [=this=].
-	
-		1. Suppress rendering opportunities for [=this's=] Document.
-			Note: This behaviour is equivalent to when the Document state is
-			<a href="https://html.spec.whatwg.org/multipage/dom.html#render-blocked">render-blocked</a>.
+    1. [=Create transition pseudo-elements=] managed by [=this=].
+  
+    1. Suppress rendering opportunities for [=this's=] Document.
+      Note: This behaviour is equivalent to when the Document state is
+      <a href="https://html.spec.whatwg.org/multipage/dom.html#render-blocked">render-blocked</a>.
 
-		1. [=Queue a global task=] on the [=DOM manipulation task source=],
-			given |realm|&apos;s [=Realm/global object=],
-			to execute the following steps:
+    1. [=Queue a global task=] on the [=DOM manipulation task source=],
+      given |realm|&apos;s [=Realm/global object=],
+      to execute the following steps:
 
-			1. Set [=this's=] {{[[Phase]]}} internal slot to "incoming-prep".
+      1. Set [=this's=] {{[[Phase]]}} internal slot to "incoming-prep".
 
-			1. [=/Invoke=] |cb|, and let |userP| be the return value.
+      1. [=/Invoke=] |cb|, and let |userP| be the return value.
 
-				[=Upon fulfillment=] of |userP|:
-	
-				1. Stop suppressing rendering opportunities for [=this's=] Document.
+        [=Upon fulfillment=] of |userP|:
+  
+        1. Stop suppressing rendering opportunities for [=this's=] Document.
 
-				1. If multiple elements on the page have the same [=page transition tag=],
-					[=abandon the page transition=] managed by [=this=]
-					with an {{InvalidStateException}}.
+        1. If multiple elements on the page have the same [=page transition tag=],
+          [=abandon the page transition=] managed by [=this=]
+          with an {{InvalidStateException}}.
 
-				1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value,
-					in paint order:
+        1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value,
+          in paint order:
 
-					1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
+          1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
 
-					1. If |taggedElements|[|tag|] does not exist,
-						set it to a new [=CapturedElement=] struct.
+          1. If |taggedElements|[|tag|] does not exist,
+            set it to a new [=CapturedElement=] struct.
 
-					1. Let |capture| be |taggedElements|[|tag|].
+          1. Let |capture| be |taggedElements|[|tag|].
 
-					1. Let |capture|&apos;s "incoming element" item be |el|.
+          1. Let |capture|&apos;s "incoming element" item be |el|.
 
-				1. Set [=this's=] {{[[Phase]]}} internal slot to "running".
+        1. Set [=this's=] {{[[Phase]]}} internal slot to "running".
 
-				1. [=Create transition pseudo-elements=] managed by [=this=].
-	
-				1. [=Animate a page transition=] managed by [=this=].
+        1. [=Create transition pseudo-elements=] managed by [=this=].
+  
+        1. [=Animate a page transition=] managed by [=this=].
 
-				1. [=Resolve=] {{[[ReadyPromise]]}} with |readyP|.
+        1. [=Resolve=] {{[[ReadyPromise]]}} with |readyP|.
 
-				1. [=In parallel=]:
-					1. [=finish a page transition=] managed by [=this=].
+        1. [=In parallel=]:
+          1. [=finish a page transition=] managed by [=this=].
 
-					1. Set [=this's=] {{[[Phase]]}} internal slot to "idle".
+          1. Set [=this's=] {{[[Phase]]}} internal slot to "idle".
 
-					1. [=Resolve=] {{[[finished]]}} with |finishedP|.
+          1. [=Resolve=] {{[[finished]]}} with |finishedP|.
 
-				[=Upon rejection=] of |userP|:
+        [=Upon rejection=] of |userP|:
 
-				1. Let |reason| be the reason |userP| was rejected.
+        1. Let |reason| be the reason |userP| was rejected.
 
-				1. [=Abandon the page transition=] managed by [=this=]
-					with |reason|.
+        1. [=Abandon the page transition=] managed by [=this=]
+          with |reason|.
 
-				If the time from when |cb| is invoked
-				to when |userP| is fulfilled
-				is longer than an implementation-defined timeout period,
-				[=abandon the page transition=] managed by [=this=]
-				with a {{TimeoutError}}.
-	
-		Note: This step needs to happen asynchronously to allow an
-			async implementation of [=capturing the image=] algorithm.
+        If the time from when |cb| is invoked
+        to when |userP| is fulfilled
+        is longer than an implementation-defined timeout period,
+        [=abandon the page transition=] managed by [=this=]
+        with a {{TimeoutError}}.
+  
+    Note: This step needs to happen asynchronously to allow an
+      async implementation of [=capturing the image=] algorithm.
 
-	1. Return |readyP|.
+  1. Return |readyP|.
 </div>
 
 <div algorithm="SameDocumentTransition.abandon()">
-	The [=method steps=] for
-	<dfn method for=SameDocumentTransition>abandon()</dfn> are:
+  The [=method steps=] for
+  <dfn method for=SameDocumentTransition>abandon()</dfn> are:
 
-	1. If [=this's=] {{[[Phase]]}} internal slot is not "idle",
-		[=abandon the page transition=] managed by [=this=]
-		with an {{AbortError}}.
+  1. If [=this's=] {{[[Phase]]}} internal slot is not "idle",
+    [=abandon the page transition=] managed by [=this=]
+    with an {{AbortError}}.
 
-	2. Otherwise, do nothing.
+  2. Otherwise, do nothing.
 </div>
 
 <div class=example>
-	If the default animations for the page transition are acceptable,
-	then kicking off a transition
-	requires nothing more than setting 'page-transition-tag' in the page's CSS,
-	and a single line of script to start it:
+  If the default animations for the page transition are acceptable,
+  then kicking off a transition
+  requires nothing more than setting 'page-transition-tag' in the page's CSS,
+  and a single line of script to start it:
 
-	<pre highlight=js>
-	new SameDocumentTransition()
-		.start(()=>coolFramework.changeTheDOMToPageB());
-	</pre>
+  <pre highlight=js>
+  new SameDocumentTransition()
+    .start(()=>coolFramework.changeTheDOMToPageB());
+  </pre>
 
-	If more precise management is needed, however,
-	transition elements can be managed in script:
+  If more precise management is needed, however,
+  transition elements can be managed in script:
 
-	<pre highlight=js>
-	async function doTransition() {
-		let transition = new SameDocumentTransition();
+  <pre highlight=js>
+  async function doTransition() {
+    let transition = new SameDocumentTransition();
 
-		// Specify "outgoing" elements. The tag is used to match against
-		// "incoming" elements they should transition to, and to refer to
-		// the transitioning pseudo-element.
-		document.querySelector(".old-message").style.pageTransitionTag = "message";
+    // Specify "outgoing" elements. The tag is used to match against
+    // "incoming" elements they should transition to, and to refer to
+    // the transitioning pseudo-element.
+    document.querySelector(".old-message").style.pageTransitionTag = "message";
 
-		// The prepare() call freezes the page's rendering, and triggers
-		// an async operation to capture snapshots for the offered elements.
-		await transition.prepare(async () => {
-			// This callback is invoked by the browser when "outgoing"
-			// capture  finishes and the DOM can be switched to the new
-			// state. No frames are rendered until this callback returns.
+    // The prepare() call freezes the page's rendering, and triggers
+    // an async operation to capture snapshots for the offered elements.
+    await transition.prepare(async () => {
+      // This callback is invoked by the browser when "outgoing"
+      // capture  finishes and the DOM can be switched to the new
+      // state. No frames are rendered until this callback returns.
 
-			// Asynchronously load the new page.
-			await coolFramework.changeTheDOMToPageB();
+      // Asynchronously load the new page.
+      await coolFramework.changeTheDOMToPageB();
 
-			// Tagging elements during the .start() callback marks them as
-			// "incoming", to be matched up with the same-tagged "outgoing"
-			// elements marked previously and transitioned between.
-			document.querySelector(".new-message").style.pageTransitionTag = "message";
-		});
-		
-		// When the promise returned by prepare() resolves, all pseudo-elements
-		// for this transition have been generated. They can now be accessed
-		// in script to set up custom animations.
-		document.documentElement.animate(
-			keyframes,
-			{...animationOptions,
-			 pseudoElement: "::page-transition-container(message)",
-			}
-		);
-		
-		// When the finished promise resolves, that means the transition is
-		// finished (either completed successfully or abandoned).
-		await transition.finished;
-	}
-	</pre>
+      // Tagging elements during the .start() callback marks them as
+      // "incoming", to be matched up with the same-tagged "outgoing"
+      // elements marked previously and transitioned between.
+      document.querySelector(".new-message").style.pageTransitionTag = "message";
+    });
+    
+    // When the promise returned by prepare() resolves, all pseudo-elements
+    // for this transition have been generated. They can now be accessed
+    // in script to set up custom animations.
+    document.documentElement.animate(
+      keyframes,
+      {...animationOptions,
+       pseudoElement: "::page-transition-container(message)",
+      }
+    );
+    
+    // When the finished promise resolves, that means the transition is
+    // finished (either completed successfully or abandoned).
+    await transition.finished;
+  }
+  </pre>
 </div>
 
 <hr>
 
 <div algorithm>
-	To <dfn>abandon the page transition</dfn>
-	managed by a {{SameDocumentTransition}} |manager|
-	with an error |error|:
+  To <dfn>abandon the page transition</dfn>
+  managed by a {{SameDocumentTransition}} |manager|
+  with an error |error|:
 
-	1. Stop suppressing rendering opportunities for [=this's=] Document, if
-		currently suppressed.
+  1. Stop suppressing rendering opportunities for [=this's=] Document, if
+    currently suppressed.
 
-	1. If there is currently a page transition being animated,
-		end it.
-		Remove all associated [=page-transition pseudo-elements=] from the document.
+  1. If there is currently a page transition being animated,
+    end it.
+    Remove all associated [=page-transition pseudo-elements=] from the document.
 
-	1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
+  1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
 
-	1. [=Reject=] |manager|&apos;s {{[[ReadyPromise]]}}
-		with |error|.
-	
-	1. [=Reject=] |manager|&apos;s {{[[finished]]}}
-		with |error|.
+  1. [=Reject=] |manager|&apos;s {{[[ReadyPromise]]}}
+    with |error|.
+  
+  1. [=Reject=] |manager|&apos;s {{[[finished]]}}
+    with |error|.
 </div>
 
 <div algorithm>
-	To <dfn>capture the image</dfn>
-	of an {{Element}} |el|,
-	
-	
-	...
+  To <dfn>capture the image</dfn>
+  of an {{Element}} |el|,
+  
+  
+  ...
 
-	Issue: Figure out |el|'s bounds
-	(both border box and ink overflow rectangle,
-	so we can set up the view box properly),
-	and render it into a canvas.
-	If it has children that are also tagged for capture,
-	skip their painting.
-	For this purpose, the element is treated as ''isolation: isolate'',
-	''contain: layout'',
-	and ''break-inside: avoid''.
-	
-	Issue: Clarify that the UA may clip the painting because of platform constraints,
-	for instance if the ink overflow bounds exceed max texture size.
-	
-	Issue: Clarify the clipping behaviour for root elements. Should these be clipped
-	to the viewport by default?
+  Issue: Figure out |el|'s bounds
+  (both border box and ink overflow rectangle,
+  so we can set up the view box properly),
+  and render it into a canvas.
+  If it has children that are also tagged for capture,
+  skip their painting.
+  For this purpose, the element is treated as ''isolation: isolate'',
+  ''contain: layout'',
+  and ''break-inside: avoid''.
+  
+  Issue: Clarify that the UA may clip the painting because of platform constraints,
+  for instance if the ink overflow bounds exceed max texture size.
+  
+  Issue: Clarify the clipping behaviour for root elements. Should these be clipped
+  to the viewport by default?
 </div>
 
 <div algorithm>
-	To <dfn>capture the live image</dfn>
-	of an {{Element}} el,
-	...
+  To <dfn>capture the live image</dfn>
+  of an {{Element}} el,
+  ...
 
-	Issue: Identical to [=capture the image=],
-	except rather than a static image snapshot,
-	it's a live rendering of the element,
-	reflecting the current size and appearance
-	in sync with the real element.
+  Issue: Identical to [=capture the image=],
+  except rather than a static image snapshot,
+  it's a live rendering of the element,
+  reflecting the current size and appearance
+  in sync with the real element.
 </div>
 
 <div algorithm>
-	To <dfn>animate a page transition</dfn>
-	given a {{SameDocumentTransition}} |manager|:
-	
-	1. Generate a <<keyframe>> named "page-transition-fade-out" in
-		[=user-agent origin=] as follows:
-	
-		<pre class=prod>
-			::@keyframes page-transition-fade-out {
-  				to { opacity: 0; }
-			}
-		</pre>
-	
-	1. Generate a <<keyframe>> named "page-transition-fade-in|" in
-		[=user-agent origin=] as follows:
-	
-		<pre class=prod>
-			::@keyframes page-transition-fade-in {
-  				from { opacity: 0; }
-			}
-		</pre>
-	
-	1. Apply the following styles in [=user-agent origin=]:
-		
-		<pre class=prod>
-			html::page-transition-outgoing-image(*) {
-				animation: page-transition-fade-out 0.25s both;
-			}
-			
-			html::page-transition-incoming-image(*) {
-				animation: page-transition-fade-in 0.25s both;
-			}
-		</pre>
+  To <dfn>animate a page transition</dfn>
+  given a {{SameDocumentTransition}} |manager|:
+  
+  1. Generate a <<keyframe>> named "page-transition-fade-out" in
+    [=user-agent origin=] as follows:
+  
+    <pre class=prod>
+      ::@keyframes page-transition-fade-out {
+          to { opacity: 0; }
+      }
+    </pre>
+  
+  1. Generate a <<keyframe>> named "page-transition-fade-in|" in
+    [=user-agent origin=] as follows:
+  
+    <pre class=prod>
+      ::@keyframes page-transition-fade-in {
+          from { opacity: 0; }
+      }
+    </pre>
+  
+  1. Apply the following styles in [=user-agent origin=]:
+    
+    <pre class=prod>
+      html::page-transition-outgoing-image(*) {
+        animation: page-transition-fade-out 0.25s both;
+      }
+      
+      html::page-transition-incoming-image(*) {
+        animation: page-transition-fade-in 0.25s both;
+      }
+    </pre>
 
-	1. [=map/For each=] |tag| -> |CapturedElement| of |manager|&apos;s {{[[TaggedElements]]}}:
-	
-		1. If |CapturedElement| has an "outgoing image" and "incoming element":
-			Let 'transform' be |CapturedElement|&apos;s "outgoing styles"'s 'transform' property.
-			Let 'width' be |CapturedElement|&apos;s "outgoing styles"'s 'width' property.
-			Let 'height' be |CapturedElement|&apos;s "outgoing styles"'s 'height' property.
-	
-			Generate a <<keyframe>> named "page-transition-container-anim-|tag|" in
-			[=user-agent origin=] as follows:
-	
-			<pre class=prod>
-				@keyframes page-transition-container-anim-|tag| {
-					from {
-						transform: |transform|;
-						width: |width|;
-						height: |height|;
-					}
-				}
-			</pre>
-	
-		1. Apply the following styles in [=user-agent origin=]:
-	
-			<pre class=prod>
-				html::page-transition-container(|tag|) {
-					animation: page-transition-container-anim-|tag| 0.25s both;
-				}
-			</pre>
-	
-	Issue: Need to clarify re-targeting the animation if computed properties for
-		incoming elements change.
+  1. [=map/For each=] |tag| -> |CapturedElement| of |manager|&apos;s {{[[TaggedElements]]}}:
+  
+    1. If |CapturedElement| has an "outgoing image" and "incoming element":
+      Let 'transform' be |CapturedElement|&apos;s "outgoing styles"'s 'transform' property.
+      Let 'width' be |CapturedElement|&apos;s "outgoing styles"'s 'width' property.
+      Let 'height' be |CapturedElement|&apos;s "outgoing styles"'s 'height' property.
+  
+      Generate a <<keyframe>> named "page-transition-container-anim-|tag|" in
+      [=user-agent origin=] as follows:
+  
+      <pre class=prod>
+        @keyframes page-transition-container-anim-|tag| {
+          from {
+            transform: |transform|;
+            width: |width|;
+            height: |height|;
+          }
+        }
+      </pre>
+  
+    1. Apply the following styles in [=user-agent origin=]:
+  
+      <pre class=prod>
+        html::page-transition-container(|tag|) {
+          animation: page-transition-container-anim-|tag| 0.25s both;
+        }
+      </pre>
+  
+  Issue: Need to clarify re-targeting the animation if computed properties for
+    incoming elements change.
 </div>
-	
+  
 <div algorithm>
-	To <dfn>finish a page transition</dfn>
-	given a {{SameDocumentTransition}} manager:
-	
-	1. After step 14 of <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering">Update the Rendering</a>
-		step of the Processing Model,
-		for each associated [=page-transition pseudo-elements=]:
-		
-			1. Check whether there is an active animation associated with this pseudo-element.
-				Issue: Clarify this more.
-	
-	1. If any [=page-transition pseudo-elements=] has an active animation, repeat step 1 at the next
-		<a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>;
-		else remove all associated [=page-transition pseudo-elements=].
+  To <dfn>finish a page transition</dfn>
+  given a {{SameDocumentTransition}} manager:
+  
+  1. After step 14 of <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering">Update the Rendering</a>
+    step of the Processing Model,
+    for each associated [=page-transition pseudo-elements=]:
+    
+      1. Check whether there is an active animation associated with this pseudo-element.
+        Issue: Clarify this more.
+  
+  1. If any [=page-transition pseudo-elements=] has an active animation, repeat step 1 at the next
+    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>;
+    else remove all associated [=page-transition pseudo-elements=].
 </div>
 
 <div algorithm>
-	To <dfn>create transition pseudo-elements</dfn>
-	given a {{SameDocumentTransition}} |manager|:
-	
-	1. Create a new ''::page-transition'' pseudo-element,
-		if it doesn't exist. Let |pt| be the ''::page-transition''
-		pseudo-element.
-	
-	1. [=map/For each=] |tag| -> |CapturedElement| of |manager|&apos;s {{[[TaggedElements]]}}:
+  To <dfn>create transition pseudo-elements</dfn>
+  given a {{SameDocumentTransition}} |manager|:
+  
+  1. Create a new ''::page-transition'' pseudo-element,
+    if it doesn't exist. Let |pt| be the ''::page-transition''
+    pseudo-element.
+  
+  1. [=map/For each=] |tag| -> |CapturedElement| of |manager|&apos;s {{[[TaggedElements]]}}:
 
-		1. Create a new ''::page-transition-container'' pseudo-element
-			with the tag |tag| and insert it as a child of |pt|,
-			if it doesn't exist. Let |container| be the
-			''::page-transition-container'' pseudo-element with the tag |tag|.
+    1. Create a new ''::page-transition-container'' pseudo-element
+      with the tag |tag| and insert it as a child of |pt|,
+      if it doesn't exist. Let |container| be the
+      ''::page-transition-container'' pseudo-element with the tag |tag|.
 
-		1. Let |width| be the current width of |CapturedElement|&apos;s "incoming element"'s [=border box=],
-			is it exists; otherwise, |CapturedElement|&apos;s "outgoing data" 'width' property.
-	
-			Let |height| be the current height of |CapturedElement|&apos;s "incoming element"'s [=border box=],
-			is it exists; otherwise, |CapturedElement|&apos;s "outgoing data" 'height' property.
-	
-			Let |transform| be a transform that maps the
-			|CapturedElement|&apos;s "incoming element"'s [=border box=] from document origin to its quad in
-			viewport, if "incoming element" exists; otherwise,
-			|CapturedElement|&apos;s "outgoing data" 'transform' property.
+    1. Let |width| be the current width of |CapturedElement|&apos;s "incoming element"'s [=border box=],
+      is it exists; otherwise, |CapturedElement|&apos;s "outgoing data" 'width' property.
+  
+      Let |height| be the current height of |CapturedElement|&apos;s "incoming element"'s [=border box=],
+      is it exists; otherwise, |CapturedElement|&apos;s "outgoing data" 'height' property.
+  
+      Let |transform| be a transform that maps the
+      |CapturedElement|&apos;s "incoming element"'s [=border box=] from document origin to its quad in
+      viewport, if "incoming element" exists; otherwise,
+      |CapturedElement|&apos;s "outgoing data" 'transform' property.
 
-			Let |writing-mode| and |direction| be the current value of those properties
-			on |CapturedElement|&apos;s "incoming element",
-			if it exists;
-			otherwise, |CapturedElement|&apos;s "outgoing data" corresponding property.
+      Let |writing-mode| and |direction| be the current value of those properties
+      on |CapturedElement|&apos;s "incoming element",
+      if it exists;
+      otherwise, |CapturedElement|&apos;s "outgoing data" corresponding property.
 
-			At the [=user-agent origin=],
-			set |container|&apos;s 'width', 'height', 'transform', 'writing-mode', and 'direction' properties
-			to |width|, |height|, |transform|, |writing-mode|, and |direction|.
+      At the [=user-agent origin=],
+      set |container|&apos;s 'width', 'height', 'transform', 'writing-mode', and 'direction' properties
+      to |width|, |height|, |transform|, |writing-mode|, and |direction|.
 
-		1. Create a new ''::page-transition-image-wrapper'' pseudo-element
-			with the tag |tag| and inserted as a child of |container|, if it doesn't exist.
-			Let |image wrapper| be the ''::page-transition-image-wrapper'' pseudo-element
-			with the tag |tag|.
+    1. Create a new ''::page-transition-image-wrapper'' pseudo-element
+      with the tag |tag| and inserted as a child of |container|, if it doesn't exist.
+      Let |image wrapper| be the ''::page-transition-image-wrapper'' pseudo-element
+      with the tag |tag|.
 
-		1. If |CapturedElement| has an "outgoing image",
-			then create a new ''::page-transition-outgoing-image'' pseudo-element
-			with the tag |tag| and inserted as a child of |image wrapper|, if it doesn't exist.
-			Let |outgoing| be the ''::page-transition-outgoing-image'' pseudo-element with
-			the tag |tag|.
-			This pseudo-element is a [=replaced element=],
-			displaying |CapturedElement|&apos;s "outgoing image".
+    1. If |CapturedElement| has an "outgoing image",
+      then create a new ''::page-transition-outgoing-image'' pseudo-element
+      with the tag |tag| and inserted as a child of |image wrapper|, if it doesn't exist.
+      Let |outgoing| be the ''::page-transition-outgoing-image'' pseudo-element with
+      the tag |tag|.
+      This pseudo-element is a [=replaced element=],
+      displaying |CapturedElement|&apos;s "outgoing image".
 
-			At the [=user-agent origin=],
-			set |outgoing|&apos;s 'object-view-box' property
-			to |CapturedData|&apos;s "outgoing data" 'object-view-box' property.
+      At the [=user-agent origin=],
+      set |outgoing|&apos;s 'object-view-box' property
+      to |CapturedData|&apos;s "outgoing data" 'object-view-box' property.
 
-		1. If |CapturedData| has an "incoming element",
-			then create be a new ''::page-transition-incoming-image''
-			pseudo-element
-			with the tag |tag|,
-			inserted as a child of |image wrapper|
-			(after |outgoing|, if it exists), if it doesn't exist.
-			Let |incoming| be the ''::page-transition-incoming-image'' pseudo-element with
-			the tag |tag|.
-			This pseudo-element is a [=replaced element=],
-			displaying the [=capture the live image|live image=]
-			of |CapturedElement|&apos;s "incoming element".
+    1. If |CapturedData| has an "incoming element",
+      then create be a new ''::page-transition-incoming-image''
+      pseudo-element
+      with the tag |tag|,
+      inserted as a child of |image wrapper|
+      (after |outgoing|, if it exists), if it doesn't exist.
+      Let |incoming| be the ''::page-transition-incoming-image'' pseudo-element with
+      the tag |tag|.
+      This pseudo-element is a [=replaced element=],
+      displaying the [=capture the live image|live image=]
+      of |CapturedElement|&apos;s "incoming element".
 
-			At the [=user-agent origin=],
-			set |incoming|&apos;s 'object-view-box' property
-			to a value that when applied to |incoming|,
-			will cause the view box to coincide with "incoming element"'s [=border box=]
-			in the image.
+      At the [=user-agent origin=],
+      set |incoming|&apos;s 'object-view-box' property
+      to a value that when applied to |incoming|,
+      will cause the view box to coincide with "incoming element"'s [=border box=]
+      in the image.
 </div>
