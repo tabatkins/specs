@@ -198,6 +198,8 @@ The following describes all of the [=page-transition pseudo-elements=] and their
   }
   </code></pre>
 
+In addition to above, styles in the [=user-agent origin=] add `isolation: isolate` to this pseudo-element if it has both [=page-transition-incoming-image] and [=page-transition-outgoing-image] as descendants.
+
   Note: The aim of the style is to position the element to occpy the same space
   as its ::page-transition-container element and provide isolation for
   blending.
