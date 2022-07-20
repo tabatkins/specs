@@ -98,7 +98,7 @@ The ''::page-transition'' pseudo-element acts as a grouping element for other
 [=originating element=].
 
 <p class="note">For example, '':root::page-transition'' selector matches this
-pseudo-element, but ''div::page-transition'' does not. This pseudo-element also
+pseudo-element, but ''div::page-transition'' does not.
 </p>
 
 Other [=page-transition pseudo-elements=] take a <<pt-tag-selector>> argument
