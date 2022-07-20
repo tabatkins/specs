@@ -319,7 +319,7 @@ initially empty.
 
 Additionally the following structures exist:
 
-* A <dfn attribute for=SameDocumentTransition>\[[Phase]]</dfn> internal slot,0
+* A <dfn attribute for=SameDocumentTransition>\[[Phase]]</dfn> internal slot,
     which is a [=/string=] chosen from "idle", "outgoing-capture",
     "incoming-prep", and "running". The initial value is "idle".
 
