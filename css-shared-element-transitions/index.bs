@@ -291,10 +291,14 @@ and resolved when it’s ended (successfully or unsuccessfully).
 	1. If multiple elements on the page have the same [=page transition tag=],
 		[=throw=] an {{InvalidStateException}}.
 	
-	1. [=map/For each=] element |el| with a non-''page-transition-tag/none'',
-		if |el| does not have layout containment applied or,
-		if |el| does not forbid fragmentation,
-		[=throw=] an {{InvalidStateException}}.
+	1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
+		[=throw=] an {{InvalidStateException}} if any of the following conditions is true:
+	
+		1. |el| does not have layout containment applied.
+	
+		1. |el| does not forbid fragmentation.
+	
+		1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
 
 	1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-capture".
 
@@ -309,8 +313,6 @@ and resolved when it’s ended (successfully or unsuccessfully).
 	1. Let |taggedElements| be [=this's=] {{[[TaggedElements]]}} internal slot.
 	
 	1. Schedule a <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>.
-		Note: Defering the subsequent step to the next rendering opportunity allows DOM mutations made by the author when
-		triggering the transition to be presented to the user and captured in the snapshots.
 	
 	1. Execute the following steps after step 14 of
 		<a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>
@@ -351,8 +353,12 @@ and resolved when it’s ended (successfully or unsuccessfully).
 		1. [=Create transition pseudo-elements=] managed by [=this=].
 	
 		1. Suppress rendering opportunities for [=this's=] Document.
+	
 			Note: The aim is to prevent unintended DOM updates from being presented to the
-			user after a cached snapshot for the elements has been captured.
+			user after a cached snapshot for the elements has been captured. We wait for
+			one rendering opportunity after prepare to present DOM mutations made by the
+			author before prepare to be presented to the user. This is also the content
+			captured in snapshots.
 
 		1. [=Queue a global task=] on the [=DOM manipulation task source=],
 			given |realm|&apos;s [=Realm/global object=],
@@ -365,6 +371,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 				[=Upon fulfillment=] of |userP|:
 	
 				1. Stop suppressing rendering opportunities for [=this's=] Document.
+	
 					Note: Resuming rendering opportunities is delayed until fulfillment of
 					userP to allow asynchronous loading of the incoming DOM.
 
@@ -372,15 +379,15 @@ and resolved when it’s ended (successfully or unsuccessfully).
 					[=abandon the page transition=] managed by [=this=]
 					with an {{InvalidStateException}}.
 	
-				1. [=map/For each=] element |el| with a non-''page-transition-tag/none'',
-					if |el| does not have layout containment applied or,
-					if |el| does not forbid fragmentation,
-					[=abandon the page transition=] managed by [=this=]
-					with an {{InvalidStateException}}.
-					
-					Issue: What to do if this state changes during the transition animation?
-					Abandon the transition or just remove the ::page-transition-incoming-element
-					and update the animation styles.
+				1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
+					[=abandon the page transition=] managed by [=this=] with an {{InvalidStateException}}
+					if any of the following conditions is true:
+
+					1. |el| does not have layout containment applied.
+
+					1. |el| does not forbid fragmentation.
+
+					1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
 
 				1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value,
 					in paint order:
@@ -399,15 +406,17 @@ and resolved when it’s ended (successfully or unsuccessfully).
 				1. [=Create transition pseudo-elements=] managed by [=this=].
 	
 				1. [=Animate a page transition=] managed by [=this=].
+	
+					Note: This will require running document lifecycle phases to compute
+						information calculated during style/layout.
 
 				1. [=Resolve=] {{[[ReadyPromise]]}} with |readyP|.
 
-				1. [=In parallel=]:
-					1. [=finish a page transition=] managed by [=this=].
-
-					1. Set [=this's=] {{[[Phase]]}} internal slot to "idle".
-
-					1. [=Resolve=] {{[[finished]]}} with |finishedP|.
+				1. At each next rendering opportunity, run the [=update transition DOM=] steps
+					for [=this=] after step 14 of
+					<a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>.
+	
+					Issue: This should likely move to the html spec.
 
 				[=Upon rejection=] of |userP|:
 
@@ -519,39 +528,87 @@ and resolved when it’s ended (successfully or unsuccessfully).
 </div>
 
 <div algorithm>
-	To <dfn>capture the image</dfn>
-	of an {{Element}} |el|,
-	
-	
-	...
+	For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 
-	Issue: Figure out |el|'s bounds
-	(both border box and ink overflow rectangle,
-	so we can set up the view box properly),
-	and render it into a canvas.
-	If it has children that are also tagged for capture,
-	skip their painting.
-	For this purpose, the element is treated as ''isolation: isolate'',
-	''contain: layout'',
-	and ''break-inside: avoid''.
+	1. Render the referenced element and its descendants,
+		at the same size that they would be in the document,
+		over an infinite transparent canvas with the following
+		characterists:
 	
-	Issue: Clarify that the UA may clip the painting because of platform constraints,
-	for instance if the ink overflow bounds exceed max texture size.
+		1. The origin of |el|'s
+			<a href="https://drafts.csswg.org/css-overflow/#ink-overflow-rectangle">ink overflow rectangle</a>
+			is anchored to canvas origin.
 	
-	Issue: Clarify the clipping behaviour for root elements. Should these be clipped
-	to the viewport by default?
+		1. If the referenced element has a transform applied to it (or its ancestors),
+			the transform is ignored.
+	
+			Note: This transform is applied to the snapshot using the `transform`
+				property of the associated [=page-transition-container=] pseudo-element.
+	
+		1. For each descendant with a non-''page-transition-tag/none'' [=page-transition-tag=],
+			skip painting this descendant.
+	
+			Note: This is necessary since the descendant will generate its
+				own snapshot which will be displayed and animated independently.
+	
+	1. Let |interest rectangle| be the result of [=Compute the interest rectangle=] for |el|.
+		The |interest rectangle| is the subset of |el|'s
+		<a href="https://drafts.csswg.org/css-overflow/#ink-overflow-rectangle">ink overflow rectangle</a>
+		that should be captured.
+	
+		Note: This is required for cases where an element's ink overflow rectangle needs
+			to be clipped because of hardware constraints. For example, if it exceeds
+			max texture size.
+	
+	1. Set the captured image to the contents of the |interest rectangle| in the rendered canvas.
+		The natural size of the image is equal to the |interest rectangle| bounds.
+</div>
+	
+<div algorithm>
+	To <dfn>update transition DOM</dfn> given a {{SameDocumentTransition}} |manager|:
+	
+	1. For each [=page-transition pseudo-elements=] associated with |manager|:
+		
+		1. Check whether there is an active animation associated with this pseudo-element.
+	
+			Issue: Define what active animation means here.
+	
+	1. If no [=page-transition pseudo-elements=] has an active animation:
+	
+		1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
+
+		1. [=Resolve=] |manager|&apos;s{{[[finished]]}} with |finishedP|.
+	
+		1. Return.
+	
+	1. [=map/For each=] |tag| -> |CapturedElement| of |manager|&apos;s {{[[TaggedElements]]}}:
+	
+		1. If |CapturedElement| has an "incoming element", run [=capture the image=]
+			on |CapturedElement|&apos;s "incoming element" and update the displayed
+			image for ''::page-transition-incoming-image'' with the tag |tag|.
+	
+			At the [=user-agent origin=],
+			set |incoming|&apos;s 'object-view-box' property
+			to a value that when applied to |incoming|,
+			will cause the view box to coincide with "incoming element"'s [=border box=]
+			in the image.
+	
+		1. Issue: Also clarify updating the animation based on new bounds/transform.
+			
 </div>
 
 <div algorithm>
-	To <dfn>capture the live image</dfn>
-	of an {{Element}} el,
-	...
-
-	Issue: Identical to [=capture the image=],
-	except rather than a static image snapshot,
-	it's a live rendering of the element,
-	reflecting the current size and appearance
-	in sync with the real element.
+	To <dfn>compute the interest rectangle</dfn> of an {{Element}} |el|:
+	
+	1. If |el| is the document's root element, the |interest rectangle| is
+		the intersection of the viewport, including the size of renderered
+		scrollbars (if any), with |el|'s ink overflow rectangle.
+	
+	1. If |el|'s <a href="https://drafts.csswg.org/css-overflow/#ink-overflow-region">ink overflow area</a>
+		does not exceed an implementation-defined maximum size, the |interest rectangle|
+		is equal to |el|'s ink overflow rectangle.
+	
+		Issue: Define the algorithm used to clip the snapshot when it exceeds max size.
 </div>
 
 <div algorithm>
@@ -624,22 +681,6 @@ and resolved when it’s ended (successfully or unsuccessfully).
 	Issue: We should retarget the animation if computed properties for
 		incoming elements change.
 </div>
-	
-<div algorithm>
-	To <dfn>finish a page transition</dfn>
-	given a {{SameDocumentTransition}} manager:
-	
-	1. After step 14 of <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering">Update the Rendering</a>
-		step of the Processing Model,
-		for each associated [=page-transition pseudo-elements=]:
-		
-			1. Check whether there is an active animation associated with this pseudo-element.
-				Issue: Clarify this more.
-	
-	1. If any [=page-transition pseudo-elements=] has an active animation, repeat step 1 at the next
-		<a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>;
-		else remove all associated [=page-transition pseudo-elements=].
-</div>
 
 <div algorithm>
 	To <dfn>create transition pseudo-elements</dfn>
@@ -702,7 +743,7 @@ and resolved when it’s ended (successfully or unsuccessfully).
 			Let |incoming| be the ''::page-transition-incoming-image'' pseudo-element with
 			the tag |tag|.
 			This pseudo-element is a [=replaced element=],
-			displaying the [=capture the live image|live image=]
+			displaying the [=capture the image=]
 			of |CapturedElement|&apos;s "incoming element".
 
 			At the [=user-agent origin=],
