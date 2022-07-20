@@ -233,7 +233,7 @@ In addition to above, styles in the [=user-agent origin=] add `isolation: isolat
   pixels from the outgoing and incoming images results in the same color value
   as those pixels.
 
-  In addition to above, the following [=user-agent origin=] styles apply:
+  In addition to above, [=user-agent origin=] styles added to animate these pseudo-elements are details in [=Animate a page transition=].
 
 ----------------- VMPSTR STOPPED REVIEW HERE ----------------------
 
