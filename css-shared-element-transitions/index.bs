@@ -107,7 +107,6 @@ to specify which elements tagged with ''page-transition-tag'' are affected.
 There can be multiple pseudo-elements of the same type,
 one for each ''page-transition-tag'' participating in a transition.
 
-
 The <<pt-tag-selector>> is defined as follows:
 
 <pre class=prod>
