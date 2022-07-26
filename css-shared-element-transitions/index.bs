@@ -212,9 +212,9 @@ The following describes all of the [=page-transition pseudo-elements=] and their
 
 : <dfn>::page-transition-outgoing-image( <<pt-tag-selector>> )</dfn>
 ::  One of these pseudo-elements exists
-    for each element being animated by the page transition, and is a
-    [=replaced element=] displaying the outgoing element's snapshot image.  It
-    has [=natural dimensions=] equal to the snapshot's size.
+    for each element in the outgoing DOM being animated by the page transition,
+    and is a [=replaced element=] displaying the outgoing element's snapshot image.
+    It has [=natural dimensions=] equal to the snapshot's size.
 
     Its [=originating element=] is the ''::page-transition-image-wrapper()''
     pseudo-element with the same tag.
@@ -274,7 +274,12 @@ called <dfn>page-transition layer</dfn> with the following characteristics:
     <a href="https://dom.spec.whatwg.org/#concept-tree-root">root</a>
     and <a href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</a>
     elements.
-    The ''page-transitioon layer'' is a sibling of this stacking context.
+    The ''page-transition layer'' is a sibling of this stacking context.
+
+1. The ''page-transition layer'' paints after the stacking context for the
+     <a href="https://dom.spec.whatwg.org/#concept-tree-root">root</a>
+    and <a href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</a>
+    elements.
 
 Note: The intent of the feature is to be able to capture the contents of the
 page, which includes the top layer elements. In order to accomplish that, the
@@ -293,7 +298,7 @@ Single-page API:
 <xmp class=idl>
 interface SameDocumentTransition {
     constructor();
-    Promise<any> prepare(AsyncFunction cb);
+    Promise<undefined> prepare(AsyncFunction cb);
     undefined abandon();
     readonly attribute Promise<any> finished;
 };
@@ -309,9 +314,10 @@ document's DOM structure.
 {{SameDocumentTransition}} objects have a <dfn attribute for=SameDocumentTransition>\[[TaggedElements]]</dfn>
 private slot, which is a [=/map=], whose keys are [=page
 transition tags=] and whose values are <dfn>CapturedElement</dfn>s, a
-[=/struct=] with items named "outgoing image" (an image), "outgoing styles" (a
-set of styles), and "incoming element" (an element). All of the slots are
-initially empty.
+[=/struct=] with items named <dfn>outgoing image</dfn> (an image),
+<dfn>outgoing styles</dfn> (a set of styles), and
+<dfn>incoming element</dfn> (an element).
+All of the slots are initially empty.
 
 Additionally the following structures exist:
 
@@ -332,24 +338,21 @@ Additionally the following structures exist:
     The [=method steps=] for
     <dfn method for=SameDocumentTransition>prepare(|cb|)</dfn>
     are as follows:
-
-    1. If any {{SameDocumentTransition}} object in the document
+    
+    1. If any {{SameDocumentTransition}} object in the Document
         ([=this=] or any other)
         has a {{[[Phase]]}} internal slot set to a non-"idle" value,
         [=throw=] an {{InvalidStateException}}.
 
-    1. If multiple elements on the page have the same [=page transition tag=],
-        [=throw=] an {{InvalidStateException}}.
-        
-    1. If multiple elements on the page have the same [=page transition tag=],
-		[=throw=] an {{InvalidStateException}}.
+    1. If multiple elements or pseudo-elements on the Document have the same
+	     [=page transition tag=], [=throw=] an {{InvalidStateException}}.
 	
-	1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
-		[=throw=] an {{InvalidStateException}} if any of the following conditions is true:
+	  1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
+		   [=throw=] an {{InvalidStateException}} if any of the following conditions is true:
 	
-	    1. |el| does not have layout containment applied.
+        1. |el| does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.
 	
-        1. |el| does not forbid fragmentation.
+        1. |el| does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.
 	
         1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
       
@@ -376,11 +379,11 @@ Additionally the following structures exist:
     
         1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value, in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:
 
-            1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
+            1. Let |tag| be |el|&apos;s computed 'page-transition-tag' value.
             1. Let |capture| be a new [=CapturedElement=] struct.
-            1. Set |capture|&apos;s "outgoing image"
+            1. Set |capture|&apos;s [=outgoing image=]
                 to the result of [=capturing the image=] of |el|.
-            1. Set |capture|&apos;s "outgoing styles" to the following:
+            1. Set |capture|&apos;s [=outgoing styles=] to the following:
 
                 : 'transform'
                 :: A CSS transform that would place |el|
@@ -407,14 +410,22 @@ Additionally the following structures exist:
             1. Set |taggedElements|[|tag|] to |capture|.
           
         1. [=Create transition pseudo-elements=] managed by [=this=].
-	
-		1. Suppress rendering opportunities for [=this's=] Document.
+        
+        1. Suppress rendering opportunities for [=this's=] Document.
 	
             Note: The aim is to prevent unintended DOM updates from being presented to the
-			user after a cached snapshot for the elements has been captured. We wait for
-			one rendering opportunity after prepare to present DOM mutations made by the
-			author before prepare to be presented to the user. This is also the content
-			captured in snapshots.
+			      user after a cached snapshot for the elements has been captured. We wait for
+			      one rendering opportunity after prepare to present DOM mutations made by the
+			      author before prepare to be presented to the user. This is also the content
+			      captured in snapshots.
+    
+            Issue: Further clarify this behaviour. Lifecycle updates can still be trigerred
+            via script APIs which query style or layout information but no visual updates
+            are presented to the user. Is this the same behaviour as render-blocking?
+    
+            Issue: How should input be handled when in this state? The last frame presented
+            to the user will not reflect the DOM state as it asynchronously switches to
+            the new version.
 
         1. [=Queue a global task=] on the [=DOM manipulation task source=],
             given |realm|&apos;s [=Realm/global object=],
@@ -423,20 +434,20 @@ Additionally the following structures exist:
             1. Set [=this's=] {{[[Phase]]}} internal slot to "incoming-prep".
     
             1. [=/Invoke=] |cb|, and let |userP| be the return value.
-
-                [=Upon fulfillment=] of |userP|:
+            
+            [=Upon fulfillment=] of |userP|:
 	
                 1. Stop suppressing rendering opportunities for [=this's=] Document.
 	
                     Note: Resuming rendering opportunities is delayed until fulfillment of
                     userP to allow asynchronous loading of the incoming DOM.
 
-                1. If multiple elements on the page have the same [=page transition tag=],
-                    [=abandon the page transition=] managed by [=this=]
-                    with an {{InvalidStateException}}.
+                1. If multiple elements or pseudo-elements on the Document have the same
+	                  [=page transition tag=], [=abandon the page transition=] managed by
+                    [=this=] with an {{InvalidStateException}}.
 	
                 1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
-				    [=abandon the page transition=] managed by [=this=] with an {{InvalidStateException}}
+				            [=abandon the page transition=] managed by [=this=] with an {{InvalidStateException}}
                     if any of the following conditions is true:
 
                     1. |el| does not have layout containment applied.
@@ -455,7 +466,7 @@ Additionally the following structures exist:
 
                     1. Let |capture| be |taggedElements|[|tag|].
 
-                    1. Let |capture|&apos;s "incoming element" item be |el|.
+                    1. Let |capture|&apos;s [=incoming element=] item be |el|.
 
                 1. Set [=this's=] {{[[Phase]]}} internal slot to "running".
 
@@ -472,7 +483,7 @@ Additionally the following structures exist:
                     for [=this=] after step 14 of
                     <a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>.
 	
-					Issue: This should likely move to the html spec.
+					          Issue: This should likely move to the html spec.
 
                 [=Upon rejection=] of |userP|:
 
@@ -601,11 +612,11 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 				property of the associated [=page-transition-container=] pseudo-element.
 	
 		1. For each descendant with a non-''page-transition-tag/none'' [=page-transition-tag=],
-			skip painting this descendant.
+			  skip painting this descendant.
 	
 			Note: This is necessary since the descendant will generate its
 				own snapshot which will be displayed and animated independently.
-	
+
 	1. Let |interest rectangle| be the result of [=Compute the interest rectangle=] for |el|.
 		The |interest rectangle| is the subset of |el|'s
 		<a href="https://drafts.csswg.org/css-overflow/#ink-overflow-rectangle">ink overflow rectangle</a>
@@ -622,11 +633,10 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 <div algorithm>
 	To <dfn>update transition DOM</dfn> given a {{SameDocumentTransition}} |manager|:
 	
-	1. For each [=page-transition pseudo-elements=] associated with |manager|:
-		
-		1. Check whether there is an active animation associated with this pseudo-element.
+	1. For each [=page-transition pseudo-elements=] associated with |manager|,
+		check whether there is an active animation associated with this pseudo-element.
 	
-			Issue: Define what active animation means here.
+		Issue: Define what active animation means here.
 	
 	1. If no [=page-transition pseudo-elements=] has an active animation:
 	
@@ -652,7 +662,6 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
     
             Issue: Also clarify updating the animation based on new bounds/transform to
             get c0 continuity.
-			
 </div>
 
 <div algorithm>
@@ -705,10 +714,10 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 
 	1. [=map/For each=] |tag| -> |CapturedElement| of |manager|&apos;s {{[[TaggedElements]]}}:
 	
-		1. If |CapturedElement| has an "outgoing image" and "incoming element":
-			Let 'transform' be |CapturedElement|&apos;s "outgoing styles"'s 'transform' property.
-			Let 'width' be |CapturedElement|&apos;s "outgoing styles"'s 'width' property.
-			Let 'height' be |CapturedElement|&apos;s "outgoing styles"'s 'height' property.
+		1. If |CapturedElement| has an [=outgoing image=] and [=incoming element=]:
+			Let 'transform' be |CapturedElement|&apos;s [=outgoing styles=]'s 'transform' property.
+			Let 'width' be |CapturedElement|&apos;s [=outgoing styles=]'s 'width' property.
+			Let 'height' be |CapturedElement|&apos;s [=outgoing styles=]'s 'height' property.
 	
 			Generate a <<keyframe>> named "page-transition-container-anim-|tag|" in
 			[=user-agent origin=] as follows:
@@ -755,19 +764,19 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 			if it doesn't exist. Let |container| be the
 			''::page-transition-container'' pseudo-element with the tag |tag|.
 
-		1. Let |width| be the current width of |CapturedElement|&apos;s "incoming element"'s [=border box=],
+		1. Let |width| be the current width of |CapturedElement|&apos;s [=incoming element=]'s [=border box=],
 			is it exists; otherwise, |CapturedElement|&apos;s "outgoing data" 'width' property.
 	
-			Let |height| be the current height of |CapturedElement|&apos;s "incoming element"'s [=border box=],
+			Let |height| be the current height of |CapturedElement|&apos;s [=incoming element=]'s [=border box=],
 			is it exists; otherwise, |CapturedElement|&apos;s "outgoing data" 'height' property.
 	
 			Let |transform| be a transform that maps the
-			|CapturedElement|&apos;s "incoming element"'s [=border box=] from document origin to its quad in
-			viewport, if "incoming element" exists; otherwise,
+			|CapturedElement|&apos;s [=incoming element=]'s [=border box=] from document origin to its quad in
+			viewport, if [=incoming element=] exists; otherwise,
 			|CapturedElement|&apos;s "outgoing data" 'transform' property.
 
 			Let |writing-mode| and |direction| be the current value of those properties
-			on |CapturedElement|&apos;s "incoming element",
+			on |CapturedElement|&apos;s [=incoming element=],
 			if it exists;
 			otherwise, |CapturedElement|&apos;s "outgoing data" corresponding property.
 
@@ -780,13 +789,13 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 			Let |image wrapper| be the ''::page-transition-image-wrapper'' pseudo-element
 			with the tag |tag|.
 
-		1. If |CapturedElement| has an "outgoing image",
+		1. If |CapturedElement| has an [=outgoing image=],
 			then create a new ''::page-transition-outgoing-image'' pseudo-element
 			with the tag |tag| and inserted as a child of |image wrapper|, if it doesn't exist.
 			Let |outgoing| be the ''::page-transition-outgoing-image'' pseudo-element with
 			the tag |tag|.
 			This pseudo-element is a [=replaced element=],
-			displaying |CapturedElement|&apos;s "outgoing image".
+			displaying |CapturedElement|&apos;s [=outgoing image=].
 
 			At the [=user-agent origin=],
 			set |outgoing|&apos;s 'object-view-box' property
@@ -794,7 +803,7 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
     
             Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
 
-		1. If |CapturedData| has an "incoming element",
+		1. If |CapturedData| has an [=incoming element=],
 			then create be a new ''::page-transition-incoming-image''
 			pseudo-element
 			with the tag |tag|,
@@ -804,11 +813,11 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 			the tag |tag|.
 			This pseudo-element is a [=replaced element=],
 			displaying the [=capture the image=]
-			of |CapturedElement|&apos;s "incoming element".
+			of |CapturedElement|&apos;s [=incoming element=].
 
 			At the [=user-agent origin=],
 			set |incoming|&apos;s 'object-view-box' property
 			to a value that when applied to |incoming|,
-			will cause the view box to coincide with "incoming element"'s [=border box=]
+			will cause the view box to coincide with [=incoming element=]'s [=border box=]
 			in the image.
 </div>
