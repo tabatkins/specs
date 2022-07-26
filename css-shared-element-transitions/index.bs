@@ -630,25 +630,26 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 	
 	1. If no [=page-transition pseudo-elements=] has an active animation:
 	
-		1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
+        1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
 
-		1. [=Resolve=] |manager|&apos;s{{[[finished]]}} with |finishedP|.
-	
-		1. Return.
+        1. [=Resolve=] |manager|&apos;s{{[[finished]]}} with |finishedP|.
+
+        1. Return.
 	
 	1. [=map/For each=] |tag| -> |CapturedElement| of |manager|&apos;s {{[[TaggedElements]]}}:
 	
-		1. If |CapturedElement| has an "incoming element", run [=capture the image=]
-			on |CapturedElement|&apos;s "incoming element" and update the displayed
-			image for ''::page-transition-incoming-image'' with the tag |tag|.
-	
-			At the [=user-agent origin=],
-			set |incoming|&apos;s 'object-view-box' property
-			to a value that when applied to |incoming|,
-			will cause the view box to coincide with "incoming element"'s [=border box=]
-			in the image.
-	
-		1. ...
+        1. If |CapturedElement| has an "incoming element", run [=capture the image=]
+            on |CapturedElement|&apos;s "incoming element" and update the displayed
+            image for ''::page-transition-incoming-image'' with the tag |tag|.
+
+            At the [=user-agent origin=],
+            set |incoming|&apos;s 'object-view-box' property
+            to a value that when applied to |incoming|,
+            will cause the view box to coincide with "incoming element"'s [=border box=]
+            in the image.
+
+        1. ...
+    
             Issue: Also clarify updating the animation based on new bounds/transform to
             get c0 continuity.
 			
