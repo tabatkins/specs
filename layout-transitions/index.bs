@@ -11,6 +11,7 @@ Editor: Tab Atkins Jr., Google, http://xanthir.com/contact/
 Abstract: Primitive JavaScript operations to enable layout transition effects.
 Default Highlight: javascript
 Ignored Terms: absolutely positioned
+Warning: replaced by https://tabatkins.github.io/specs/css-shared-element-transitions
 </pre>
 
 <pre class=link-defaults>

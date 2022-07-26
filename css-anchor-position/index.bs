@@ -11,6 +11,7 @@ Abstract: This specification defines 'anchor positioning', where a positioned el
 </pre>
 
 <pre class=link-defaults>
+spec:css-break-4; type:dfn; text:fragment
 spec:css-display-3; type:dfn; text:element
 spec:css-position-3; type:dfn; text:inset-modified containing block
 </pre>
@@ -70,12 +71,6 @@ The ''anchor()'' function has three arguments:
 * the <<dashed-ident>> specifies the [=anchor name=] of the [=anchor element=]
 	it will be drawing positioning information from.
 
-	Issue: Do we need the ability to refer to multiple anchors?
-	Like, leftmost among all with a given name,
-	or leftmost between two given names?
-	Think about if it's possible to do google-docs style comments
-	with minimal or zero scripting.
-
 * the <<anchor-side>> value
 	refers to the position of the corresponding side
 	of the [=target anchor element=].
@@ -128,11 +123,16 @@ of the positioned elements' [=inset-modified containing block=]
 corresponding to the property the function appears in
 with the specified border edge of the [=target anchor element=].
 
+If the [=target anchor element=] is [=fragmented=],
+the axis-aligned bounding rectangle
+of the fragments' border boxes is used instead.
+
 Issue: Do we need to control which box we're referring to,
 so you can align to padding or content edge?
 
 For this purpose, all scrolling containers
-are treated as if scrolled to their initial scroll position,
+are treated as if scrolled to their initial scroll position
+(but see 'anchor-scroll'),
 and all transforms are ignored.
 
 <div class=example>
@@ -186,6 +186,59 @@ and all transforms are ignored.
 	as the centering will make it easier to discover
 	which input is being referred to.
 </div>
+
+Anchoring to a Scrolled Position: the 'anchor-scroll' property {#anchor-scroll}
+--------------------------------------------------------------
+
+The ''anchor()'' property does not take scrolling into account,
+calculating its values as if the positioned element
+and the [=target anchor element=]
+had all ancestor scroll containers set to the initial position.
+This enables the feature to work purely on information known during layout,
+since scrolling is often implemented "on the compositor",
+as a post-layout visual transform.
+
+When responding to scroll position <em>is</em> necessary, however,
+the 'anchor-scroll' property can be used to indicate this.
+
+<pre class=propdef>
+Name: anchor-scroll
+Value: none | <<dashed-ident>>
+Initial: none
+Inherited: no
+Applies to: [=absolutely-positioned=] elements
+Animation type: discrete
+</pre>
+
+'anchor-scroll' allows a [=positioned=] element
+to respond to the scroll offsets of a [=target anchor element's=]
+ancestor scroll containers,
+keeping the position of the two in sync
+as scrolls are performed.
+Values are defined as:
+
+<dl dfn-type=value dfn-for=anchor-scroll>
+	: <dfn>none</dfn>
+	:: No effect.
+
+	: <dfn><<dashed-ident>></dfn>
+	::
+		If there is no [=target anchor element=]
+		with the given name,
+		this value does nothing.
+
+		Otherwise,
+		this element is translated
+		by the accumulated scroll offsets
+		of all scroll containers between the element's containing block
+		and the [=target anchor element=].
+
+		This translation is treated identically
+		to the translation caused by ''position: sticky''.
+</dl>
+
+Issue: Name TBD, this probably isn't the final name.
+
 
 Anchor-based Sizing: the ''anchor-size()'' function {#anchor-size}
 ---------------------------------------------------
@@ -261,26 +314,31 @@ That name is not necessarily unique on the page, however;
 even if it is, the [=anchor element=] in question
 might not be capable of anchoring the positioned element.
 
-To determine the <dfn>target [=anchor element=]</dfn>,
-find the first element in tree order
-which satisfies the following conditions:
+<div algorithm>
+	To determine the <dfn>target [=anchor element=]</dfn>,
+	find the first element |el| in tree order
+	which satisfies the following conditions:
 
-* is an [=anchor element=] with the given [=anchor name=]
-* is a descendant of the querying element's [=containing block=],
-	or the quering element's [=containing block=] is the [=initial containing block=]
-* if it has the same [=containing block=] as the querying element,
-	it is not itself [=positioned=]
-* if it has a different [=containing block=] from the querying element,
-	the last [=containing block=] in its [=containing block chain=]
-	before reaching the querying element's [=containing block=]
-	is not, itself, [=positioned=]
+	* |el| is an [=anchor element=] with the given [=anchor name=]
+	* |el| is a descendant of the querying element's [=containing block=],
+		or the quering element's [=containing block=] is the [=initial containing block=]
+	* if |el| has the same [=containing block=] as the querying element,
+		|el| is not [=positioned=]
+	* if |el| has a different [=containing block=] from the querying element,
+		the last [=containing block=] in |el|'s [=containing block chain=]
+		before reaching the querying element's [=containing block=]
+		is not [=positioned=]
 
-Note: There might not be any such element.
+	Note: There might not be any such element.
 
-Note: These conditions ensure that the [=anchor element=]
-is laid out strictly before the element using ''anchor()'' or ''anchor-size()'',
-so there is no possible circularity between the position and/or size
-of the two elements.
+	Note: Because positioned elements
+	are laid out strictly after non-positioned elements
+	in the same containing block,
+	these conditions ensure that the [=anchor element=]
+	is laid out strictly before the element using ''anchor()'' or ''anchor-size()'',
+	so there is no possible circularity between the position and/or size
+	of the two elements.
+</div>
 
 
 Anchor Queries {#queries}
