@@ -311,22 +311,26 @@ a single same-document transition. That is, it controls a transition where the
 starting and ending document are the same, possibly with changes to the
 document's DOM structure.
 
-{{SameDocumentTransition}} objects have a <dfn attribute for=SameDocumentTransition>\[[TaggedElements]]</dfn>
-private slot, which is a [=/map=], whose keys are [=page
-transition tags=] and whose values are <dfn>CapturedElement</dfn>s, a
-[=/struct=] with items named <dfn>outgoing image</dfn> (an image),
-<dfn>outgoing styles</dfn> (a set of styles), and
-<dfn>incoming element</dfn> (an element).
-All of the slots are initially empty.
+{{SameDocumentTransition}} objects have the following values:
 
-Additionally the following structures exist:
+* A <dfn attribute for=SameDocumentTransition>\[[TaggedElements]]</dfn>
+    private slot, which is a [=/map=], whose keys are [=page
+    transition tags=] and whose values are <dfn>CapturedElement</dfn>s, a
+    [=/struct=] with items named <dfn>outgoing image</dfn> (an image),
+    <dfn>outgoing styles</dfn> (a set of styles), and
+    <dfn>incoming element</dfn> (an element).
+    All of the slots are initially empty.
 
-* A <dfn attribute for=SameDocumentTransition>\[[Phase]]</dfn> internal slot,
+* A <dfn attribute for=SameDocumentTransition>\[[Phase]]</dfn> private slot,
     which is a [=/string=] chosen from "idle", "outgoing-capture",
     "incoming-prep", and "running". The initial value is "idle".
+    
+* A <dfn attribute for=SameDocumentTransition>\[[PrepareCallback]]</dfn>
+    private slot, which is an AsyncFunction dispatched to update the
+    DOM to the new state.
 
 * A <dfn attribute for=SameDocumentTransition>\[[ReadyPromise]]</dfn>
-    internal slot, which is a {{Promise}} created when a page transition is
+    private slot, which is a {{Promise}} created when a page transition is
     started, and resolved when the phase is updated from "incoming-prep" to
     "running".
 
@@ -339,15 +343,19 @@ Additionally the following structures exist:
     <dfn method for=SameDocumentTransition>prepare(|cb|)</dfn>
     are as follows:
     
+    1. Set [=this's=] {{[[PrepareCallback]]}} private slot to |cb|.
+    
     1. If any {{SameDocumentTransition}} object in the Document
         ([=this=] or any other)
         has a {{[[Phase]]}} internal slot set to a non-"idle" value,
-        [=throw=] an {{InvalidStateException}}.
+	    [=abandon the page transition=] managed by all such
+	    {{SameDocumentTransition}} objects with an {{AbortError}}.
 	
     1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
         element |el| connected to [=this's=] Document,
         with a non-''page-transition-tag/none'' [=page transition tag=],
-		[=throw=] an {{InvalidStateException}} if any of the following conditions is true:
+        [=abandon the page transition=] managed by [=this=] and
+	    [=throw=] an {{InvalidStateException}} if any of the following conditions is true:
     
         1. |el| has the same computed ''page-transition-tag'' value as previous element.
 	
@@ -432,7 +440,7 @@ Additionally the following structures exist:
 
             1. Set [=this's=] {{[[Phase]]}} internal slot to "incoming-prep".
     
-            1. [=/Invoke=] |cb|, and let |userP| be the return value.
+            1. [=/Invoke=] and reset {{[[PrepareCallback]]}}, and let |userP| be the return value.
             
             [=Upon fulfillment=] of |userP|:
 	
@@ -482,7 +490,7 @@ Additionally the following structures exist:
                     for [=this=] after step 14 of
                     <a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>.
 	
-					          Issue: This should likely move to the html spec.
+		            Issue: This should likely move to the html spec.
 
                 [=Upon rejection=] of |userP|:
 
@@ -584,6 +592,8 @@ Additionally the following structures exist:
         Remove all associated [=page-transition pseudo-elements=] from the document.
 
     1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
+    
+    1. Invoke |manager|&apos;s {{[[PrepareCallback]]}}.
 
     1. [=Reject=] |manager|&apos;s {{[[ReadyPromise]]}}
         with |error|.
