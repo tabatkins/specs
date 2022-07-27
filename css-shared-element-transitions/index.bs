@@ -343,18 +343,17 @@ Additionally the following structures exist:
         ([=this=] or any other)
         has a {{[[Phase]]}} internal slot set to a non-"idle" value,
         [=throw=] an {{InvalidStateException}}.
-
-    1. If multiple elements or pseudo-elements on the Document have the same
-	     [=page transition tag=], [=throw=] an {{InvalidStateException}}.
 	
-	  1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
-		   [=throw=] an {{InvalidStateException}} if any of the following conditions is true:
+    1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered"></a>
+        element |el| connected to [=this's=] Document,
+        with a non-''page-transition-tag/none'' [=page transition tag=],
+		[=throw=] an {{InvalidStateException}} if any of the following conditions is true:
+    
+        1. |el| has the same computed ''page-transition-tag'' value as previous element.
 	
         1. |el| does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.
 	
         1. |el| does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.
-	
-        1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
       
     1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-capture".
 
