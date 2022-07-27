@@ -344,7 +344,7 @@ Additionally the following structures exist:
         has a {{[[Phase]]}} internal slot set to a non-"idle" value,
         [=throw=] an {{InvalidStateException}}.
 	
-    1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered"></a>
+    1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
         element |el| connected to [=this's=] Document,
         with a non-''page-transition-tag/none'' [=page transition tag=],
 		[=throw=] an {{InvalidStateException}} if any of the following conditions is true:
