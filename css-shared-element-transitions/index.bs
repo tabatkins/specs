@@ -345,30 +345,35 @@ document's DOM structure.
     
     1. Set [=this's=] {{[[PrepareCallback]]}} private slot to |cb|.
     
-    1. If any {{SameDocumentTransition}} object in the Document
-        ([=this=] or any other)
+    1. Let |realm| be [=this's=] [=relevant Realm=].
+    
+    1. Let |readyP| be [=a new promise=] in |realm|.
+        Set [=this's=] {{[[ReadyPromise]]}} internal slot to |readyP|.
+    
+    1. Let |environment| be [=this's=] relevant settings object.
+        Let |document| be |environment|’s relevant global object's associated Document.
+    
+    1. If any {{SameDocumentTransition}} object associated with |document|
         has a {{[[Phase]]}} internal slot set to a non-"idle" value,
 	    [=abandon the page transition=] managed by all such
 	    {{SameDocumentTransition}} objects with an {{AbortError}}.
 	
     1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
-        element |el| connected to [=this's=] Document,
+        element |el| connected to |document|,
         with a non-''page-transition-tag/none'' [=page transition tag=],
-        [=abandon the page transition=] managed by [=this=] and
-	    [=throw=] an {{InvalidStateException}} if any of the following conditions is true:
+        [=abandon the page transition=] managed by [=this=],
+	    [=throw=] an {{InvalidStateException}} and return |readyP|;
+        if any of the following conditions is true:
     
         1. |el| has the same computed ''page-transition-tag'' value as previous element.
 	
-        1. |el| does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.
+        1. |el| is not the root element and
+            does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.
 	
-        1. |el| does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.
+        1. |el| is not the root element and
+            does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.
       
     1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-capture".
-
-    1. Let |realm| be [=this's=] [=relevant Realm=].
-
-    1. Let |readyP| be [=a new promise=] in |realm|.
-        Set [=this's=] {{[[ReadyPromise]]}} internal slot to |readyP|.
     
     1. Let |finishedP| be [=a new promise=] in |realm|.
         Set [=this's=] {{[[finished]]}} attribute to |finishedP|.
@@ -774,20 +779,20 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 			''::page-transition-container'' pseudo-element with the tag |tag|.
 
 		1. Let |width| be the current width of |CapturedElement|&apos;s [=incoming element=]'s [=border box=],
-			is it exists; otherwise, |CapturedElement|&apos;s "outgoing data" 'width' property.
+			is it exists; otherwise, |CapturedElement|&apos;s [=outgoing styles=] 'width' property.
 	
 			Let |height| be the current height of |CapturedElement|&apos;s [=incoming element=]'s [=border box=],
-			is it exists; otherwise, |CapturedElement|&apos;s "outgoing data" 'height' property.
+			is it exists; otherwise, |CapturedElement|&apos;s [=outgoing styles=] 'height' property.
 	
 			Let |transform| be a transform that maps the
 			|CapturedElement|&apos;s [=incoming element=]'s [=border box=] from document origin to its quad in
 			viewport, if [=incoming element=] exists; otherwise,
-			|CapturedElement|&apos;s "outgoing data" 'transform' property.
+			|CapturedElement|&apos;s [=outgoing styles=] 'transform' property.
 
 			Let |writing-mode| and |direction| be the current value of those properties
 			on |CapturedElement|&apos;s [=incoming element=],
 			if it exists;
-			otherwise, |CapturedElement|&apos;s "outgoing data" corresponding property.
+			otherwise, |CapturedElement|&apos;s [=outgoing styles=] corresponding property.
 
 			At the [=user-agent origin=],
 			set |container|&apos;s 'width', 'height', 'transform', 'writing-mode', and 'direction' properties
@@ -808,7 +813,7 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 
 			At the [=user-agent origin=],
 			set |outgoing|&apos;s 'object-view-box' property
-			to |CapturedData|&apos;s "outgoing data" 'object-view-box' property.
+			to |CapturedData|&apos;s [=outgoing styles=] 'object-view-box' property.
     
             Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
 
