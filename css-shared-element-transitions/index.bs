@@ -360,7 +360,7 @@ document's DOM structure.
 	
     1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
         element |el| connected to |document|,
-        with a non-''page-transition-tag/none'' [=page transition tag=],
+        with a non-''page-transition-tag/none'' [=page transition tag=] computed value,
         [=abandon the page transition=] managed by [=this=],
 	    [=throw=] an {{InvalidStateException}} and return |readyP|;
         if any of the following conditions is true:
@@ -389,7 +389,10 @@ document's DOM structure.
         <a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>
         at the next <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>:
     
-        1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value, in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:
+        1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
+            element |el| connected to |document|,
+            with a non-''page-transition-tag/none'' [=page transition tag=] computed value,
+            in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:
 
             1. Let |tag| be |el|&apos;s computed 'page-transition-tag' value.
             1. Let |capture| be a new [=CapturedElement=] struct.
@@ -426,10 +429,10 @@ document's DOM structure.
         1. Suppress rendering opportunities for [=this's=] Document.
 	
             Note: The aim is to prevent unintended DOM updates from being presented to the
-			      user after a cached snapshot for the elements has been captured. We wait for
-			      one rendering opportunity after prepare to present DOM mutations made by the
-			      author before prepare to be presented to the user. This is also the content
-			      captured in snapshots.
+            user after a cached snapshot for the elements has been captured. We wait for
+            one rendering opportunity after prepare to present DOM mutations made by the
+            author before prepare to be presented to the user. This is also the content
+            captured in snapshots.
     
             Issue: Further clarify this behaviour. Lifecycle updates can still be trigerred
             via script APIs which query style or layout information but no visual updates
@@ -455,21 +458,27 @@ document's DOM structure.
                     userP to allow asynchronous loading of the incoming DOM.
 
                 1. If multiple elements or pseudo-elements on the Document have the same
-	                  [=page transition tag=], [=abandon the page transition=] managed by
+	                [=page transition tag=], [=abandon the page transition=] managed by
                     [=this=] with an {{InvalidStateException}}.
-	
-                1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
-				            [=abandon the page transition=] managed by [=this=] with an {{InvalidStateException}}
+    
+                1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
+                    element |el| connected to |document|,
+                    with a non-''page-transition-tag/none'' [=page transition tag=] computed value,
+                    [=abandon the page transition=] managed by [=this=] with an {{InvalidStateException}};
                     if any of the following conditions is true:
+    
+                    1. |el| has the same computed ''page-transition-tag'' value as previous element.
+	
+                    1. |el| is not the root element and
+                        does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.
+	
+                    1. |el| is not the root element and
+                        does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.
 
-                    1. |el| does not have layout containment applied.
-
-                    1. |el| does not forbid fragmentation.
-
-                    1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
-
-                1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value,
-                    in paint order:
+                1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
+                    element |el| connected to |document|,
+                    with a non-''page-transition-tag/none'' [=page transition tag=] computed value,
+                    in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:
 
                     1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
 
