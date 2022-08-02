@@ -357,17 +357,23 @@ A {{Document}} additionally has:
 
     1. If [=this's=] [=SameDocumentTransition/phase=] is not "`idle`", then throw an "{{InvalidStateError}}" {{DOMException}}.
 
-    1. Set [=this's=] [=SameDocumentTransition/phase=] internal slot to "`preparing`".
+    1. Set [=this's=] [=SameDocumentTransition/phase=] to "`preparing`".
 
     1. Set [=this's=] [=SameDocumentTransition/prepare callback=] to |cb|.
 
     1. Let |document| be [=this's=] [=relevant global object's=] [=associated document=].
 
-    1. Let |transitionsToAbandon| be a [=/list=] of every {{SameDocumentTransition}} within [=this's=] [=relevant Realm=] that has a [=SameDocumentTransition/phase=] that is not "`idle`", ordered by creation time, ascending.
+    1. Let |transitionsToAbandon| be a [=/list=] of every {{SameDocumentTransition}}
+        within [=this's=] [=relevant Realm=]
+        that has a [=SameDocumentTransition/phase=] that is not "`idle`",
+        ordered by creation time, ascending.
 
-        Issue: I just picked an ordering here. But, is it ever possible to end up with a list of more than one item here? If so, we should say so in the prose, then order doesn't matter.
+        Issue: I just picked an ordering here.
+        But, is it ever possible to end up with a list of more than one item here?
+        If so, we should say so in the prose, then order doesn't matter.
 
-    1. [=list/For each=] |transition| of |transitionsToAbandon|, [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}}.
+    1. [=list/For each=] |transition| of |transitionsToAbandon|,
+        [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}}.
 
     1. Assert: |document|'s [=document/pending same document transition outgoing capture=] is null.
 
@@ -382,7 +388,10 @@ A {{Document}} additionally has:
     The [=method steps=] for
     <dfn method for=SameDocumentTransition>abandon()</dfn> are:
 
-    1. If [=this's=] [=SameDocumentTransition/phase=] is not "idle",
+    1. If [=this's=] [=SameDocumentTransition/phase=] is "`idle`",
+        then set [=this's=] [=SameDocumentTransition/phase=] to "`finished`".
+
+    1. Otherwise, if [=this's=] [=SameDocumentTransition/phase=] is not "`finished`",
         then [=abandon the page transition=] [=this=]
         with an "{{AbortError}}" {{DOMException}}.
 </div>
@@ -390,13 +399,16 @@ A {{Document}} additionally has:
 <div algorithm="monkey patch rendering">
     Run the following steps before [marking paint timing](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model:mark-paint-timing) in the [=update the rendering=] steps:
 
-    1. For each [=fully active=] {{Document}} in <var ignore>docs</var>, [=perform pending transition operations=] for that {{Document}}.
+    1. For each [=fully active=] {{Document}} in <var ignore>docs</var>,
+        [=perform pending transition operations=] for that {{Document}}.
 
-    Note: These steps will be added to the [=update the rendering=] in the HTML spec. As such, the prose style is written to match other steps in that algorithm.
+    Note: These steps will be added to the [=update the rendering=] in the HTML spec.
+        As such, the prose style is written to match other steps in that algorithm.
 </div>
 
 <div algorithm="perform pending transition operations">
-    To <dfn>perform pending transition operations</dfn> given a {{Document}} |document|, perform the following steps:
+    To <dfn>perform pending transition operations</dfn> given a {{Document}} |document|,
+        perform the following steps:
 
     1. If |document|'s [=document/pending same document transition outgoing capture=] is not null, then:
 
@@ -404,13 +416,13 @@ A {{Document}} additionally has:
 
         1. Set |document|'s [=document/pending same document transition outgoing capture=] to null.
 
-    1. If |document|'s [=document/running same document transition=] is not null, then:
-
-        1. [=Update transition DOM=] for |document|'s [=document/running same document transition=].
+    1. If |document|'s [=document/running same document transition=] is not null,
+        then [=update transition DOM=] for |document|'s [=document/running same document transition=].
 </div>
 
 <div algorithm="perform outgoing capture">
-    To <dfn>perform an outgoing capture</dfn> given a {{SameDocumentTransition}} |transition|, perform the following steps:
+    To <dfn>perform an outgoing capture</dfn> given a {{SameDocumentTransition}} |transition|,
+        perform the following steps:
 
     1. Let |taggedElements| be |transition|'s [=SameDocumentTransition/tagged elements=].
 
@@ -418,13 +430,17 @@ A {{Document}} additionally has:
 
     1. Let |preparationFailed| be false.
 
-    1. [=list/For each=] |element| of every {{Element}} and [=pseudo-element=] connected to |document|, in [paint order](https://drafts.csswg.org/css2/#painting-order):
+    1. [=list/For each=] |element| of every {{Element}} and [=pseudo-element=] connected to |document|,
+        in [paint order](https://drafts.csswg.org/css2/#painting-order):
 
-        Issue: The link for "paint order" doesn't seem right. Is there a more canonical definition?
+        Issue: The link for "paint order" doesn't seem right.
+            Is there a more canonical definition?
 
         1. Let |transitionTag| be the [=computed value=] of 'page-transition-tag' for |element|.
 
-        1. If |transitionTag| is ''page-transition-tag/none'', or |element| is [=element-not-rendered|not rendered=], then [=continue=].
+        1. If |transitionTag| is ''page-transition-tag/none'',
+            or |element| is [=element-not-rendered|not rendered=],
+            then [=continue=].
 
         1. If any of the following is true:
 
@@ -494,13 +510,16 @@ A {{Document}} additionally has:
 
         1. Let |timedOut| be false.
 
-        1. [=/Invoke=] [=SameDocumentTransition/prepare callback=], and let |userP| be the return value.
+        1. [=/Invoke=] [=SameDocumentTransition/prepare callback=],
+            and let |userP| be the return value.
 
         If |userP| does not settle within an implementation-defined timeout period:
 
             1. Set |timedOut| to true.
 
-            1. If |preparationFailed| is true, then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}}, and abort these steps.
+            1. If |preparationFailed| is true,
+                then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}},
+                and abort these steps.
 
             1. Otherwise, [=abandon the page transition=] |transition| with a "{{TimeoutError}}" {{DOMException}}.
 
@@ -513,29 +532,39 @@ A {{Document}} additionally has:
                 Note: Resuming rendering opportunities is delayed until fulfillment of
                 |userP| to allow asynchronous loading of the incoming DOM.
 
-            1. If |preparationFailed| is true, then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}}, and abort these steps.
+            1. If |preparationFailed| is true,
+                then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}},
+                and abort these steps.
 
             1. Set |usedTransitionTags| to a new [=/set=].
 
-            1. [=list/For each=] |element| of every {{Element}} and [=pseudo-element=] connected to |document|, in [paint order](https://drafts.csswg.org/css2/#painting-order):
+            1. [=list/For each=] |element| of every {{Element}} and [=pseudo-element=] connected to |document|,
+                in [paint order](https://drafts.csswg.org/css2/#painting-order):
 
-                Issue: The link for "paint order" doesn't seem right. Is there a more canonical definition?
+                Issue: The link for "paint order" doesn't seem right.
+                    Is there a more canonical definition?
 
                 1. Let |transitionTag| be the [=computed value=] of 'page-transition-tag' for |element|.
 
-                1. If |transitionTag| is ''page-transition-tag/none'', or |element| is [=element-not-rendered|not rendered=], then [=continue=].
+                1. If |transitionTag| is ''page-transition-tag/none'',
+                    or |element| is [=element-not-rendered|not rendered=],
+                    then [=continue=].
 
                 1. If any of the following is true:
 
                     * |usedTransitionTags| [=list/contains=] |transitionTag|.
 
-                    * |element| is not |element|'s [=tree/root=] and |element| does not have [=layout containment=].
+                    * |element| is not |element|'s [=tree/root=]
+                        and |element| does not have [=layout containment=].
 
-                    * |element| is not |element|'s [=tree/root=] and |element| does prevent [=fragmentation=].
+                    * |element| is not |element|'s [=tree/root=]
+                        and |element| does prevent [=fragmentation=].
 
-                    Then [=abandon the page transition=] |transition| with an "{{InvalidStateError}}" {{DOMException}}, and abort these steps.
+                    Then [=abandon the page transition=] |transition| with an "{{InvalidStateError}}" {{DOMException}},
+                        and abort these steps.
 
-                1. If |taggedElements|[|transitionTag|] does not [=map/exist=], then set |taggedElements|[|transitionTag|] to a new [=captured element=] struct.
+                1. If |taggedElements|[|transitionTag|] does not [=map/exist=],
+                    then set |taggedElements|[|transitionTag|] to a new [=captured element=] struct.
 
                 1. Let |capture| be |taggedElements|[|transitionTag|].
 
@@ -547,8 +576,8 @@ A {{Document}} additionally has:
 
             1. [=Animate a page transition=] |transition|.
 
-                Note: This will require running document lifecycle phases to compute
-                information calculated during style/layout.
+                Note: This will require running document lifecycle phases
+                    to compute information calculated during style/layout.
 
             1. Assert: |document|'s [=document/pending same document transition outgoing capture=] is null.
 
@@ -560,12 +589,13 @@ A {{Document}} additionally has:
 
                 1. If |timedOut| is true, then abort these steps.
 
-                1. If |preparationFailed| is true, then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}}, and abort these steps.
+                1. If |preparationFailed| is true,
+                    then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}},
+                    and abort these steps.
 
                 1. Let |reason| be the reason |userP| was rejected.
 
-                1. [=Abandon the page transition=] |transition|
-                    with |reason|.
+                1. [=Abandon the page transition=] |transition| with |reason|.
 </div>
 
 <div class=example>
@@ -671,9 +701,11 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
     1. Set |transition|'s [=SameDocumentTransition/phase=] to "`finished`".
 
-    1. If |document|'s [=document/pending same document transition outgoing capture=] is |transition|, then set |document|'s [=document/pending same document transition outgoing capture=] to null.
+    1. If |document|'s [=document/pending same document transition outgoing capture=] is |transition|,
+        then set |document|'s [=document/pending same document transition outgoing capture=] to null.
 
-    1. If |document|'s [=document/running same document transition=] is |transition|, then set |document|'s [=document/running same document transition=] to null.
+    1. If |document|'s [=document/running same document transition=] is |transition|,
+        then set |document|'s [=document/running same document transition=] to null.
 
     1. [=Reject=] |transition|'s [=SameDocumentTransition/ready promise=] with |error|.
 
@@ -684,22 +716,28 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
     To <dfn lt="capture the image|capturing the image">capture the image</dfn> given an {{Element}} |element|, perform the following steps.
     They return an image.
 
-    1. Render the referenced element and its descendants, at the same size that they would be in the document, over an infinite transparent canvas with the following characteristics:
+    1. Render the referenced element and its descendants,
+        at the same size that they would be in the document,
+        over an infinite transparent canvas with the following characteristics:
 
         * The origin of |element|'s [=ink overflow rectangle=] is anchored to canvas origin.
 
-        * If the referenced element has a transform applied to it (or its ancestors), the transform is ignored.
+        * If the referenced element has a transform applied to it (or its ancestors),
+            then the transform is ignored.
 
             Note: This transform is applied to the snapshot using the `transform` property of the associated ''::page-transition-container'' pseudo-element.
 
         * [=list/For each=] |descendant| of [=shadow-including descendant=] {{Element}} and [=pseudo-element=] of |element|,
-            if |descendant| has a [=computed value=] of 'page-transition-tag' that is not ''page-transition-tag/none'', then skip painting |descendant|.
+            if |descendant| has a [=computed value=] of 'page-transition-tag' that is not ''page-transition-tag/none'',
+            then skip painting |descendant|.
 
             Note: This is necessary since the descendant will generate its own snapshot which will be displayed and animated independently.
 
     1. Let |interestRectangle| be the result of [=computing the interest rectangle=] for |element|.
 
-        Note: The |interestRectangle| is the subset of |element|'s [=ink overflow rectangle=] that should be captured. This is required for cases where an element's ink overflow rectangle needs to be clipped because of hardware constraints. For example, if it exceeds the maximum texture size.
+        Note: The |interestRectangle| is the subset of |element|'s [=ink overflow rectangle=] that should be captured.
+            This is required for cases where an element's ink overflow rectangle needs to be clipped because of hardware constraints.
+            For example, if it exceeds the maximum texture size.
 
     1. Return the portion of the canvas within |interestRectangle| as an image.
         The natural size of the image is equal to the |interestRectangle| bounds.
@@ -715,7 +753,7 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
     1. If no [=page-transition pseudo-elements=] has an active animation:
 
-        1. Set |transition|'s [=SameDocumentTransition/phase=] internal slot to "`finished`".
+        1. Set |transition|'s [=SameDocumentTransition/phase=] to "`finished`".
 
         1. [=Resolve=] |transition|'s[=SameDocumentTransition/finished promise=].
 
@@ -842,7 +880,8 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
         1. Append |container| to |transitionRoot|.
 
-            Issue: This should be better defined. I'm not sure if pseudo-elements have defined ways to modify their DOM.
+            Issue: This should be better defined.
+                I'm not sure if pseudo-elements have defined ways to modify their DOM.
 
         1. Let |width|, |height|, |transform|, |writingMode|, and |direction| be null.
 
@@ -892,11 +931,14 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
         1. If |capturedElement|'s [=captured element/outgoing image=] is not null, then:
 
-            1. Let |outgoing| be a new ''::page-transition-outgoing-image'' [=replaced element=] pseudo-element, with the tag |transitionTag|, displaying |capturedElement|'s [=captured element/outgoing image=].
+            1. Let |outgoing| be a new ''::page-transition-outgoing-image'' [=replaced element=] pseudo-element,
+                with the tag |transitionTag|,
+                displaying |capturedElement|'s [=captured element/outgoing image=].
 
             1. Append |outgoing| to |imageWrapper|.
 
-            1. At the [=user-agent origin=], set |outgoing|'s 'object-view-box' property to |capturedElement|'s [=outgoing styles=] 'object-view-box' property.
+            1. At the [=user-agent origin=],
+                set |outgoing|'s 'object-view-box' property to |capturedElement|'s [=outgoing styles=] 'object-view-box' property.
 
                 Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
 
@@ -906,5 +948,7 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
             1. Append |incoming| to |imageWrapper|.
 
-            1. At the [=user-agent origin=], set |incoming|'s 'object-view-box' property to a value that when applied to |incoming|, will cause the view box to coincide with [=incoming element=]'s [=border box=] in the image.
+            1. At the [=user-agent origin=],
+                set |incoming|'s 'object-view-box' property to a value that when applied to |incoming|,
+                will cause the view box to coincide with [=incoming element=]'s [=border box=] in the image.
 </div>
