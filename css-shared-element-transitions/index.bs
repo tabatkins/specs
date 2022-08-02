@@ -427,6 +427,8 @@ A {{Document}} additionally has:
 
     1. Let |preparationFailed| be false.
 
+    1. Let |document| be |transition|'s [=relevant global object's=] [=associated document=].
+
     1. [=list/For each=] |element| of every {{Element}} and [=pseudo-element=] connected to |document|,
         in [paint order](https://drafts.csswg.org/css2/#painting-order):
 
@@ -578,10 +580,6 @@ A {{Document}} additionally has:
 
                 Note: This will require running document lifecycle phases
                     to compute information calculated during style/layout.
-
-            1. Assert: |document|'s [=document/pending same document transition outgoing capture=] is null.
-
-            1. Set |document|'s [=document/pending same document transition outgoing capture=] to |transition|.
 
             1. [=Resolve=] [=SameDocumentTransition/ready promise=].
 
@@ -859,6 +857,12 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
                     animation: page-transition-container-anim-|tag| 0.25s both;
                 }
             </code></pre>
+
+    1. Let |document| be |transition|'s [=relevant global object's=] [=associated document=].
+
+    1. Assert: |document|'s [=document/running same document transition=] is null.
+
+    1. Set |document|'s [=document/running same document transition=] to |transition|.
 
     Issue: How are keyframes scoped to user-agent origin? We could decide
         scope based on whether `animation-name` in the computed style
