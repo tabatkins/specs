@@ -7,7 +7,7 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 6bc1dc5, updated Tue Jul 26 17:30:21 2022 -0700" name="generator">
+  <meta content="Bikeshed version 9559857, updated Fri Jul 29 17:25:02 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-shared-element-transitions/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
 <style>
@@ -746,7 +746,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Shared Element Transitions Module Level 1</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-27">27 July 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-02">2 August 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1078,7 +1078,7 @@ Let <var>document</var> be <var>environment</var>’s relevant global object’s
       <p>If any <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition②">SameDocumentTransition</a></code> object associated with <var>document</var> has a <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot①">[[Phase]]</a></code> internal slot set to a non-"idle" value, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition">abandon the page transition</a> managed by all such <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition③">SameDocumentTransition</a></code> objects with an <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror">AbortError</a></code>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate">For each</a> <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a> element <var>el</var> connected to <var>document</var>,
-with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none">none</a> <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag①">page transition tag</a>, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition①">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>, <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw" id="ref-for-dfn-throw">throw</a> an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code> and return <var>readyP</var>;
+with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none">none</a> <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag①">page transition tag</a> computed value, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition①">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>, <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw" id="ref-for-dfn-throw">throw</a> an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code> and return <var>readyP</var>;
 if any of the following conditions is true:</p>
       <ol>
        <li data-md>
@@ -1105,10 +1105,12 @@ triggering the transition to be presented to the user and captured in the snapsh
       <p>Execute the following steps after step 14 of <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering">Update the rendering</a> at the next <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>:</p>
       <ol>
        <li data-md>
-        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate①">For each</a> element <var>el</var> with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none①">none</a> <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag②">page-transition-tag</a> value, in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:</p>
+        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate①">For each</a> <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a> element <var>el</var> connected to <var>document</var>,
+with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none①">none</a> <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag②">page transition tag</a> computed value,
+in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:</p>
         <ol>
          <li data-md>
-          <p>Let <var>tag</var> be <var>el</var>’s computed <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag③">page-transition-tag</a> value.</p>
+          <p>Let <var>tag</var> be <var>el</var>’s computed <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag②">page-transition-tag</a> value.</p>
          <li data-md>
           <p>Let <var>capture</var> be a new <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement">CapturedElement</a> struct.</p>
          <li data-md>
@@ -1147,10 +1149,10 @@ will cause the view box to coincide with <var>el</var>’s <a data-link-type="df
        <li data-md>
         <p>Suppress rendering opportunities for <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this’s</a> Document.</p>
         <p class="note" role="note"><span>Note:</span> The aim is to prevent unintended DOM updates from being presented to the
-      user after a cached snapshot for the elements has been captured. We wait for
-      one rendering opportunity after prepare to present DOM mutations made by the
-      author before prepare to be presented to the user. This is also the content
-      captured in snapshots.</p>
+user after a cached snapshot for the elements has been captured. We wait for
+one rendering opportunity after prepare to present DOM mutations made by the
+author before prepare to be presented to the user. This is also the content
+captured in snapshots.</p>
         <p class="issue" id="issue-e5dbb465"><a class="self-link" href="#issue-e5dbb465"></a> Further clarify this behaviour. Lifecycle updates can still be trigerred
 via script APIs which query style or layout information but no visual updates
 are presented to the user. Is this the same behaviour as render-blocking?</p>
@@ -1174,23 +1176,28 @@ to execute the following steps:</p>
           <p class="note" role="note"><span>Note:</span> Resuming rendering opportunities is delayed until fulfillment of
 userP to allow asynchronous loading of the incoming DOM.</p>
          <li data-md>
-          <p>If multiple elements or pseudo-elements on the Document have the same <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag②">page transition tag</a>, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition②">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①②">this</a> with an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>.</p>
+          <p>If multiple elements or pseudo-elements on the Document have the same <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag③">page transition tag</a>, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition②">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①②">this</a> with an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>.</p>
          <li data-md>
-          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate②">For each</a> element <var>el</var> with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none②">none</a> <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag③">page transition tag</a>, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition③">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①③">this</a> with an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code> if any of the following conditions is true:</p>
+          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate②">For each</a> <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a> element <var>el</var> connected to <var>document</var>,
+with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none②">none</a> <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag④">page transition tag</a> computed value, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition③">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①③">this</a> with an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>;
+if any of the following conditions is true:</p>
           <ol>
            <li data-md>
-            <p><var>el</var> does not have layout containment applied.</p>
+            <p><var>el</var> has the same computed <span class="css">page-transition-tag</span> value as previous element.</p>
            <li data-md>
-            <p><var>el</var> does not forbid fragmentation.</p>
+            <p><var>el</var> is not the root element and
+does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.</p>
            <li data-md>
-            <p><var>el</var> is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.</p>
+            <p><var>el</var> is not the root element and
+does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.</p>
           </ol>
          <li data-md>
-          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate③">For each</a> element <var>el</var> with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none③">none</a> <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag④">page-transition-tag</a> value,
-in paint order:</p>
+          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate③">For each</a> <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a> element <var>el</var> connected to <var>document</var>,
+with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none③">none</a> <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag⑤">page transition tag</a> computed value,
+in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:</p>
           <ol>
            <li data-md>
-            <p>Let <var>tag</var> be <var>el</var>’s <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag⑤">page-transition-tag</a> value.</p>
+            <p>Let <var>tag</var> be <var>el</var>’s <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag③">page-transition-tag</a> value.</p>
            <li data-md>
             <p>If <var>taggedElements</var>[<var>tag</var>] does not exist,
 set it to a new <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement①">CapturedElement</a> struct.</p>
@@ -1243,7 +1250,7 @@ async implementation of <a data-link-type="dfn" href="#capturing-the-image" id="
    <div class="example" id="example-70320d4b">
     <a class="self-link" href="#example-70320d4b"></a> If the default animations for the page transition are acceptable,
     then kicking off a transition
-    requires nothing more than setting <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag⑥">page-transition-tag</a> in the page’s CSS,
+    requires nothing more than setting <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag④">page-transition-tag</a> in the page’s CSS,
     and a single line of script to start it: 
 <pre class="highlight"><c- ow>new</c-> SameDocumentTransition<c- p>()</c->
   <c- p>.</c->start<c- p>(()=></c->coolFramework<c- p>.</c->changeTheDOMToPageB<c- p>());</c->
@@ -2046,7 +2053,7 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
       <th scope="col">Com­puted value
     <tbody>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag⑦">page-transition-tag</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag⑤">page-transition-tag</a>
       <td>none | &lt;custom-ident>
       <td>none
       <td>all elements
@@ -2103,7 +2110,7 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
    <b><a href="#propdef-page-transition-tag">#propdef-page-transition-tag</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-page-transition-tag">2.1. Tagging Elements For Transition: the page-transition-tag property</a> <a href="#ref-for-propdef-page-transition-tag①">(2)</a>
-    <li><a href="#ref-for-propdef-page-transition-tag②">5. API</a> <a href="#ref-for-propdef-page-transition-tag③">(2)</a> <a href="#ref-for-propdef-page-transition-tag④">(3)</a> <a href="#ref-for-propdef-page-transition-tag⑤">(4)</a> <a href="#ref-for-propdef-page-transition-tag⑥">(5)</a>
+    <li><a href="#ref-for-propdef-page-transition-tag②">5. API</a> <a href="#ref-for-propdef-page-transition-tag③">(2)</a> <a href="#ref-for-propdef-page-transition-tag④">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-page-transition-tag-none">
@@ -2115,7 +2122,7 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
   <aside class="dfn-panel" data-for="page-transition-tag">
    <b><a href="#page-transition-tag">#page-transition-tag</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-page-transition-tag">5. API</a> <a href="#ref-for-page-transition-tag①">(2)</a> <a href="#ref-for-page-transition-tag②">(3)</a> <a href="#ref-for-page-transition-tag③">(4)</a>
+    <li><a href="#ref-for-page-transition-tag">5. API</a> <a href="#ref-for-page-transition-tag①">(2)</a> <a href="#ref-for-page-transition-tag②">(3)</a> <a href="#ref-for-page-transition-tag③">(4)</a> <a href="#ref-for-page-transition-tag④">(5)</a> <a href="#ref-for-page-transition-tag⑤">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="page-transition-pseudo-elements">
