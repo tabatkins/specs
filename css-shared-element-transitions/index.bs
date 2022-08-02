@@ -388,10 +388,7 @@ A {{Document}} additionally has:
     The [=method steps=] for
     <dfn method for=SameDocumentTransition>abandon()</dfn> are:
 
-    1. If [=this's=] [=SameDocumentTransition/phase=] is "`idle`",
-        then set [=this's=] [=SameDocumentTransition/phase=] to "`finished`".
-
-    1. Otherwise, if [=this's=] [=SameDocumentTransition/phase=] is not "`finished`",
+    1. If [=this's=] [=SameDocumentTransition/phase=] is not "`finished`",
         then [=abandon the page transition=] [=this=]
         with an "{{AbortError}}" {{DOMException}}.
 </div>
@@ -683,21 +680,23 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
     1. Let |document| be |transition|'s [=relevant global object's=] [=associated document=].
 
-    1. Stop suppressing rendering opportunities |document|, if currently suppressed.
+    1. If |transition|'s [=SameDocumentTransition/phase=] is not "`idle`", then:
 
-        Issue: "suppressing rendering opportunities" needs to be linked/defined.
+        1. Stop suppressing rendering opportunities |document|, if currently suppressed.
 
-    1. If there is currently a page transition being animated, end it.
+            Issue: "suppressing rendering opportunities" needs to be linked/defined.
 
-        Issue: There needs to be a definition/link for "currently animating page transition" or similar.
+        1. If there is currently a page transition being animated, end it.
 
-        Issue: There needs to be a definition/link for "end it".
+            Issue: There needs to be a definition/link for "currently animating page transition" or similar.
 
-    1. Remove all associated [=page-transition pseudo-elements=] from |document|.
+            Issue: There needs to be a definition/link for "end it".
 
-        Issue: There needs to be a definition/link for "remove".
+        1. Remove all associated [=page-transition pseudo-elements=] from |document|.
 
-        Issue: There needs to be a definition/link for "associated".
+            Issue: There needs to be a definition/link for "remove".
+
+            Issue: There needs to be a definition/link for "associated".
 
     1. Set |transition|'s [=SameDocumentTransition/phase=] to "`finished`".
 
