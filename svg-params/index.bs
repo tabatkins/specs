@@ -109,7 +109,7 @@ the last one wins.
 
 <div class="example">
 	For example,
-	if the site is using a ''-primary-color'' custom property to theme its elements with,
+	if the site is using a ''--primary-color'' custom property to theme its elements with,
 	and wanted an SVG background using a ''--color'' custom property to reflect it,
 	it could write:
 
