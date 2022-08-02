@@ -503,7 +503,8 @@ A {{Document}} additionally has:
         given |transition|'s [=relevant global object=],
         to execute the following steps:
 
-            Note: A task is queued here because the texture read back in [=capturing the image=] may be async, although the render steps in the HTML spec act as if it's synchronous.
+            Note: A task is queued here because the texture read back in [=capturing the image=] may be async,
+                although the render steps in the HTML spec act as if it's synchronous.
 
         1. Let |timedOut| be false.
 
