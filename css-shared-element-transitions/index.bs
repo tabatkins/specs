@@ -561,6 +561,8 @@ A {{Document}} additionally has:
                     Then [=abandon the page transition=] |transition| with an "{{InvalidStateError}}" {{DOMException}},
                         and abort these steps.
 
+                1. [=set/Append=] |transitionTag| to |usedTransitionTags|.
+
                 1. If |taggedElements|[|transitionTag|] does not [=map/exist=],
                     then set |taggedElements|[|transitionTag|] to a new [=captured element=] struct.
 
