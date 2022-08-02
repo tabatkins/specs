@@ -311,22 +311,26 @@ a single same-document transition. That is, it controls a transition where the
 starting and ending document are the same, possibly with changes to the
 document's DOM structure.
 
-{{SameDocumentTransition}} objects have a <dfn attribute for=SameDocumentTransition>\[[TaggedElements]]</dfn>
-private slot, which is a [=/map=], whose keys are [=page
-transition tags=] and whose values are <dfn>CapturedElement</dfn>s, a
-[=/struct=] with items named <dfn>outgoing image</dfn> (an image),
-<dfn>outgoing styles</dfn> (a set of styles), and
-<dfn>incoming element</dfn> (an element).
-All of the slots are initially empty.
+{{SameDocumentTransition}} objects have the following values:
 
-Additionally the following structures exist:
+* A <dfn attribute for=SameDocumentTransition>\[[TaggedElements]]</dfn>
+    private slot, which is a [=/map=], whose keys are [=page
+    transition tags=] and whose values are <dfn>CapturedElement</dfn>s, a
+    [=/struct=] with items named <dfn>outgoing image</dfn> (an image),
+    <dfn>outgoing styles</dfn> (a set of styles), and
+    <dfn>incoming element</dfn> (an element).
+    All of the slots are initially empty.
 
-* A <dfn attribute for=SameDocumentTransition>\[[Phase]]</dfn> internal slot,
+* A <dfn attribute for=SameDocumentTransition>\[[Phase]]</dfn> private slot,
     which is a [=/string=] chosen from "idle", "outgoing-capture",
     "incoming-prep", and "running". The initial value is "idle".
+    
+* A <dfn attribute for=SameDocumentTransition>\[[PrepareCallback]]</dfn>
+    private slot, which is an AsyncFunction dispatched to update the
+    DOM to the new state.
 
 * A <dfn attribute for=SameDocumentTransition>\[[ReadyPromise]]</dfn>
-    internal slot, which is a {{Promise}} created when a page transition is
+    private slot, which is a {{Promise}} created when a page transition is
     started, and resolved when the phase is updated from "incoming-prep" to
     "running".
 
@@ -339,29 +343,37 @@ Additionally the following structures exist:
     <dfn method for=SameDocumentTransition>prepare(|cb|)</dfn>
     are as follows:
     
-    1. If any {{SameDocumentTransition}} object in the Document
-        ([=this=] or any other)
-        has a {{[[Phase]]}} internal slot set to a non-"idle" value,
-        [=throw=] an {{InvalidStateException}}.
-
-    1. If multiple elements or pseudo-elements on the Document have the same
-	     [=page transition tag=], [=throw=] an {{InvalidStateException}}.
-	
-	  1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
-		   [=throw=] an {{InvalidStateException}} if any of the following conditions is true:
-	
-        1. |el| does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.
-	
-        1. |el| does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.
-	
-        1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
-      
-    1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-capture".
-
+    1. Set [=this's=] {{[[PrepareCallback]]}} private slot to |cb|.
+    
     1. Let |realm| be [=this's=] [=relevant Realm=].
-
+    
     1. Let |readyP| be [=a new promise=] in |realm|.
         Set [=this's=] {{[[ReadyPromise]]}} internal slot to |readyP|.
+    
+    1. Let |environment| be [=this's=] relevant settings object.
+        Let |document| be |environment|’s relevant global object's associated Document.
+    
+    1. If any {{SameDocumentTransition}} object associated with |document|
+        has a {{[[Phase]]}} internal slot set to a non-"idle" value,
+	    [=abandon the page transition=] managed by all such
+	    {{SameDocumentTransition}} objects with an {{AbortError}}.
+	
+    1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
+        element |el| connected to |document|,
+        with a non-''page-transition-tag/none'' [=page transition tag=] computed value,
+        [=abandon the page transition=] managed by [=this=],
+	    [=throw=] an {{InvalidStateException}} and return |readyP|;
+        if any of the following conditions is true:
+    
+        1. |el| has the same computed ''page-transition-tag'' value as previous element.
+	
+        1. |el| is not the root element and
+            does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.
+	
+        1. |el| is not the root element and
+            does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.
+      
+    1. Set [=this's=] {{[[Phase]]}} internal slot to "outgoing-capture".
     
     1. Let |finishedP| be [=a new promise=] in |realm|.
         Set [=this's=] {{[[finished]]}} attribute to |finishedP|.
@@ -377,7 +389,10 @@ Additionally the following structures exist:
         <a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>
         at the next <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>:
     
-        1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value, in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:
+        1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
+            element |el| connected to |document|,
+            with a non-''page-transition-tag/none'' [=page transition tag=] computed value,
+            in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:
 
             1. Let |tag| be |el|&apos;s computed 'page-transition-tag' value.
             1. Let |capture| be a new [=CapturedElement=] struct.
@@ -414,10 +429,10 @@ Additionally the following structures exist:
         1. Suppress rendering opportunities for [=this's=] Document.
 	
             Note: The aim is to prevent unintended DOM updates from being presented to the
-			      user after a cached snapshot for the elements has been captured. We wait for
-			      one rendering opportunity after prepare to present DOM mutations made by the
-			      author before prepare to be presented to the user. This is also the content
-			      captured in snapshots.
+            user after a cached snapshot for the elements has been captured. We wait for
+            one rendering opportunity after prepare to present DOM mutations made by the
+            author before prepare to be presented to the user. This is also the content
+            captured in snapshots.
     
             Issue: Further clarify this behaviour. Lifecycle updates can still be trigerred
             via script APIs which query style or layout information but no visual updates
@@ -433,7 +448,7 @@ Additionally the following structures exist:
 
             1. Set [=this's=] {{[[Phase]]}} internal slot to "incoming-prep".
     
-            1. [=/Invoke=] |cb|, and let |userP| be the return value.
+            1. [=/Invoke=] and reset {{[[PrepareCallback]]}}, and let |userP| be the return value.
             
             [=Upon fulfillment=] of |userP|:
 	
@@ -443,21 +458,27 @@ Additionally the following structures exist:
                     userP to allow asynchronous loading of the incoming DOM.
 
                 1. If multiple elements or pseudo-elements on the Document have the same
-	                  [=page transition tag=], [=abandon the page transition=] managed by
+	                [=page transition tag=], [=abandon the page transition=] managed by
                     [=this=] with an {{InvalidStateException}}.
-	
-                1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' [=page transition tag=],
-				            [=abandon the page transition=] managed by [=this=] with an {{InvalidStateException}}
+    
+                1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
+                    element |el| connected to |document|,
+                    with a non-''page-transition-tag/none'' [=page transition tag=] computed value,
+                    [=abandon the page transition=] managed by [=this=] with an {{InvalidStateException}};
                     if any of the following conditions is true:
+    
+                    1. |el| has the same computed ''page-transition-tag'' value as previous element.
+	
+                    1. |el| is not the root element and
+                        does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.
+	
+                    1. |el| is not the root element and
+                        does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.
 
-                    1. |el| does not have layout containment applied.
-
-                    1. |el| does not forbid fragmentation.
-
-                    1. |el| is <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">not rendered</a>.
-
-                1. [=map/For each=] element |el| with a non-''page-transition-tag/none'' 'page-transition-tag' value,
-                    in paint order:
+                1. [=map/For each=] <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a>
+                    element |el| connected to |document|,
+                    with a non-''page-transition-tag/none'' [=page transition tag=] computed value,
+                    in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:
 
                     1. Let |tag| be |el|&apos;s 'page-transition-tag' value.
 
@@ -483,7 +504,7 @@ Additionally the following structures exist:
                     for [=this=] after step 14 of
                     <a href=https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering>Update the rendering</a>.
 	
-					          Issue: This should likely move to the html spec.
+		            Issue: This should likely move to the html spec.
 
                 [=Upon rejection=] of |userP|:
 
@@ -585,6 +606,8 @@ Additionally the following structures exist:
         Remove all associated [=page-transition pseudo-elements=] from the document.
 
     1. Set |manager|&apos;s {{[[Phase]]}} internal slot to "idle".
+    
+    1. Invoke |manager|&apos;s {{[[PrepareCallback]]}}.
 
     1. [=Reject=] |manager|&apos;s {{[[ReadyPromise]]}}
         with |error|.
@@ -765,20 +788,20 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 			''::page-transition-container'' pseudo-element with the tag |tag|.
 
 		1. Let |width| be the current width of |CapturedElement|&apos;s [=incoming element=]'s [=border box=],
-			is it exists; otherwise, |CapturedElement|&apos;s "outgoing data" 'width' property.
+			is it exists; otherwise, |CapturedElement|&apos;s [=outgoing styles=] 'width' property.
 	
 			Let |height| be the current height of |CapturedElement|&apos;s [=incoming element=]'s [=border box=],
-			is it exists; otherwise, |CapturedElement|&apos;s "outgoing data" 'height' property.
+			is it exists; otherwise, |CapturedElement|&apos;s [=outgoing styles=] 'height' property.
 	
 			Let |transform| be a transform that maps the
 			|CapturedElement|&apos;s [=incoming element=]'s [=border box=] from document origin to its quad in
 			viewport, if [=incoming element=] exists; otherwise,
-			|CapturedElement|&apos;s "outgoing data" 'transform' property.
+			|CapturedElement|&apos;s [=outgoing styles=] 'transform' property.
 
 			Let |writing-mode| and |direction| be the current value of those properties
 			on |CapturedElement|&apos;s [=incoming element=],
 			if it exists;
-			otherwise, |CapturedElement|&apos;s "outgoing data" corresponding property.
+			otherwise, |CapturedElement|&apos;s [=outgoing styles=] corresponding property.
 
 			At the [=user-agent origin=],
 			set |container|&apos;s 'width', 'height', 'transform', 'writing-mode', and 'direction' properties
@@ -799,7 +822,7 @@ For <dfn>capturing the image</dfn> of an {{Element}} |el|:
 
 			At the [=user-agent origin=],
 			set |outgoing|&apos;s 'object-view-box' property
-			to |CapturedData|&apos;s "outgoing data" 'object-view-box' property.
+			to |CapturedData|&apos;s [=outgoing styles=] 'object-view-box' property.
     
             Issue: Which of ''xywh()''/''rect()''/''inset()'' should we use?
 
