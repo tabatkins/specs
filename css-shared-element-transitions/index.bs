@@ -587,11 +587,9 @@ A {{Document}} additionally has:
 
                 1. If |timedOut| is true, then abort these steps.
 
-                1. If |preparationFailed| is true,
-                    then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}},
-                    and abort these steps.
-
-                1. Let |reason| be the reason |userP| was rejected.
+                1. Let |reason| be an "{{AbortError}}" {{DOMException}}
+                    if |preparationFailed| is true,
+                    otherwise the reason |userP| was rejected.
 
                 1. [=Abandon the page transition=] |transition| with |reason|.
 </div>
