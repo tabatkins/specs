@@ -510,86 +510,87 @@ A {{Document}} additionally has:
 
         1. Let |timedOut| be false.
 
-        1. [=/Invoke=] [=SameDocumentTransition/prepare callback=],
-            and let |userP| be the return value.
+        1. Let |userP| be the result of [=/invoking=] |transition|'s [=SameDocumentTransition/prepare callback=].
 
-        If |userP| does not settle within an implementation-defined timeout period:
+        1. [=promise/React=] to |userP|:
 
-            1. Set |timedOut| to true.
+            * If |userP| does not settle within an implementation-defined timeout, then:
 
-            1. If |preparationFailed| is true,
-                then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}},
-                and abort these steps.
+                1. Set |timedOut| to true.
 
-            1. Otherwise, [=abandon the page transition=] |transition| with a "{{TimeoutError}}" {{DOMException}}.
+                1. If |preparationFailed| is true,
+                    then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}},
+                    and abort these steps.
 
-        [=Upon fulfillment=] of |userP|:
+                1. Otherwise, [=abandon the page transition=] |transition| with a "{{TimeoutError}}" {{DOMException}}.
 
-            1. If |timedOut| is true, then abort these steps.
+            * If |userP| was fulfilled, then:
 
-            1. Stop suppressing rendering opportunities for |transition|'s Document.
+                1. If |timedOut| is true, then abort these steps.
 
-                Note: Resuming rendering opportunities is delayed until fulfillment of
-                |userP| to allow asynchronous loading of the incoming DOM.
+                1. Stop suppressing rendering opportunities for |transition|'s Document.
 
-            1. If |preparationFailed| is true,
-                then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}},
-                and abort these steps.
+                    Note: Resuming rendering opportunities is delayed until fulfillment of
+                    |userP| to allow asynchronous loading of the incoming DOM.
 
-            1. Set |usedTransitionTags| to a new [=/set=].
+                1. If |preparationFailed| is true,
+                    then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}},
+                    and abort these steps.
 
-            1. [=list/For each=] |element| of every {{Element}} and [=pseudo-element=] connected to |document|,
-                in [paint order](https://drafts.csswg.org/css2/#painting-order):
+                1. Set |usedTransitionTags| to a new [=/set=].
 
-                Issue: The link for "paint order" doesn't seem right.
-                    Is there a more canonical definition?
+                1. [=list/For each=] |element| of every {{Element}} and [=pseudo-element=] connected to |document|,
+                    in [paint order](https://drafts.csswg.org/css2/#painting-order):
 
-                1. Let |transitionTag| be the [=computed value=] of 'page-transition-tag' for |element|.
+                    Issue: The link for "paint order" doesn't seem right.
+                        Is there a more canonical definition?
 
-                1. If |transitionTag| is ''page-transition-tag/none'',
-                    or |element| is [=element-not-rendered|not rendered=],
-                    then [=continue=].
+                    1. Let |transitionTag| be the [=computed value=] of 'page-transition-tag' for |element|.
 
-                1. If any of the following is true:
+                    1. If |transitionTag| is ''page-transition-tag/none'',
+                        or |element| is [=element-not-rendered|not rendered=],
+                        then [=continue=].
 
-                    * |usedTransitionTags| [=list/contains=] |transitionTag|.
+                    1. If any of the following is true:
 
-                    * |element| is not |element|'s [=tree/root=]
-                        and |element| does not have [=layout containment=].
+                        * |usedTransitionTags| [=list/contains=] |transitionTag|.
 
-                    * |element| is not |element|'s [=tree/root=]
-                        and |element| does prevent [=fragmentation=].
+                        * |element| is not |element|'s [=tree/root=]
+                            and |element| does not have [=layout containment=].
 
-                    Then [=abandon the page transition=] |transition| with an "{{InvalidStateError}}" {{DOMException}},
-                        and abort these steps.
+                        * |element| is not |element|'s [=tree/root=]
+                            and |element| does prevent [=fragmentation=].
 
-                1. [=set/Append=] |transitionTag| to |usedTransitionTags|.
+                        Then [=abandon the page transition=] |transition| with an "{{InvalidStateError}}" {{DOMException}},
+                            and abort these steps.
 
-                1. If |taggedElements|[|transitionTag|] does not [=map/exist=],
-                    then set |taggedElements|[|transitionTag|] to a new [=captured element=] struct.
+                    1. [=set/Append=] |transitionTag| to |usedTransitionTags|.
 
-                1. Let |capture| be |taggedElements|[|transitionTag|].
+                    1. If |taggedElements|[|transitionTag|] does not [=map/exist=],
+                        then set |taggedElements|[|transitionTag|] to a new [=captured element=] struct.
 
-                1. Let |capture|'s [=incoming element=] item be |element|.
+                    1. Let |capture| be |taggedElements|[|transitionTag|].
 
-            1. Set |transition|'s [=SameDocumentTransition/phase=] "`running`".
+                    1. Let |capture|'s [=incoming element=] item be |element|.
 
-            1. [=Create transition pseudo-elements=] for |transition|.
+                1. Set |transition|'s [=SameDocumentTransition/phase=] "`running`".
 
-            1. [=Animate a page transition=] |transition|.
+                1. [=Create transition pseudo-elements=] for |transition|.
 
-                Note: This will require running document lifecycle phases
-                    to compute information calculated during style/layout.
+                1. [=Animate a page transition=] |transition|.
 
-            1. [=Resolve=] [=SameDocumentTransition/ready promise=].
+                    Note: This will require running document lifecycle phases
+                        to compute information calculated during style/layout.
 
-            [=Upon rejection=] of |userP|:
+                1. [=Resolve=] [=SameDocumentTransition/ready promise=].
+
+            * If |userP| was rejected with reason |r|, then:
 
                 1. If |timedOut| is true, then abort these steps.
 
                 1. Let |reason| be an "{{AbortError}}" {{DOMException}}
                     if |preparationFailed| is true,
-                    otherwise the reason |userP| was rejected.
+                    otherwise |r|.
 
                 1. [=Abandon the page transition=] |transition| with |reason|.
 </div>
