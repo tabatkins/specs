@@ -526,7 +526,7 @@ A {{Document}} additionally has:
 
             * If |userP| was fulfilled, then:
 
-                1. If |timedOut| is true, then abort these steps.
+                1. If |timedOut| is true, then return.
 
                 1. Stop suppressing rendering opportunities for |transition|'s Document.
 
@@ -535,7 +535,7 @@ A {{Document}} additionally has:
 
                 1. If |preparationFailed| is true,
                     then [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}},
-                    and abort these steps.
+                    and return.
 
                 1. Set |usedTransitionTags| to a new [=/set=].
 
@@ -562,7 +562,7 @@ A {{Document}} additionally has:
                             and |element| does prevent [=fragmentation=].
 
                         Then [=abandon the page transition=] |transition| with an "{{InvalidStateError}}" {{DOMException}},
-                            and abort these steps.
+                            and return.
 
                     1. [=set/Append=] |transitionTag| to |usedTransitionTags|.
 
@@ -586,7 +586,7 @@ A {{Document}} additionally has:
 
             * If |userP| was rejected with reason |r|, then:
 
-                1. If |timedOut| is true, then abort these steps.
+                1. If |timedOut| is true, then return.
 
                 1. Let |reason| be an "{{AbortError}}" {{DOMException}}
                     if |preparationFailed| is true,
