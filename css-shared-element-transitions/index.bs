@@ -375,7 +375,7 @@ A {{Document}} additionally has:
     1. [=list/For each=] |transition| of |transitionsToAbandon|,
         [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}}.
 
-    1. Assert: |document|'s [=document/pending same document transition outgoing capture=] is null.
+    1. [=Assert=]: |document|'s [=document/pending same document transition outgoing capture=] is null.
 
     1. Set |document|'s [=document/pending same document transition outgoing capture=] to [=this=].
 
@@ -858,7 +858,7 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
     1. Let |document| be |transition|'s [=relevant global object's=] [=associated document=].
 
-    1. Assert: |document|'s [=document/running same document transition=] is null.
+    1. [=Assert=]: |document|'s [=document/running same document transition=] is null.
 
     1. Set |document|'s [=document/running same document transition=] to |transition|.
 
