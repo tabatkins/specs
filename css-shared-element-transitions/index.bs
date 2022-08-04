@@ -582,6 +582,8 @@ A {{Document}} additionally has:
                     Note: This will require running document lifecycle phases
                         to compute information calculated during style/layout.
 
+                    Note: The frame-by-frame parts of the animation are handled in [=update transition DOM=].
+
                 1. [=Resolve=] [=SameDocumentTransition/ready promise=].
 
             * If |userP| was rejected with reason |r|, then:
