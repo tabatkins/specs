@@ -910,7 +910,7 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
             1. Set |height| to the current height of |capturedElement|'s [=incoming element=]'s [=border box=].
 
-            1. Set |transform| to a transform that maps the |capturedElement|'s [=incoming element=]'s [=border box=] from document origin to its quad in viewport.
+            1. Set |transform| to a transform that maps the |capturedElement|'s [=incoming element=]'s [=border box=] from document origin to its quad in layout viewport.
 
             1. Set |writingMode| to the [=computed value=] of 'writing-mode' on |capturedElement|'s [=incoming element=].
 
