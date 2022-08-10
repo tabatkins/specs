@@ -783,7 +783,7 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
     They return a rectangle.
 
     1. If |el| is the document's root element,
-        then return a rectangle that is the intersection of the viewport,
+        then return a rectangle that is the intersection of the layout viewport,
         including the size of rendered scrollbars (if any),
         with |el|'s ink overflow rectangle.
 
