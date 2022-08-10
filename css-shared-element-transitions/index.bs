@@ -365,15 +365,14 @@ A {{Document}} additionally has:
 
     1. Let |transitionsToAbandon| be a [=/list=] of every {{SameDocumentTransition}}
         within [=this's=] [=relevant Realm=]
-        that has a [=SameDocumentTransition/phase=] that is not "`idle`",
-        ordered by creation time, ascending.
+        that has a [=SameDocumentTransition/phase=] that is not "`idle`".
 
-        Issue: I just picked an ordering here.
-        But, is it ever possible to end up with a list of more than one item here?
-        If so, we should say so in the prose, then order doesn't matter.
+        Issue: The ordering needs to be defined, probably in a queue.
 
     1. [=list/For each=] |transition| of |transitionsToAbandon|,
         [=abandon the page transition=] |transition| with an "{{AbortError}}" {{DOMException}}.
+
+        Issue: The callbacks may still be running after this, which may not be what we want.
 
     1. [=Assert=]: |document|'s [=document/pending same document transition outgoing capture=] is null.
 
@@ -688,12 +687,6 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
             Issue: "suppressing rendering opportunities" needs to be linked/defined.
 
-        1. If there is currently a page transition being animated, end it.
-
-            Issue: There needs to be a definition/link for "currently animating page transition" or similar.
-
-            Issue: There needs to be a definition/link for "end it".
-
         1. Remove all associated [=page-transition pseudo-elements=] from |document|.
 
             Issue: There needs to be a definition/link for "remove".
@@ -734,6 +727,8 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
             Note: This is necessary since the descendant will generate its own snapshot which will be displayed and animated independently.
 
+            Issue: Refactor this so the algorithm takes a set of elements that will be captured. This centralizes the logic for deciding if an element should be included or not.
+
     1. Let |interestRectangle| be the result of [=computing the interest rectangle=] for |element|.
 
         Note: The |interestRectangle| is the subset of |element|'s [=ink overflow rectangle=] that should be captured.
@@ -756,7 +751,13 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
         1. Set |transition|'s [=SameDocumentTransition/phase=] to "`finished`".
 
+        1. Remove all associated [=page-transition pseudo-elements=] from |document|.
+
         1. [=Resolve=] |transition|'s[=SameDocumentTransition/finished promise=].
+
+            Issue: There needs to be a definition/link for "remove".
+
+            Issue: There needs to be a definition/link for "associated".
 
         1. Return.
 
@@ -868,10 +869,11 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
     Issue: How are keyframes scoped to user-agent origin? We could decide
         scope based on whether `animation-name` in the computed style
         came from a developer or UA stylesheet.
-        But we do want developers to be able to
 
     Issue: We should retarget the animation if computed properties for
         incoming elements change.
+
+    Issue: We need to better define how the real new DOM is not painted during the animation.
 </div>
 
 <div algorithm>
@@ -915,18 +917,6 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
             1. Set |writingMode| to the [=computed value=] of 'writing-mode' on |capturedElement|'s [=incoming element=].
 
             1. Set |direction| to the [=computed value=] of 'direction' on |capturedElement|'s [=incoming element=].
-
-        1. Let |width| be the current width of |capturedElement|'s [=incoming element=]'s [=border box=],
-            if |capturedElement|'s [=incoming element=] is not null;
-            otherwise, |capturedElement|'s [=outgoing styles=] 'width' property.
-
-        1. Let |height| be the current height of |capturedElement|'s [=incoming element=]'s [=border box=],
-            if |capturedElement|'s [=incoming element=] is not null;
-            otherwise, |capturedElement|'s [=outgoing styles=] 'height' property.
-
-        1. Let |transform| be a transform that maps the |capturedElement|'s [=incoming element=]'s [=border box=] from document origin to its quad in viewport,
-            if |capturedElement|'s [=incoming element=] is not null;
-            otherwise, |capturedElement|'s [=outgoing styles=] 'transform' property.
 
         1. At the [=user-agent origin=],
             set |container|'s 'width', 'height', 'transform', 'writing-mode', and 'direction' properties
