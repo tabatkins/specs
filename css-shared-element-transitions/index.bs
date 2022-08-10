@@ -559,7 +559,7 @@ A {{Document}} additionally has:
                             and |element| does not have [=layout containment=].
 
                         * |element| is not |element|'s [=tree/root=]
-                            and |element| does prevent [=fragmentation=].
+                            and |element| allows [=fragmentation=].
 
                         Then [=abandon the page transition=] |transition| with an "{{InvalidStateError}}" {{DOMException}},
                             and return.
