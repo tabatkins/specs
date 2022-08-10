@@ -751,7 +751,7 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
         1. Set |transition|'s [=SameDocumentTransition/phase=] to "`finished`".
 
-        1. Remove all associated [=page-transition pseudo-elements=] from |document|.
+        1. Remove all associated [=page-transition pseudo-elements=] from |transition|'s [=associated document=].
 
         1. [=Resolve=] |transition|'s[=SameDocumentTransition/finished promise=].
 
