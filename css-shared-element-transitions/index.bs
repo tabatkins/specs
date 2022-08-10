@@ -447,7 +447,7 @@ A {{Document}} additionally has:
 
             * |element| is not |element|'s [=tree/root=] and |element| does not have [=layout containment=].
 
-            * |element| is not |element|'s [=tree/root=] and |element| does prevent [=fragmentation=].
+            * |element| is not |element|'s [=tree/root=] and |element| allows [=fragmentation=].
 
             Then set |preparationFailed| to true and [=break=].
 
