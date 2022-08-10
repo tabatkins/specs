@@ -1,4 +1,3 @@
-
 <!doctype html><html lang="en">
  <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -7,9 +6,10 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 9559857, updated Fri Jul 29 17:25:02 2022 -0700" name="generator">
+  <meta content="Bikeshed version 44af0bf3e, updated Fri Jul 29 17:05:16 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-shared-element-transitions/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
+  <meta content="7b89c814f4619ae232af621c2bd52d9675869ef8" name="document-revision">
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -746,7 +746,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Shared Element Transitions Module Level 1</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-02">2 August 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-10">10 August 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -963,7 +963,7 @@ and holds the images of the outgoing and incoming elements.</p>
 <c- p>}</c->
 </code></pre>
      <p>In addition to above, styles in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua⑤">user-agent origin</a> add ''isolation:
-isolate'' to this pseudo-element if it has both <a data-link-type="dfn">page-transition-incoming-image</a> and <span>page-transition-outgoing-image</span> as
+isolate'' to this pseudo-element if it has both <span class="css">::page-transition-incoming-image</span> and <span class="css">::page-transition-outgoing-image</span> as
 descendants.</p>
      <p class="note" role="note"><span>Note:</span> The aim of the style is to position the element to occupy the same space
 as its ::page-transition-container element and provide isolation for
@@ -988,7 +988,7 @@ It has <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-3/#natu
 </code></pre>
      <p class="note" role="note"><span>Note:</span> The aim of the style is to match the element’s inline size while
 retaining the aspect ratio. It is also placed at the block start.</p>
-     <p>In addition to above, styles in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua⑦">user-agent origin</a> add <span class="css">mix-blend-mode:plus-lighter</span> to this pseudo element if the ancestor <a data-link-type="dfn">::page-transition-image-wrapper</a> has both <span>page-transition-incoming-image</span> and <span>page-transition-outgoing-image</span> as
+     <p>In addition to above, styles in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua⑦">user-agent origin</a> add <span class="css">mix-blend-mode:plus-lighter</span> to this pseudo element if the ancestor <span class="css">::page-transition-image-wrapper</span> has both <span class="css">::page-transition-incoming-image</span> and <span class="css">::page-transition-outgoing-image</span> as
 descendants.</p>
      <p class="note" role="note"><span>Note:</span> mix-blend-mode value of plus-lighter ensures that the blending of identical
 pixels from the outgoing and incoming images results in the same color value
@@ -1002,7 +1002,7 @@ except it deals with the incoming element instead.</p>
    </dl>
    <p>The precise tree structure, and in particular the order of sibling
 pseudo-elements, is defined in the <a data-link-type="dfn" href="#create-transition-pseudo-elements" id="ref-for-create-transition-pseudo-elements">Create transition pseudo-elements</a> algorithm.</p>
-   <p>Styles applied to these pseudo-elements are limited to styles in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua⑨">user-agent origin</a> unless the <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot">[[Phase]]</a></code> associated with them is
+   <p>Styles applied to these pseudo-elements are limited to styles in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua⑨">user-agent origin</a> unless the <a data-link-type="dfn" href="#samedocumenttransition-phase" id="ref-for-samedocumenttransition-phase">phase</a> associated with them is
 set to "running".</p>
    <h2 class="heading settled" data-level="4" id="new-stacking-layer"><span class="secno">4. </span><span class="content">New Stacking Layer</span><a class="self-link" href="#new-stacking-layer"></a></h2>
    <p>This specification introduces a new stacking layer to the <a href="https://www.w3.org/TR/CSS2/zindex.html">Elaborate description of Stacking Contexts</a>.</p>
@@ -1013,14 +1013,14 @@ called <dfn data-dfn-type="dfn" data-noexport id="page-transition-layer">page-tr
      <p>Its parent stacking context is the root stacking context.</p>
     <li data-md>
      <p>If the <span class="css">page-transition</span> pseudo-element exists, a new stacking
-context is created for the <a href="https://dom.spec.whatwg.org/#concept-tree-root">root</a> and <a href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</a> elements.
+context is created for the <a href="https://dom.spec.whatwg.org/#concept-tree-root" id="termref-for-concept-tree-root">root</a> and <a href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</a> elements.
 The <span class="css">page-transition layer</span> is a sibling of this stacking context.</p>
     <li data-md>
-     <p>The <span class="css">page-transition layer</span> paints after the stacking context for the <a href="https://dom.spec.whatwg.org/#concept-tree-root">root</a> and <a href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</a> elements.</p>
+     <p>The <span class="css">page-transition layer</span> paints after the stacking context for the <a href="https://dom.spec.whatwg.org/#concept-tree-root" id="termref-for-concept-tree-root①">root</a> and <a href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</a> elements.</p>
    </ol>
    <p class="note" role="note"><span>Note:</span> The intent of the feature is to be able to capture the contents of the
 page, which includes the top layer elements. In order to accomplish that, the <span class="css">page-transition layer</span> cannot be a part of the captured top layer context,
-since that results in a circular dependecy. Instead, this stacking context is a
+since that results in a circular dependency. Instead, this stacking context is a
 sibling of other page contents.</p>
    <p class="issue" id="issue-929cc26b"><a class="self-link" href="#issue-929cc26b"></a> Do we need to clarify that the stacking context for the root and top
 layer elements has filters and effects coming from the root element’s style?</p>
@@ -1028,223 +1028,293 @@ layer elements has filters and effects coming from the root element’s style?</
    <p>Single-page API:</p>
 <pre class="idl highlight def"><c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="samedocumenttransition"><code><c- g>SameDocumentTransition</c-></code></dfn> {
     <dfn class="idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="constructor" data-export data-lt="SameDocumentTransition()|constructor()" id="dom-samedocumenttransition-samedocumenttransition"><code><c- g>constructor</c-></code><a class="self-link" href="#dom-samedocumenttransition-samedocumenttransition"></a></dfn>();
-    <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-prepare" id="ref-for-dom-samedocumenttransition-prepare"><c- g>prepare</c-></a>(<a data-link-type="idl-name" href="#callbackdef-asyncfunction" id="ref-for-callbackdef-asyncfunction"><c- n>AsyncFunction</c-></a> <dfn class="idl-code" data-dfn-for="SameDocumentTransition/prepare(cb)" data-dfn-type="argument" data-export id="dom-samedocumenttransition-prepare-cb-cb"><code><c- g>cb</c-></code><a class="self-link" href="#dom-samedocumenttransition-prepare-cb-cb"></a></dfn>);
+    <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-prepare" id="ref-for-dom-samedocumenttransition-prepare"><c- g>prepare</c-></a>(<a data-link-type="idl-name" href="#callbackdef-preparecallback" id="ref-for-callbackdef-preparecallback"><c- n>PrepareCallback</c-></a> <dfn class="idl-code" data-dfn-for="SameDocumentTransition/prepare(cb)" data-dfn-type="argument" data-export id="dom-samedocumenttransition-prepare-cb-cb"><code><c- g>cb</c-></code><a class="self-link" href="#dom-samedocumenttransition-prepare-cb-cb"></a></dfn>);
     <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined①"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-abandon" id="ref-for-dom-samedocumenttransition-abandon"><c- g>abandon</c-></a>();
-    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-any" id="ref-for-idl-any"><c- b>any</c-></a>> <dfn class="idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export data-readonly data-type="Promise<any>" id="dom-samedocumenttransition-finished"><code><c- g>finished</c-></code><a class="self-link" href="#dom-samedocumenttransition-finished"></a></dfn>;
+    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined②"><c- b>undefined</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export data-readonly data-type="Promise<undefined>" id="dom-samedocumenttransition-finished"><code><c- g>finished</c-></code></dfn>;
 };
 
-<c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-asyncfunction"><code><c- g>AsyncFunction</c-></code></dfn> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise②"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-any" id="ref-for-idl-any①"><c- b>any</c-></a>> ();
+<c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-preparecallback"><code><c- g>PrepareCallback</c-></code></dfn> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise②"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-any" id="ref-for-idl-any"><c- b>any</c-></a>> ();
 </pre>
-   <p>The <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition">SameDocumentTransition</a></code> represents and controls
-a single same-document transition. That is, it controls a transition where the
-starting and ending document are the same, possibly with changes to the
-document’s DOM structure.</p>
-   <p><code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition①">SameDocumentTransition</a></code> objects have the following values:</p>
-   <ul>
-    <li data-md>
-     <p>A <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-taggedelements-slot"><code>[[TaggedElements]]</code></dfn> private slot, which is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a>, whose keys are <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag">page
-transition tags</a> and whose values are <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="capturedelement">CapturedElement</dfn>s, a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct">struct</a> with items named <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="outgoing-image">outgoing image</dfn> (an image), <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="outgoing-styles">outgoing styles</dfn> (a set of styles), and <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="incoming-element">incoming element</dfn> (an element).
-All of the slots are initially empty.</p>
-    <li data-md>
-     <p>A <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-phase-slot"><code>[[Phase]]</code></dfn> private slot,
-which is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string" id="ref-for-string">string</a> chosen from "idle", "outgoing-capture",
-"incoming-prep", and "running". The initial value is "idle".</p>
-    <li data-md>
-     <p>A <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-preparecallback-slot"><code>[[PrepareCallback]]</code></dfn> private slot, which is an AsyncFunction dispatched to update the
-DOM to the new state.</p>
-    <li data-md>
-     <p>A <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-readypromise-slot"><code>[[ReadyPromise]]</code></dfn> private slot, which is a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise③">Promise</a></code> created when a page transition is
-started, and resolved when the phase is updated from "incoming-prep" to
-"running".</p>
-    <li data-md>
-     <p>A <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="attribute" data-export id="dom-samedocumenttransition-finished-slot"><code>[[finished]]</code></dfn> attribute,
-which is a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise④">Promise</a></code> created when a page transition is started, and
-resolved when it’s ended (successfully or unsuccessfully).</p>
-   </ul>
+   <div class="note" role="note"> The <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition">SameDocumentTransition</a></code> represents and controls
+    a single same-document transition. That is, it controls a transition where the
+    starting and ending document are the same, possibly with changes to the
+    document’s DOM structure. </div>
+   <p><code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition①">SameDocumentTransition</a></code> objects have the following:</p>
+   <dl>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="SameDocumentTransition" data-dfn-type="dfn" data-noexport id="samedocumenttransition-tagged-elements">tagged elements</dfn>
+    <dd data-md>
+     <p>a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a>,
+whose keys are <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag">page transition tags</a> and whose values are <a data-link-type="dfn" href="#captured-element" id="ref-for-captured-element">captured elements</a>.
+Initially a new <span id="ref-for-ordered-map①">map</span>.</p>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="SameDocumentTransition" data-dfn-type="dfn" data-noexport id="samedocumenttransition-phase">phase</dfn>
+    <dd data-md>
+     <p>"<code>idle</code>", "<code>preparing</code>", "<code>running</code>", or "<code>finished</code>".
+Initially "<code>idle</code>".</p>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="SameDocumentTransition" data-dfn-type="dfn" data-noexport id="samedocumenttransition-prepare-callback">prepare callback</dfn>
+    <dd data-md>
+     <p>a <code class="idl"><a data-link-type="idl" href="#callbackdef-preparecallback" id="ref-for-callbackdef-preparecallback①">PrepareCallback</a></code> or null. Initially null.</p>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="SameDocumentTransition" data-dfn-type="dfn" data-noexport id="samedocumenttransition-ready-promise">ready promise</dfn>
+    <dd data-md>
+     <p>a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise③">Promise</a></code>.
+Initially <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise">a new promise</a> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant Realm</a>.</p>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="SameDocumentTransition" data-dfn-type="dfn" data-noexport id="samedocumenttransition-finished-promise">finished promise</dfn>
+    <dd data-md>
+     <p>a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise④">Promise</a></code>.
+Initially <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise①">a new promise</a> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant Realm</a>.</p>
+   </dl>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-finished" id="ref-for-dom-samedocumenttransition-finished">finished</a></code> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#getter-steps" id="ref-for-getter-steps">getter steps</a> are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this’s</a> <a data-link-type="dfn" href="#samedocumenttransition-finished-promise" id="ref-for-samedocumenttransition-finished-promise">finished promise</a>.</p>
+   <p>A <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Document</a></code> additionally has:</p>
+   <dl>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="document" data-dfn-type="dfn" data-noexport id="document-pending-same-document-transition-outgoing-capture">pending same document transition outgoing capture</dfn>
+    <dd data-md>
+     <p>a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition②">SameDocumentTransition</a></code> or null. Initially null.</p>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="document" data-dfn-type="dfn" data-noexport id="document-running-same-document-transition">running same document transition</dfn>
+    <dd data-md>
+     <p>a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition③">SameDocumentTransition</a></code> or null. Initially null.</p>
+   </dl>
    <div class="algorithm" data-algorithm="SameDocumentTransition.prepare()">
      The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export id="dom-samedocumenttransition-prepare"><code>prepare(<var>cb</var>)</code></dfn> are as follows: 
     <ol>
      <li data-md>
-      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-preparecallback-slot" id="ref-for-dom-samedocumenttransition-preparecallback-slot">[[PrepareCallback]]</a></code> private slot to <var>cb</var>.</p>
+      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this’s</a> <a data-link-type="dfn" href="#samedocumenttransition-phase" id="ref-for-samedocumenttransition-phase①">phase</a> is not "<code>idle</code>", then throw an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#invalidstateerror" id="ref-for-invalidstateerror">InvalidStateError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code>.</p>
      <li data-md>
-      <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant Realm</a>.</p>
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this’s</a> <a data-link-type="dfn" href="#samedocumenttransition-phase" id="ref-for-samedocumenttransition-phase②">phase</a> to "<code>preparing</code>".</p>
      <li data-md>
-      <p>Let <var>readyP</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise">a new promise</a> in <var>realm</var>.
-Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-readypromise-slot" id="ref-for-dom-samedocumenttransition-readypromise-slot">[[ReadyPromise]]</a></code> internal slot to <var>readyP</var>.</p>
+      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this’s</a> <a data-link-type="dfn" href="#samedocumenttransition-prepare-callback" id="ref-for-samedocumenttransition-prepare-callback">prepare callback</a> to <var>cb</var>.</p>
      <li data-md>
-      <p>Let <var>environment</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this’s</a> relevant settings object.
-Let <var>document</var> be <var>environment</var>’s relevant global object’s associated Document.</p>
+      <p>Let <var>document</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window">associated document</a>.</p>
      <li data-md>
-      <p>If any <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition②">SameDocumentTransition</a></code> object associated with <var>document</var> has a <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot①">[[Phase]]</a></code> internal slot set to a non-"idle" value, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition">abandon the page transition</a> managed by all such <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition③">SameDocumentTransition</a></code> objects with an <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror">AbortError</a></code>.</p>
+      <p>Let <var>transitionsToAbandon</var> be a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of every <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition④">SameDocumentTransition</a></code> within <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm②">relevant Realm</a> that has a <a data-link-type="dfn" href="#samedocumenttransition-phase" id="ref-for-samedocumenttransition-phase③">phase</a> that is not "<code>idle</code>".</p>
+      <p class="issue" id="issue-a5efd1d7"><a class="self-link" href="#issue-a5efd1d7"></a> The ordering needs to be defined, probably in a queue.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate">For each</a> <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a> element <var>el</var> connected to <var>document</var>,
-with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none">none</a> <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag①">page transition tag</a> computed value, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition①">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>, <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-throw" id="ref-for-dfn-throw">throw</a> an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code> and return <var>readyP</var>;
-if any of the following conditions is true:</p>
-      <ol>
-       <li data-md>
-        <p><var>el</var> has the same computed <span class="css">page-transition-tag</span> value as previous element.</p>
-       <li data-md>
-        <p><var>el</var> is not the root element and
-does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.</p>
-       <li data-md>
-        <p><var>el</var> is not the root element and
-does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.</p>
-      </ol>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate">For each</a> <var>transition</var> of <var>transitionsToAbandon</var>, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition">abandon the page transition</a> <var>transition</var> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror">AbortError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException①">DOMException</a></code>.</p>
+      <p class="issue" id="issue-a8028177"><a class="self-link" href="#issue-a8028177"></a> The callbacks may still be running after this, which may not be what we want.</p>
      <li data-md>
-      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot②">[[Phase]]</a></code> internal slot to "outgoing-capture".</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert">Assert</a>: <var>document</var>’s <a data-link-type="dfn" href="#document-pending-same-document-transition-outgoing-capture" id="ref-for-document-pending-same-document-transition-outgoing-capture">pending same document transition outgoing capture</a> is null.</p>
      <li data-md>
-      <p>Let <var>finishedP</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise①">a new promise</a> in <var>realm</var>.
-Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-finished-slot" id="ref-for-dom-samedocumenttransition-finished-slot">[[finished]]</a></code> attribute to <var>finishedP</var>.</p>
+      <p>Set <var>document</var>’s <a data-link-type="dfn" href="#document-pending-same-document-transition-outgoing-capture" id="ref-for-document-pending-same-document-transition-outgoing-capture①">pending same document transition outgoing capture</a> to <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a>.</p>
      <li data-md>
-      <p>Let <var>taggedElements</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-taggedelements-slot" id="ref-for-dom-samedocumenttransition-taggedelements-slot">[[TaggedElements]]</a></code> internal slot.</p>
-     <li data-md>
-      <p>Schedule a <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>.</p>
-      <p class="note" role="note"><span>Note:</span> Defering the subsequent step to the next rendering opportunity allows DOM mutations made by the author when
-triggering the transition to be presented to the user and captured in the snapshots.</p>
-     <li data-md>
-      <p>Execute the following steps after step 14 of <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering">Update the rendering</a> at the next <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity">rendering opportunity</a>:</p>
-      <ol>
-       <li data-md>
-        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate①">For each</a> <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a> element <var>el</var> connected to <var>document</var>,
-with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none①">none</a> <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag②">page transition tag</a> computed value,
-in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:</p>
-        <ol>
-         <li data-md>
-          <p>Let <var>tag</var> be <var>el</var>’s computed <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag②">page-transition-tag</a> value.</p>
-         <li data-md>
-          <p>Let <var>capture</var> be a new <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement">CapturedElement</a> struct.</p>
-         <li data-md>
-          <p>Set <var>capture</var>’s <a data-link-type="dfn" href="#outgoing-image" id="ref-for-outgoing-image">outgoing image</a> to the result of <a data-link-type="dfn" href="#capturing-the-image" id="ref-for-capturing-the-image">capturing the image</a> of <var>el</var>.</p>
-         <li data-md>
-          <p>Set <var>capture</var>’s <a data-link-type="dfn" href="#outgoing-styles" id="ref-for-outgoing-styles">outgoing styles</a> to the following:</p>
-          <dl>
-           <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform①">transform</a>
-           <dd data-md>
-            <p>A CSS transform that would place <var>el</var> from the document origin to its current quad.</p>
-           <dd data-md>
-            <p>This value is identity for the root element.</p>
-           <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width①">width</a>
-           <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a>
-           <dd data-md>
-            <p>The width and height of <var>el</var>’s border box.</p>
-           <dd data-md>
-            <p>This value is the bounds of the initial containing block for the root element.</p>
-           <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box">object-view-box</a>
-           <dd data-md>
-            <p>An <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box①">object-view-box</a> value that,
-when applied to the outgoing image,
-will cause the view box to coincide with <var>el</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box②">border box</a> in the image.</p>
-           <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode">writing-mode</a>
-           <dd data-md>
-            <p>The <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode①">writing-mode</a> of <var>el</var>.</p>
-           <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction">direction</a>
-           <dd data-md>
-            <p>The <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction①">direction</a> of <var>el</var>.</p>
-          </dl>
-         <li data-md>
-          <p>Set <var>taggedElements</var>[<var>tag</var>] to <var>capture</var>.</p>
-        </ol>
-       <li data-md>
-        <p><a data-link-type="dfn" href="#create-transition-pseudo-elements" id="ref-for-create-transition-pseudo-elements①">Create transition pseudo-elements</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a>.</p>
-       <li data-md>
-        <p>Suppress rendering opportunities for <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this’s</a> Document.</p>
-        <p class="note" role="note"><span>Note:</span> The aim is to prevent unintended DOM updates from being presented to the
-user after a cached snapshot for the elements has been captured. We wait for
-one rendering opportunity after prepare to present DOM mutations made by the
-author before prepare to be presented to the user. This is also the content
-captured in snapshots.</p>
-        <p class="issue" id="issue-e5dbb465"><a class="self-link" href="#issue-e5dbb465"></a> Further clarify this behaviour. Lifecycle updates can still be trigerred
-via script APIs which query style or layout information but no visual updates
-are presented to the user. Is this the same behaviour as render-blocking?</p>
-        <p class="issue" id="issue-f6dfdcaa"><a class="self-link" href="#issue-f6dfdcaa"></a> How should input be handled when in this state? The last frame presented
-to the user will not reflect the DOM state as it asynchronously switches to
-the new version.</p>
-       <li data-md>
-        <p><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task" id="ref-for-queue-a-global-task">Queue a global task</a> on the <a data-link-type="dfn">DOM manipulation task source</a>,
-given <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global">global object</a>,
-to execute the following steps:</p>
-        <ol>
-         <li data-md>
-          <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot③">[[Phase]]</a></code> internal slot to "incoming-prep".</p>
-         <li data-md>
-          <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#invoke-a-callback-function" id="ref-for-invoke-a-callback-function">Invoke</a> and reset <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-preparecallback-slot" id="ref-for-dom-samedocumenttransition-preparecallback-slot①">[[PrepareCallback]]</a></code>, and let <var>userP</var> be the return value.</p>
-        </ol>
-        <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#upon-fulfillment" id="ref-for-upon-fulfillment">Upon fulfillment</a> of <var>userP</var>:</p>
-        <ol>
-         <li data-md>
-          <p>Stop suppressing rendering opportunities for <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①①">this’s</a> Document.</p>
-          <p class="note" role="note"><span>Note:</span> Resuming rendering opportunities is delayed until fulfillment of
-userP to allow asynchronous loading of the incoming DOM.</p>
-         <li data-md>
-          <p>If multiple elements or pseudo-elements on the Document have the same <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag③">page transition tag</a>, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition②">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①②">this</a> with an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>.</p>
-         <li data-md>
-          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate②">For each</a> <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a> element <var>el</var> connected to <var>document</var>,
-with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none②">none</a> <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag④">page transition tag</a> computed value, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition③">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①③">this</a> with an <code class="idl"><a data-link-type="idl">InvalidStateException</a></code>;
-if any of the following conditions is true:</p>
-          <ol>
-           <li data-md>
-            <p><var>el</var> has the same computed <span class="css">page-transition-tag</span> value as previous element.</p>
-           <li data-md>
-            <p><var>el</var> is not the root element and
-does not have <a href="https://drafts.csswg.org/css-contain/#containment-layout">layout containment</a> applied.</p>
-           <li data-md>
-            <p><var>el</var> is not the root element and
-does not forbid <a href="https://drafts.csswg.org/css-break/#valdef-break-inside-avoid">fragmentation</a>.</p>
-          </ol>
-         <li data-md>
-          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate③">For each</a> <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">rendered</a> element <var>el</var> connected to <var>document</var>,
-with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none③">none</a> <a data-link-type="dfn" href="#page-transition-tag" id="ref-for-page-transition-tag⑤">page transition tag</a> computed value,
-in <a href="https://www.w3.org/TR/CSS21/zindex.html">paint order</a>:</p>
-          <ol>
-           <li data-md>
-            <p>Let <var>tag</var> be <var>el</var>’s <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag③">page-transition-tag</a> value.</p>
-           <li data-md>
-            <p>If <var>taggedElements</var>[<var>tag</var>] does not exist,
-set it to a new <a data-link-type="dfn" href="#capturedelement" id="ref-for-capturedelement①">CapturedElement</a> struct.</p>
-           <li data-md>
-            <p>Let <var>capture</var> be <var>taggedElements</var>[<var>tag</var>].</p>
-           <li data-md>
-            <p>Let <var>capture</var>’s <a data-link-type="dfn" href="#incoming-element" id="ref-for-incoming-element">incoming element</a> item be <var>el</var>.</p>
-          </ol>
-         <li data-md>
-          <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①④">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot④">[[Phase]]</a></code> internal slot to "running".</p>
-         <li data-md>
-          <p><a data-link-type="dfn" href="#create-transition-pseudo-elements" id="ref-for-create-transition-pseudo-elements②">Create transition pseudo-elements</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑤">this</a>.</p>
-         <li data-md>
-          <p><a data-link-type="dfn" href="#animate-a-page-transition" id="ref-for-animate-a-page-transition②">Animate a page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑥">this</a>.</p>
-          <p class="note" role="note"><span>Note:</span> This will require running document lifecycle phases to compute
-information calculated during style/layout.</p>
-         <li data-md>
-          <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#resolve" id="ref-for-resolve">Resolve</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-readypromise-slot" id="ref-for-dom-samedocumenttransition-readypromise-slot①">[[ReadyPromise]]</a></code> with <var>readyP</var>.</p>
-         <li data-md>
-          <p>At each next rendering opportunity, run the <a data-link-type="dfn" href="#update-transition-dom" id="ref-for-update-transition-dom">update transition DOM</a> steps
-for <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a> after step 14 of <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering">Update the rendering</a>.</p>
-          <p class="issue" id="issue-2d6d2297"><a class="self-link" href="#issue-2d6d2297"></a> This should likely move to the html spec.</p>
-        </ol>
-        <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#upon-rejection" id="ref-for-upon-rejection">Upon rejection</a> of <var>userP</var>:</p>
-        <ol>
-         <li data-md>
-          <p>Let <var>reason</var> be the reason <var>userP</var> was rejected.</p>
-         <li data-md>
-          <p><a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition④">Abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑧">this</a> with <var>reason</var>.</p>
-          <p>If the time from when <var>cb</var> is invoked
-to when <var>userP</var> is fulfilled
-is longer than an implementation-defined timeout period, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition⑤">abandon the page transition</a> managed by <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑨">this</a> with a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#timeouterror" id="ref-for-timeouterror">TimeoutError</a></code>.</p>
-          <p class="note" role="note"><span>Note:</span> This step needs to happen asynchronously to allow an
-async implementation of <a data-link-type="dfn" href="#capturing-the-image" id="ref-for-capturing-the-image①">capturing the image</a> algorithm.</p>
-        </ol>
-      </ol>
-     <li data-md>
-      <p>Return <var>readyP</var>.</p>
+      <p>Return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this’s</a> <a data-link-type="dfn" href="#samedocumenttransition-ready-promise" id="ref-for-samedocumenttransition-ready-promise">ready promise</a>.</p>
     </ol>
+    <p class="note" role="note"><span>Note:</span> This process continues in <a data-link-type="dfn" href="#perform-an-outgoing-capture" id="ref-for-perform-an-outgoing-capture">perform an outgoing capture</a>.</p>
    </div>
    <div class="algorithm" data-algorithm="SameDocumentTransition.abandon()">
      The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps①">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="SameDocumentTransition" data-dfn-type="method" data-export id="dom-samedocumenttransition-abandon"><code>abandon()</code></dfn> are: 
     <ol>
      <li data-md>
-      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⓪">this’s</a> <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot⑤">[[Phase]]</a></code> internal slot is not "idle", <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition⑥">abandon the page transition</a> managed by <span id="ref-for-this②①">this</span> with an <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror①">AbortError</a></code>.</p>
+      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this’s</a> <a data-link-type="dfn" href="#samedocumenttransition-phase" id="ref-for-samedocumenttransition-phase④">phase</a> is not "<code>finished</code>",
+then <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition①">abandon the page transition</a> <span id="ref-for-this①①">this</span> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror①">AbortError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException②">DOMException</a></code>.</p>
+    </ol>
+   </div>
+   <div class="algorithm" data-algorithm="monkey patch rendering">
+     Run the following steps before <a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model:mark-paint-timing">marking paint timing</a> in the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering" id="ref-for-update-the-rendering">update the rendering</a> steps: 
+    <ol>
      <li data-md>
-      <p>Otherwise, do nothing.</p>
+      <p>For each <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#fully-active" id="ref-for-fully-active">fully active</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①">Document</a></code> in <var>docs</var>, <a data-link-type="dfn" href="#perform-pending-transition-operations" id="ref-for-perform-pending-transition-operations">perform pending transition operations</a> for that <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document②">Document</a></code>.</p>
+    </ol>
+    <p class="note" role="note"><span>Note:</span> These steps will be added to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering" id="ref-for-update-the-rendering①">update the rendering</a> in the HTML spec.
+        As such, the prose style is written to match other steps in that algorithm.</p>
+   </div>
+   <div class="algorithm" data-algorithm="perform pending transition operations">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="perform-pending-transition-operations">perform pending transition operations</dfn> given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document③">Document</a></code> <var>document</var>,
+        perform the following steps: 
+    <ol>
+     <li data-md>
+      <p>If <var>document</var>’s <a data-link-type="dfn" href="#document-pending-same-document-transition-outgoing-capture" id="ref-for-document-pending-same-document-transition-outgoing-capture②">pending same document transition outgoing capture</a> is not null, then:</p>
+      <ol>
+       <li data-md>
+        <p><a data-link-type="dfn" href="#perform-an-outgoing-capture" id="ref-for-perform-an-outgoing-capture①">Perform an outgoing capture</a> with <var>document</var>’s <a data-link-type="dfn" href="#document-pending-same-document-transition-outgoing-capture" id="ref-for-document-pending-same-document-transition-outgoing-capture③">pending same document transition outgoing capture</a>.</p>
+       <li data-md>
+        <p>Set <var>document</var>’s <a data-link-type="dfn" href="#document-pending-same-document-transition-outgoing-capture" id="ref-for-document-pending-same-document-transition-outgoing-capture④">pending same document transition outgoing capture</a> to null.</p>
+      </ol>
+     <li data-md>
+      <p>If <var>document</var>’s <a data-link-type="dfn" href="#document-running-same-document-transition" id="ref-for-document-running-same-document-transition">running same document transition</a> is not null,
+then <a data-link-type="dfn" href="#update-transition-dom" id="ref-for-update-transition-dom">update transition DOM</a> for <var>document</var>’s <span id="ref-for-document-running-same-document-transition①">running same document transition</span>.</p>
+    </ol>
+   </div>
+   <div class="algorithm" data-algorithm="perform outgoing capture">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="perform-an-outgoing-capture">perform an outgoing capture</dfn> given a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition⑤">SameDocumentTransition</a></code> <var>transition</var>,
+        perform the following steps: 
+    <ol>
+     <li data-md>
+      <p>Let <var>taggedElements</var> be <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-tagged-elements" id="ref-for-samedocumenttransition-tagged-elements">tagged elements</a>.</p>
+     <li data-md>
+      <p>Let <var>usedTransitionTags</var> be a new <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">set</a> of strings.</p>
+     <li data-md>
+      <p>Let <var>preparationFailed</var> be false.</p>
+     <li data-md>
+      <p>Let <var>document</var> be <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window①">associated document</a>.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate①">For each</a> <var>element</var> of every <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element">Element</a></code> and <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#pseudo-element" id="ref-for-pseudo-element">pseudo-element</a> connected to <var>document</var>,
+in <a href="https://drafts.csswg.org/css2/#painting-order">paint order</a>:</p>
+      <p class="issue" id="issue-ad1ca140"><a class="self-link" href="#issue-ad1ca140"></a> The link for "paint order" doesn’t seem right.
+    Is there a more canonical definition?</p>
+      <ol>
+       <li data-md>
+        <p>Let <var>transitionTag</var> be the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value">computed value</a> of <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag②">page-transition-tag</a> for <var>element</var>.</p>
+       <li data-md>
+        <p>If <var>transitionTag</var> is <a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none">none</a>,
+or <var>element</var> is <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-4/#element-not-rendered" id="ref-for-element-not-rendered">not rendered</a>,
+then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue">continue</a>.</p>
+       <li data-md>
+        <p>If any of the following is true:</p>
+        <ul>
+         <li data-md>
+          <p><var>usedTransitionTags</var> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> <var>transitionTag</var>.</p>
+         <li data-md>
+          <p><var>element</var> is not <var>element</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root">root</a> and <var>element</var> does not have <a data-link-type="dfn" href="https://drafts.csswg.org/css-contain-2/#layout-containment" id="ref-for-layout-containment">layout containment</a>.</p>
+         <li data-md>
+          <p><var>element</var> is not <var>element</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root①">root</a> and <var>element</var> allows <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation" id="ref-for-fragmentation">fragmentation</a>.</p>
+        </ul>
+        <p>Then set <var>preparationFailed</var> to true and <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-break" id="ref-for-iteration-break">break</a>.</p>
+       <li data-md>
+        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append">Append</a> <var>transitionTag</var> to <var>usedTransitionTags</var>.</p>
+       <li data-md>
+        <p>Let <var>capture</var> be a new <a data-link-type="dfn" href="#captured-element" id="ref-for-captured-element①">captured element</a> struct.</p>
+       <li data-md>
+        <p>Set <var>capture</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-image" id="ref-for-captured-element-outgoing-image">outgoing image</a> to the result of <a data-link-type="dfn" href="#capture-the-image" id="ref-for-capture-the-image">capturing the image</a> of <var>element</var>.</p>
+       <li data-md>
+        <p>Set <var>capture</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-styles" id="ref-for-captured-element-outgoing-styles">outgoing styles</a> to the following:</p>
+        <dl>
+         <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform①">transform</a>
+         <dd data-md>
+          <p>A CSS transform that would place <var>element</var> from the layout viewport origin to its current quad.</p>
+         <dd data-md>
+          <p>This value is identity for the root element.</p>
+         <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width①">width</a>
+         <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a>
+         <dd data-md>
+          <p>The width and height of <var>element</var>’s border box.</p>
+         <dd data-md>
+          <p>This value is the bounds of the initial containing block for the root element.</p>
+         <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box">object-view-box</a>
+         <dd data-md>
+          <p>An <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box①">object-view-box</a> value that,
+when applied to the outgoing image,
+will cause the view box to coincide with <var>element</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box②">border box</a> in the image.</p>
+         <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode">writing-mode</a>
+         <dd data-md>
+          <p>The <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode①">writing-mode</a> of <var>element</var>.</p>
+         <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction">direction</a>
+         <dd data-md>
+          <p>The <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction①">direction</a> of <var>element</var>.</p>
+        </dl>
+        <p class="issue" id="issue-f121180b"><a class="self-link" href="#issue-f121180b"></a> This needs proper types.</p>
+       <li data-md>
+        <p>Set <var>taggedElements</var>[<var>transitionTag</var>] to <var>capture</var>.</p>
+      </ol>
+     <li data-md>
+      <p>Suppress rendering opportunities for <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global②">relevant global object’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window②">associated document</a>.</p>
+      <p class="note" role="note"><span>Note:</span> The aim is to prevent unintended DOM updates from being presented to the
+user after a cached snapshot for the elements has been captured. We wait for
+one rendering opportunity after prepare to present DOM mutations made by the
+author before prepare to be presented to the user. This is also the content
+captured in snapshots.</p>
+      <p class="issue" id="issue-edbf8829"><a class="self-link" href="#issue-edbf8829"></a> Further clarify this behavior. Lifecycle updates can still be triggered
+via script APIs which query style or layout information but no visual updates
+are presented to the user. Is this the same behavior as render-blocking?</p>
+      <p class="issue" id="issue-f6dfdcaa"><a class="self-link" href="#issue-f6dfdcaa"></a> How should input be handled when in this state? The last frame presented
+to the user will not reflect the DOM state as it asynchronously switches to
+the new version.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task" id="ref-for-queue-a-global-task">Queue a global task</a> on the <a data-link-type="dfn">DOM manipulation task source</a>,
+given <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global③">relevant global object</a>,
+to execute the following steps:</p>
+      <p class="note" role="note"><span>Note:</span> A task is queued here because the texture read back in <a data-link-type="dfn" href="#capture-the-image" id="ref-for-capture-the-image①">capturing the image</a> may be async,
+        although the render steps in the HTML spec act as if it’s synchronous.</p>
+      <ol>
+       <li data-md>
+        <p>Let <var>timedOut</var> be false.</p>
+       <li data-md>
+        <p>Let <var>userP</var> be the result of <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#invoke-a-callback-function" id="ref-for-invoke-a-callback-function">invoking</a> <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-prepare-callback" id="ref-for-samedocumenttransition-prepare-callback①">prepare callback</a>.</p>
+       <li data-md>
+        <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled" id="ref-for-dfn-perform-steps-once-promise-is-settled">React</a> to <var>userP</var>:</p>
+        <ul>
+         <li data-md>
+          <p>If <var>userP</var> does not settle within an implementation-defined timeout, then:</p>
+          <ol>
+           <li data-md>
+            <p>Set <var>timedOut</var> to true.</p>
+           <li data-md>
+            <p>If <var>preparationFailed</var> is true,
+then <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition②">abandon the page transition</a> <var>transition</var> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror②">AbortError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException③">DOMException</a></code>,
+and abort these steps.</p>
+           <li data-md>
+            <p>Otherwise, <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition③">abandon the page transition</a> <var>transition</var> with a "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#timeouterror" id="ref-for-timeouterror">TimeoutError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException④">DOMException</a></code>.</p>
+          </ol>
+         <li data-md>
+          <p>If <var>userP</var> was fulfilled, then:</p>
+          <ol>
+           <li data-md>
+            <p>If <var>timedOut</var> is true, then return.</p>
+           <li data-md>
+            <p>Stop suppressing rendering opportunities for <var>transition</var>’s Document.</p>
+            <p class="note" role="note"><span>Note:</span> Resuming rendering opportunities is delayed until fulfillment of <var>userP</var> to allow asynchronous loading of the incoming DOM.</p>
+           <li data-md>
+            <p>If <var>preparationFailed</var> is true,
+then <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition④">abandon the page transition</a> <var>transition</var> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror③">AbortError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException⑤">DOMException</a></code>,
+and return.</p>
+           <li data-md>
+            <p>Set <var>usedTransitionTags</var> to a new <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">set</a>.</p>
+           <li data-md>
+            <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate②">For each</a> <var>element</var> of every <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element①">Element</a></code> and <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#pseudo-element" id="ref-for-pseudo-element①">pseudo-element</a> connected to <var>document</var>,
+in <a href="https://drafts.csswg.org/css2/#painting-order">paint order</a>:</p>
+            <p class="issue" id="issue-ad1ca140①"><a class="self-link" href="#issue-ad1ca140①"></a> The link for "paint order" doesn’t seem right.
+    Is there a more canonical definition?</p>
+            <ol>
+             <li data-md>
+              <p>Let <var>transitionTag</var> be the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value①">computed value</a> of <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag③">page-transition-tag</a> for <var>element</var>.</p>
+             <li data-md>
+              <p>If <var>transitionTag</var> is <a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none①">none</a>,
+or <var>element</var> is <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-4/#element-not-rendered" id="ref-for-element-not-rendered①">not rendered</a>,
+then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue①">continue</a>.</p>
+             <li data-md>
+              <p>If any of the following is true:</p>
+              <ul>
+               <li data-md>
+                <p><var>usedTransitionTags</var> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain①">contains</a> <var>transitionTag</var>.</p>
+               <li data-md>
+                <p><var>element</var> is not <var>element</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root②">root</a> and <var>element</var> does not have <a data-link-type="dfn" href="https://drafts.csswg.org/css-contain-2/#layout-containment" id="ref-for-layout-containment①">layout containment</a>.</p>
+               <li data-md>
+                <p><var>element</var> is not <var>element</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root③">root</a> and <var>element</var> allows <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation" id="ref-for-fragmentation①">fragmentation</a>.</p>
+              </ul>
+              <p>Then <a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition⑤">abandon the page transition</a> <var>transition</var> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#invalidstateerror" id="ref-for-invalidstateerror①">InvalidStateError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException⑥">DOMException</a></code>,
+    and return.</p>
+             <li data-md>
+              <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append①">Append</a> <var>transitionTag</var> to <var>usedTransitionTags</var>.</p>
+             <li data-md>
+              <p>If <var>taggedElements</var>[<var>transitionTag</var>] does not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists">exist</a>,
+then set <var>taggedElements</var>[<var>transitionTag</var>] to a new <a data-link-type="dfn" href="#captured-element" id="ref-for-captured-element②">captured element</a> struct.</p>
+             <li data-md>
+              <p>Let <var>capture</var> be <var>taggedElements</var>[<var>transitionTag</var>].</p>
+             <li data-md>
+              <p>Let <var>capture</var>’s <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element">incoming element</a> item be <var>element</var>.</p>
+            </ol>
+           <li data-md>
+            <p>Set <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-phase" id="ref-for-samedocumenttransition-phase⑤">phase</a> "<code>running</code>".</p>
+           <li data-md>
+            <p><a data-link-type="dfn" href="#create-transition-pseudo-elements" id="ref-for-create-transition-pseudo-elements①">Create transition pseudo-elements</a> for <var>transition</var>.</p>
+           <li data-md>
+            <p><a data-link-type="dfn" href="#animate-a-page-transition" id="ref-for-animate-a-page-transition②">Animate a page transition</a> <var>transition</var>.</p>
+            <p class="note" role="note"><span>Note:</span> This will require running document lifecycle phases
+    to compute information calculated during style/layout.</p>
+            <p class="note" role="note"><span>Note:</span> The frame-by-frame parts of the animation are handled in <a data-link-type="dfn" href="#update-transition-dom" id="ref-for-update-transition-dom①">update transition DOM</a>.</p>
+           <li data-md>
+            <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#resolve" id="ref-for-resolve">Resolve</a> <a data-link-type="dfn" href="#samedocumenttransition-ready-promise" id="ref-for-samedocumenttransition-ready-promise①">ready promise</a>.</p>
+          </ol>
+         <li data-md>
+          <p>If <var>userP</var> was rejected with reason <var>r</var>, then:</p>
+          <ol>
+           <li data-md>
+            <p>If <var>timedOut</var> is true, then return.</p>
+           <li data-md>
+            <p>Let <var>reason</var> be an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror④">AbortError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException⑦">DOMException</a></code> if <var>preparationFailed</var> is true,
+otherwise <var>r</var>.</p>
+           <li data-md>
+            <p><a data-link-type="dfn" href="#abandon-the-page-transition" id="ref-for-abandon-the-page-transition⑥">Abandon the page transition</a> <var>transition</var> with <var>reason</var>.</p>
+          </ol>
+        </ul>
+      </ol>
     </ol>
    </div>
    <div class="example" id="example-70320d4b">
@@ -1280,7 +1350,7 @@ async implementation of <a data-link-type="dfn" href="#capturing-the-image" id="
     <c- c1>// elements marked previously and transitioned between.</c->
     document<c- p>.</c->querySelector<c- p>(</c-><c- u>".new-message"</c-><c- p>).</c->style<c- p>.</c->pageTransitionTag <c- o>=</c-> <c- u>"message"</c-><c- p>;</c->
   <c- p>});</c->
-      
+
   <c- c1>// When the promise returned by prepare() resolves, all pseudo-elements</c->
   <c- c1>// for this transition have been generated. They can now be accessed</c->
   <c- c1>// in script to set up custom animations.</c->
@@ -1290,7 +1360,7 @@ async implementation of <a data-link-type="dfn" href="#capturing-the-image" id="
      pseudoElement<c- o>:</c-> <c- u>"::page-transition-container(message)"</c-><c- p>,</c->
     <c- p>}</c->
   <c- p>);</c->
-      
+
   <c- c1>// When the finished promise resolves, that means the transition is</c->
   <c- c1>// finished (either completed successfully or abandoned).</c->
   <c- k>await</c-> transition<c- p>.</c->finished<c- p>;</c->
@@ -1298,81 +1368,110 @@ async implementation of <a data-link-type="dfn" href="#capturing-the-image" id="
 </pre>
    </div>
    <hr>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="captured-element">captured element</dfn> is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct">struct</a> with the following:</p>
+   <dl>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="captured element" data-dfn-type="dfn" data-noexport id="captured-element-outgoing-image">outgoing image</dfn>
+    <dd data-md>
+     <p>an image or null. Initially null.</p>
+     <p class="issue" id="issue-4e3c66a5"><a class="self-link" href="#issue-4e3c66a5"></a> The type of "image" needs to be linked or defined.</p>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="captured element" data-dfn-type="dfn" data-noexport id="captured-element-outgoing-styles">outgoing styles</dfn>
+    <dd data-md>
+     <p>a set of styles or null. Initially null.</p>
+     <p class="issue" id="issue-ae4536a8"><a class="self-link" href="#issue-ae4536a8"></a> The type of "a set of styles" needs to be linked or defined.</p>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="captured element" data-dfn-type="dfn" data-noexport id="captured-element-incoming-element">incoming element</dfn>
+    <dd data-md>
+     <p>an element or null. Initially null.</p>
+     <p class="issue" id="issue-e6615d56"><a class="self-link" href="#issue-e6615d56"></a> The type of "element" needs to be linked or defined.</p>
+   </dl>
+   <hr>
    <div class="algorithm" data-algorithm="abandon the page transition">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="abandon-the-page-transition">abandon the page transition</dfn> managed by a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition④">SameDocumentTransition</a></code> <var>manager</var> with an error <var>error</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="abandon-the-page-transition">abandon the page transition</dfn> for <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition⑥">SameDocumentTransition</a></code> <var>transition</var> with <var>error</var>: 
     <ol>
      <li data-md>
-      <p>Stop suppressing rendering opportunities for <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②②">this’s</a> Document, if
-currently suppressed.</p>
+      <p>Let <var>document</var> be <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global④">relevant global object’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window③">associated document</a>.</p>
      <li data-md>
-      <p>If there is currently a page transition being animated,
-end it.
-Remove all associated <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements④">page-transition pseudo-elements</a> from the document.</p>
+      <p>If <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-phase" id="ref-for-samedocumenttransition-phase⑥">phase</a> is not "<code>idle</code>", then:</p>
+      <ol>
+       <li data-md>
+        <p>Stop suppressing rendering opportunities <var>document</var>, if currently suppressed.</p>
+        <p class="issue" id="issue-2b1a73c3"><a class="self-link" href="#issue-2b1a73c3"></a> "suppressing rendering opportunities" needs to be linked/defined.</p>
+       <li data-md>
+        <p>Remove all associated <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements④">page-transition pseudo-elements</a> from <var>document</var>.</p>
+        <p class="issue" id="issue-80506344"><a class="self-link" href="#issue-80506344"></a> There needs to be a definition/link for "remove".</p>
+        <p class="issue" id="issue-cc250ace"><a class="self-link" href="#issue-cc250ace"></a> There needs to be a definition/link for "associated".</p>
+      </ol>
      <li data-md>
-      <p>Set <var>manager</var>’s <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot⑥">[[Phase]]</a></code> internal slot to "idle".</p>
+      <p>Set <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-phase" id="ref-for-samedocumenttransition-phase⑦">phase</a> to "<code>finished</code>".</p>
      <li data-md>
-      <p>Invoke <var>manager</var>’s <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-preparecallback-slot" id="ref-for-dom-samedocumenttransition-preparecallback-slot②">[[PrepareCallback]]</a></code>.</p>
+      <p>If <var>document</var>’s <a data-link-type="dfn" href="#document-pending-same-document-transition-outgoing-capture" id="ref-for-document-pending-same-document-transition-outgoing-capture⑤">pending same document transition outgoing capture</a> is <var>transition</var>,
+then set <var>document</var>’s <span id="ref-for-document-pending-same-document-transition-outgoing-capture⑥">pending same document transition outgoing capture</span> to null.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject">Reject</a> <var>manager</var>’s <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-readypromise-slot" id="ref-for-dom-samedocumenttransition-readypromise-slot②">[[ReadyPromise]]</a></code> with <var>error</var>.</p>
+      <p>If <var>document</var>’s <a data-link-type="dfn" href="#document-running-same-document-transition" id="ref-for-document-running-same-document-transition②">running same document transition</a> is <var>transition</var>,
+then set <var>document</var>’s <span id="ref-for-document-running-same-document-transition③">running same document transition</span> to null.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject①">Reject</a> <var>manager</var>’s <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-finished-slot" id="ref-for-dom-samedocumenttransition-finished-slot①">[[finished]]</a></code> with <var>error</var>.</p>
+      <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject">Reject</a> <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-ready-promise" id="ref-for-samedocumenttransition-ready-promise②">ready promise</a> with <var>error</var>.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject①">Reject</a> <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-finished-promise" id="ref-for-samedocumenttransition-finished-promise①">finished promise</a> with <var>error</var>.</p>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="capturing the image">
-     For <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="capturing-the-image">capturing the image</dfn> of an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element">Element</a></code> <var>el</var>: 
+   <div class="algorithm" data-algorithm="capture the image">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="capture the image|capturing the image" data-noexport id="capture-the-image">capture the image</dfn> given an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element②">Element</a></code> <var>element</var>, perform the following steps.
+    They return an image. 
     <ol>
      <li data-md>
       <p>Render the referenced element and its descendants,
 at the same size that they would be in the document,
-over an infinite transparent canvas with the following
-characterists:</p>
-      <ol>
+over an infinite transparent canvas with the following characteristics:</p>
+      <ul>
        <li data-md>
-        <p>The origin of <var>el</var>’s <a href="https://drafts.csswg.org/css-overflow/#ink-overflow-rectangle">ink overflow rectangle</a> is anchored to canvas origin.</p>
+        <p>The origin of <var>element</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#ink-overflow-rectangle" id="ref-for-ink-overflow-rectangle">ink overflow rectangle</a> is anchored to canvas origin.</p>
        <li data-md>
         <p>If the referenced element has a transform applied to it (or its ancestors),
-the transform is ignored.</p>
-        <p class="note" role="note"><span>Note:</span> This transform is applied to the snapshot using the `transform`
-	property of the associated <a data-link-type="dfn">page-transition-container</a> pseudo-element.</p>
+then the transform is ignored.</p>
+        <p class="note" role="note"><span>Note:</span> This transform is applied to the snapshot using the <code>transform</code> property of the associated <span class="css">::page-transition-container</span> pseudo-element.</p>
        <li data-md>
-        <p>For each descendant with a non-<a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none④">none</a> <a data-link-type="dfn">page-transition-tag</a>,
-  skip painting this descendant.</p>
-        <p class="note" role="note"><span>Note:</span> This is necessary since the descendant will generate its
-	own snapshot which will be displayed and animated independently.</p>
-      </ol>
+        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate③">For each</a> <var>descendant</var> of <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-including-descendant" id="ref-for-concept-shadow-including-descendant">shadow-including descendant</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element③">Element</a></code> and <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#pseudo-element" id="ref-for-pseudo-element②">pseudo-element</a> of <var>element</var>,
+if <var>descendant</var> has a <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value②">computed value</a> of <a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag⑤">page-transition-tag</a> that is not <a class="css" data-link-type="maybe" href="#valdef-page-transition-tag-none" id="ref-for-valdef-page-transition-tag-none②">none</a>,
+then skip painting <var>descendant</var>.</p>
+        <p class="note" role="note"><span>Note:</span> This is necessary since the descendant will generate its own snapshot which will be displayed and animated independently.</p>
+        <p class="issue" id="issue-2bfbc0f2"><a class="self-link" href="#issue-2bfbc0f2"></a> Refactor this so the algorithm takes a set of elements that will be captured. This centralizes the logic for deciding if an element should be included or not.</p>
+      </ul>
      <li data-md>
-      <p>Let <var>interest rectangle</var> be the result of <a data-link-type="dfn" href="#compute-the-interest-rectangle" id="ref-for-compute-the-interest-rectangle">Compute the interest rectangle</a> for <var>el</var>.
-The <var>interest rectangle</var> is the subset of <var>el</var>’s <a href="https://drafts.csswg.org/css-overflow/#ink-overflow-rectangle">ink overflow rectangle</a> that should be captured.</p>
-      <p class="note" role="note"><span>Note:</span> This is required for cases where an element’s ink overflow rectangle needs
-	to be clipped because of hardware constraints. For example, if it exceeds
-	max texture size.</p>
+      <p>Let <var>interestRectangle</var> be the result of <a data-link-type="dfn" href="#computing-the-interest-rectangle" id="ref-for-computing-the-interest-rectangle">computing the interest rectangle</a> for <var>element</var>.</p>
+      <p class="note" role="note"><span>Note:</span> The <var>interestRectangle</var> is the subset of <var>element</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#ink-overflow-rectangle" id="ref-for-ink-overflow-rectangle①">ink overflow rectangle</a> that should be captured.
+    This is required for cases where an element’s ink overflow rectangle needs to be clipped because of hardware constraints.
+    For example, if it exceeds the maximum texture size.</p>
      <li data-md>
-      <p>Set the captured image to the contents of the <var>interest rectangle</var> in the rendered canvas.
-The natural size of the image is equal to the <var>interest rectangle</var> bounds.</p>
+      <p>Return the portion of the canvas within <var>interestRectangle</var> as an image.
+The natural size of the image is equal to the <var>interestRectangle</var> bounds.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="update transition DOM">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="update-transition-dom">update transition DOM</dfn> given a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition⑤">SameDocumentTransition</a></code> <var>manager</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="update-transition-dom">update transition DOM</dfn> given a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition⑦">SameDocumentTransition</a></code> <var>transition</var>: 
     <ol>
      <li data-md>
-      <p>For each <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements⑤">page-transition pseudo-elements</a> associated with <var>manager</var>,
+      <p>For each <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements⑤">page-transition pseudo-elements</a> associated with <var>transition</var>,
 check whether there is an active animation associated with this pseudo-element.</p>
       <p class="issue" id="issue-9b6c2555"><a class="self-link" href="#issue-9b6c2555"></a> Define what active animation means here.</p>
      <li data-md>
       <p>If no <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements⑥">page-transition pseudo-elements</a> has an active animation:</p>
       <ol>
        <li data-md>
-        <p>Set <var>manager</var>’s <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-phase-slot" id="ref-for-dom-samedocumenttransition-phase-slot⑦">[[Phase]]</a></code> internal slot to "idle".</p>
+        <p>Set <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-phase" id="ref-for-samedocumenttransition-phase⑧">phase</a> to "<code>finished</code>".</p>
        <li data-md>
-        <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#resolve" id="ref-for-resolve①">Resolve</a> <var>manager</var>’s<code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-finished-slot" id="ref-for-dom-samedocumenttransition-finished-slot②">[[finished]]</a></code> with <var>finishedP</var>.</p>
+        <p>Remove all associated <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements⑦">page-transition pseudo-elements</a> from <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window④">associated document</a>.</p>
+       <li data-md>
+        <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#resolve" id="ref-for-resolve①">Resolve</a> <var>transition</var>’s<a data-link-type="dfn" href="#samedocumenttransition-finished-promise" id="ref-for-samedocumenttransition-finished-promise②">finished promise</a>.</p>
+        <p class="issue" id="issue-80506344①"><a class="self-link" href="#issue-80506344①"></a> There needs to be a definition/link for "remove".</p>
+        <p class="issue" id="issue-cc250ace①"><a class="self-link" href="#issue-cc250ace①"></a> There needs to be a definition/link for "associated".</p>
        <li data-md>
         <p>Return.</p>
       </ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate④">For each</a> <var>tag</var> -> <var>CapturedElement</var> of <var>manager</var>’s <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-taggedelements-slot" id="ref-for-dom-samedocumenttransition-taggedelements-slot①">[[TaggedElements]]</a></code>:</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate">For each</a> <var>tag</var> -> <var>capturedElement</var> of <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-tagged-elements" id="ref-for-samedocumenttransition-tagged-elements①">tagged elements</a>:</p>
       <ol>
        <li data-md>
-        <p>If <var>CapturedElement</var> has an "incoming element", run <a data-link-type="dfn" href="#capturing-the-image" id="ref-for-capturing-the-image②">capture the image</a> on <var>CapturedElement</var>’s "incoming element" and update the displayed
+        <p>If <var>capturedElement</var> has an "incoming element", run <a data-link-type="dfn" href="#capture-the-image" id="ref-for-capture-the-image②">capture the image</a> on <var>capturedElement</var>’s "incoming element" and update the displayed
 image for <span class="css">::page-transition-incoming-image</span> with the tag <var>tag</var>.</p>
         <p>At the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①⓪">user-agent origin</a>,
 set <var>incoming</var>’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box②">object-view-box</a> property
@@ -1385,132 +1484,171 @@ get c0 continuity.</p>
       </ol>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="compute the interest rectangle">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="compute-the-interest-rectangle">compute the interest rectangle</dfn> of an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element①">Element</a></code> <var>el</var>: 
+   <div class="algorithm" data-algorithm="computing the interest rectangle">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="computing the interest rectangle|compute the interest rectangle" data-noexport id="computing-the-interest-rectangle">compute the interest rectangle</dfn> of an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element④">Element</a></code> <var>el</var>, perform the following steps.
+    They return a rectangle. 
     <ol>
      <li data-md>
-      <p>If <var>el</var> is the document’s root element, the <var>interest rectangle</var> is
-the intersection of the viewport, including the size of renderered
-scrollbars (if any), with <var>el</var>’s ink overflow rectangle.</p>
+      <p>If <var>el</var> is the document’s root element,
+then return a rectangle that is the intersection of the layout viewport,
+including the size of rendered scrollbars (if any),
+with <var>el</var>’s ink overflow rectangle.</p>
      <li data-md>
-      <p>If <var>el</var>’s <a href="https://drafts.csswg.org/css-overflow/#ink-overflow-region">ink overflow area</a> does not exceed an implementation-defined maximum size, the <var>interest rectangle</var> is equal to <var>el</var>’s ink overflow rectangle.</p>
+      <p>If <var>el</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#ink-overflow-region" id="ref-for-ink-overflow-region">ink overflow area</a> does not exceed an implementation-defined maximum size,
+then return a rectangle that is equal to <var>el</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#ink-overflow-rectangle" id="ref-for-ink-overflow-rectangle②">ink overflow rectangle</a>.</p>
+     <li data-md>
+      <p>Otherwise:</p>
       <p class="issue" id="issue-c9dce14f"><a class="self-link" href="#issue-c9dce14f"></a> Define the algorithm used to clip the snapshot when it exceeds max size.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="animate a page transition">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="animate-a-page-transition">animate a page transition</dfn> given a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition⑥">SameDocumentTransition</a></code> <var>manager</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="animate-a-page-transition">animate a page transition</dfn> given a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition⑧">SameDocumentTransition</a></code> <var>transition</var>: 
     <ol>
      <li data-md>
       <p>Generate a <a class="production css" data-link-type="type">&lt;keyframe></a> named "page-transition-fade-out" in <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①①">user-agent origin</a> as follows:</p>
 <pre><code class="highlight"><c- n>@keyframes</c-> page-transition-fade-out <c- p>{</c->
-    to <c- p>{</c-> <c- k>opacity</c-><c- p>:</c-> <c- m>0</c-><c- p>;</c-> <c- p>}</c->
+      to <c- p>{</c-> <c- k>opacity</c-><c- p>:</c-> <c- m>0</c-><c- p>;</c-> <c- p>}</c->
 <c- p>}</c->
 </code></pre>
      <li data-md>
       <p>Generate a <a class="production css" data-link-type="type">&lt;keyframe></a> named "page-transition-fade-in" in <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①②">user-agent origin</a> as follows:</p>
 <pre><code class="highlight"><c- n>@keyframes</c-> page-transition-fade-in <c- p>{</c->
-    from <c- p>{</c-> <c- k>opacity</c-><c- p>:</c-> <c- m>0</c-><c- p>;</c-> <c- p>}</c->
+      from <c- p>{</c-> <c- k>opacity</c-><c- p>:</c-> <c- m>0</c-><c- p>;</c-> <c- p>}</c->
 <c- p>}</c->
 </code></pre>
      <li data-md>
       <p>Apply the following styles in <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①③">user-agent origin</a>:</p>
 <pre><code class="highlight"><c- k>html</c-><c- p>:</c-><c- nf>:page-transition-outgoing-image</c-><c- p>(</c->*<c- p>)</c-> <c- p>{</c->
-  <c- k>animation</c-><c- p>:</c-> page-transition-fade-out <c- m>0.25</c-><c- k>s</c-> both<c- p>;</c->
+    <c- k>animation</c-><c- p>:</c-> page-transition-fade-out <c- m>0.25</c-><c- k>s</c-> both<c- p>;</c->
 <c- p>}</c->
-	
+
 html:<c- nf>:page-transition-incoming-image</c-><c- p>(</c->*<c- p>)</c-> <c- p>{</c->
-  <c- k>animation</c-><c- p>:</c-> page-transition-fade-in <c- m>0.25</c-><c- k>s</c-> both<c- p>;</c->
+    <c- k>animation</c-><c- p>:</c-> page-transition-fade-in <c- m>0.25</c-><c- k>s</c-> both<c- p>;</c->
 <c- p>}</c->
 </code></pre>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate⑤">For each</a> <var>tag</var> -> <var>CapturedElement</var> of <var>manager</var>’s <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-taggedelements-slot" id="ref-for-dom-samedocumenttransition-taggedelements-slot②">[[TaggedElements]]</a></code>:</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate①">For each</a> <var>tag</var> -> <var>capturedElement</var> of <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-tagged-elements" id="ref-for-samedocumenttransition-tagged-elements②">tagged elements</a>:</p>
       <ol>
        <li data-md>
-        <p>If <var>CapturedElement</var> has an <a data-link-type="dfn" href="#outgoing-image" id="ref-for-outgoing-image①">outgoing image</a> and <a data-link-type="dfn" href="#incoming-element" id="ref-for-incoming-element①">incoming element</a>:
-Let <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform②">transform</a> be <var>CapturedElement</var>’s <a data-link-type="dfn" href="#outgoing-styles" id="ref-for-outgoing-styles①">outgoing styles</a>'s <span class="property" id="ref-for-propdef-transform③">transform</span> property.
-Let <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width②">width</a> be <var>CapturedElement</var>’s <span id="ref-for-outgoing-styles②">outgoing styles</span>'s <span class="property" id="ref-for-propdef-width③">width</span> property.
-Let <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height②">height</a> be <var>CapturedElement</var>’s <span id="ref-for-outgoing-styles③">outgoing styles</span>'s <span class="property" id="ref-for-propdef-height③">height</span> property.</p>
-        <p>Generate a <a class="production css" data-link-type="type">&lt;keyframe></a> named "page-transition-container-anim-<var>tag</var>" in <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①④">user-agent origin</a> as follows:</p>
+        <p>If neither of <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-image" id="ref-for-captured-element-outgoing-image①">outgoing image</a> or <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element①">incoming element</a> is null:</p>
+        <ol>
+         <li data-md>
+          <p>Let <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform②">transform</a> be <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-styles" id="ref-for-captured-element-outgoing-styles①">outgoing styles</a>'s <span class="property" id="ref-for-propdef-transform③">transform</span> property.</p>
+         <li data-md>
+          <p>Let <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width②">width</a> be <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-styles" id="ref-for-captured-element-outgoing-styles②">outgoing styles</a>'s <span class="property" id="ref-for-propdef-width③">width</span> property.</p>
+         <li data-md>
+          <p>Let <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height②">height</a> be <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-styles" id="ref-for-captured-element-outgoing-styles③">outgoing styles</a>'s <span class="property" id="ref-for-propdef-height③">height</span> property.</p>
+         <li data-md>
+          <p>Generate a <a class="production css" data-link-type="type">&lt;keyframe></a> named "page-transition-container-anim-<var>tag</var>" in <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①④">user-agent origin</a> as follows:</p>
+        </ol>
 <pre><code class="highlight"><c- n>@keyframes</c-> page-transition-container-anim-|tag| <c- p>{</c->
-  from <c- p>{</c->
-    <c- k>transform</c-><c- p>:</c-> |transform|<c- p>;</c->
-    <c- k>width</c-><c- p>:</c-> |width|<c- p>;</c->
-    <c- k>height</c-><c- p>:</c-> |height|<c- p>;</c->
-  <c- p>}</c->
+    from <c- p>{</c->
+        <c- k>transform</c-><c- p>:</c-> |transform|<c- p>;</c->
+        <c- k>width</c-><c- p>:</c-> |width|<c- p>;</c->
+        <c- k>height</c-><c- p>:</c-> |height|<c- p>;</c->
+    <c- p>}</c->
 <c- p>}</c->
 </code></pre>
        <li data-md>
         <p>Apply the following styles in <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①⑤">user-agent origin</a>:</p>
 <pre><code class="highlight"><c- k>html</c-><c- p>:</c-><c- nf>:page-transition-container</c-><c- p>(</c->|tag|<c- p>)</c-> <c- p>{</c->
-  <c- k>animation</c-><c- p>:</c-> page-transition-container-anim-|tag| <c- m>0.25</c-><c- k>s</c-> both<c- p>;</c->
+    <c- k>animation</c-><c- p>:</c-> page-transition-container-anim-|tag| <c- m>0.25</c-><c- k>s</c-> both<c- p>;</c->
 <c- p>}</c->
 </code></pre>
       </ol>
+     <li data-md>
+      <p>Let <var>document</var> be <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑤">relevant global object’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window⑤">associated document</a>.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert①">Assert</a>: <var>document</var>’s <a data-link-type="dfn" href="#document-running-same-document-transition" id="ref-for-document-running-same-document-transition④">running same document transition</a> is null.</p>
+     <li data-md>
+      <p>Set <var>document</var>’s <a data-link-type="dfn" href="#document-running-same-document-transition" id="ref-for-document-running-same-document-transition⑤">running same document transition</a> to <var>transition</var>.</p>
     </ol>
-    <p class="issue" id="issue-bf6c553b"><a class="self-link" href="#issue-bf6c553b"></a> How are keyframes scoped to user-agent origin? We could decide
-		scope based on whether `animation-name` in the computed style
-		came from a developer or UA stylesheet.
-		But we do want developers to be able to</p>
+    <p class="issue" id="issue-4306640b"><a class="self-link" href="#issue-4306640b"></a> How are keyframes scoped to user-agent origin? We could decide
+        scope based on whether <code>animation-name</code> in the computed style
+        came from a developer or UA stylesheet.</p>
     <p class="issue" id="issue-7115bd7f"><a class="self-link" href="#issue-7115bd7f"></a> We should retarget the animation if computed properties for
-		incoming elements change.</p>
+        incoming elements change.</p>
+    <p class="issue" id="issue-741cd9b6"><a class="self-link" href="#issue-741cd9b6"></a> We need to better define how the real new DOM is not painted during the animation.</p>
    </div>
    <div class="algorithm" data-algorithm="create transition pseudo-elements">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-transition-pseudo-elements">create transition pseudo-elements</dfn> given a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition⑦">SameDocumentTransition</a></code> <var>manager</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-transition-pseudo-elements">create transition pseudo-elements</dfn> for a <code class="idl"><a data-link-type="idl" href="#samedocumenttransition" id="ref-for-samedocumenttransition⑨">SameDocumentTransition</a></code> <var>transition</var>: 
     <ol>
      <li data-md>
-      <p>Create a new <a class="css" data-link-type="maybe" href="#selectordef-page-transition" id="ref-for-selectordef-page-transition③">::page-transition</a> pseudo-element,
-if it doesn’t exist. Let <var>pt</var> be the <span class="css" id="ref-for-selectordef-page-transition④">::page-transition</span> pseudo-element.</p>
+      <p>Let <var>transitionRoot</var> be the result of creating a new <a class="css" data-link-type="maybe" href="#selectordef-page-transition" id="ref-for-selectordef-page-transition③">::page-transition</a> pseudo-element.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate⑥">For each</a> <var>tag</var> -> <var>CapturedElement</var> of <var>manager</var>’s <code class="idl"><a data-link-type="idl" href="#dom-samedocumenttransition-taggedelements-slot" id="ref-for-dom-samedocumenttransition-taggedelements-slot③">[[TaggedElements]]</a></code>:</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-iterate" id="ref-for-map-iterate②">For each</a> <var>transitionTag</var> → <var>capturedElement</var> of <var>transition</var>’s <a data-link-type="dfn" href="#samedocumenttransition-tagged-elements" id="ref-for-samedocumenttransition-tagged-elements③">tagged elements</a>:</p>
       <ol>
        <li data-md>
-        <p>Create a new <span class="css">::page-transition-container</span> pseudo-element
-with the tag <var>tag</var> and insert it as a child of <var>pt</var>,
-if it doesn’t exist. Let <var>container</var> be the <span class="css">::page-transition-container</span> pseudo-element with the tag <var>tag</var>.</p>
+        <p>Let <var>container</var> be the result of creating a new <span class="css">::page-transition-container</span> pseudo-element with the tag <var>transitionTag</var>.</p>
+        <p class="issue" id="issue-e6797087"><a class="self-link" href="#issue-e6797087"></a> "tag" should be defined/linked.</p>
        <li data-md>
-        <p>Let <var>width</var> be the current width of <var>CapturedElement</var>’s <a data-link-type="dfn" href="#incoming-element" id="ref-for-incoming-element②">incoming element</a>'s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box④">border box</a>,
-is it exists; otherwise, <var>CapturedElement</var>’s <a data-link-type="dfn" href="#outgoing-styles" id="ref-for-outgoing-styles④">outgoing styles</a> <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width④">width</a> property.</p>
-        <p>Let <var>height</var> be the current height of <var>CapturedElement</var>’s <a data-link-type="dfn" href="#incoming-element" id="ref-for-incoming-element③">incoming element</a>'s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box⑤">border box</a>,
-is it exists; otherwise, <var>CapturedElement</var>’s <a data-link-type="dfn" href="#outgoing-styles" id="ref-for-outgoing-styles⑤">outgoing styles</a> <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height④">height</a> property.</p>
-        <p>Let <var>transform</var> be a transform that maps the <var>CapturedElement</var>’s <a data-link-type="dfn" href="#incoming-element" id="ref-for-incoming-element④">incoming element</a>'s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box⑥">border box</a> from document origin to its quad in
-viewport, if <span id="ref-for-incoming-element⑤">incoming element</span> exists; otherwise, <var>CapturedElement</var>’s <a data-link-type="dfn" href="#outgoing-styles" id="ref-for-outgoing-styles⑥">outgoing styles</a> <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform④">transform</a> property.</p>
-        <p>Let <var>writing-mode</var> and <var>direction</var> be the current value of those properties
-on <var>CapturedElement</var>’s <a data-link-type="dfn" href="#incoming-element" id="ref-for-incoming-element⑥">incoming element</a>,
-if it exists;
-otherwise, <var>CapturedElement</var>’s <a data-link-type="dfn" href="#outgoing-styles" id="ref-for-outgoing-styles⑦">outgoing styles</a> corresponding property.</p>
+        <p>Append <var>container</var> to <var>transitionRoot</var>.</p>
+        <p class="issue" id="issue-cd5827ed"><a class="self-link" href="#issue-cd5827ed"></a> This should be better defined.
+    I’m not sure if pseudo-elements have defined ways to modify their DOM.</p>
+       <li data-md>
+        <p>Let <var>width</var>, <var>height</var>, <var>transform</var>, <var>writingMode</var>, and <var>direction</var> be null.</p>
+       <li data-md>
+        <p>If <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element②">incoming element</a> is null, then:</p>
+        <ol>
+         <li data-md>
+          <p>Set <var>width</var> to <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-styles" id="ref-for-captured-element-outgoing-styles④">outgoing styles</a> <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width④">width</a> property.</p>
+         <li data-md>
+          <p>Set <var>height</var> to <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-styles" id="ref-for-captured-element-outgoing-styles⑤">outgoing styles</a> <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height④">height</a> property.</p>
+         <li data-md>
+          <p>Set <var>transform</var> to <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-styles" id="ref-for-captured-element-outgoing-styles⑥">outgoing styles</a> <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform④">transform</a> property.</p>
+         <li data-md>
+          <p>Set <var>writingMode</var> to <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-styles" id="ref-for-captured-element-outgoing-styles⑦">outgoing styles</a> <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode②">writing-mode</a> property.</p>
+         <li data-md>
+          <p>Set <var>direction</var> to <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-styles" id="ref-for-captured-element-outgoing-styles⑧">outgoing styles</a> <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction②">direction</a> property.</p>
+        </ol>
+       <li data-md>
+        <p>Otherwise:</p>
+        <ol>
+         <li data-md>
+          <p>Set <var>width</var> to the current width of <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element③">incoming element</a>'s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box④">border box</a>.</p>
+         <li data-md>
+          <p>Set <var>height</var> to the current height of <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element④">incoming element</a>'s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box⑤">border box</a>.</p>
+         <li data-md>
+          <p>Set <var>transform</var> to a transform that maps the <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element⑤">incoming element</a>'s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box⑥">border box</a> from document origin to its quad in layout viewport.</p>
+         <li data-md>
+          <p>Set <var>writingMode</var> to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value③">computed value</a> of <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode③">writing-mode</a> on <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element⑥">incoming element</a>.</p>
+         <li data-md>
+          <p>Set <var>direction</var> to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value④">computed value</a> of <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction③">direction</a> on <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element⑦">incoming element</a>.</p>
+        </ol>
+       <li data-md>
         <p>At the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①⑥">user-agent origin</a>,
-set <var>container</var>’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width⑤">width</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height⑤">height</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform⑤">transform</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode②">writing-mode</a>, and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction②">direction</a> properties
-to <var>width</var>, <var>height</var>, <var>transform</var>, <var>writing-mode</var>, and <var>direction</var>.</p>
+set <var>container</var>’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width⑤">width</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height⑤">height</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform⑤">transform</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode④">writing-mode</a>, and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction④">direction</a> properties
+to <var>width</var>, <var>height</var>, <var>transform</var>, <var>writingMode</var>, and <var>direction</var>.</p>
        <li data-md>
-        <p>Create a new <span class="css">::page-transition-image-wrapper</span> pseudo-element
-with the tag <var>tag</var> and inserted as a child of <var>container</var>, if it doesn’t exist.
-Let <var>image wrapper</var> be the <span class="css">::page-transition-image-wrapper</span> pseudo-element
-with the tag <var>tag</var>.</p>
+        <p>Let <var>imageWrapper</var> be a new <span class="css">::page-transition-image-wrapper</span> pseudo-element with the tag <var>transitionTag</var>.</p>
        <li data-md>
-        <p>If <var>CapturedElement</var> has an <a data-link-type="dfn" href="#outgoing-image" id="ref-for-outgoing-image②">outgoing image</a>,
-then create a new <span class="css">::page-transition-outgoing-image</span> pseudo-element
-with the tag <var>tag</var> and inserted as a child of <var>image wrapper</var>, if it doesn’t exist.
-Let <var>outgoing</var> be the <span class="css">::page-transition-outgoing-image</span> pseudo-element with
-the tag <var>tag</var>.
-This pseudo-element is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#replaced-element" id="ref-for-replaced-element①">replaced element</a>,
-displaying <var>CapturedElement</var>’s <span id="ref-for-outgoing-image③">outgoing image</span>.</p>
-        <p>At the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①⑦">user-agent origin</a>,
-set <var>outgoing</var>’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box③">object-view-box</a> property
-to <var>CapturedData</var>’s <a data-link-type="dfn" href="#outgoing-styles" id="ref-for-outgoing-styles⑧">outgoing styles</a> <span class="property" id="ref-for-propdef-object-view-box④">object-view-box</span> property.</p>
-        <p class="issue" id="issue-1c3f1c0f"><a class="self-link" href="#issue-1c3f1c0f"></a> Which of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-xywh" id="ref-for-funcdef-basic-shape-xywh">xywh()</a>/<span class="css">rect()</span>/<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-inset" id="ref-for-funcdef-basic-shape-inset">inset()</a> should we use?</p>
+        <p>Append <var>imageWrapper</var> to <var>container</var>.</p>
        <li data-md>
-        <p>If <var>CapturedData</var> has an <a data-link-type="dfn" href="#incoming-element" id="ref-for-incoming-element⑦">incoming element</a>,
-then create be a new <span class="css">::page-transition-incoming-image</span> pseudo-element
-with the tag <var>tag</var>,
-inserted as a child of <var>image wrapper</var> (after <var>outgoing</var>, if it exists), if it doesn’t exist.
-Let <var>incoming</var> be the <span class="css">::page-transition-incoming-image</span> pseudo-element with
-the tag <var>tag</var>.
-This pseudo-element is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#replaced-element" id="ref-for-replaced-element②">replaced element</a>,
-displaying the <a data-link-type="dfn" href="#capturing-the-image" id="ref-for-capturing-the-image③">capture the image</a> of <var>CapturedElement</var>’s <span id="ref-for-incoming-element⑧">incoming element</span>.</p>
-        <p>At the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①⑧">user-agent origin</a>,
-set <var>incoming</var>’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box⑤">object-view-box</a> property
-to a value that when applied to <var>incoming</var>,
-will cause the view box to coincide with <a data-link-type="dfn" href="#incoming-element" id="ref-for-incoming-element⑨">incoming element</a>'s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box⑦">border box</a> in the image.</p>
+        <p>If <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-image" id="ref-for-captured-element-outgoing-image②">outgoing image</a> is not null, then:</p>
+        <ol>
+         <li data-md>
+          <p>Let <var>outgoing</var> be a new <span class="css">::page-transition-outgoing-image</span> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#replaced-element" id="ref-for-replaced-element①">replaced element</a> pseudo-element,
+with the tag <var>transitionTag</var>,
+displaying <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-image" id="ref-for-captured-element-outgoing-image③">outgoing image</a>.</p>
+         <li data-md>
+          <p>Append <var>outgoing</var> to <var>imageWrapper</var>.</p>
+         <li data-md>
+          <p>At the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①⑦">user-agent origin</a>,
+set <var>outgoing</var>’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box③">object-view-box</a> property to <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-outgoing-styles" id="ref-for-captured-element-outgoing-styles⑨">outgoing styles</a> <span class="property" id="ref-for-propdef-object-view-box④">object-view-box</span> property.</p>
+          <p class="issue" id="issue-1c3f1c0f"><a class="self-link" href="#issue-1c3f1c0f"></a> Which of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-xywh" id="ref-for-funcdef-basic-shape-xywh">xywh()</a>/<span class="css">rect()</span>/<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-inset" id="ref-for-funcdef-basic-shape-inset">inset()</a> should we use?</p>
+        </ol>
+       <li data-md>
+        <p>If <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element⑧">incoming element</a> is not null, then:</p>
+        <ol>
+         <li data-md>
+          <p>Let <var>incoming</var> be a new <span class="css">::page-transition-incoming-image</span> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-3/#replaced-element" id="ref-for-replaced-element②">replaced element</a> pseudo-element, with the tag <var>transitionTag</var>, displaying the <a data-link-type="dfn" href="#capture-the-image" id="ref-for-capture-the-image③">capture the image</a> of <var>capturedElement</var>’s <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element⑨">incoming element</a>.</p>
+         <li data-md>
+          <p>Append <var>incoming</var> to <var>imageWrapper</var>.</p>
+         <li data-md>
+          <p>At the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①⑧">user-agent origin</a>,
+set <var>incoming</var>’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box⑤">object-view-box</a> property to a value that when applied to <var>incoming</var>,
+will cause the view box to coincide with <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element①⓪">incoming element</a>'s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box⑦">border box</a> in the image.</p>
+        </ol>
       </ol>
     </ol>
    </div>
@@ -1612,19 +1750,20 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
    <li><a href="#dom-samedocumenttransition-abandon">abandon()</a><span>, in § 5</span>
    <li><a href="#abandon-the-page-transition">abandon the page transition</a><span>, in § 5</span>
    <li><a href="#animate-a-page-transition">animate a page transition</a><span>, in § 5</span>
-   <li><a href="#callbackdef-asyncfunction">AsyncFunction</a><span>, in § 5</span>
-   <li><a href="#capturedelement">CapturedElement</a><span>, in § 5</span>
-   <li><a href="#capturing-the-image">capturing the image</a><span>, in § 5</span>
-   <li><a href="#compute-the-interest-rectangle">compute the interest rectangle</a><span>, in § 5</span>
+   <li><a href="#captured-element">captured element</a><span>, in § 5</span>
+   <li><a href="#capture-the-image">capture the image</a><span>, in § 5</span>
+   <li><a href="#capture-the-image">capturing the image</a><span>, in § 5</span>
+   <li><a href="#computing-the-interest-rectangle">compute the interest rectangle</a><span>, in § 5</span>
+   <li><a href="#computing-the-interest-rectangle">computing the interest rectangle</a><span>, in § 5</span>
    <li><a href="#dom-samedocumenttransition-samedocumenttransition">constructor()</a><span>, in § 5</span>
    <li><a href="#create-transition-pseudo-elements">create transition pseudo-elements</a><span>, in § 5</span>
    <li><a href="#valdef-page-transition-tag-custom-ident">&lt;custom-ident></a><span>, in § 2.1</span>
-   <li><a href="#dom-samedocumenttransition-finished-slot">[[finished]]</a><span>, in § 5</span>
    <li><a href="#dom-samedocumenttransition-finished">finished</a><span>, in § 5</span>
-   <li><a href="#incoming-element">incoming element</a><span>, in § 5</span>
+   <li><a href="#samedocumenttransition-finished-promise">finished promise</a><span>, in § 5</span>
+   <li><a href="#captured-element-incoming-element">incoming element</a><span>, in § 5</span>
    <li><a href="#valdef-page-transition-tag-none">none</a><span>, in § 2.1</span>
-   <li><a href="#outgoing-image">outgoing image</a><span>, in § 5</span>
-   <li><a href="#outgoing-styles">outgoing styles</a><span>, in § 5</span>
+   <li><a href="#captured-element-outgoing-image">outgoing image</a><span>, in § 5</span>
+   <li><a href="#captured-element-outgoing-styles">outgoing styles</a><span>, in § 5</span>
    <li><a href="#selectordef-page-transition">::page-transition</a><span>, in § 3</span>
    <li><a href="#selectordef-page-transition-container-pt-tag-selector">::page-transition-container( &lt;pt-tag-selector> )</a><span>, in § 3</span>
    <li><a href="#selectordef-page-transition-image-wrapper-pt-tag-selector">::page-transition-image-wrapper( &lt;pt-tag-selector> )</a><span>, in § 3</span>
@@ -1634,14 +1773,19 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
    <li><a href="#page-transition-pseudo-elements">page-transition pseudo-elements</a><span>, in § 3</span>
    <li><a href="#page-transition-tag">page transition tag</a><span>, in § 2.1</span>
    <li><a href="#propdef-page-transition-tag">page-transition-tag</a><span>, in § 2.1</span>
-   <li><a href="#dom-samedocumenttransition-phase-slot">[[Phase]]</a><span>, in § 5</span>
-   <li><a href="#dom-samedocumenttransition-preparecallback-slot">[[PrepareCallback]]</a><span>, in § 5</span>
+   <li><a href="#document-pending-same-document-transition-outgoing-capture">pending same document transition outgoing capture</a><span>, in § 5</span>
+   <li><a href="#perform-an-outgoing-capture">perform an outgoing capture</a><span>, in § 5</span>
+   <li><a href="#perform-pending-transition-operations">perform pending transition operations</a><span>, in § 5</span>
+   <li><a href="#samedocumenttransition-phase">phase</a><span>, in § 5</span>
+   <li><a href="#samedocumenttransition-prepare-callback">prepare callback</a><span>, in § 5</span>
+   <li><a href="#callbackdef-preparecallback">PrepareCallback</a><span>, in § 5</span>
    <li><a href="#dom-samedocumenttransition-prepare">prepare(cb)</a><span>, in § 5</span>
    <li><a href="#typedef-pt-tag-selector">&lt;pt-tag-selector></a><span>, in § 3</span>
-   <li><a href="#dom-samedocumenttransition-readypromise-slot">[[ReadyPromise]]</a><span>, in § 5</span>
+   <li><a href="#samedocumenttransition-ready-promise">ready promise</a><span>, in § 5</span>
+   <li><a href="#document-running-same-document-transition">running same document transition</a><span>, in § 5</span>
    <li><a href="#samedocumenttransition">SameDocumentTransition</a><span>, in § 5</span>
    <li><a href="#dom-samedocumenttransition-samedocumenttransition">SameDocumentTransition()</a><span>, in § 5</span>
-   <li><a href="#dom-samedocumenttransition-taggedelements-slot">[[TaggedElements]]</a><span>, in § 5</span>
+   <li><a href="#samedocumenttransition-tagged-elements">tagged elements</a><span>, in § 5</span>
    <li><a href="#update-transition-dom">update transition DOM</a><span>, in § 5</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-border-box">
@@ -1651,12 +1795,30 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
     <li><a href="#ref-for-border-box②">5. API</a> <a href="#ref-for-border-box③">(2)</a> <a href="#ref-for-border-box④">(3)</a> <a href="#ref-for-border-box⑤">(4)</a> <a href="#ref-for-border-box⑥">(5)</a> <a href="#ref-for-border-box⑦">(6)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-fragmentation">
+   <a href="https://drafts.csswg.org/css-break-4/#fragmentation">https://drafts.csswg.org/css-break-4/#fragmentation</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-fragmentation">5. API</a> <a href="#ref-for-fragmentation①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-computed-value">
+   <a href="https://drafts.csswg.org/css-cascade-5/#computed-value">https://drafts.csswg.org/css-cascade-5/#computed-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-computed-value">5. API</a> <a href="#ref-for-computed-value①">(2)</a> <a href="#ref-for-computed-value②">(3)</a> <a href="#ref-for-computed-value③">(4)</a> <a href="#ref-for-computed-value④">(5)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-cascade-origin-ua">
    <a href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua">https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-cascade-origin-ua">2.1. Tagging Elements For Transition: the page-transition-tag property</a>
     <li><a href="#ref-for-cascade-origin-ua①">3. Pseudo-Elements</a> <a href="#ref-for-cascade-origin-ua②">(2)</a> <a href="#ref-for-cascade-origin-ua③">(3)</a> <a href="#ref-for-cascade-origin-ua④">(4)</a> <a href="#ref-for-cascade-origin-ua⑤">(5)</a> <a href="#ref-for-cascade-origin-ua⑥">(6)</a> <a href="#ref-for-cascade-origin-ua⑦">(7)</a> <a href="#ref-for-cascade-origin-ua⑧">(8)</a> <a href="#ref-for-cascade-origin-ua⑨">(9)</a>
     <li><a href="#ref-for-cascade-origin-ua①⓪">5. API</a> <a href="#ref-for-cascade-origin-ua①①">(2)</a> <a href="#ref-for-cascade-origin-ua①②">(3)</a> <a href="#ref-for-cascade-origin-ua①③">(4)</a> <a href="#ref-for-cascade-origin-ua①④">(5)</a> <a href="#ref-for-cascade-origin-ua①⑤">(6)</a> <a href="#ref-for-cascade-origin-ua①⑥">(7)</a> <a href="#ref-for-cascade-origin-ua①⑦">(8)</a> <a href="#ref-for-cascade-origin-ua①⑧">(9)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-layout-containment">
+   <a href="https://drafts.csswg.org/css-contain-2/#layout-containment">https://drafts.csswg.org/css-contain-2/#layout-containment</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-layout-containment">5. API</a> <a href="#ref-for-layout-containment①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-replaced-element">
@@ -1672,10 +1834,28 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
     <li><a href="#ref-for-natural-dimensions">3. Pseudo-Elements</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-element-not-rendered">
+   <a href="https://drafts.csswg.org/css-images-4/#element-not-rendered">https://drafts.csswg.org/css-images-4/#element-not-rendered</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-element-not-rendered">5. API</a> <a href="#ref-for-element-not-rendered①">(2)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-object-view-box">
    <a href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box">https://drafts.csswg.org/css-images-4/#propdef-object-view-box</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-object-view-box">5. API</a> <a href="#ref-for-propdef-object-view-box①">(2)</a> <a href="#ref-for-propdef-object-view-box②">(3)</a> <a href="#ref-for-propdef-object-view-box③">(4)</a> <a href="#ref-for-propdef-object-view-box④">(5)</a> <a href="#ref-for-propdef-object-view-box⑤">(6)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-ink-overflow-region">
+   <a href="https://drafts.csswg.org/css-overflow-3/#ink-overflow-region">https://drafts.csswg.org/css-overflow-3/#ink-overflow-region</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-ink-overflow-region">5. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-ink-overflow-rectangle">
+   <a href="https://drafts.csswg.org/css-overflow-3/#ink-overflow-rectangle">https://drafts.csswg.org/css-overflow-3/#ink-overflow-rectangle</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-ink-overflow-rectangle">5. API</a> <a href="#ref-for-ink-overflow-rectangle①">(2)</a> <a href="#ref-for-ink-overflow-rectangle②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-funcdef-basic-shape-inset">
@@ -1728,25 +1908,50 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
   <aside class="dfn-panel" data-for="term-for-propdef-direction">
    <a href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction">https://drafts.csswg.org/css-writing-modes-3/#propdef-direction</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-direction">5. API</a> <a href="#ref-for-propdef-direction①">(2)</a> <a href="#ref-for-propdef-direction②">(3)</a>
+    <li><a href="#ref-for-propdef-direction">5. API</a> <a href="#ref-for-propdef-direction①">(2)</a> <a href="#ref-for-propdef-direction②">(3)</a> <a href="#ref-for-propdef-direction③">(4)</a> <a href="#ref-for-propdef-direction④">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-writing-mode">
    <a href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode">https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-writing-mode">5. API</a> <a href="#ref-for-propdef-writing-mode①">(2)</a> <a href="#ref-for-propdef-writing-mode②">(3)</a>
+    <li><a href="#ref-for-propdef-writing-mode">5. API</a> <a href="#ref-for-propdef-writing-mode①">(2)</a> <a href="#ref-for-propdef-writing-mode②">(3)</a> <a href="#ref-for-propdef-writing-mode③">(4)</a> <a href="#ref-for-propdef-writing-mode④">(5)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-document">
+   <a href="https://dom.spec.whatwg.org/#document">https://dom.spec.whatwg.org/#document</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-document">5. API</a> <a href="#ref-for-document①">(2)</a> <a href="#ref-for-document②">(3)</a> <a href="#ref-for-document③">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-element">
    <a href="https://dom.spec.whatwg.org/#element">https://dom.spec.whatwg.org/#element</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-element">5. API</a> <a href="#ref-for-element①">(2)</a>
+    <li><a href="#ref-for-element">5. API</a> <a href="#ref-for-element①">(2)</a> <a href="#ref-for-element②">(3)</a> <a href="#ref-for-element③">(4)</a> <a href="#ref-for-element④">(5)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-concept-realm-global">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global">https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-concept-tree-root">
+   <a href="https://dom.spec.whatwg.org/#concept-tree-root">https://dom.spec.whatwg.org/#concept-tree-root</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-realm-global">5. API</a>
+    <li><a href="#termref-for-concept-tree-root">4. New Stacking Layer</a> <a href="#termref-for-concept-tree-root">(2)</a>
+    <li><a href="#ref-for-concept-tree-root">5. API</a> <a href="#ref-for-concept-tree-root①">(2)</a> <a href="#ref-for-concept-tree-root②">(3)</a> <a href="#ref-for-concept-tree-root③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-concept-shadow-including-descendant">
+   <a href="https://dom.spec.whatwg.org/#concept-shadow-including-descendant">https://dom.spec.whatwg.org/#concept-shadow-including-descendant</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-shadow-including-descendant">5. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-concept-document-window">
+   <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window">https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-document-window">5. API</a> <a href="#ref-for-concept-document-window①">(2)</a> <a href="#ref-for-concept-document-window②">(3)</a> <a href="#ref-for-concept-document-window③">(4)</a> <a href="#ref-for-concept-document-window④">(5)</a> <a href="#ref-for-concept-document-window⑤">(6)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-fully-active">
+   <a href="https://html.spec.whatwg.org/multipage/browsers.html#fully-active">https://html.spec.whatwg.org/multipage/browsers.html#fully-active</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-fully-active">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-queue-a-global-task">
@@ -1755,28 +1960,82 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
     <li><a href="#ref-for-queue-a-global-task">5. API</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-concept-relevant-global">
+   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-relevant-global">5. API</a> <a href="#ref-for-concept-relevant-global①">(2)</a> <a href="#ref-for-concept-relevant-global②">(3)</a> <a href="#ref-for-concept-relevant-global③">(4)</a> <a href="#ref-for-concept-relevant-global④">(5)</a> <a href="#ref-for-concept-relevant-global⑤">(6)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-concept-relevant-realm">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-relevant-realm">5. API</a>
+    <li><a href="#ref-for-concept-relevant-realm">5. API</a> <a href="#ref-for-concept-relevant-realm①">(2)</a> <a href="#ref-for-concept-relevant-realm②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-update-the-rendering">
+   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering">https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-update-the-rendering">5. API</a> <a href="#ref-for-update-the-rendering①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-set-append">
+   <a href="https://infra.spec.whatwg.org/#set-append">https://infra.spec.whatwg.org/#set-append</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-set-append">5. API</a> <a href="#ref-for-set-append①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-assert">
+   <a href="https://infra.spec.whatwg.org/#assert">https://infra.spec.whatwg.org/#assert</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-assert">5. API</a> <a href="#ref-for-assert①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-iteration-break">
+   <a href="https://infra.spec.whatwg.org/#iteration-break">https://infra.spec.whatwg.org/#iteration-break</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-iteration-break">5. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-list-contain">
+   <a href="https://infra.spec.whatwg.org/#list-contain">https://infra.spec.whatwg.org/#list-contain</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-list-contain">5. API</a> <a href="#ref-for-list-contain①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-iteration-continue">
+   <a href="https://infra.spec.whatwg.org/#iteration-continue">https://infra.spec.whatwg.org/#iteration-continue</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-iteration-continue">5. API</a> <a href="#ref-for-iteration-continue①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-map-exists">
+   <a href="https://infra.spec.whatwg.org/#map-exists">https://infra.spec.whatwg.org/#map-exists</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-map-exists">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-map-iterate">
    <a href="https://infra.spec.whatwg.org/#map-iterate">https://infra.spec.whatwg.org/#map-iterate</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-map-iterate">5. API</a> <a href="#ref-for-map-iterate①">(2)</a> <a href="#ref-for-map-iterate②">(3)</a> <a href="#ref-for-map-iterate③">(4)</a> <a href="#ref-for-map-iterate④">(5)</a> <a href="#ref-for-map-iterate⑤">(6)</a> <a href="#ref-for-map-iterate⑥">(7)</a>
+    <li><a href="#ref-for-map-iterate">5. API</a> <a href="#ref-for-map-iterate①">(2)</a> <a href="#ref-for-map-iterate②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-list">
+   <a href="https://infra.spec.whatwg.org/#list">https://infra.spec.whatwg.org/#list</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-list">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-ordered-map">
    <a href="https://infra.spec.whatwg.org/#ordered-map">https://infra.spec.whatwg.org/#ordered-map</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-ordered-map">5. API</a>
+    <li><a href="#ref-for-ordered-map">5. API</a> <a href="#ref-for-ordered-map①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-string">
-   <a href="https://infra.spec.whatwg.org/#string">https://infra.spec.whatwg.org/#string</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-ordered-set">
+   <a href="https://infra.spec.whatwg.org/#ordered-set">https://infra.spec.whatwg.org/#ordered-set</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-string">5. API</a>
+    <li><a href="#ref-for-ordered-set">5. API</a> <a href="#ref-for-ordered-set①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-struct">
@@ -1797,6 +2056,12 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
     <li><a href="#ref-for-originating-element">3. Pseudo-Elements</a> <a href="#ref-for-originating-element①">(2)</a> <a href="#ref-for-originating-element②">(3)</a> <a href="#ref-for-originating-element③">(4)</a> <a href="#ref-for-originating-element④">(5)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-pseudo-element">
+   <a href="https://drafts.csswg.org/selectors-4/#pseudo-element">https://drafts.csswg.org/selectors-4/#pseudo-element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-pseudo-element">5. API</a> <a href="#ref-for-pseudo-element①">(2)</a> <a href="#ref-for-pseudo-element②">(3)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-type-selector">
    <a href="https://drafts.csswg.org/selectors-4/#type-selector">https://drafts.csswg.org/selectors-4/#type-selector</a><b>Referenced in:</b>
    <ul>
@@ -1806,7 +2071,19 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
   <aside class="dfn-panel" data-for="term-for-aborterror">
    <a href="https://webidl.spec.whatwg.org/#aborterror">https://webidl.spec.whatwg.org/#aborterror</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-aborterror">5. API</a> <a href="#ref-for-aborterror①">(2)</a>
+    <li><a href="#ref-for-aborterror">5. API</a> <a href="#ref-for-aborterror①">(2)</a> <a href="#ref-for-aborterror②">(3)</a> <a href="#ref-for-aborterror③">(4)</a> <a href="#ref-for-aborterror④">(5)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-DOMException">
+   <a href="https://webidl.spec.whatwg.org/#idl-DOMException">https://webidl.spec.whatwg.org/#idl-DOMException</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-DOMException">5. API</a> <a href="#ref-for-idl-DOMException①">(2)</a> <a href="#ref-for-idl-DOMException②">(3)</a> <a href="#ref-for-idl-DOMException③">(4)</a> <a href="#ref-for-idl-DOMException④">(5)</a> <a href="#ref-for-idl-DOMException⑤">(6)</a> <a href="#ref-for-idl-DOMException⑥">(7)</a> <a href="#ref-for-idl-DOMException⑦">(8)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-invalidstateerror">
+   <a href="https://webidl.spec.whatwg.org/#invalidstateerror">https://webidl.spec.whatwg.org/#invalidstateerror</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-invalidstateerror">5. API</a> <a href="#ref-for-invalidstateerror①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-promise">
@@ -1830,7 +2107,13 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
   <aside class="dfn-panel" data-for="term-for-idl-any">
    <a href="https://webidl.spec.whatwg.org/#idl-any">https://webidl.spec.whatwg.org/#idl-any</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-idl-any">5. API</a> <a href="#ref-for-idl-any①">(2)</a>
+    <li><a href="#ref-for-idl-any">5. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-getter-steps">
+   <a href="https://webidl.spec.whatwg.org/#getter-steps">https://webidl.spec.whatwg.org/#getter-steps</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-getter-steps">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-invoke-a-callback-function">
@@ -1843,6 +2126,12 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
    <a href="https://webidl.spec.whatwg.org/#method-steps">https://webidl.spec.whatwg.org/#method-steps</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-method-steps">5. API</a> <a href="#ref-for-method-steps①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-perform-steps-once-promise-is-settled">
+   <a href="https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled">https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-perform-steps-once-promise-is-settled">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-reject">
@@ -1860,31 +2149,13 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
   <aside class="dfn-panel" data-for="term-for-this">
    <a href="https://webidl.spec.whatwg.org/#this">https://webidl.spec.whatwg.org/#this</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-this">5. API</a> <a href="#ref-for-this①">(2)</a> <a href="#ref-for-this②">(3)</a> <a href="#ref-for-this③">(4)</a> <a href="#ref-for-this④">(5)</a> <a href="#ref-for-this⑤">(6)</a> <a href="#ref-for-this⑥">(7)</a> <a href="#ref-for-this⑦">(8)</a> <a href="#ref-for-this⑧">(9)</a> <a href="#ref-for-this⑨">(10)</a> <a href="#ref-for-this①⓪">(11)</a> <a href="#ref-for-this①①">(12)</a> <a href="#ref-for-this①②">(13)</a> <a href="#ref-for-this①③">(14)</a> <a href="#ref-for-this①④">(15)</a> <a href="#ref-for-this①⑤">(16)</a> <a href="#ref-for-this①⑥">(17)</a> <a href="#ref-for-this①⑦">(18)</a> <a href="#ref-for-this①⑧">(19)</a> <a href="#ref-for-this①⑨">(20)</a> <a href="#ref-for-this②⓪">(21)</a> <a href="#ref-for-this②①">(22)</a> <a href="#ref-for-this②②">(23)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-throw">
-   <a href="https://webidl.spec.whatwg.org/#dfn-throw">https://webidl.spec.whatwg.org/#dfn-throw</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dfn-throw">5. API</a>
+    <li><a href="#ref-for-this">5. API</a> <a href="#ref-for-this①">(2)</a> <a href="#ref-for-this②">(3)</a> <a href="#ref-for-this③">(4)</a> <a href="#ref-for-this④">(5)</a> <a href="#ref-for-this⑤">(6)</a> <a href="#ref-for-this⑥">(7)</a> <a href="#ref-for-this⑦">(8)</a> <a href="#ref-for-this⑧">(9)</a> <a href="#ref-for-this⑨">(10)</a> <a href="#ref-for-this①⓪">(11)</a> <a href="#ref-for-this①①">(12)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-undefined">
    <a href="https://webidl.spec.whatwg.org/#idl-undefined">https://webidl.spec.whatwg.org/#idl-undefined</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-idl-undefined">5. API</a> <a href="#ref-for-idl-undefined①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-upon-fulfillment">
-   <a href="https://webidl.spec.whatwg.org/#upon-fulfillment">https://webidl.spec.whatwg.org/#upon-fulfillment</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-upon-fulfillment">5. API</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-upon-rejection">
-   <a href="https://webidl.spec.whatwg.org/#upon-rejection">https://webidl.spec.whatwg.org/#upon-rejection</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-upon-rejection">5. API</a>
+    <li><a href="#ref-for-idl-undefined">5. API</a> <a href="#ref-for-idl-undefined①">(2)</a> <a href="#ref-for-idl-undefined②">(3)</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1895,9 +2166,20 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
      <li><span class="dfn-paneled" id="term-for-border-box">border box</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[CSS-BREAK-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-fragmentation">fragmentation</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[CSS-CASCADE-5]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-computed-value">computed value</span>
      <li><span class="dfn-paneled" id="term-for-cascade-origin-ua">user-agent origin</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-CONTAIN-2]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-layout-containment">layout containment</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-DISPLAY-3]</a> defines the following terms:
@@ -1912,7 +2194,14 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
    <li>
     <a data-link-type="biblio">[CSS-IMAGES-4]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-element-not-rendered">element-not-rendered</span>
      <li><span class="dfn-paneled" id="term-for-propdef-object-view-box">object-view-box</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-OVERFLOW-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-ink-overflow-region">ink overflow area</span>
+     <li><span class="dfn-paneled" id="term-for-ink-overflow-rectangle">ink overflow rectangle</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-SHAPES-1]</a> defines the following terms:
@@ -1950,21 +2239,34 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-document">Document</span>
      <li><span class="dfn-paneled" id="term-for-element">Element</span>
+     <li><span class="dfn-paneled" id="term-for-concept-tree-root">root</span>
+     <li><span class="dfn-paneled" id="term-for-concept-shadow-including-descendant">shadow-including descendant</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-concept-realm-global">global object</span>
+     <li><span class="dfn-paneled" id="term-for-concept-document-window">associated document</span>
+     <li><span class="dfn-paneled" id="term-for-fully-active">fully active</span>
      <li><span class="dfn-paneled" id="term-for-queue-a-global-task">queue a global task</span>
+     <li><span class="dfn-paneled" id="term-for-concept-relevant-global">relevant global object</span>
      <li><span class="dfn-paneled" id="term-for-concept-relevant-realm">relevant realm</span>
+     <li><span class="dfn-paneled" id="term-for-update-the-rendering">update the rendering</span>
     </ul>
    <li>
     <a data-link-type="biblio">[INFRA]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-map-iterate">for each</span>
+     <li><span class="dfn-paneled" id="term-for-set-append">append</span>
+     <li><span class="dfn-paneled" id="term-for-assert">assert</span>
+     <li><span class="dfn-paneled" id="term-for-iteration-break">break</span>
+     <li><span class="dfn-paneled" id="term-for-list-contain">contain</span>
+     <li><span class="dfn-paneled" id="term-for-iteration-continue">continue</span>
+     <li><span class="dfn-paneled" id="term-for-map-exists">exist</span>
+     <li><span class="dfn-paneled" id="term-for-map-iterate">for each <small>(for map)</small></span>
+     <li><span class="dfn-paneled" id="term-for-list">list</span>
      <li><span class="dfn-paneled" id="term-for-ordered-map">map</span>
-     <li><span class="dfn-paneled" id="term-for-string">string</span>
+     <li><span class="dfn-paneled" id="term-for-ordered-set">set</span>
      <li><span class="dfn-paneled" id="term-for-struct">struct</span>
     </ul>
    <li>
@@ -1976,25 +2278,27 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
     <a data-link-type="biblio">[SELECTORS-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-originating-element">originating element</span>
+     <li><span class="dfn-paneled" id="term-for-pseudo-element">pseudo-element</span>
      <li><span class="dfn-paneled" id="term-for-type-selector">type selector</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-aborterror">AbortError</span>
+     <li><span class="dfn-paneled" id="term-for-idl-DOMException">DOMException</span>
+     <li><span class="dfn-paneled" id="term-for-invalidstateerror">InvalidStateError</span>
      <li><span class="dfn-paneled" id="term-for-idl-promise">Promise</span>
      <li><span class="dfn-paneled" id="term-for-timeouterror">TimeoutError</span>
      <li><span class="dfn-paneled" id="term-for-a-new-promise">a new promise</span>
      <li><span class="dfn-paneled" id="term-for-idl-any">any</span>
+     <li><span class="dfn-paneled" id="term-for-getter-steps">getter steps</span>
      <li><span class="dfn-paneled" id="term-for-invoke-a-callback-function">invoke</span>
      <li><span class="dfn-paneled" id="term-for-method-steps">method steps</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-perform-steps-once-promise-is-settled">react</span>
      <li><span class="dfn-paneled" id="term-for-reject">reject</span>
      <li><span class="dfn-paneled" id="term-for-resolve">resolve</span>
      <li><span class="dfn-paneled" id="term-for-this">this</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-throw">throw</span>
      <li><span class="dfn-paneled" id="term-for-idl-undefined">undefined</span>
-     <li><span class="dfn-paneled" id="term-for-upon-fulfillment">upon fulfillment</span>
-     <li><span class="dfn-paneled" id="term-for-upon-rejection">upon rejection</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -2002,14 +2306,20 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
   <dl>
    <dt id="biblio-css-box-4">[CSS-BOX-4]
    <dd>Elika Etemad. <a href="https://drafts.csswg.org/css-box-4/"><cite>CSS Box Model Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-box-4/">https://drafts.csswg.org/css-box-4/</a>
+   <dt id="biblio-css-break-4">[CSS-BREAK-4]
+   <dd>Rossen Atanassov; Elika Etemad. <a href="https://drafts.csswg.org/css-break-4/"><cite>CSS Fragmentation Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-break-4/">https://drafts.csswg.org/css-break-4/</a>
    <dt id="biblio-css-cascade-5">[CSS-CASCADE-5]
    <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-cascade-5/">https://drafts.csswg.org/css-cascade-5/</a>
+   <dt id="biblio-css-contain-2">[CSS-CONTAIN-2]
+   <dd>Tab Atkins Jr.; Florian Rivoal; Vladimir Levin. <a href="https://drafts.csswg.org/css-contain-2/"><cite>CSS Containment Module Level 2</cite></a>. URL: <a href="https://drafts.csswg.org/css-contain-2/">https://drafts.csswg.org/css-contain-2/</a>
    <dt id="biblio-css-display-3">[CSS-DISPLAY-3]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-display/"><cite>CSS Display Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-display/">https://drafts.csswg.org/css-display/</a>
    <dt id="biblio-css-images-3">[CSS-IMAGES-3]
    <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://drafts.csswg.org/css-images-3/"><cite>CSS Images Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-images-3/">https://drafts.csswg.org/css-images-3/</a>
    <dt id="biblio-css-images-4">[CSS-IMAGES-4]
    <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://drafts.csswg.org/css-images-4/"><cite>CSS Image Values and Replaced Content Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-images-4/">https://drafts.csswg.org/css-images-4/</a>
+   <dt id="biblio-css-overflow-3">[CSS-OVERFLOW-3]
+   <dd>David Baron; Elika Etemad; Florian Rivoal. <a href="https://drafts.csswg.org/css-overflow-3/"><cite>CSS Overflow Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-overflow-3/">https://drafts.csswg.org/css-overflow-3/</a>
    <dt id="biblio-css-shapes-1">[CSS-SHAPES-1]
    <dd>Vincent Hardy; Rossen Atanassov; Alan Stearns. <a href="https://drafts.csswg.org/css-shapes/"><cite>CSS Shapes Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-shapes/">https://drafts.csswg.org/css-shapes/</a>
    <dt id="biblio-css-sizing-3">[CSS-SIZING-3]
@@ -2053,7 +2363,7 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
       <th scope="col">Com­puted value
     <tbody>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag⑤">page-transition-tag</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag⑥">page-transition-tag</a>
       <td>none | &lt;custom-ident>
       <td>none
       <td>all elements
@@ -2067,12 +2377,12 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#incoming
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="idl highlight def"><c- b>interface</c-> <a href="#samedocumenttransition"><code><c- g>SameDocumentTransition</c-></code></a> {
     <a href="#dom-samedocumenttransition-samedocumenttransition"><code><c- g>constructor</c-></code></a>();
-    <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-prepare"><c- g>prepare</c-></a>(<a data-link-type="idl-name" href="#callbackdef-asyncfunction"><c- n>AsyncFunction</c-></a> <a href="#dom-samedocumenttransition-prepare-cb-cb"><code><c- g>cb</c-></code></a>);
+    <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-prepare"><c- g>prepare</c-></a>(<a data-link-type="idl-name" href="#callbackdef-preparecallback"><c- n>PrepareCallback</c-></a> <a href="#dom-samedocumenttransition-prepare-cb-cb"><code><c- g>cb</c-></code></a>);
     <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-samedocumenttransition-abandon"><c- g>abandon</c-></a>();
-    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-any"><c- b>any</c-></a>> <a data-readonly data-type="Promise<any>" href="#dom-samedocumenttransition-finished"><code><c- g>finished</c-></code></a>;
+    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> <a data-readonly data-type="Promise<undefined>" href="#dom-samedocumenttransition-finished"><code><c- g>finished</c-></code></a>;
 };
 
-<c- b>callback</c-> <a href="#callbackdef-asyncfunction"><code><c- g>AsyncFunction</c-></code></a> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-any"><c- b>any</c-></a>> ();
+<c- b>callback</c-> <a href="#callbackdef-preparecallback"><code><c- g>PrepareCallback</c-></code></a> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-any"><c- b>any</c-></a>> ();
 
 </pre>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
@@ -2087,49 +2397,67 @@ incoming and outgoing image pixels. Would it be simpler to always add it
 and try to optimize in the implementation? <a class="issue-return" href="#issue-703b09fb" title="Jump to section">↵</a></div>
    <div class="issue"> Do we need to clarify that the stacking context for the root and top
 layer elements has filters and effects coming from the root element’s style? <a class="issue-return" href="#issue-929cc26b" title="Jump to section">↵</a></div>
-   <div class="issue"> Further clarify this behaviour. Lifecycle updates can still be trigerred
+   <div class="issue"> The ordering needs to be defined, probably in a queue. <a class="issue-return" href="#issue-a5efd1d7" title="Jump to section">↵</a></div>
+   <div class="issue"> The callbacks may still be running after this, which may not be what we want. <a class="issue-return" href="#issue-a8028177" title="Jump to section">↵</a></div>
+   <div class="issue"> The link for "paint order" doesn’t seem right.
+    Is there a more canonical definition? <a class="issue-return" href="#issue-ad1ca140" title="Jump to section">↵</a></div>
+   <div class="issue"> This needs proper types. <a class="issue-return" href="#issue-f121180b" title="Jump to section">↵</a></div>
+   <div class="issue"> Further clarify this behavior. Lifecycle updates can still be triggered
 via script APIs which query style or layout information but no visual updates
-are presented to the user. Is this the same behaviour as render-blocking? <a class="issue-return" href="#issue-e5dbb465" title="Jump to section">↵</a></div>
+are presented to the user. Is this the same behavior as render-blocking? <a class="issue-return" href="#issue-edbf8829" title="Jump to section">↵</a></div>
    <div class="issue"> How should input be handled when in this state? The last frame presented
 to the user will not reflect the DOM state as it asynchronously switches to
 the new version. <a class="issue-return" href="#issue-f6dfdcaa" title="Jump to section">↵</a></div>
-   <div class="issue"> This should likely move to the html spec. <a class="issue-return" href="#issue-2d6d2297" title="Jump to section">↵</a></div>
+   <div class="issue"> The link for "paint order" doesn’t seem right.
+    Is there a more canonical definition? <a class="issue-return" href="#issue-ad1ca140①" title="Jump to section">↵</a></div>
+   <div class="issue"> The type of "image" needs to be linked or defined. <a class="issue-return" href="#issue-4e3c66a5" title="Jump to section">↵</a></div>
+   <div class="issue"> The type of "a set of styles" needs to be linked or defined. <a class="issue-return" href="#issue-ae4536a8" title="Jump to section">↵</a></div>
+   <div class="issue"> The type of "element" needs to be linked or defined. <a class="issue-return" href="#issue-e6615d56" title="Jump to section">↵</a></div>
+   <div class="issue"> "suppressing rendering opportunities" needs to be linked/defined. <a class="issue-return" href="#issue-2b1a73c3" title="Jump to section">↵</a></div>
+   <div class="issue"> There needs to be a definition/link for "remove". <a class="issue-return" href="#issue-80506344" title="Jump to section">↵</a></div>
+   <div class="issue"> There needs to be a definition/link for "associated". <a class="issue-return" href="#issue-cc250ace" title="Jump to section">↵</a></div>
+   <div class="issue"> Refactor this so the algorithm takes a set of elements that will be captured. This centralizes the logic for deciding if an element should be included or not. <a class="issue-return" href="#issue-2bfbc0f2" title="Jump to section">↵</a></div>
    <div class="issue"> Define what active animation means here. <a class="issue-return" href="#issue-9b6c2555" title="Jump to section">↵</a></div>
+   <div class="issue"> There needs to be a definition/link for "remove". <a class="issue-return" href="#issue-80506344①" title="Jump to section">↵</a></div>
+   <div class="issue"> There needs to be a definition/link for "associated". <a class="issue-return" href="#issue-cc250ace①" title="Jump to section">↵</a></div>
    <div class="issue"> Also clarify updating the animation based on new bounds/transform to
 get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to section">↵</a></div>
    <div class="issue"> Define the algorithm used to clip the snapshot when it exceeds max size. <a class="issue-return" href="#issue-c9dce14f" title="Jump to section">↵</a></div>
    <div class="issue"> How are keyframes scoped to user-agent origin? We could decide
-		scope based on whether `animation-name` in the computed style
-		came from a developer or UA stylesheet.
-		But we do want developers to be able to <a class="issue-return" href="#issue-bf6c553b" title="Jump to section">↵</a></div>
+        scope based on whether <code>animation-name</code> in the computed style
+        came from a developer or UA stylesheet. <a class="issue-return" href="#issue-4306640b" title="Jump to section">↵</a></div>
    <div class="issue"> We should retarget the animation if computed properties for
-		incoming elements change. <a class="issue-return" href="#issue-7115bd7f" title="Jump to section">↵</a></div>
+        incoming elements change. <a class="issue-return" href="#issue-7115bd7f" title="Jump to section">↵</a></div>
+   <div class="issue"> We need to better define how the real new DOM is not painted during the animation. <a class="issue-return" href="#issue-741cd9b6" title="Jump to section">↵</a></div>
+   <div class="issue"> "tag" should be defined/linked. <a class="issue-return" href="#issue-e6797087" title="Jump to section">↵</a></div>
+   <div class="issue"> This should be better defined.
+    I’m not sure if pseudo-elements have defined ways to modify their DOM. <a class="issue-return" href="#issue-cd5827ed" title="Jump to section">↵</a></div>
    <div class="issue"> Which of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-xywh">xywh()</a>/<span class="css">rect()</span>/<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-inset">inset()</a> should we use? <a class="issue-return" href="#issue-1c3f1c0f" title="Jump to section">↵</a></div>
   </div>
   <aside class="dfn-panel" data-for="propdef-page-transition-tag">
    <b><a href="#propdef-page-transition-tag">#propdef-page-transition-tag</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-page-transition-tag">2.1. Tagging Elements For Transition: the page-transition-tag property</a> <a href="#ref-for-propdef-page-transition-tag①">(2)</a>
-    <li><a href="#ref-for-propdef-page-transition-tag②">5. API</a> <a href="#ref-for-propdef-page-transition-tag③">(2)</a> <a href="#ref-for-propdef-page-transition-tag④">(3)</a>
+    <li><a href="#ref-for-propdef-page-transition-tag②">5. API</a> <a href="#ref-for-propdef-page-transition-tag③">(2)</a> <a href="#ref-for-propdef-page-transition-tag④">(3)</a> <a href="#ref-for-propdef-page-transition-tag⑤">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-page-transition-tag-none">
    <b><a href="#valdef-page-transition-tag-none">#valdef-page-transition-tag-none</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valdef-page-transition-tag-none">5. API</a> <a href="#ref-for-valdef-page-transition-tag-none①">(2)</a> <a href="#ref-for-valdef-page-transition-tag-none②">(3)</a> <a href="#ref-for-valdef-page-transition-tag-none③">(4)</a> <a href="#ref-for-valdef-page-transition-tag-none④">(5)</a>
+    <li><a href="#ref-for-valdef-page-transition-tag-none">5. API</a> <a href="#ref-for-valdef-page-transition-tag-none①">(2)</a> <a href="#ref-for-valdef-page-transition-tag-none②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="page-transition-tag">
    <b><a href="#page-transition-tag">#page-transition-tag</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-page-transition-tag">5. API</a> <a href="#ref-for-page-transition-tag①">(2)</a> <a href="#ref-for-page-transition-tag②">(3)</a> <a href="#ref-for-page-transition-tag③">(4)</a> <a href="#ref-for-page-transition-tag④">(5)</a> <a href="#ref-for-page-transition-tag⑤">(6)</a>
+    <li><a href="#ref-for-page-transition-tag">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="page-transition-pseudo-elements">
    <b><a href="#page-transition-pseudo-elements">#page-transition-pseudo-elements</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-page-transition-pseudo-elements">3. Pseudo-Elements</a> <a href="#ref-for-page-transition-pseudo-elements①">(2)</a> <a href="#ref-for-page-transition-pseudo-elements②">(3)</a> <a href="#ref-for-page-transition-pseudo-elements③">(4)</a>
-    <li><a href="#ref-for-page-transition-pseudo-elements④">5. API</a> <a href="#ref-for-page-transition-pseudo-elements⑤">(2)</a> <a href="#ref-for-page-transition-pseudo-elements⑥">(3)</a>
+    <li><a href="#ref-for-page-transition-pseudo-elements④">5. API</a> <a href="#ref-for-page-transition-pseudo-elements⑤">(2)</a> <a href="#ref-for-page-transition-pseudo-elements⑥">(3)</a> <a href="#ref-for-page-transition-pseudo-elements⑦">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="typedef-pt-tag-selector">
@@ -2143,7 +2471,7 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
    <ul>
     <li><a href="#ref-for-selectordef-page-transition">3. Pseudo-Elements</a> <a href="#ref-for-selectordef-page-transition①">(2)</a>
     <li><a href="#ref-for-selectordef-page-transition②">4. New Stacking Layer</a>
-    <li><a href="#ref-for-selectordef-page-transition③">5. API</a> <a href="#ref-for-selectordef-page-transition④">(2)</a>
+    <li><a href="#ref-for-selectordef-page-transition③">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="selectordef-page-transition-container-pt-tag-selector">
@@ -2167,68 +2495,62 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
   <aside class="dfn-panel" data-for="samedocumenttransition">
    <b><a href="#samedocumenttransition">#samedocumenttransition</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-samedocumenttransition">5. API</a> <a href="#ref-for-samedocumenttransition①">(2)</a> <a href="#ref-for-samedocumenttransition②">(3)</a> <a href="#ref-for-samedocumenttransition③">(4)</a> <a href="#ref-for-samedocumenttransition④">(5)</a> <a href="#ref-for-samedocumenttransition⑤">(6)</a> <a href="#ref-for-samedocumenttransition⑥">(7)</a> <a href="#ref-for-samedocumenttransition⑦">(8)</a>
+    <li><a href="#ref-for-samedocumenttransition">5. API</a> <a href="#ref-for-samedocumenttransition①">(2)</a> <a href="#ref-for-samedocumenttransition②">(3)</a> <a href="#ref-for-samedocumenttransition③">(4)</a> <a href="#ref-for-samedocumenttransition④">(5)</a> <a href="#ref-for-samedocumenttransition⑤">(6)</a> <a href="#ref-for-samedocumenttransition⑥">(7)</a> <a href="#ref-for-samedocumenttransition⑦">(8)</a> <a href="#ref-for-samedocumenttransition⑧">(9)</a> <a href="#ref-for-samedocumenttransition⑨">(10)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="callbackdef-asyncfunction">
-   <b><a href="#callbackdef-asyncfunction">#callbackdef-asyncfunction</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="dom-samedocumenttransition-finished">
+   <b><a href="#dom-samedocumenttransition-finished">#dom-samedocumenttransition-finished</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-callbackdef-asyncfunction">5. API</a>
+    <li><a href="#ref-for-dom-samedocumenttransition-finished">5. API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-samedocumenttransition-taggedelements-slot">
-   <b><a href="#dom-samedocumenttransition-taggedelements-slot">#dom-samedocumenttransition-taggedelements-slot</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="callbackdef-preparecallback">
+   <b><a href="#callbackdef-preparecallback">#callbackdef-preparecallback</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-taggedelements-slot">5. API</a> <a href="#ref-for-dom-samedocumenttransition-taggedelements-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-taggedelements-slot②">(3)</a> <a href="#ref-for-dom-samedocumenttransition-taggedelements-slot③">(4)</a>
+    <li><a href="#ref-for-callbackdef-preparecallback">5. API</a> <a href="#ref-for-callbackdef-preparecallback①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="capturedelement">
-   <b><a href="#capturedelement">#capturedelement</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="samedocumenttransition-tagged-elements">
+   <b><a href="#samedocumenttransition-tagged-elements">#samedocumenttransition-tagged-elements</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-capturedelement">5. API</a> <a href="#ref-for-capturedelement①">(2)</a>
+    <li><a href="#ref-for-samedocumenttransition-tagged-elements">5. API</a> <a href="#ref-for-samedocumenttransition-tagged-elements①">(2)</a> <a href="#ref-for-samedocumenttransition-tagged-elements②">(3)</a> <a href="#ref-for-samedocumenttransition-tagged-elements③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="outgoing-image">
-   <b><a href="#outgoing-image">#outgoing-image</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="samedocumenttransition-phase">
+   <b><a href="#samedocumenttransition-phase">#samedocumenttransition-phase</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-outgoing-image">5. API</a> <a href="#ref-for-outgoing-image①">(2)</a> <a href="#ref-for-outgoing-image②">(3)</a> <a href="#ref-for-outgoing-image③">(4)</a>
+    <li><a href="#ref-for-samedocumenttransition-phase">3. Pseudo-Elements</a>
+    <li><a href="#ref-for-samedocumenttransition-phase①">5. API</a> <a href="#ref-for-samedocumenttransition-phase②">(2)</a> <a href="#ref-for-samedocumenttransition-phase③">(3)</a> <a href="#ref-for-samedocumenttransition-phase④">(4)</a> <a href="#ref-for-samedocumenttransition-phase⑤">(5)</a> <a href="#ref-for-samedocumenttransition-phase⑥">(6)</a> <a href="#ref-for-samedocumenttransition-phase⑦">(7)</a> <a href="#ref-for-samedocumenttransition-phase⑧">(8)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="outgoing-styles">
-   <b><a href="#outgoing-styles">#outgoing-styles</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="samedocumenttransition-prepare-callback">
+   <b><a href="#samedocumenttransition-prepare-callback">#samedocumenttransition-prepare-callback</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-outgoing-styles">5. API</a> <a href="#ref-for-outgoing-styles①">(2)</a> <a href="#ref-for-outgoing-styles②">(3)</a> <a href="#ref-for-outgoing-styles③">(4)</a> <a href="#ref-for-outgoing-styles④">(5)</a> <a href="#ref-for-outgoing-styles⑤">(6)</a> <a href="#ref-for-outgoing-styles⑥">(7)</a> <a href="#ref-for-outgoing-styles⑦">(8)</a> <a href="#ref-for-outgoing-styles⑧">(9)</a>
+    <li><a href="#ref-for-samedocumenttransition-prepare-callback">5. API</a> <a href="#ref-for-samedocumenttransition-prepare-callback①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="incoming-element">
-   <b><a href="#incoming-element">#incoming-element</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="samedocumenttransition-ready-promise">
+   <b><a href="#samedocumenttransition-ready-promise">#samedocumenttransition-ready-promise</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-incoming-element">5. API</a> <a href="#ref-for-incoming-element①">(2)</a> <a href="#ref-for-incoming-element②">(3)</a> <a href="#ref-for-incoming-element③">(4)</a> <a href="#ref-for-incoming-element④">(5)</a> <a href="#ref-for-incoming-element⑤">(6)</a> <a href="#ref-for-incoming-element⑥">(7)</a> <a href="#ref-for-incoming-element⑦">(8)</a> <a href="#ref-for-incoming-element⑧">(9)</a> <a href="#ref-for-incoming-element⑨">(10)</a>
+    <li><a href="#ref-for-samedocumenttransition-ready-promise">5. API</a> <a href="#ref-for-samedocumenttransition-ready-promise①">(2)</a> <a href="#ref-for-samedocumenttransition-ready-promise②">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-samedocumenttransition-phase-slot">
-   <b><a href="#dom-samedocumenttransition-phase-slot">#dom-samedocumenttransition-phase-slot</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="samedocumenttransition-finished-promise">
+   <b><a href="#samedocumenttransition-finished-promise">#samedocumenttransition-finished-promise</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-phase-slot">3. Pseudo-Elements</a>
-    <li><a href="#ref-for-dom-samedocumenttransition-phase-slot①">5. API</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot②">(2)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot③">(3)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot④">(4)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑤">(5)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑥">(6)</a> <a href="#ref-for-dom-samedocumenttransition-phase-slot⑦">(7)</a>
+    <li><a href="#ref-for-samedocumenttransition-finished-promise">5. API</a> <a href="#ref-for-samedocumenttransition-finished-promise①">(2)</a> <a href="#ref-for-samedocumenttransition-finished-promise②">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-samedocumenttransition-preparecallback-slot">
-   <b><a href="#dom-samedocumenttransition-preparecallback-slot">#dom-samedocumenttransition-preparecallback-slot</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="document-pending-same-document-transition-outgoing-capture">
+   <b><a href="#document-pending-same-document-transition-outgoing-capture">#document-pending-same-document-transition-outgoing-capture</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-preparecallback-slot">5. API</a> <a href="#ref-for-dom-samedocumenttransition-preparecallback-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-preparecallback-slot②">(3)</a>
+    <li><a href="#ref-for-document-pending-same-document-transition-outgoing-capture">5. API</a> <a href="#ref-for-document-pending-same-document-transition-outgoing-capture①">(2)</a> <a href="#ref-for-document-pending-same-document-transition-outgoing-capture②">(3)</a> <a href="#ref-for-document-pending-same-document-transition-outgoing-capture③">(4)</a> <a href="#ref-for-document-pending-same-document-transition-outgoing-capture④">(5)</a> <a href="#ref-for-document-pending-same-document-transition-outgoing-capture⑤">(6)</a> <a href="#ref-for-document-pending-same-document-transition-outgoing-capture⑥">(7)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-samedocumenttransition-readypromise-slot">
-   <b><a href="#dom-samedocumenttransition-readypromise-slot">#dom-samedocumenttransition-readypromise-slot</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="document-running-same-document-transition">
+   <b><a href="#document-running-same-document-transition">#document-running-same-document-transition</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-readypromise-slot">5. API</a> <a href="#ref-for-dom-samedocumenttransition-readypromise-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-readypromise-slot②">(3)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="dom-samedocumenttransition-finished-slot">
-   <b><a href="#dom-samedocumenttransition-finished-slot">#dom-samedocumenttransition-finished-slot</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-samedocumenttransition-finished-slot">5. API</a> <a href="#ref-for-dom-samedocumenttransition-finished-slot①">(2)</a> <a href="#ref-for-dom-samedocumenttransition-finished-slot②">(3)</a>
+    <li><a href="#ref-for-document-running-same-document-transition">5. API</a> <a href="#ref-for-document-running-same-document-transition①">(2)</a> <a href="#ref-for-document-running-same-document-transition②">(3)</a> <a href="#ref-for-document-running-same-document-transition③">(4)</a> <a href="#ref-for-document-running-same-document-transition④">(5)</a> <a href="#ref-for-document-running-same-document-transition⑤">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-samedocumenttransition-prepare">
@@ -2243,28 +2565,64 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
     <li><a href="#ref-for-dom-samedocumenttransition-abandon">5. API</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="perform-pending-transition-operations">
+   <b><a href="#perform-pending-transition-operations">#perform-pending-transition-operations</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-perform-pending-transition-operations">5. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="perform-an-outgoing-capture">
+   <b><a href="#perform-an-outgoing-capture">#perform-an-outgoing-capture</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-perform-an-outgoing-capture">5. API</a> <a href="#ref-for-perform-an-outgoing-capture①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="captured-element">
+   <b><a href="#captured-element">#captured-element</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-captured-element">5. API</a> <a href="#ref-for-captured-element①">(2)</a> <a href="#ref-for-captured-element②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="captured-element-outgoing-image">
+   <b><a href="#captured-element-outgoing-image">#captured-element-outgoing-image</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-captured-element-outgoing-image">5. API</a> <a href="#ref-for-captured-element-outgoing-image①">(2)</a> <a href="#ref-for-captured-element-outgoing-image②">(3)</a> <a href="#ref-for-captured-element-outgoing-image③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="captured-element-outgoing-styles">
+   <b><a href="#captured-element-outgoing-styles">#captured-element-outgoing-styles</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-captured-element-outgoing-styles">5. API</a> <a href="#ref-for-captured-element-outgoing-styles①">(2)</a> <a href="#ref-for-captured-element-outgoing-styles②">(3)</a> <a href="#ref-for-captured-element-outgoing-styles③">(4)</a> <a href="#ref-for-captured-element-outgoing-styles④">(5)</a> <a href="#ref-for-captured-element-outgoing-styles⑤">(6)</a> <a href="#ref-for-captured-element-outgoing-styles⑥">(7)</a> <a href="#ref-for-captured-element-outgoing-styles⑦">(8)</a> <a href="#ref-for-captured-element-outgoing-styles⑧">(9)</a> <a href="#ref-for-captured-element-outgoing-styles⑨">(10)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="captured-element-incoming-element">
+   <b><a href="#captured-element-incoming-element">#captured-element-incoming-element</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-captured-element-incoming-element">5. API</a> <a href="#ref-for-captured-element-incoming-element①">(2)</a> <a href="#ref-for-captured-element-incoming-element②">(3)</a> <a href="#ref-for-captured-element-incoming-element③">(4)</a> <a href="#ref-for-captured-element-incoming-element④">(5)</a> <a href="#ref-for-captured-element-incoming-element⑤">(6)</a> <a href="#ref-for-captured-element-incoming-element⑥">(7)</a> <a href="#ref-for-captured-element-incoming-element⑦">(8)</a> <a href="#ref-for-captured-element-incoming-element⑧">(9)</a> <a href="#ref-for-captured-element-incoming-element⑨">(10)</a> <a href="#ref-for-captured-element-incoming-element①⓪">(11)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="abandon-the-page-transition">
    <b><a href="#abandon-the-page-transition">#abandon-the-page-transition</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-abandon-the-page-transition">5. API</a> <a href="#ref-for-abandon-the-page-transition①">(2)</a> <a href="#ref-for-abandon-the-page-transition②">(3)</a> <a href="#ref-for-abandon-the-page-transition③">(4)</a> <a href="#ref-for-abandon-the-page-transition④">(5)</a> <a href="#ref-for-abandon-the-page-transition⑤">(6)</a> <a href="#ref-for-abandon-the-page-transition⑥">(7)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="capturing-the-image">
-   <b><a href="#capturing-the-image">#capturing-the-image</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="capture-the-image">
+   <b><a href="#capture-the-image">#capture-the-image</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-capturing-the-image">5. API</a> <a href="#ref-for-capturing-the-image①">(2)</a> <a href="#ref-for-capturing-the-image②">(3)</a> <a href="#ref-for-capturing-the-image③">(4)</a>
+    <li><a href="#ref-for-capture-the-image">5. API</a> <a href="#ref-for-capture-the-image①">(2)</a> <a href="#ref-for-capture-the-image②">(3)</a> <a href="#ref-for-capture-the-image③">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="update-transition-dom">
    <b><a href="#update-transition-dom">#update-transition-dom</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-update-transition-dom">5. API</a>
+    <li><a href="#ref-for-update-transition-dom">5. API</a> <a href="#ref-for-update-transition-dom①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="compute-the-interest-rectangle">
-   <b><a href="#compute-the-interest-rectangle">#compute-the-interest-rectangle</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="computing-the-interest-rectangle">
+   <b><a href="#computing-the-interest-rectangle">#computing-the-interest-rectangle</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-compute-the-interest-rectangle">5. API</a>
+    <li><a href="#ref-for-computing-the-interest-rectangle">5. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="animate-a-page-transition">
@@ -2278,7 +2636,7 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
    <b><a href="#create-transition-pseudo-elements">#create-transition-pseudo-elements</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-create-transition-pseudo-elements">3. Pseudo-Elements</a>
-    <li><a href="#ref-for-create-transition-pseudo-elements①">5. API</a> <a href="#ref-for-create-transition-pseudo-elements②">(2)</a>
+    <li><a href="#ref-for-create-transition-pseudo-elements①">5. API</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
