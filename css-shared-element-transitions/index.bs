@@ -461,7 +461,7 @@ A {{Document}} additionally has:
 
             : 'transform'
             :: A CSS transform that would place |element|
-                from the document origin to its current quad.
+                from the layout viewport origin to its current quad.
             :: This value is identity for the root element.
 
             : 'width'
