@@ -141,12 +141,11 @@ The following describes all of the [=page-transition pseudo-elements=] and their
     }
     </code></pre>
 
-    Note: The aim of the style is to size the pseudo-element to cover the
-    complete viewport.
-
-    Issue: Is this needed? For multiple independent transitions this could be
-    useful to separate which transition is represented in the particular
-    :page-transition subtree.
+    Note: This pseudo-element provides a containing block for all
+    ::page-transition-container pseudo-elements. The aim of the style is to
+    size the pseudo-element to cover the [=large-viewport-size=] and position
+    all ::page-transition-container pseudo-elements relative to the origin of
+    the large viewport.
 
 : <dfn>::page-transition-container( <<pt-tag-selector>> )</dfn>
 ::  One of these pseudo-elements exists
