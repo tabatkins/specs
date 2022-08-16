@@ -164,6 +164,9 @@ The following describes all of the [=page-transition pseudo-elements=] and their
       position: absolute;
       top: 0;
       left: 0;
+      
+      animation-duration: 0.25s;
+      animation-fill-mode: both;
     }
     </code></pre>
 
@@ -195,6 +198,9 @@ The following describes all of the [=page-transition pseudo-elements=] and their
     html::page-transition-image-wrapper(*) {
       position: absolute;
       inset: 0;
+      
+      animation-duration: inherit;
+      animation-fill-mode: inherit;
     }
     </code></pre>
 
@@ -228,6 +234,9 @@ The following describes all of the [=page-transition pseudo-elements=] and their
       inset-block-start: 0;
       inline-size: 100%;
       block-size: auto;
+      
+      animation-duration: inherit;
+      animation-fill-mode: inherit;
     }
     </code></pre>
 
@@ -821,11 +830,11 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
         <pre><code highlight=css>
             html::page-transition-outgoing-image(*) {
-                animation: page-transition-fade-out 0.25s both;
+                animation-name: page-transition-fade-out;
             }
 
             html::page-transition-incoming-image(*) {
-                animation: page-transition-fade-in 0.25s both;
+                animation-name: page-transition-fade-in;
             }
         </code></pre>
 
@@ -856,7 +865,7 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
             <pre><code highlight=css>
                 html::page-transition-container(|tag|) {
-                    animation: page-transition-container-anim-|tag| 0.25s both;
+                    animation-name: page-transition-container-anim-|tag|;
                 }
             </code></pre>
 
