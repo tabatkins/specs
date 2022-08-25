@@ -971,8 +971,8 @@ The {{SameDocumentTransition/finished}} [=getter steps=] are to return [=this's=
                 set |incoming|'s 'object-view-box' property to a value that when applied to |incoming|,
                 will cause the view box to coincide with [=incoming element=]'s [=border box=] in the image.
     
-            1. The [=incoming element=] and its contents (the flat tree descendants of the element,
-                including both text and elements, or the replaced content of a replaced element) are not painted
-                (as if they had visibility: hidden) and do not respond to hit-testing (as if they had pointer-events: none)
-                until |incoming| exists.
+            The [=incoming element=] and its contents (the flat tree descendants of the element,
+            including both text and elements, or the replaced content of a replaced element), except the
+            [=page-transition pseudo-elements=], are not painted (as if they had visibility: hidden) and
+            do not respond to hit-testing (as if they had pointer-events: none) until |incoming| exists.
 </div>
