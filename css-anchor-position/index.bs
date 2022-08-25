@@ -323,15 +323,15 @@ might not be capable of anchoring the positioned element.
 	* |el| is a descendant of the querying element's [=containing block=],
 		or the quering element's [=containing block=] is the [=initial containing block=]
 	* if |el| has the same [=containing block=] as the querying element,
-		|el| is not [=positioned=]
+		|el| is not [=absolutely positioned=]
 	* if |el| has a different [=containing block=] from the querying element,
 		the last [=containing block=] in |el|'s [=containing block chain=]
 		before reaching the querying element's [=containing block=]
-		is not [=positioned=]
+		is not [=absolutely positioned=]
 
 	Note: There might not be any such element.
 
-	Note: Because positioned elements
+	Note: Because [=absolutely-positioned=] elements
 	are laid out strictly after non-positioned elements
 	in the same containing block,
 	these conditions ensure that the [=anchor element=]

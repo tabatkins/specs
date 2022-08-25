@@ -38,18 +38,15 @@ spec:css-shapes-3; type:function; text:rect()
 }
 </style>
 
-Introduction {#intro}
-=====================
+# Introduction # {#intro}
 
     This spec describes the CSS and JS mechanics
     of the single-page Page Transition API.
 
 
-Page Transitions {#page-transitions}
-================
+# CSS properties # {#css-properties}
 
-Tagging Elements For Transition: the 'page-transition-tag' property {#page-transition-tag-prop}
--------------------------------------------------------------------
+## 'page-transition-tag' ## {#page-transition-tag-prop}
 
 <pre class=propdef>
 Name: page-transition-tag
@@ -87,8 +84,7 @@ the following style in the [=user-agent origin=].
     }
  </code></pre>
 
-Pseudo-Elements {#pseudo}
-===============
+# Pseudo-elements # {#pseudo}
 
 While the UA is [=animating a page transition=],
 it creates the following <dfn export>page-transition pseudo-elements</dfn>,
@@ -141,12 +137,11 @@ The following describes all of the [=page-transition pseudo-elements=] and their
     }
     </code></pre>
 
-    Note: The aim of the style is to size the pseudo-element to cover the
-    complete viewport.
-
-    Issue: Is this needed? For multiple independent transitions this could be
-    useful to separate which transition is represented in the particular
-    :page-transition subtree.
+    Note: This pseudo-element provides a containing block for all
+    ::page-transition-container pseudo-elements. The aim of the style is to
+    size the pseudo-element to cover the [=large viewport size=] and position
+    all ::page-transition-container pseudo-elements relative to the origin of
+    the large viewport.
 
 : <dfn>::page-transition-container( <<pt-tag-selector>> )</dfn>
 ::  One of these pseudo-elements exists
@@ -164,6 +159,9 @@ The following describes all of the [=page-transition pseudo-elements=] and their
       position: absolute;
       top: 0;
       left: 0;
+
+      animation-duration: 0.25s;
+      animation-fill-mode: both;
     }
     </code></pre>
 
@@ -195,6 +193,9 @@ The following describes all of the [=page-transition pseudo-elements=] and their
     html::page-transition-image-wrapper(*) {
       position: absolute;
       inset: 0;
+
+      animation-duration: inherit;
+      animation-fill-mode: inherit;
     }
     </code></pre>
 
@@ -228,6 +229,9 @@ The following describes all of the [=page-transition pseudo-elements=] and their
       inset-block-start: 0;
       inline-size: 100%;
       block-size: auto;
+
+      animation-duration: inherit;
+      animation-fill-mode: inherit;
     }
     </code></pre>
 
@@ -255,10 +259,11 @@ The precise tree structure, and in particular the order of sibling
 pseudo-elements, is defined in the [=Create transition pseudo-elements=]
 algorithm.
 
-New Stacking Layer {#new-stacking-layer}
-===============
+# Concepts # {#concepts}
 
-This specification introduces a new stacking layer to the
+## The [=page-transition layer=] stacking layer ## {#page-transition-stacking-layer}
+
+This specification introduces a stacking layer to the
 <a href="https://www.w3.org/TR/CSS2/zindex.html">Elaborate description of Stacking Contexts</a>.
 
 The ''::page-transition'' pseudo-element generates a new stacking context
@@ -287,12 +292,44 @@ sibling of other page contents.
 Issue: Do we need to clarify that the stacking context for the root and top
 layer elements has filters and effects coming from the root element's style?
 
-API {#api}
-====
+## [=Captured elements=] ## {#captured-elements}
 
-Single-page API:
+A <dfn>captured element</dfn> is a [=struct=] with the following:
 
-<xmp class=idl>
+<dl dfn-for="captured element">
+    : <dfn>outgoing image</dfn>
+    :: an image or null. Initially null.
+
+        Issue: The type of "image" needs to be linked or defined.
+
+    : <dfn>outgoing styles</dfn>
+    :: a set of styles or null. Initially null.
+
+        Issue: The type of "a set of styles" needs to be linked or defined.
+
+    : <dfn>incoming element</dfn>
+    :: an element or null. Initially null.
+
+        Issue: The type of "element" needs to be linked or defined.
+</dl>
+
+## Additions to {{Document}} ## {#additions-to-document}
+
+A {{Document}} additionally has:
+
+<dl dfn-for="document">
+    : <dfn>pending same document transition outgoing capture</dfn>
+    :: a {{SameDocumentTransition}} or null. Initially null.
+
+    : <dfn>running same document transition</dfn>
+    :: a {{SameDocumentTransition}} or null. Initially null.
+</dl>
+
+# API # {#api}
+
+## The {{SameDocumentTransition}} interface ## {#the-samedocumenttransition-interface}
+
+<script type=idl>
 interface SameDocumentTransition {
     constructor();
     Promise<undefined> prepare(PrepareCallback cb);
@@ -301,7 +338,7 @@ interface SameDocumentTransition {
 };
 
 callback PrepareCallback = Promise<any> ();
-</xmp>
+</script>
 
 <div class="note">
     The {{SameDocumentTransition}} represents and controls
@@ -336,15 +373,7 @@ callback PrepareCallback = Promise<any> ();
 
 The {{SameDocumentTransition/finished}} [=getter steps=] are to return [=this's=] [=SameDocumentTransition/finished promise=].
 
-A {{Document}} additionally has:
-
-<dl dfn-for="document">
-    : <dfn>pending same document transition outgoing capture</dfn>
-    :: a {{SameDocumentTransition}} or null. Initially null.
-
-    : <dfn>running same document transition</dfn>
-    :: a {{SameDocumentTransition}} or null. Initially null.
-</dl>
+### {{SameDocumentTransition/prepare()}} ### {#SameDocumentTransition-prepare}
 
 <div algorithm="SameDocumentTransition.prepare()">
     The [=method steps=] for
@@ -379,7 +408,9 @@ A {{Document}} additionally has:
     Note: This process continues in [=perform an outgoing capture=].
 </div>
 
-<div algorithm="SameDocumentTransition.abandon()">
+### {{SameDocumentTransition/abandon()}} ### {#SameDocumentTransition-abandon}
+
+<div algorithm>
     The [=method steps=] for
     <dfn method for=SameDocumentTransition>abandon()</dfn> are:
 
@@ -388,7 +419,11 @@ A {{Document}} additionally has:
         with an "{{AbortError}}" {{DOMException}}.
 </div>
 
-<div algorithm="monkey patch rendering">
+# Algorithms # {#algorithms}
+
+## Monkey patch to rendering ## {#monkey-patch-to-rendering-algorithm}
+
+<div algorithm="monkey patch to rendering">
     Run the following steps before [marking paint timing](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model:mark-paint-timing) in the [=update the rendering=] steps:
 
     1. For each [=fully active=] {{Document}} in <var ignore>docs</var>,
@@ -398,7 +433,9 @@ A {{Document}} additionally has:
         As such, the prose style is written to match other steps in that algorithm.
 </div>
 
-<div algorithm="perform pending transition operations">
+## [=Perform pending transition operations=] ## {#perform-pending-transition-operations-algorithm}
+
+<div algorithm>
     To <dfn>perform pending transition operations</dfn> given a {{Document}} |document|,
         perform the following steps:
 
@@ -412,7 +449,9 @@ A {{Document}} additionally has:
         then [=update transition DOM=] for |document|'s [=document/running same document transition=].
 </div>
 
-<div algorithm="perform outgoing capture">
+## [=Perform an outgoing capture=] ## {#perform-an-outgoing-capture-algorithm}
+
+<div algorithm>
     To <dfn>perform an outgoing capture</dfn> given a {{SameDocumentTransition}} |transition|,
         perform the following steps:
 
@@ -648,28 +687,7 @@ A {{Document}} additionally has:
     </pre>
 </div>
 
-<hr>
-
-A <dfn>captured element</dfn> is a [=struct=] with the following:
-
-<dl dfn-for="captured element">
-    : <dfn>outgoing image</dfn>
-    :: an image or null. Initially null.
-
-        Issue: The type of "image" needs to be linked or defined.
-
-    : <dfn>outgoing styles</dfn>
-    :: a set of styles or null. Initially null.
-
-        Issue: The type of "a set of styles" needs to be linked or defined.
-
-    : <dfn>incoming element</dfn>
-    :: an element or null. Initially null.
-
-        Issue: The type of "element" needs to be linked or defined.
-</dl>
-
-<hr>
+## Abandon the page transition ## {#abandon-the-page-transition-algorithm}
 
 <div algorithm>
     To <dfn>abandon the page transition</dfn> for {{SameDocumentTransition}} |transition|
@@ -701,6 +719,8 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
     1. [=Reject=] |transition|'s [=SameDocumentTransition/finished promise=] with |error|.
 </div>
+
+## [=Capture the image=] ## {#capture-the-image-algorithm}
 
 <div algorithm>
     To <dfn lt="capture the image|capturing the image">capture the image</dfn> given an {{Element}} |element|, perform the following steps.
@@ -734,6 +754,8 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
     1. Return the portion of the canvas within |interestRectangle| as an image.
         The natural size of the image is equal to the |interestRectangle| bounds.
 </div>
+
+## [=Update transition DOM=] ## {#update-transition-dom-algorithm}
 
 <div algorithm>
     To <dfn>update transition DOM</dfn> given a {{SameDocumentTransition}} |transition|:
@@ -775,6 +797,8 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
             get c0 continuity.
 </div>
 
+## [=Compute the interest rectangle=] ## {#compute-the-interest-rectangle-algorithm}
+
 <div algorithm>
     To <dfn lt="computing the interest rectangle|compute the interest rectangle">compute the interest rectangle</dfn> of an {{Element}} |el|, perform the following steps.
     They return a rectangle.
@@ -791,6 +815,8 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
         Issue: Define the algorithm used to clip the snapshot when it exceeds max size.
 </div>
+
+## [=Animate a page transition=] ## {#animate-a-page-transition-algorithm}
 
 <div algorithm>
     To <dfn>animate a page transition</dfn> given a {{SameDocumentTransition}} |transition|:
@@ -817,11 +843,11 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
         <pre><code highlight=css>
             html::page-transition-outgoing-image(*) {
-                animation: page-transition-fade-out 0.25s both;
+                animation-name: page-transition-fade-out;
             }
 
             html::page-transition-incoming-image(*) {
-                animation: page-transition-fade-in 0.25s both;
+                animation-name: page-transition-fade-in;
             }
         </code></pre>
 
@@ -852,7 +878,7 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 
             <pre><code highlight=css>
                 html::page-transition-container(|tag|) {
-                    animation: page-transition-container-anim-|tag| 0.25s both;
+                    animation-name: page-transition-container-anim-|tag|;
                 }
             </code></pre>
 
@@ -869,6 +895,8 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
     Issue: We should retarget the animation if computed properties for
         incoming elements change.
 </div>
+
+## [=Create transition pseudo-elements=] ## {#create-transition-pseudo-elements-algorithm}
 
 <div algorithm>
     To <dfn>create transition pseudo-elements</dfn> for a {{SameDocumentTransition}} |transition|:
