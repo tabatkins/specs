@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 44af0bf3e, updated Fri Jul 29 17:05:16 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-shared-element-transitions/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="64f799e850ae0e22541bdb5644e42a3864f51deb" name="document-revision">
+  <meta content="6c3d1532a691cdd3411beb46a36eb46cd02ed019" name="document-revision">
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -1107,9 +1107,15 @@ layer elements has filters and effects coming from the root element’s style?</
 
 <c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-domtransitioninit"><code><c- g>DOMTransitionInit</c-></code></dfn> {
     <c- b>required</c-> <a data-link-type="idl-name" href="#callbackdef-updatedomcallback" id="ref-for-callbackdef-updatedomcallback"><c- n>UpdateDOMCallback</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="DOMTransitionInit" data-dfn-type="dict-member" data-export data-type="UpdateDOMCallback " id="dom-domtransitioninit-updatedom"><code><c- g>updateDOM</c-></code></dfn>;
+    <a data-link-type="idl-name" href="#enumdef-reducedmotionhandling" id="ref-for-enumdef-reducedmotionhandling"><c- n>ReducedMotionHandling</c-></a> <dfn class="dfn-paneled idl-code" data-default="&quot;auto&quot;" data-dfn-for="DOMTransitionInit" data-dfn-type="dict-member" data-export data-type="ReducedMotionHandling " id="dom-domtransitioninit-reducedmotionhandling"><code><c- g>reducedMotionHandling</c-></code></dfn> = "auto";
 };
 
 <c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-updatedomcallback"><code><c- g>UpdateDOMCallback</c-></code></dfn> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-any" id="ref-for-idl-any"><c- b>any</c-></a>> ();
+
+<c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-reducedmotionhandling"><code><c- g>ReducedMotionHandling</c-></code></dfn> {
+    <dfn class="dfn-paneled idl-code" data-dfn-for="ReducedMotionHandling" data-dfn-type="enum-value" data-export id="dom-reducedmotionhandling-auto"><code><c- s>"auto"</c-></code></dfn>,
+    <dfn class="idl-code" data-dfn-for="ReducedMotionHandling" data-dfn-type="enum-value" data-export id="dom-reducedmotionhandling-manual"><code><c- s>"manual"</c-></code><a class="self-link" href="#dom-reducedmotionhandling-manual"></a></dfn>,
+};
 </pre>
    <h4 class="heading settled" data-level="6.1.1" id="DOMTransition-prepare"><span class="secno">6.1.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#dom-document-createtransition" id="ref-for-dom-document-createtransition①">createTransition()</a></code></span><a class="self-link" href="#DOMTransition-prepare"></a></h4>
    <div class="algorithm" data-algorithm="createTransition(init)" data-algorithm-for="Document">
@@ -1125,7 +1131,10 @@ layer elements has filters and effects coming from the root element’s style?</
       <p>If <var>document</var>’s <a data-link-type="dfn" href="#document-active-dom-transition" id="ref-for-document-active-dom-transition">active DOM transition</a> is not null, then <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition">skip the page transition</a> <var>document</var>’s <span id="ref-for-document-active-dom-transition①">active DOM transition</span> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror">AbortError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant Realm</a>.</p>
       <p class="note" role="note"><span>Note:</span> This can result in two asynchronous <a data-link-type="dfn" href="#domtransition-dom-update-callback" id="ref-for-domtransition-dom-update-callback①">DOM update callbacks</a> running concurrently. One for the <var>document</var>’s current <a data-link-type="dfn" href="#document-active-dom-transition" id="ref-for-document-active-dom-transition②">active DOM transition</a>, and another for this <var>transition</var>. As per the <a href="#transitions-as-enhancements">design of this feature</a>, it’s assumed that the developer is using another feature or framework to correctly schedule these DOM changes.</p>
      <li data-md>
-      <p>Set <var>document</var>’s <a data-link-type="dfn" href="#document-active-dom-transition" id="ref-for-document-active-dom-transition③">active DOM transition</a> to <var>transition</var>.</p>
+      <p>If <var>init</var>[<code class="idl"><a data-link-type="idl" href="#dom-domtransitioninit-reducedmotionhandling" id="ref-for-dom-domtransitioninit-reducedmotionhandling">reducedMotionHandling</a></code>] is <code class="idl"><a data-link-type="idl" href="#dom-reducedmotionhandling-auto" id="ref-for-dom-reducedmotionhandling-auto">"auto"</a></code>, and the user has requested the system minimize the amount of non-essential motion it uses, such that the <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/mediaqueries-5/#descdef-media-prefers-reduced-motion" id="ref-for-descdef-media-prefers-reduced-motion">prefers-reduced-motion</a> <a data-link-type="dfn" href="https://drafts.csswg.org/mediaqueries-5/#media-query" id="ref-for-media-query">media query</a> would match <span class="css">reduce</span>, then <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition①">skip the page transition</a> <var>transition</var> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror①">AbortError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException①">DOMException</a></code> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm②">relevant Realm</a>.</p>
+      <p class="issue" id="issue-c763db8c"><a class="self-link" href="#issue-c763db8c"></a> It feels like there should be a better way to handle this than going via media queries. Perhaps we should centralize the definition of requesting the system for reduced motion.</p>
+     <li data-md>
+      <p>Otherwise, set <var>document</var>’s <a data-link-type="dfn" href="#document-active-dom-transition" id="ref-for-document-active-dom-transition③">active DOM transition</a> to <var>transition</var>.</p>
       <p class="note" role="note"><span>Note:</span> The process continues in <a data-link-type="dfn" href="#perform-an-outgoing-capture" id="ref-for-perform-an-outgoing-capture">perform an outgoing capture</a>.</p>
      <li data-md>
       <p>Return <var>transition</var>.</p>
@@ -1221,26 +1230,26 @@ Initially a new <span id="ref-for-ordered-map①">map</span>.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="DOMTransition" data-dfn-type="dfn" data-noexport id="domtransition-ready-promise">ready promise</dfn>
     <dd data-md>
      <p>a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise④">Promise</a></code>.
-Initially <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise">a new promise</a> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm②">relevant Realm</a>.</p>
+Initially <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise">a new promise</a> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm③">relevant Realm</a>.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="DOMTransition" data-dfn-type="dfn" data-noexport id="domtransition-dom-updated-promise">DOM updated promise</dfn>
     <dd data-md>
      <p>a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑤">Promise</a></code>.
-Initially <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise①">a new promise</a> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm③">relevant Realm</a>.</p>
+Initially <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise①">a new promise</a> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm④">relevant Realm</a>.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="DOMTransition" data-dfn-type="dfn" data-noexport id="domtransition-finished-promise">finished promise</dfn>
     <dd data-md>
      <p>a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑥">Promise</a></code>.
-Initially <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise②">a new promise</a> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm④">relevant Realm</a>.</p>
+Initially <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise②">a new promise</a> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm⑤">relevant Realm</a>.</p>
    </dl>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-domtransition-finished" id="ref-for-dom-domtransition-finished">finished</a></code> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#getter-steps" id="ref-for-getter-steps">getter steps</a> are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this’s</a> <a data-link-type="dfn" href="#domtransition-finished-promise" id="ref-for-domtransition-finished-promise">finished promise</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-domtransition-ready" id="ref-for-dom-domtransition-ready">ready</a></code> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#getter-steps" id="ref-for-getter-steps①">getter steps</a> are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this’s</a> <a data-link-type="dfn" href="#domtransition-ready-promise" id="ref-for-domtransition-ready-promise">ready promise</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-domtransition-domupdated" id="ref-for-dom-domtransition-domupdated">domUpdated</a></code> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#getter-steps" id="ref-for-getter-steps②">getter steps</a> are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this’s</a> <a data-link-type="dfn" href="#domtransition-dom-updated-promise" id="ref-for-domtransition-dom-updated-promise">DOM updated promise</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-domtransition-finished" id="ref-for-dom-domtransition-finished">finished</a></code> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#getter-steps" id="ref-for-getter-steps">getter steps</a> are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this’s</a> <a data-link-type="dfn" href="#domtransition-finished-promise" id="ref-for-domtransition-finished-promise">finished promise</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-domtransition-ready" id="ref-for-dom-domtransition-ready">ready</a></code> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#getter-steps" id="ref-for-getter-steps①">getter steps</a> are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this’s</a> <a data-link-type="dfn" href="#domtransition-ready-promise" id="ref-for-domtransition-ready-promise">ready promise</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-domtransition-domupdated" id="ref-for-dom-domtransition-domupdated">domUpdated</a></code> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#getter-steps" id="ref-for-getter-steps②">getter steps</a> are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this’s</a> <a data-link-type="dfn" href="#domtransition-dom-updated-promise" id="ref-for-domtransition-dom-updated-promise">DOM updated promise</a>.</p>
    <h4 class="heading settled" data-level="6.2.1" id="DOMTransition-skipTransition"><span class="secno">6.2.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#dom-domtransition-skiptransition" id="ref-for-dom-domtransition-skiptransition①">skipTransition()</a></code></span><a class="self-link" href="#DOMTransition-skipTransition"></a></h4>
    <div class="algorithm" data-algorithm="skipTransition()" data-algorithm-for="DOMTransition">
      The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps①">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="DOMTransition" data-dfn-type="method" data-export id="dom-domtransition-skiptransition"><code>skipTransition()</code></dfn> are: 
     <ol>
      <li data-md>
-      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this</a>'s <a data-link-type="dfn" href="#domtransition-phase" id="ref-for-domtransition-phase">phase</a> is not "<code>done</code>",
-then <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition①">skip the page transition</a> for <span id="ref-for-this①⓪">this</span> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror①">AbortError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException①">DOMException</a></code>.</p>
+      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this</a>'s <a data-link-type="dfn" href="#domtransition-phase" id="ref-for-domtransition-phase">phase</a> is not "<code>done</code>",
+then <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition②">skip the page transition</a> for <span id="ref-for-this①①">this</span> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror②">AbortError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException②">DOMException</a></code>.</p>
     </ol>
    </div>
    <h2 class="heading settled" data-level="7" id="algorithms"><span class="secno">7. </span><span class="content">Algorithms</span><a class="self-link" href="#algorithms"></a></h2>
@@ -1322,7 +1331,7 @@ then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-cont
          <li data-md>
           <p><var>element</var> is not <var>element</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root①">root</a> and <var>element</var> allows <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation" id="ref-for-fragmentation">fragmentation</a>.</p>
         </ul>
-        <p>Then <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition②">skip the page transition</a> for <var>transition</var> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#invalidstateerror" id="ref-for-invalidstateerror">InvalidStateError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException②">DOMException</a></code> in <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm⑤">relevant Realm</a>,
+        <p>Then <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition③">skip the page transition</a> for <var>transition</var> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#invalidstateerror" id="ref-for-invalidstateerror">InvalidStateError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException③">DOMException</a></code> in <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm⑥">relevant Realm</a>,
     and return.</p>
        <li data-md>
         <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append">Append</a> <var>transitionTag</var> to <var>usedTransitionTags</var>.</p>
@@ -1371,7 +1380,7 @@ to execute the following steps:</p>
       <ol>
        <li data-md>
         <p>If <var>transition</var>’s <a data-link-type="dfn" href="#domtransition-phase" id="ref-for-domtransition-phase③">phase</a> is "<code>done</code>", then abort these steps.</p>
-        <p class="note" role="note"><span>Note:</span> This happens if <var>transition</var> was <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition③">skipped</a> before this point.</p>
+        <p class="note" role="note"><span>Note:</span> This happens if <var>transition</var> was <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition④">skipped</a> before this point.</p>
        <li data-md>
         <p><a data-link-type="dfn" href="#call-the-dom-update-callback" id="ref-for-call-the-dom-update-callback">Call the DOM update callback</a> of <var>transition</var>.</p>
        <li data-md>
@@ -1382,16 +1391,16 @@ to execute the following steps:</p>
           <ol>
            <li data-md>
             <p>If <var>transition</var>’s <a data-link-type="dfn" href="#domtransition-phase" id="ref-for-domtransition-phase④">phase</a> is "<code>done</code>", then return.</p>
-            <p class="note" role="note"><span>Note:</span> This happens if <var>transition</var> was <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition④">skipped</a> before this point.</p>
+            <p class="note" role="note"><span>Note:</span> This happens if <var>transition</var> was <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition⑤">skipped</a> before this point.</p>
            <li data-md>
-            <p><a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition⑤">Skip the page transition</a> <var>transition</var> with a "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#timeouterror" id="ref-for-timeouterror">TimeoutError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException③">DOMException</a></code>.</p>
+            <p><a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition⑥">Skip the page transition</a> <var>transition</var> with a "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#timeouterror" id="ref-for-timeouterror">TimeoutError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException④">DOMException</a></code>.</p>
           </ol>
          <li data-md>
           <p>If the promise was fulfilled, then:</p>
           <ol>
            <li data-md>
             <p>If <var>transition</var>’s <a data-link-type="dfn" href="#domtransition-phase" id="ref-for-domtransition-phase⑤">phase</a> is "<code>done</code>", then return.</p>
-            <p class="note" role="note"><span>Note:</span> This happens if <var>transition</var> was <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition⑥">skipped</a> before this point.</p>
+            <p class="note" role="note"><span>Note:</span> This happens if <var>transition</var> was <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition⑦">skipped</a> before this point.</p>
            <li data-md>
             <p>Set <a data-link-type="dfn" href="#document-transition-suppressing-rendering" id="ref-for-document-transition-suppressing-rendering②">transition suppressing rendering</a> to false.</p>
            <li data-md>
@@ -1418,7 +1427,7 @@ then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-cont
                <li data-md>
                 <p><var>element</var> is not <var>element</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root③">root</a> and <var>element</var> allows <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation" id="ref-for-fragmentation①">fragmentation</a>.</p>
               </ul>
-              <p>Then <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition⑦">skip the page transition</a> <var>transition</var> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#invalidstateerror" id="ref-for-invalidstateerror①">InvalidStateError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException④">DOMException</a></code>,
+              <p>Then <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition⑧">skip the page transition</a> <var>transition</var> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#invalidstateerror" id="ref-for-invalidstateerror①">InvalidStateError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException⑤">DOMException</a></code>,
     and return.</p>
              <li data-md>
               <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append①">Append</a> <var>transitionTag</var> to <var>usedTransitionTags</var>.</p>
@@ -1445,9 +1454,9 @@ then set <var>taggedElements</var>[<var>transitionTag</var>] to a new <a data-li
           <ol>
            <li data-md>
             <p>If <var>transition</var>’s <a data-link-type="dfn" href="#domtransition-phase" id="ref-for-domtransition-phase⑥">phase</a> is "<code>done</code>", then return.</p>
-            <p class="note" role="note"><span>Note:</span> This happens if <var>transition</var> was <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition⑧">skipped</a> before this point.</p>
+            <p class="note" role="note"><span>Note:</span> This happens if <var>transition</var> was <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition⑨">skipped</a> before this point.</p>
            <li data-md>
-            <p><a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition⑨">Skip the page transition</a> <var>transition</var> with <var>r</var>.</p>
+            <p><a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition①⓪">Skip the page transition</a> <var>transition</var> with <var>r</var>.</p>
           </ol>
         </ul>
       </ol>
@@ -1846,6 +1855,7 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
    <li><a href="#document-active-dom-transition">active DOM transition</a><span>, in § 5.4</span>
    <li><a href="#phases-after">after</a><span>, in § 5.1</span>
    <li><a href="#animate-a-page-transition">animate a page transition</a><span>, in § 7.8</span>
+   <li><a href="#dom-reducedmotionhandling-auto">"auto"</a><span>, in § 6.1</span>
    <li><a href="#phases-before">before</a><span>, in § 5.1</span>
    <li><a href="#call-the-dom-update-callback">call the DOM update callback</a><span>, in § 7.9</span>
    <li><a href="#captured-element">captured element</a><span>, in § 5.3</span>
@@ -1864,6 +1874,7 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
    <li><a href="#dom-domtransition-finished">finished</a><span>, in § 6.2</span>
    <li><a href="#domtransition-finished-promise">finished promise</a><span>, in § 6.2</span>
    <li><a href="#captured-element-incoming-element">incoming element</a><span>, in § 5.3</span>
+   <li><a href="#dom-reducedmotionhandling-manual">"manual"</a><span>, in § 6.1</span>
    <li><a href="#valdef-page-transition-tag-none">none</a><span>, in § 3.1</span>
    <li><a href="#captured-element-outgoing-image">outgoing image</a><span>, in § 5.3</span>
    <li><a href="#captured-element-outgoing-styles">outgoing styles</a><span>, in § 5.3</span>
@@ -1883,6 +1894,8 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
    <li><a href="#typedef-pt-tag-selector">&lt;pt-tag-selector></a><span>, in § 4</span>
    <li><a href="#dom-domtransition-ready">ready</a><span>, in § 6.2</span>
    <li><a href="#domtransition-ready-promise">ready promise</a><span>, in § 6.2</span>
+   <li><a href="#enumdef-reducedmotionhandling">ReducedMotionHandling</a><span>, in § 6.1</span>
+   <li><a href="#dom-domtransitioninit-reducedmotionhandling">reducedMotionHandling</a><span>, in § 6.1</span>
    <li><a href="#skip-the-page-transition">skip the page transition</a><span>, in § 7.4</span>
    <li><a href="#dom-domtransition-skiptransition">skipTransition()</a><span>, in § 6.2.1</span>
    <li><a href="#domtransition-tagged-elements">tagged elements</a><span>, in § 6.2</span>
@@ -2100,9 +2113,9 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
   <aside class="dfn-panel" data-for="term-for-concept-relevant-realm">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-relevant-realm">6.1.1. createTransition()</a> <a href="#ref-for-concept-relevant-realm①">(2)</a>
-    <li><a href="#ref-for-concept-relevant-realm②">6.2. The DOMTransition interface</a> <a href="#ref-for-concept-relevant-realm③">(2)</a> <a href="#ref-for-concept-relevant-realm④">(3)</a>
-    <li><a href="#ref-for-concept-relevant-realm⑤">7.3. Perform an outgoing capture</a>
+    <li><a href="#ref-for-concept-relevant-realm">6.1.1. createTransition()</a> <a href="#ref-for-concept-relevant-realm①">(2)</a> <a href="#ref-for-concept-relevant-realm②">(3)</a>
+    <li><a href="#ref-for-concept-relevant-realm③">6.2. The DOMTransition interface</a> <a href="#ref-for-concept-relevant-realm④">(2)</a> <a href="#ref-for-concept-relevant-realm⑤">(3)</a>
+    <li><a href="#ref-for-concept-relevant-realm⑥">7.3. Perform an outgoing capture</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-update-the-rendering">
@@ -2168,6 +2181,18 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
     <li><a href="#ref-for-struct">5.3. Captured elements</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-media-query">
+   <a href="https://drafts.csswg.org/mediaqueries-5/#media-query">https://drafts.csswg.org/mediaqueries-5/#media-query</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-media-query">6.1.1. createTransition()</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-descdef-media-prefers-reduced-motion">
+   <a href="https://drafts.csswg.org/mediaqueries-5/#descdef-media-prefers-reduced-motion">https://drafts.csswg.org/mediaqueries-5/#descdef-media-prefers-reduced-motion</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-descdef-media-prefers-reduced-motion">6.1.1. createTransition()</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-x">
    <a href="https://drafts.csswg.org/selectors-3/#x">https://drafts.csswg.org/selectors-3/#x</a><b>Referenced in:</b>
    <ul>
@@ -2196,16 +2221,16 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
   <aside class="dfn-panel" data-for="term-for-aborterror">
    <a href="https://webidl.spec.whatwg.org/#aborterror">https://webidl.spec.whatwg.org/#aborterror</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-aborterror">6.1.1. createTransition()</a>
-    <li><a href="#ref-for-aborterror①">6.2.1. skipTransition()</a>
+    <li><a href="#ref-for-aborterror">6.1.1. createTransition()</a> <a href="#ref-for-aborterror①">(2)</a>
+    <li><a href="#ref-for-aborterror②">6.2.1. skipTransition()</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-DOMException">
    <a href="https://webidl.spec.whatwg.org/#idl-DOMException">https://webidl.spec.whatwg.org/#idl-DOMException</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-idl-DOMException">6.1.1. createTransition()</a>
-    <li><a href="#ref-for-idl-DOMException①">6.2.1. skipTransition()</a>
-    <li><a href="#ref-for-idl-DOMException②">7.3. Perform an outgoing capture</a> <a href="#ref-for-idl-DOMException③">(2)</a> <a href="#ref-for-idl-DOMException④">(3)</a>
+    <li><a href="#ref-for-idl-DOMException">6.1.1. createTransition()</a> <a href="#ref-for-idl-DOMException①">(2)</a>
+    <li><a href="#ref-for-idl-DOMException②">6.2.1. skipTransition()</a>
+    <li><a href="#ref-for-idl-DOMException③">7.3. Perform an outgoing capture</a> <a href="#ref-for-idl-DOMException④">(2)</a> <a href="#ref-for-idl-DOMException⑤">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-invalidstateerror">
@@ -2283,9 +2308,9 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
   <aside class="dfn-panel" data-for="term-for-this">
    <a href="https://webidl.spec.whatwg.org/#this">https://webidl.spec.whatwg.org/#this</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-this">6.1.1. createTransition()</a> <a href="#ref-for-this①">(2)</a> <a href="#ref-for-this②">(3)</a>
-    <li><a href="#ref-for-this③">6.2. The DOMTransition interface</a> <a href="#ref-for-this④">(2)</a> <a href="#ref-for-this⑤">(3)</a> <a href="#ref-for-this⑥">(4)</a> <a href="#ref-for-this⑦">(5)</a> <a href="#ref-for-this⑧">(6)</a>
-    <li><a href="#ref-for-this⑨">6.2.1. skipTransition()</a> <a href="#ref-for-this①⓪">(2)</a>
+    <li><a href="#ref-for-this">6.1.1. createTransition()</a> <a href="#ref-for-this①">(2)</a> <a href="#ref-for-this②">(3)</a> <a href="#ref-for-this③">(4)</a>
+    <li><a href="#ref-for-this④">6.2. The DOMTransition interface</a> <a href="#ref-for-this⑤">(2)</a> <a href="#ref-for-this⑥">(3)</a> <a href="#ref-for-this⑦">(4)</a> <a href="#ref-for-this⑧">(5)</a> <a href="#ref-for-this⑨">(6)</a>
+    <li><a href="#ref-for-this①⓪">6.2.1. skipTransition()</a> <a href="#ref-for-this①①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-undefined">
@@ -2404,6 +2429,12 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
      <li><span class="dfn-paneled" id="term-for-struct">struct</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[MEDIAQUERIES-5]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-media-query">media query</span>
+     <li><span class="dfn-paneled" id="term-for-descdef-media-prefers-reduced-motion">prefers-reduced-motion</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[SELECTORS-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-x">*</span>
@@ -2472,6 +2503,8 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
+   <dt id="biblio-mediaqueries-5">[MEDIAQUERIES-5]
+   <dd>Dean Jackson; et al. <a href="https://drafts.csswg.org/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/mediaqueries-5/">https://drafts.csswg.org/mediaqueries-5/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-selectors-3">[SELECTORS-3]
@@ -2515,9 +2548,15 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
 
 <c- b>dictionary</c-> <a href="#dictdef-domtransitioninit"><code><c- g>DOMTransitionInit</c-></code></a> {
     <c- b>required</c-> <a data-link-type="idl-name" href="#callbackdef-updatedomcallback"><c- n>UpdateDOMCallback</c-></a> <a data-type="UpdateDOMCallback " href="#dom-domtransitioninit-updatedom"><code><c- g>updateDOM</c-></code></a>;
+    <a data-link-type="idl-name" href="#enumdef-reducedmotionhandling"><c- n>ReducedMotionHandling</c-></a> <a data-default="&quot;auto&quot;" data-type="ReducedMotionHandling " href="#dom-domtransitioninit-reducedmotionhandling"><code><c- g>reducedMotionHandling</c-></code></a> = "auto";
 };
 
 <c- b>callback</c-> <a href="#callbackdef-updatedomcallback"><code><c- g>UpdateDOMCallback</c-></code></a> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-any"><c- b>any</c-></a>> ();
+
+<c- b>enum</c-> <a href="#enumdef-reducedmotionhandling"><code><c- g>ReducedMotionHandling</c-></code></a> {
+    <a href="#dom-reducedmotionhandling-auto"><code><c- s>"auto"</c-></code></a>,
+    <a href="#dom-reducedmotionhandling-manual"><code><c- s>"manual"</c-></code></a>,
+};
 
 <c- b>interface</c-> <a href="#domtransition"><code><c- g>DOMTransition</c-></code></a> {
     <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-domtransition-skiptransition"><c- g>skipTransition</c-></a>();
@@ -2542,6 +2581,7 @@ layer elements has filters and effects coming from the root element’s style? <
    <div class="issue"> The type of "image" needs to be linked or defined. <a class="issue-return" href="#issue-4e3c66a5" title="Jump to section">↵</a></div>
    <div class="issue"> The type of "a set of styles" needs to be linked or defined. <a class="issue-return" href="#issue-ae4536a8" title="Jump to section">↵</a></div>
    <div class="issue"> The type of "element" needs to be linked or defined. <a class="issue-return" href="#issue-e6615d56" title="Jump to section">↵</a></div>
+   <div class="issue"> It feels like there should be a better way to handle this than going via media queries. Perhaps we should centralize the definition of requesting the system for reduced motion. <a class="issue-return" href="#issue-c763db8c" title="Jump to section">↵</a></div>
    <div class="issue"> Define this behavior. Lifecycle updates can still be triggered
 via script APIs which query style or layout information but no visual updates
 are presented to the user. Is this the same behavior as render-blocking? <a class="issue-return" href="#issue-ac37ca1e" title="Jump to section">↵</a></div>
@@ -2724,11 +2764,29 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
     <li><a href="#ref-for-dom-domtransitioninit-updatedom①">6.1.1. createTransition()</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="dom-domtransitioninit-reducedmotionhandling">
+   <b><a href="#dom-domtransitioninit-reducedmotionhandling">#dom-domtransitioninit-reducedmotionhandling</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-domtransitioninit-reducedmotionhandling">6.1.1. createTransition()</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="callbackdef-updatedomcallback">
    <b><a href="#callbackdef-updatedomcallback">#callbackdef-updatedomcallback</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-callbackdef-updatedomcallback">6.1. Additions to Document</a>
     <li><a href="#ref-for-callbackdef-updatedomcallback①">6.2. The DOMTransition interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="enumdef-reducedmotionhandling">
+   <b><a href="#enumdef-reducedmotionhandling">#enumdef-reducedmotionhandling</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-enumdef-reducedmotionhandling">6.1. Additions to Document</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-reducedmotionhandling-auto">
+   <b><a href="#dom-reducedmotionhandling-auto">#dom-reducedmotionhandling-auto</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-reducedmotionhandling-auto">6.1.1. createTransition()</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-document-createtransition">
@@ -2847,9 +2905,9 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
   <aside class="dfn-panel" data-for="skip-the-page-transition">
    <b><a href="#skip-the-page-transition">#skip-the-page-transition</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-skip-the-page-transition">6.1.1. createTransition()</a>
-    <li><a href="#ref-for-skip-the-page-transition①">6.2.1. skipTransition()</a>
-    <li><a href="#ref-for-skip-the-page-transition②">7.3. Perform an outgoing capture</a> <a href="#ref-for-skip-the-page-transition③">(2)</a> <a href="#ref-for-skip-the-page-transition④">(3)</a> <a href="#ref-for-skip-the-page-transition⑤">(4)</a> <a href="#ref-for-skip-the-page-transition⑥">(5)</a> <a href="#ref-for-skip-the-page-transition⑦">(6)</a> <a href="#ref-for-skip-the-page-transition⑧">(7)</a> <a href="#ref-for-skip-the-page-transition⑨">(8)</a>
+    <li><a href="#ref-for-skip-the-page-transition">6.1.1. createTransition()</a> <a href="#ref-for-skip-the-page-transition①">(2)</a>
+    <li><a href="#ref-for-skip-the-page-transition②">6.2.1. skipTransition()</a>
+    <li><a href="#ref-for-skip-the-page-transition③">7.3. Perform an outgoing capture</a> <a href="#ref-for-skip-the-page-transition④">(2)</a> <a href="#ref-for-skip-the-page-transition⑤">(3)</a> <a href="#ref-for-skip-the-page-transition⑥">(4)</a> <a href="#ref-for-skip-the-page-transition⑦">(5)</a> <a href="#ref-for-skip-the-page-transition⑧">(6)</a> <a href="#ref-for-skip-the-page-transition⑨">(7)</a> <a href="#ref-for-skip-the-page-transition①⓪">(8)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="capture-the-image">

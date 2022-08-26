@@ -351,9 +351,15 @@ partial interface Document {
 
 dictionary DOMTransitionInit {
     required UpdateDOMCallback updateDOM;
+    ReducedMotionHandling reducedMotionHandling = "auto";
 };
 
 callback UpdateDOMCallback = Promise<any> ();
+
+enum ReducedMotionHandling {
+    "auto",
+    "manual",
+};
 </script>
 
 ### {{Document/createTransition()}} ### {#DOMTransition-prepare}
@@ -374,7 +380,11 @@ callback UpdateDOMCallback = Promise<any> ();
 
         Note: This can result in two asynchronous [=DOMTransition/DOM update callbacks=] running concurrently. One for the |document|'s current [=active DOM transition=], and another for this |transition|. As per the [design of this feature](#transitions-as-enhancements), it's assumed that the developer is using another feature or framework to correctly schedule these DOM changes.
 
-    1. Set |document|'s [=active DOM transition=] to |transition|.
+    1. If |init|[{{DOMTransitionInit/reducedMotionHandling}}] is {{ReducedMotionHandling/"auto"}}, and the user has requested the system minimize the amount of non-essential motion it uses, such that the '@media/prefers-reduced-motion' [=media query=] would match ''prefers-reduced-motion/reduce'', then [=skip the page transition=] |transition| with an "{{AbortError}}" {{DOMException}} in [=this's=] [=relevant Realm=].
+
+        Issue: It feels like there should be a better way to handle this than going via media queries. Perhaps we should centralize the definition of requesting the system for reduced motion.
+
+    1. Otherwise, set |document|'s [=active DOM transition=] to |transition|.
 
         Note: The process continues in [=perform an outgoing capture=].
 
