@@ -40,9 +40,17 @@ spec:css-shapes-3; type:function; text:rect()
 
 # Introduction # {#intro}
 
-    This spec describes the CSS and JS mechanics
-    of the single-page Page Transition API.
+This spec describes the CSS and JS mechanics of the single-page transition API.
 
+# Transitions as an enhancement # {#transitions-as-enhancements}
+
+<em>This section is non-normative.</em>
+
+A key part of this API design is the view that an animated transition is an enhancement to a DOM change.
+
+If a transition cannot run, or is skipped, the DOM change should still happen. If the DOM change should also be skipped, then that should be handled by another feature. The <a href="https://wicg.github.io/navigation-api/#navigate-event-class">`signal` on `NavigateEvent`</a> is an example of a feature developers could use to handle this.
+
+Although the transition API allows DOM changes to be asynchronous via the {{DOMTransitionInit/updateDOM}} callback, the transition API is not responsible for queuing or otherwise scheduling the DOM changes, beyond the scheduling needed for the transition itself. Some asynchronous DOM changes can happen concurrently (e.g if they're happening within independent components), whereas others need to queue, or abort an earlier change. This is best left to a feature or framework that has a more holistic view of the update.
 
 # CSS properties # {#css-properties}
 
@@ -262,6 +270,12 @@ algorithm.
 
 # Concepts # {#concepts}
 
+## Phases ## {#phases-concept}
+
+<dfn>Phases</dfn> represent an ordered sequence of states. Since [=phases=] are ordered, prose can refer to phases <dfn for="phases">before</dfn> a particular phase, meaning they appear earlier in the sequence, or <dfn for="phases">after</dfn> a particular phase, meaning they appear later in the sequence.
+
+The initial phase is the first item in the sequence.
+
 ## The [=page-transition layer=] stacking layer ## {#page-transition-stacking-layer}
 
 This specification introduces a stacking layer to the
@@ -319,14 +333,11 @@ A <dfn>captured element</dfn> is a [=struct=] with the following:
 A {{Document}} additionally has:
 
 <dl dfn-for="document">
-    : <dfn>pending same document transition outgoing capture</dfn>
-    :: a {{DOMTransition}} or null. Initially null.
-
-    : <dfn>running same document transition</dfn>
+    : <dfn>active DOM transition</dfn>
     :: a {{DOMTransition}} or null. Initially null.
 
     : <dfn>transition suppressing rendering</dfn>
-    :: a {{DOMTransition}} or null. Initially null.
+    :: a boolean. Initially false.
 </dl>
 
 # API # {#api}
@@ -339,10 +350,10 @@ partial interface Document {
 };
 
 dictionary DOMTransitionInit {
-    ChangeDOMCallback changeDOM;
+    UpdateDOMCallback updateDOM;
 };
 
-callback ChangeDOMCallback = Promise<any> ();
+callback UpdateDOMCallback = Promise<any> ();
 </script>
 
 ### {{Document/createTransition()}} ### {#DOMTransition-prepare}
@@ -354,27 +365,78 @@ callback ChangeDOMCallback = Promise<any> ();
 
     1. Let |transition| be a new {{DOMTransition}} object in [=this's=] [=relevant Realm=].
 
-    1. Set |transition|'s [=DOMTransition/DOM change callback=] to |init|[{{DOMTransitionInit/changeDOM}}].
+    1. Set |transition|'s [=DOMTransition/DOM update callback=] to |init|[{{DOMTransitionInit/updateDOM}}].
 
     1. Let |document| be [=this's=] [=relevant global object's=] [=associated document=].
 
-    1. Let |transitionsToSkip| be a [=/list=] of every {{DOMTransition}}
-        within [=this's=] [=relevant Realm=],
-        that has not [=DOMTransition/concluded=],
-        and is not |transition|.
+    1. If |document|'s [=active DOM transition=] is not null, then [=skip the page transition=] |document|'s [=active DOM transition=]
+        with an "{{AbortError}}" {{DOMException}} in [=this's=] [=relevant Realm=].
 
-    1. Assert: The [=list/size=] of |transitionsToSkip| is 0 or 1.
+        Note: This can result in two asynchronous [=DOMTransition/DOM update callbacks=] running concurrently. One for the |document|'s current [=active DOM transition=], and another for this |transition|. As per the [design of this feature](#transitions-as-enhancements), it's assumed that the developer is using another feature or framework to correctly schedule these DOM changes.
 
-    1. [=list/For each=] |transitionToSkip| of |transitionsToSkip|, [=skip the page transition=] |transitionToSkip| with an "{{AbortError}}" {{DOMException}} in [=this's=] [=relevant Realm=].
+    1. Set |document|'s [=active DOM transition=] to |transition|.
 
-    1. [=Assert=]: |document|'s [=document/pending same document transition outgoing capture=] is null.
-
-    1. Set |document|'s [=document/pending same document transition outgoing capture=] to |transition|.
-
-        Note: This process continues in [=perform an outgoing capture=].
+        Note: The process continues in [=perform an outgoing capture=].
 
     1. Return |transition|.
+</div>
 
+<div class=example>
+    If the default animations for the page transition are acceptable,
+    then kicking off a transition
+    requires nothing more than setting 'page-transition-tag' in the page's CSS,
+    and a single line of script to start it:
+
+    <pre highlight=js>
+        document.createTransition({
+            updateDOM() {
+                coolFramework.changeTheDOMToPageB();
+            }
+        });
+    </pre>
+
+    If more precise management is needed, however,
+    transition elements can be managed in script:
+
+    <pre highlight=js>
+        async function doTransition() {
+            // Specify "outgoing" elements. The tag is used to match against
+            // "incoming" elements they should transition to, and to refer to
+            // the transitioning pseudo-element.
+            document.querySelector('.old-message').style.pageTransitionTag = 'message';
+
+            const transition = document.createTransition({
+                async updateDOM() {
+                    // This callback is invoked by the browser when "outgoing"
+                    // capture finishes and the DOM can be switched to the new
+                    // state. No frames are rendered until this callback returns.
+
+                    // DOM changes may be asynchronous
+                    await coolFramework.changeTheDOMToPageB();
+
+                    // Tagging elements during the updateDOM() callback marks them as
+                    // "incoming", to be matched up with the same-tagged "outgoing"
+                    // elements marked previously and transitioned between.
+                    document.querySelector('.new-message').style.pageTransitionTag =
+                        'message';
+                },
+            });
+
+            // When ready resolves, all pseudo-elements for this transition have
+            // been generated.
+            // They can now be accessed in script to set up custom animations.
+            await transition.ready;
+
+            document.documentElement.animate(keyframes, {
+                ...animationOptions,
+                pseudoElement: '::page-transition-container(message)',
+            });
+
+            // When the finished promise resolves, that means the transition is
+            // finished.
+            await transition.finished;
+        }
+    </pre>
 </div>
 
 ## The {{DOMTransition}} interface ## {#the-domtransition-interface}
@@ -403,14 +465,16 @@ A {{DOMTransition}} has the following:
         whose keys are [=page transition tags=] and whose values are [=captured elements=].
         Initially a new [=map=].
 
-    : <dfn>concluded</dfn>
-    :: a boolean. Initially false.
+    : <dfn>phase</dfn>
+    :: One of the following [=phases=]:
 
-    : <dfn>DOM change callback</dfn>
-    :: a {{ChangeDOMCallback}} or null. Initially null.
+        1. "`pending-capture`".
+        1. "`dom-update-callback-called`".
+        1. "`animating`".
+        1. "`done`".
 
-    : <dfn>DOM change callback called</dfn>
-    :: a boolean. Initially false.
+    : <dfn>DOM update callback</dfn>
+    :: an {{UpdateDOMCallback}} or null. Initially null.
 
     : <dfn>ready promise</dfn>
     :: a {{Promise}}.
@@ -436,14 +500,14 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
 <div algorithm>
     The [=method steps=] for <dfn method for="DOMTransition">skipTransition()</dfn> are:
 
-    1. If [=this=] has not [=DOMTransition/concluded=],
+    1. If [=this=]'s [=DOMTransition/phase=] is not "`done`",
         then [=skip the page transition=] for [=this=]
         with an "{{AbortError}}" {{DOMException}}.
 </div>
 
 # Algorithms # {#algorithms}
 
-## Monkey patch to rendering ## {#monkey-patch-to-rendering-algorithm}
+## Monkey patches to rendering ## {#monkey-patch-to-rendering-algorithm}
 
 <div algorithm="monkey patch to rendering">
     Run the following steps before [marking paint timing](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model:mark-paint-timing) in the [=update the rendering=] steps:
@@ -455,20 +519,40 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
         As such, the prose style is written to match other steps in that algorithm.
 </div>
 
+<div algorithm="suppress rendering">
+    Issue: Define where this sits within the [=update the rendering=] steps.
+
+    1. For each {{Document}} in <var ignore>docs</var> with a [=document/transition suppressing rendering=] of true:
+
+        Issue: Define this behavior. Lifecycle updates can still be triggered
+        via script APIs which query style or layout information but no visual updates
+        are presented to the user. Is this the same behavior as render-blocking?
+
+        Issue: How should input be handled when in this state? The last frame presented
+        to the user will not reflect the DOM state as it asynchronously switches to
+        the new version.
+
+        Note: The aim is to prevent unintended DOM updates from being presented to the
+        user after a cached snapshot for the elements has been captured. We wait for
+        one rendering opportunity after prepare to present DOM mutations made by the
+        author before prepare to be presented to the user. This is also the content
+        captured in snapshots.
+
+    Note: These steps will be added to the [=update the rendering=] in the HTML spec.
+        As such, the prose style is written to match other steps in that algorithm.
+</div>
+
 ## [=Perform pending transition operations=] ## {#perform-pending-transition-operations-algorithm}
 
 <div algorithm>
     To <dfn>perform pending transition operations</dfn> given a {{Document}} |document|,
         perform the following steps:
 
-    1. If |document|'s [=document/pending same document transition outgoing capture=] is not null, then:
+    1. If |document|'s [=document/active DOM transition=] is not null, then:
 
-        1. [=Perform an outgoing capture=] with |document|'s [=document/pending same document transition outgoing capture=].
+        1. If |document|'s [=document/active DOM transition=]'s [=DOMTransition/phase=] is "`pending-capture`", then [=perform an outgoing capture=] with |document|'s [=document/active DOM transition=].
 
-        1. Set |document|'s [=document/pending same document transition outgoing capture=] to null.
-
-    1. If |document|'s [=document/running same document transition=] is not null,
-        then [=update transition DOM=] for |document|'s [=document/running same document transition=].
+        1. Otherwise, if |document|'s [=document/active DOM transition=]'s [=DOMTransition/phase=] is "`animating`", then [=update transition DOM=] for |document|'s [=document/active DOM transition=].
 </div>
 
 ## [=Perform an outgoing capture=] ## {#perform-an-outgoing-capture-algorithm}
@@ -541,23 +625,7 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
 
         1. Set |taggedElements|[|transitionTag|] to |capture|.
 
-    1. Set [=document/transition suppressing rendering=] to |transition|.
-
-    1. Suppress rendering opportunities for |transition|'s [=relevant global object's=] [=associated document=].
-
-        Note: The aim is to prevent unintended DOM updates from being presented to the
-        user after a cached snapshot for the elements has been captured. We wait for
-        one rendering opportunity after prepare to present DOM mutations made by the
-        author before prepare to be presented to the user. This is also the content
-        captured in snapshots.
-
-        Issue: Further clarify this behavior. Lifecycle updates can still be triggered
-        via script APIs which query style or layout information but no visual updates
-        are presented to the user. Is this the same behavior as render-blocking?
-
-        Issue: How should input be handled when in this state? The last frame presented
-        to the user will not reflect the DOM state as it asynchronously switches to
-        the new version.
+    1. Set |document|'s [=document/transition suppressing rendering=] to true.
 
     1. [=Queue a global task=] on the [=DOM manipulation task source=],
         given |transition|'s [=relevant global object=],
@@ -566,25 +634,29 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
             Note: A task is queued here because the texture read back in [=capturing the image=] may be async,
                 although the render steps in the HTML spec act as if it's synchronous.
 
-        1. If |transition| has [=DOMTransition/concluded=], then abort these steps.
+        1. If |transition|'s [=DOMTransition/phase=] is "`done`", then abort these steps.
 
             Note: This happens if |transition| was [=skip the page transition|skipped=] before this point.
 
-        1. [=Call the DOM change callback=] of |transition|.
+        1. [=Call the DOM update callback=] of |transition|.
 
         1. [=promise/React=] to |transition|'s [=DOMTransition/DOM updated promise=]:
 
-            * If the promise does not settle within an implementation-defined timeout, then [=skip the page transition=] |transition| with a "{{TimeoutError}}" {{DOMException}}.
+            * If the promise does not settle within an implementation-defined timeout, then:
 
-            * If the promise was fulfilled, then:
-
-                1. If |transition| has [=DOMTransition/concluded=], then return.
+                1. If |transition|'s [=DOMTransition/phase=] is "`done`", then return.
 
                     Note: This happens if |transition| was [=skip the page transition|skipped=] before this point.
 
-                1. Set [=document/transition suppressing rendering=] to null.
+                1. [=Skip the page transition=] |transition| with a "{{TimeoutError}}" {{DOMException}}.
 
-                1. Stop suppressing rendering opportunities for |transition|'s Document.
+            * If the promise was fulfilled, then:
+
+                1. If |transition|'s [=DOMTransition/phase=] is "`done`", then return.
+
+                    Note: This happens if |transition| was [=skip the page transition|skipped=] before this point.
+
+                1. Set [=document/transition suppressing rendering=] to false.
 
                 1. Set |usedTransitionTags| to a new [=/set=].
 
@@ -635,67 +707,11 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
 
             * If the promise was rejected with reason |r|, then:
 
-                1. If |transition| has [=DOMTransition/concluded=], then return.
+                1. If |transition|'s [=DOMTransition/phase=] is "`done`", then return.
 
                     Note: This happens if |transition| was [=skip the page transition|skipped=] before this point.
 
                 1. [=Skip the page transition=] |transition| with |r|.
-</div>
-
-<div class=example>
-    If the default animations for the page transition are acceptable,
-    then kicking off a transition
-    requires nothing more than setting 'page-transition-tag' in the page's CSS,
-    and a single line of script to start it:
-
-    <pre highlight=js>
-    new DOMTransition()
-      .start(()=>coolFramework.changeTheDOMToPageB());
-    </pre>
-
-    If more precise management is needed, however,
-    transition elements can be managed in script:
-
-    <pre highlight=js>
-    async function doTransition() {
-      let transition = new DOMTransition();
-
-      // Specify "outgoing" elements. The tag is used to match against
-      // "incoming" elements they should transition to, and to refer to
-      // the transitioning pseudo-element.
-      document.querySelector(".old-message").style.pageTransitionTag = "message";
-
-      // The prepare() call freezes the page's rendering, and triggers
-      // an async operation to capture snapshots for the offered elements.
-      await transition.prepare(async () => {
-        // This callback is invoked by the browser when "outgoing"
-        // capture  finishes and the DOM can be switched to the new
-        // state. No frames are rendered until this callback returns.
-
-        // Asynchronously load the new page.
-        await coolFramework.changeTheDOMToPageB();
-
-        // Tagging elements during the .start() callback marks them as
-        // "incoming", to be matched up with the same-tagged "outgoing"
-        // elements marked previously and transitioned between.
-        document.querySelector(".new-message").style.pageTransitionTag = "message";
-      });
-
-      // When the promise returned by prepare() resolves, all pseudo-elements
-      // for this transition have been generated. They can now be accessed
-      // in script to set up custom animations.
-      document.documentElement.animate(
-        keyframes,
-        {...animationOptions,
-         pseudoElement: "::page-transition-container(message)",
-        }
-      );
-
-      // When the finished promise resolves, that means the transition is
-      // finished (either completed successfully or abandoned).
-      await transition.finished;
-    }
-    </pre>
 </div>
 
 ## Skip the page transition ## {#skip-the-page-transition-algorithm}
@@ -703,24 +719,17 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
 <div algorithm>
     To <dfn>skip the page transition</dfn> for {{DOMTransition}} |transition| with reason |reason|:
 
-    1. [=Assert=]: |transition| has not [=DOMTransition/concluded=].
-
-    1. If |transition|'s [=DOMTransition/DOM change callback called=] is false, then [=call the DOM change callback=] of |transition|.
-
     1. Let |document| be |transition|'s [=relevant global object's=] [=associated document=].
 
-    1. If |document|'s [=document/pending same document transition outgoing capture=] is |transition|,
-        then set |document|'s [=document/pending same document transition outgoing capture=] to null.
+    1. [=Assert=]: |document|'s [=document/active DOM transition=] is |transition|.
 
-    1. If |document|'s [=document/transition suppressing rendering=] is |transition|, then:
+    1. [=Assert=]: |transition|'s [=DOMTransition/phase=] is not "`done`".
 
-        1. Stop suppressing rendering opportunities, if suppressed, for |document|.
+    1. If |transition|'s [=DOMTransition/phase=] is [=phases/before=] "`dom-update-callback-called`", then [=call the DOM update callback=] of |transition|.
 
-            Issue: "suppressing rendering opportunities" needs to be linked/defined.
+    1. Set [=document/transition suppressing rendering=] to false.
 
-        1. Set |document|'s [=document/transition suppressing rendering=] to null.
-
-    1. If |document|'s [=document/running same document transition=] is |transition|, then:
+    1. If |transition|'s [=DOMTransition/phase=] is equal to or [=phases/after=] "`animating`", then:
 
         1. Remove all associated [=page-transition pseudo-elements=] from |document|.
 
@@ -728,9 +737,9 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
 
             Issue: There needs to be a definition/link for "associated".
 
-        1. Set |document|'s [=document/running same document transition=] to null.
+    1. Set |transition|'s [=DOMTransition/phase=] to "`done`".
 
-    1. Set |transition|'s [=DOMTransition/concluded=] to true.
+    1. Set |document|'s [=document/active DOM transition=] to null.
 
     1. [=Reject=] |transition|'s [=DOMTransition/ready promise=] with |reason|.
 
@@ -788,7 +797,7 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
 
         Issue: There needs to be a definition/link for "active animation".
 
-        1. Set |transition|'s [=DOMTransition/concluded=] to true.
+        1. Set |transition|'s [=DOMTransition/phase=] to "`done`".
 
         1. Remove all associated [=page-transition pseudo-elements=] from |document|.
 
@@ -796,7 +805,7 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
 
             Issue: There needs to be a definition/link for "associated".
 
-        1. Set |document|'s [=document/running same document transition=] to null.
+        1. Set |document|'s [=document/active DOM transition=] to null.
 
         1. [=Resolve=] |transition|'s[=DOMTransition/finished promise=].
 
@@ -905,11 +914,8 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
                 }
             </code></pre>
 
-    1. Let |document| be |transition|'s [=relevant global object's=] [=associated document=].
 
-    1. [=Assert=]: |document|'s [=document/running same document transition=] is null.
-
-    1. Set |document|'s [=document/running same document transition=] to |transition|.
+    1. Set |transition|'s [=DOMTransition/phase=] to "`animating`".
 
     Issue: How are keyframes scoped to user-agent origin? We could decide
         scope based on whether `animation-name` in the computed style
@@ -998,13 +1004,13 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
 </div>
 
 <div algorithm>
-    To <dfn>call the DOM change callback</dfn> of a {{DOMTransition}} |transition|:
+    To <dfn>call the DOM update callback</dfn> of a {{DOMTransition}} |transition|:
 
-    1. [=Assert=]: |transition|'s [=DOMTransition/DOM change callback called=] is false.
+    1. [=Assert=]: |transition|'s [=DOMTransition/phase=] is [=phases/before=] "`dom-update-callback-called`".
 
-    1. Let |callbackPromise| be the result of [=/invoking=] |transition|'s [=DOMTransition/DOM change callback=].
+    1. Let |callbackPromise| be the result of [=/invoking=] |transition|'s [=DOMTransition/DOM update callback=].
 
-    1. Set |transition|'s [=DOMTransition/DOM change callback called=] to true.
+    1. Set |transition|'s [=DOMTransition/phase=] to "`dom-update-callback-called`".
 
     1. [=promise/React=] to |callbackPromise|:
 
