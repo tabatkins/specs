@@ -350,7 +350,7 @@ partial interface Document {
 };
 
 dictionary DOMTransitionInit {
-    UpdateDOMCallback updateDOM;
+    required UpdateDOMCallback updateDOM;
 };
 
 callback UpdateDOMCallback = Promise<any> ();

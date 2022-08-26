@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 44af0bf3e, updated Fri Jul 29 17:05:16 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-shared-element-transitions/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="fb06ecc647825a6554296cb5d2e496562170b36a" name="document-revision">
+  <meta content="64f799e850ae0e22541bdb5644e42a3864f51deb" name="document-revision">
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -1106,7 +1106,7 @@ layer elements has filters and effects coming from the root element’s style?</
 };
 
 <c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-domtransitioninit"><code><c- g>DOMTransitionInit</c-></code></dfn> {
-    <a data-link-type="idl-name" href="#callbackdef-updatedomcallback" id="ref-for-callbackdef-updatedomcallback"><c- n>UpdateDOMCallback</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="DOMTransitionInit" data-dfn-type="dict-member" data-export data-type="UpdateDOMCallback " id="dom-domtransitioninit-updatedom"><code><c- g>updateDOM</c-></code></dfn>;
+    <c- b>required</c-> <a data-link-type="idl-name" href="#callbackdef-updatedomcallback" id="ref-for-callbackdef-updatedomcallback"><c- n>UpdateDOMCallback</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="DOMTransitionInit" data-dfn-type="dict-member" data-export data-type="UpdateDOMCallback " id="dom-domtransitioninit-updatedom"><code><c- g>updateDOM</c-></code></dfn>;
 };
 
 <c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-updatedomcallback"><code><c- g>UpdateDOMCallback</c-></code></dfn> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-any" id="ref-for-idl-any"><c- b>any</c-></a>> ();
@@ -2514,7 +2514,7 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
 };
 
 <c- b>dictionary</c-> <a href="#dictdef-domtransitioninit"><code><c- g>DOMTransitionInit</c-></code></a> {
-    <a data-link-type="idl-name" href="#callbackdef-updatedomcallback"><c- n>UpdateDOMCallback</c-></a> <a data-type="UpdateDOMCallback " href="#dom-domtransitioninit-updatedom"><code><c- g>updateDOM</c-></code></a>;
+    <c- b>required</c-> <a data-link-type="idl-name" href="#callbackdef-updatedomcallback"><c- n>UpdateDOMCallback</c-></a> <a data-type="UpdateDOMCallback " href="#dom-domtransitioninit-updatedom"><code><c- g>updateDOM</c-></code></a>;
 };
 
 <c- b>callback</c-> <a href="#callbackdef-updatedomcallback"><code><c- g>UpdateDOMCallback</c-></code></a> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-any"><c- b>any</c-></a>> ();
