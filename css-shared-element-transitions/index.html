@@ -6,10 +6,10 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 44af0bf3e, updated Fri Jul 29 17:05:16 2022 -0700" name="generator">
+  <meta content="Bikeshed version f669112af, updated Tue Aug 23 17:02:35 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-shared-element-transitions/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="64f799e850ae0e22541bdb5644e42a3864f51deb" name="document-revision">
+  <meta content="2b6ab771642c7f2af9c1c44af03e2a3edb951220" name="document-revision">
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -746,7 +746,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Shared Element Transitions Module Level 1</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-26">26 August 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-30">30 August 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -765,7 +765,14 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
      </dl>
     </div>
    </details>
-   <div data-fill-with="warning"></div>
+   <div data-fill-with="warning">
+    <details class="annoying-warning" open>
+     <summary>This Document Is Obsolete and Has Been Replaced</summary>
+     <p> This specification is obsolete and has been replaced by the document at <a href="https://drafts.csswg.org/css-shared-element-transitions/">https://drafts.csswg.org/css-shared-element-transitions/</a>.
+		Do not attempt to implement this specification.
+		Do not refer to this specification except as a historical artifact. </p>
+    </details>
+   </div>
    <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2022 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
@@ -959,11 +966,11 @@ document’s root element.</p>
   <c- k>inset</c-><c- p>:</c-> <c- m>0</c-><c- p>;</c->
 <c- p>}</c->
 </code></pre>
-     <p class="note" role="note"><span>Note:</span> The aim of the style is to size the pseudo-element to cover the
-complete viewport.</p>
-     <p class="issue" id="issue-f1ddb6f5"><a class="self-link" href="#issue-f1ddb6f5"></a> Is this needed? For multiple independent transitions this could be
-useful to separate which transition is represented in the particular
-:page-transition subtree.</p>
+     <p class="note" role="note"><span>Note:</span> This pseudo-element provides a containing block for all
+::page-transition-container pseudo-elements. The aim of the style is to
+size the pseudo-element to cover the <a data-link-type="dfn" href="https://drafts.csswg.org/css-values-4/#large-viewport-size" id="ref-for-large-viewport-size">large viewport size</a> and position
+all ::page-transition-container pseudo-elements relative to the origin of
+the large viewport.</p>
     <dt data-md><dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="selectordef-page-transition-container-pt-tag-selector">::page-transition-container( <a class="production css" data-link-type="type" href="#typedef-pt-tag-selector" id="ref-for-typedef-pt-tag-selector②">&lt;pt-tag-selector></a> )</dfn>
     <dd data-md>
      <p>One of these pseudo-elements exists
@@ -1644,7 +1651,6 @@ html:<c- nf>:page-transition-incoming-image</c-><c- p>(</c->*<c- p>)</c-> <c- p>
         came from a developer or UA stylesheet.</p>
     <p class="issue" id="issue-7115bd7f"><a class="self-link" href="#issue-7115bd7f"></a> We should retarget the animation if computed properties for
         incoming elements change.</p>
-    <p class="issue" id="issue-741cd9b6"><a class="self-link" href="#issue-741cd9b6"></a> We need to better define how the real new DOM is not painted during the animation.</p>
    </div>
    <h3 class="heading settled" data-level="7.9" id="create-transition-pseudo-elements-algorithm"><span class="secno">7.9. </span><span class="content"><a data-link-type="dfn" href="#create-transition-pseudo-elements" id="ref-for-create-transition-pseudo-elements②">Create transition pseudo-elements</a></span><a class="self-link" href="#create-transition-pseudo-elements-algorithm"></a></h3>
    <div class="algorithm" data-algorithm="create transition pseudo-elements">
@@ -1726,6 +1732,9 @@ set <var>outgoing</var>’s <a class="property css" data-link-type="property" hr
 set <var>incoming</var>’s <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-images-4/#propdef-object-view-box" id="ref-for-propdef-object-view-box⑤">object-view-box</a> property to a value that when applied to <var>incoming</var>,
 will cause the view box to coincide with <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element①⓪">incoming element</a>'s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-box" id="ref-for-border-box⑦">border box</a> in the image.</p>
         </ol>
+        <p>The <a data-link-type="dfn" href="#captured-element-incoming-element" id="ref-for-captured-element-incoming-element①①">incoming element</a> and its contents (the flat tree descendants of the element,
+including both text and elements, or the replaced content of a replaced element), except the <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements⑧">page-transition pseudo-elements</a>, are not painted (as if they had visibility: hidden) and
+do not respond to hit-testing (as if they had pointer-events: none) until <var>incoming</var> exists.</p>
       </ol>
     </ol>
    </div>
@@ -2014,6 +2023,12 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
    <ul>
     <li><a href="#ref-for-identifier-value">3.1. page-transition-tag</a> <a href="#ref-for-identifier-value①">(2)</a> <a href="#ref-for-identifier-value②">(3)</a> <a href="#ref-for-identifier-value③">(4)</a>
     <li><a href="#ref-for-identifier-value④">4. Pseudo-elements</a> <a href="#ref-for-identifier-value⑤">(2)</a> <a href="#ref-for-identifier-value⑥">(3)</a> <a href="#ref-for-identifier-value⑦">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-large-viewport-size">
+   <a href="https://drafts.csswg.org/css-values-4/#large-viewport-size">https://drafts.csswg.org/css-values-4/#large-viewport-size</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-large-viewport-size">4. Pseudo-elements</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-comb-one">
@@ -2360,6 +2375,7 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-identifier-value">&lt;custom-ident></span>
+     <li><span class="dfn-paneled" id="term-for-large-viewport-size">large viewport size</span>
      <li><span class="dfn-paneled" id="term-for-comb-one">|</span>
     </ul>
    <li>
@@ -2529,9 +2545,6 @@ will cause the view box to coincide with <a data-link-type="dfn" href="#captured
 </pre>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Is this needed? For multiple independent transitions this could be
-useful to separate which transition is represented in the particular
-:page-transition subtree. <a class="issue-return" href="#issue-f1ddb6f5" title="Jump to section">↵</a></div>
    <div class="issue"> The selector for this and subsequently defined pseudo-elements is
 likely to change to indicate position in the pseudo-tree hierarchy. <a class="issue-return" href="#issue-276a27ed" title="Jump to section">↵</a></div>
    <div class="issue"> Isolation is only necessary to get the right cross-fade between
@@ -2568,7 +2581,6 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
         came from a developer or UA stylesheet. <a class="issue-return" href="#issue-4306640b" title="Jump to section">↵</a></div>
    <div class="issue"> We should retarget the animation if computed properties for
         incoming elements change. <a class="issue-return" href="#issue-7115bd7f" title="Jump to section">↵</a></div>
-   <div class="issue"> We need to better define how the real new DOM is not painted during the animation. <a class="issue-return" href="#issue-741cd9b6" title="Jump to section">↵</a></div>
    <div class="issue"> "tag" should be defined/linked. <a class="issue-return" href="#issue-e6797087" title="Jump to section">↵</a></div>
    <div class="issue"> This should be better defined.
     I’m not sure if pseudo-elements have defined ways to modify their DOM. <a class="issue-return" href="#issue-cd5827ed" title="Jump to section">↵</a></div>
@@ -2602,6 +2614,7 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
     <li><a href="#ref-for-page-transition-pseudo-elements">4. Pseudo-elements</a> <a href="#ref-for-page-transition-pseudo-elements①">(2)</a> <a href="#ref-for-page-transition-pseudo-elements②">(3)</a> <a href="#ref-for-page-transition-pseudo-elements③">(4)</a>
     <li><a href="#ref-for-page-transition-pseudo-elements④">7.4. Skip the page transition</a>
     <li><a href="#ref-for-page-transition-pseudo-elements⑤">7.6. Update transition DOM</a> <a href="#ref-for-page-transition-pseudo-elements⑥">(2)</a> <a href="#ref-for-page-transition-pseudo-elements⑦">(3)</a>
+    <li><a href="#ref-for-page-transition-pseudo-elements⑧">7.9. Create transition pseudo-elements</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="typedef-pt-tag-selector">
@@ -2691,7 +2704,7 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
    <ul>
     <li><a href="#ref-for-captured-element-incoming-element">7.3. Perform an outgoing capture</a>
     <li><a href="#ref-for-captured-element-incoming-element①">7.8. Animate a page transition</a>
-    <li><a href="#ref-for-captured-element-incoming-element②">7.9. Create transition pseudo-elements</a> <a href="#ref-for-captured-element-incoming-element③">(2)</a> <a href="#ref-for-captured-element-incoming-element④">(3)</a> <a href="#ref-for-captured-element-incoming-element⑤">(4)</a> <a href="#ref-for-captured-element-incoming-element⑥">(5)</a> <a href="#ref-for-captured-element-incoming-element⑦">(6)</a> <a href="#ref-for-captured-element-incoming-element⑧">(7)</a> <a href="#ref-for-captured-element-incoming-element⑨">(8)</a> <a href="#ref-for-captured-element-incoming-element①⓪">(9)</a>
+    <li><a href="#ref-for-captured-element-incoming-element②">7.9. Create transition pseudo-elements</a> <a href="#ref-for-captured-element-incoming-element③">(2)</a> <a href="#ref-for-captured-element-incoming-element④">(3)</a> <a href="#ref-for-captured-element-incoming-element⑤">(4)</a> <a href="#ref-for-captured-element-incoming-element⑥">(5)</a> <a href="#ref-for-captured-element-incoming-element⑦">(6)</a> <a href="#ref-for-captured-element-incoming-element⑧">(7)</a> <a href="#ref-for-captured-element-incoming-element⑨">(8)</a> <a href="#ref-for-captured-element-incoming-element①⓪">(9)</a> <a href="#ref-for-captured-element-incoming-element①①">(10)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="document-active-dom-transition">

@@ -10,6 +10,7 @@ Work Status: exploring
 Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/, w3cid 42199
 Abstract: This module defines the Single-Page Document-Transition API, along with associated properties and pseudo-elements.
 Markup Shorthands: markdown on
+Warning: replaced by https://drafts.csswg.org/css-shared-element-transitions/
 </pre>
 
 <pre class=link-defaults>
@@ -998,7 +999,7 @@ The {{DOMTransition/domUpdated}} [=getter steps=] are to return [=this's=] [=DOM
             1. At the [=user-agent origin=],
                 set |incoming|'s 'object-view-box' property to a value that when applied to |incoming|,
                 will cause the view box to coincide with [=incoming element=]'s [=border box=] in the image.
-    
+
             The [=incoming element=] and its contents (the flat tree descendants of the element,
             including both text and elements, or the replaced content of a replaced element), except the
             [=page-transition pseudo-elements=], are not painted (as if they had visibility: hidden) and
