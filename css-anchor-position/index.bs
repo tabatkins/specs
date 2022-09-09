@@ -130,10 +130,12 @@ of the fragments' border boxes is used instead.
 Issue: Do we need to control which box we're referring to,
 so you can align to padding or content edge?
 
-For this purpose, all scrolling containers
-are treated as if scrolled to their initial scroll position
-(but see 'anchor-scroll'),
-and all transforms are ignored.
+Issue: Per flackr/iank feedback,
+this should be able to respond to the scroll position
+of the anchor element,
+both for positioning and for fallback,
+in a way essentially identical to @scroll-timeline.
+Precise timing + details to be filled in.
 
 <div class=example>
 	For example,
@@ -186,58 +188,6 @@ and all transforms are ignored.
 	as the centering will make it easier to discover
 	which input is being referred to.
 </div>
-
-Anchoring to a Scrolled Position: the 'anchor-scroll' property {#anchor-scroll}
---------------------------------------------------------------
-
-The ''anchor()'' property does not take scrolling into account,
-calculating its values as if the positioned element
-and the [=target anchor element=]
-had all ancestor scroll containers set to the initial position.
-This enables the feature to work purely on information known during layout,
-since scrolling is often implemented "on the compositor",
-as a post-layout visual transform.
-
-When responding to scroll position <em>is</em> necessary, however,
-the 'anchor-scroll' property can be used to indicate this.
-
-<pre class=propdef>
-Name: anchor-scroll
-Value: none | <<dashed-ident>>
-Initial: none
-Inherited: no
-Applies to: [=absolutely-positioned=] elements
-Animation type: discrete
-</pre>
-
-'anchor-scroll' allows a [=positioned=] element
-to respond to the scroll offsets of a [=target anchor element's=]
-ancestor scroll containers,
-keeping the position of the two in sync
-as scrolls are performed.
-Values are defined as:
-
-<dl dfn-type=value dfn-for=anchor-scroll>
-	: <dfn>none</dfn>
-	:: No effect.
-
-	: <dfn><<dashed-ident>></dfn>
-	::
-		If there is no [=target anchor element=]
-		with the given name,
-		this value does nothing.
-
-		Otherwise,
-		this element is translated
-		by the accumulated scroll offsets
-		of all scroll containers between the element's containing block
-		and the [=target anchor element=].
-
-		This translation is treated identically
-		to the translation caused by ''position: sticky''.
-</dl>
-
-Issue: Name TBD, this probably isn't the final name.
 
 
 Anchor-based Sizing: the ''anchor-size()'' function {#anchor-size}
