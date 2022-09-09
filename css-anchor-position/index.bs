@@ -52,6 +52,16 @@ The ''@position-set'' rule allows even more flexibility,
 allowing multiple different sizes/positions to be tried out sequentially
 until one is found that fits within the [=containing block=].
 
+<!--
+   ███    ██    ██  ██████  ██     ██  ███████  ████████    ███ ███
+  ██ ██   ███   ██ ██    ██ ██     ██ ██     ██ ██     ██  ██     ██
+ ██   ██  ████  ██ ██       ██     ██ ██     ██ ██     ██ ██       ██
+██     ██ ██ ██ ██ ██       █████████ ██     ██ ████████  ██       ██
+█████████ ██  ████ ██       ██     ██ ██     ██ ██   ██   ██       ██
+██     ██ ██   ███ ██    ██ ██     ██ ██     ██ ██    ██   ██     ██
+██     ██ ██    ██  ██████  ██     ██  ███████  ██     ██   ███ ███
+-->
+
 Anchor-based Positioning: the ''anchor()'' function {#anchor-pos}
 ---------------------------------------------------
 
@@ -198,6 +208,15 @@ Precise timing + details to be filled in.
 	which input is being referred to.
 </div>
 
+<!--
+   ███             ██████  ████ ████████ ████████   ███ ███
+  ██ ██           ██    ██  ██       ██  ██        ██     ██
+ ██   ██          ██        ██      ██   ██       ██       ██
+██     ██ ███████  ██████   ██     ██    ██████   ██       ██
+█████████               ██  ██    ██     ██       ██       ██
+██     ██         ██    ██  ██   ██      ██        ██     ██
+██     ██          ██████  ████ ████████ ████████   ███ ███
+-->
 
 Anchor-based Sizing: the ''anchor-size()'' function {#anchor-size}
 ---------------------------------------------------
@@ -243,6 +262,17 @@ resolves to the <<length>> separating the relevant border edges
 (either left and right, or top and bottom,
 whichever is in the specified axis)
 of the [=target anchor element=].
+
+
+<!--
+   ███            ██    ██    ███    ██     ██ ████████
+  ██ ██           ███   ██   ██ ██   ███   ███ ██
+ ██   ██          ████  ██  ██   ██  ████ ████ ██
+██     ██ ███████ ██ ██ ██ ██     ██ ██ ███ ██ ██████
+█████████         ██  ████ █████████ ██     ██ ██
+██     ██         ██   ███ ██     ██ ██     ██ ██
+██     ██         ██    ██ ██     ██ ██     ██ ████████
+-->
 
 Determining The Anchor: the 'anchor-name' property {#determining}
 -----------------------------------------------------------------
@@ -341,6 +371,17 @@ Note: As specified in the definition of ''anchor()'',
 an [=invalid anchor query=]
 causes the function to resolve to its fallback value instead.
 
+
+<!--
+████████    ███    ██       ██       ████████     ███     ██████  ██    ██
+██         ██ ██   ██       ██       ██     ██   ██ ██   ██    ██ ██   ██
+██        ██   ██  ██       ██       ██     ██  ██   ██  ██       ██  ██
+██████   ██     ██ ██       ██       ████████  ██     ██ ██       █████
+██       █████████ ██       ██       ██     ██ █████████ ██       ██  ██
+██       ██     ██ ██       ██       ██     ██ ██     ██ ██    ██ ██   ██
+██       ██     ██ ████████ ████████ ████████  ██     ██  ██████  ██    ██
+-->
+
 Fallback Sizing/Positioning {#fallback}
 ===========================
 
@@ -436,6 +477,24 @@ The ''@try'' rules inside a ''@position-fallback''
 specify a <dfn>position fallback list</dfn>,
 where each entry consists of the properties specified by each ''@try'',
 in order.
+
+Issue: If you have a bunch of elements
+that all use the same positioning and fallback,
+just relative to different anchor elements
+(like a bunch of tooltips),
+there's no way to have them share @position-fallback rules;
+they each need a unique set.
+This sucks!
+Should figure out some way to address this.
+
+Issue: Would be useful to be able to detect
+when your anchor(s) are fully off-screen
+and suppress your display entirely.
+For example, tooltips living outside the scroller
+holding the text they're anchored to
+don't want to just hover over arbitrary parts of the page
+because their anchor happens to have that position
+relative to the scrollport.
 
 Applying Position Fallback {#fallback-apply}
 --------------------------

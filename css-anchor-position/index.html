@@ -8,7 +8,7 @@
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 40ef4e595, updated Fri Sep 2 15:56:22 2022 -0700" name="generator">
   <link href="http://tabatkins.github.io/specs/css-anchor-position" rel="canonical">
-  <meta content="b5b1ec7021e87c5b0a0abb21dc9bb88a5b0f5996" name="document-revision">
+  <meta content="d931f81ee20d4a17dca140e680ee51e4f32ea2a8" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1050,6 +1050,22 @@ at least for descendants.</p>
    <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-try" id="ref-for-at-ruledef-try②">@try</a> rules inside a <a class="css" data-link-type="maybe" href="#at-ruledef-position-fallback" id="ref-for-at-ruledef-position-fallback⑥">@position-fallback</a> specify a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="position-fallback-list">position fallback list</dfn>,
 where each entry consists of the properties specified by each <span class="css" id="ref-for-at-ruledef-try③">@try</span>,
 in order.</p>
+   <p class="issue" id="issue-0dfe4786"><a class="self-link" href="#issue-0dfe4786"></a> If you have a bunch of elements
+that all use the same positioning and fallback,
+just relative to different anchor elements
+(like a bunch of tooltips),
+there’s no way to have them share @position-fallback rules;
+they each need a unique set.
+This sucks!
+Should figure out some way to address this.</p>
+   <p class="issue" id="issue-5b530169"><a class="self-link" href="#issue-5b530169"></a> Would be useful to be able to detect
+when your anchor(s) are fully off-screen
+and suppress your display entirely.
+For example, tooltips living outside the scroller
+holding the text they’re anchored to
+don’t want to just hover over arbitrary parts of the page
+because their anchor happens to have that position
+relative to the scrollport.</p>
    <h3 class="heading settled" data-level="3.3" id="fallback-apply"><span class="secno">3.3. </span><span class="content">Applying Position Fallback</span><a class="self-link" href="#fallback-apply"></a></h3>
    <p>When an element uses a <a data-link-type="dfn" href="#position-fallback-list" id="ref-for-position-fallback-list③">position fallback list</a>,
 it selects one entry from the list
@@ -1726,6 +1742,22 @@ from Chrome’s experimental impl.
 We can make a CQ that keys off of which fallback was used
 to allow more general styling,
 at least for descendants. <a class="issue-return" href="#issue-14452576" title="Jump to section">↵</a></div>
+   <div class="issue"> If you have a bunch of elements
+that all use the same positioning and fallback,
+just relative to different anchor elements
+(like a bunch of tooltips),
+there’s no way to have them share @position-fallback rules;
+they each need a unique set.
+This sucks!
+Should figure out some way to address this. <a class="issue-return" href="#issue-0dfe4786" title="Jump to section">↵</a></div>
+   <div class="issue"> Would be useful to be able to detect
+when your anchor(s) are fully off-screen
+and suppress your display entirely.
+For example, tooltips living outside the scroller
+holding the text they’re anchored to
+don’t want to just hover over arbitrary parts of the page
+because their anchor happens to have that position
+relative to the scrollport. <a class="issue-return" href="#issue-5b530169" title="Jump to section">↵</a></div>
    <div class="issue"> This implies that the values can’t be transitioned in the usual fashion,
 since transitions key off of computed values
 and we’re past that point.
