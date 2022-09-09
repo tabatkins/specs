@@ -13,7 +13,9 @@ Abstract: This specification defines 'anchor positioning', where a positioned el
 <pre class=link-defaults>
 spec:css-break-4; type:dfn; text:fragment
 spec:css-display-3; type:dfn; text:element
-spec:css-position-3; type:dfn; text:inset-modified containing block
+spec:css-position-3;
+	type:dfn; text:inset-modified containing block
+	type:property; text:inset-inline-start
 </pre>
 
 Introduction {#intro}
@@ -60,7 +62,7 @@ to refer to the position of one or more [=anchor elements=].
 The ''anchor()'' function resolves to a <<length>>.
 
 <pre class=prod>
-anchor() = anchor( <<dashed-ident>> <<anchor-side>>, <<length-percentage>>? )
+anchor() = anchor( <<dashed-ident>>? <<anchor-side>>, <<length-percentage>>? )
 <dfn><<anchor-side>></dfn> = top | left | right | bottom
 			  | start | end | self-start | self-end
 			  | <<percentage>> | center
@@ -70,6 +72,9 @@ The ''anchor()'' function has three arguments:
 
 * the <<dashed-ident>> specifies the [=anchor name=] of the [=anchor element=]
 	it will be drawing positioning information from.
+	See [=target anchor element=] for details.
+
+	If omitted, the function uses an element's [=implicit anchor element=] instead.
 
 * the <<anchor-side>> value
 	refers to the position of the corresponding side
@@ -101,6 +106,10 @@ The ''anchor()'' function has three arguments:
 
 	Issue: Do we need to refer to the anchor element's [=writing mode=]?
 	I think that's too unpredictable to actually do anything useful.
+	If you're specifying your 'inset-inline-start' property,
+	you almost certainly want to refer to an anchor edge
+	relative to your own directions,
+	not an unpredictable edge based on the anchor.
 
 	A <<percentage>> value refers to a position
 	a corresponding percentage between the ''start'' and ''end'' sides,
@@ -200,7 +209,7 @@ to refer to the size of one or more [=anchor elements=].
 The ''anchor-size()'' function resolves to a <<length>>.
 
 <pre class=prod>
-anchor-size() = anchor( <<dashed-ident>> <<anchor-size>>, <<length-percentage>>? )
+anchor-size() = anchor( <<dashed-ident>>? <<anchor-size>>, <<length-percentage>>? )
 <dfn><<anchor-size>></dfn> = width | height | block | inline | self-block | self-inline
 </pre>
 
@@ -265,30 +274,47 @@ even if it is, the [=anchor element=] in question
 might not be capable of anchoring the positioned element.
 
 <div algorithm>
-	To determine the <dfn>target [=anchor element=]</dfn>,
+	To determine the <dfn>target [=anchor element=]</dfn>
+	given a querying element |query el|
+	and an optional anchor name |name|,
 	find the first element |el| in tree order
 	which satisfies the following conditions:
 
-	* |el| is an [=anchor element=] with the given [=anchor name=]
-	* |el| is a descendant of the querying element's [=containing block=],
-		or the quering element's [=containing block=] is the [=initial containing block=]
-	* if |el| has the same [=containing block=] as the querying element,
+	* If |name| is not provided,
+		but |query el| has one or more [=implicit anchor elements=],
+		|el| is one of those elements.
+	* If |name| is provided,
+		|el| is an [=anchor element=] with an [=anchor name=] of |name|.
+	* Either |el| is a descendant of |query el|'s [=containing block=],
+		or |query el|'s [=containing block=] is the [=initial containing block=]
+	* If |el| has the same [=containing block=] as |query el|,
 		|el| is not [=absolutely positioned=]
-	* if |el| has a different [=containing block=] from the querying element,
+	* If |el| has a different [=containing block=] from |query el|,
 		the last [=containing block=] in |el|'s [=containing block chain=]
-		before reaching the querying element's [=containing block=]
+		before reaching |query el|'s [=containing block=]
 		is not [=absolutely positioned=]
 
 	Note: There might not be any such element.
 
-	Note: Because [=absolutely-positioned=] elements
-	are laid out strictly after non-positioned elements
-	in the same containing block,
-	these conditions ensure that the [=anchor element=]
-	is laid out strictly before the element using ''anchor()'' or ''anchor-size()'',
-	so there is no possible circularity between the position and/or size
-	of the two elements.
+	Note: The general rule captured by these conditions
+	is that |el| must be fully laid out
+	before |query el| is laid out.
+	CSS's rules about the layout order of stacking contexts
+	give us assurances about this,
+	and the list of conditions above
+	exactly rephrases the stacking context rules
+	into just what's relevant for this purpose,
+	ensuring there is no possibly circularity
+	in anchor positioning.
 </div>
+
+An element can have one or more <dfn export>implicit anchor elements</dfn>,
+defined by other features.
+This specification does not define any [=implicit anchor elements=] itself.
+
+Note: The Popup API, for example,
+defines an [=implicit anchor element=] for a popup--
+the element that the popup is attached to.
 
 
 Anchor Queries {#queries}
@@ -307,7 +333,9 @@ only if all of the following conditions are true:
 	the function is being used in an [=inset property=].
 * If representing an ''anchor-size()'' function,
 	the function is being used in a [=sizing property=].
-* There is a [=target anchor element=].
+* There is a [=target anchor element=]
+	for the element
+	and the [=anchor name=] specified in the function.
 
 Note: As specified in the definition of ''anchor()'',
 an [=invalid anchor query=]
