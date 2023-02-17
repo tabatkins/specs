@@ -8,5 +8,5 @@ Work Status: exploring
 URL: http://tabatkins.github.io/specs/css-anchor-position
 Editor: Tab Atkins-Bittner, Google, http://xanthir.com/contact/, w3cid 42199
 Abstract: This specification defines 'anchor positioning', where a positioned element can size and position itself relative to one or more "anchor elements" elsewhere on the page.
-Warning: replaced by https://w3c.github.io/csswg-drafts/css-anchor/
+Warning: replaced by https://drafts.csswg.org/css-anchor-position-1/
 </pre>
