@@ -7,6 +7,7 @@ ED: http://tabatkins.github.io/specs/construct-stylesheets/
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact/
 Abstract: This draft defines additions to CSSOM to make StyleSheet objects directly constructable, along with methods and APIs to make it easier to deal with stylesheets in the context of custom elements and similar.  It also defines constructors for CSSRule objects.
 Ignored Terms: ShadowRoot, create a medialist object, add a css style sheet, document css style sheets
+Warning: replaced by https://w3c.github.io/csswg-drafts/cssom/#dom-cssstylesheet-cssstylesheet
 </pre>
 
 <pre class='link-defaults'>

@@ -6,11 +6,11 @@ Spec proposals that aren't yet approved by the relevant Working Group.  Everythi
 Live copies of the specs:
 
 * [CSS Toggle States Level 1](http://tabatkins.github.io/specs/css-toggle-states/)
-* [CSS Nesting](http://tabatkins.github.io/specs/css-nesting/)
+* [<s>CSS Nesting</s>](http://tabatkins.github.io/specs/css-nesting/)
 * [CSS Aliases (custom stuff)](http://tabatkins.github.io/specs/css-aliases)
 * [Layout Transitions](http://tabatkins.github.io/specs/layout-transitions)
 * [@extend](http://tabatkins.github.io/specs/css-extend-rule)
-* [Constructable Stylesheets](http://tabatkins.github.io/specs/construct-stylesheets)
+* [<s>Constructable Stylesheets</s>](http://tabatkins.github.io/specs/construct-stylesheets)
 * [SVG Parameters](http://tabatkins.github.io/specs/svg-params)
 * [CSS Cascade Control](https://tabatkins.github.io/specs/css-cascade-control/)
 * [@when/@else](https://tabatkins.github.io/specs/css-when-else/)
