@@ -16,3 +16,4 @@ Live copies of the specs:
 * [@when/@else](https://tabatkins.github.io/specs/css-when-else/)
 * [CSS Stacking Context](https://tabatkins.github.io/specs/css-stacking-context-1/)
 * [CSS Anchor Positioning](https://tabatkins.github.io/specs/css-anchor-position/)
+* [CSS Masonry Layout alt proposal](https://tabatkings.github.io/specs/css-masonry/)
