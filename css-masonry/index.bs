@@ -4,6 +4,7 @@ Shortname: css-masonry
 Level: 1
 Status: w3c/UD
 Group: CSSWG
+Work Status: exploring
 Repository: tabatkins/specs
 URL: http://tabatkins.github.io/specs/css-masonry/
 Editor: Tab Atkins-Bittner, http://xanthir.com/contact
@@ -15,27 +16,27 @@ Markup Shorthands: markdown yes
 Introduction {#intro}
 =====================
 
-"Masonry" is the common name for a form of layout
-that's somewhat "halfway" between Flexbox and Grid layout:
-you pre-define some tracks in one axis
-(either rows or columns),
-and child elements flow into those tracks,
-automatically distributing themselves across them
-to keep the "heights" of the tracks as similar as possible.
+	"Masonry" is the common name for a form of layout
+	that's somewhat "halfway" between Flexbox and Grid layout:
+	you pre-define some tracks in one axis
+	(either rows or columns),
+	and child elements flow into those tracks,
+	automatically distributing themselves across them
+	to keep the "heights" of the tracks as similar as possible.
 
-The end result is similar to an auto-flowed Grid,
-but "packed tighter",
-rather than requiring the elements to line up in both rows <em>and</em> columns.
-Alternately,
-it's similar to a Flexbox,
-except the "lines" are pre-defined
-and the items automatically distribute themselves across them,
-rather than filling one line at a time until it's full.
+	The end result is similar to an auto-flowed Grid,
+	but "packed tighter",
+	rather than requiring the elements to line up in both rows <em>and</em> columns.
+	Alternately,
+	it's similar to a Flexbox,
+	except the "lines" are pre-defined
+	and the items automatically distribute themselves across them,
+	rather than filling one line at a time until it's full.
 
-This proposal is intentionally just a sketch of the full spec;
-for the most part, the final spec will closely resemble that of the Grid spec [[css-grid-1]],
-so any "missing" parts should be assumed to be identical to Grid,
-mutatis mutandi.
+	This proposal is intentionally just a sketch of the full spec;
+	for the most part, the final spec will closely resemble that of the Grid spec [[css-grid-1]],
+	so any "missing" parts should be assumed to be identical to Grid,
+	mutatis mutandi.
 
 Masonry Containers {#masonry-model}
 ==================
@@ -59,42 +60,394 @@ Establishing Masonry Containers: the ''masonry'' and ''inline-masonry'' 'display
 	</dl>
 
 
-Defining the Masonry Tracks {#masonry-definition}
+Defining the Masonry {#masonry-definition}
 =================
 
-The 'masonry-tracks' property {#the-masonry-tracks}
+	A <dfn export>masonry container</dfn> contains a <dfn export>masonry grid</dfn>:
+	a set of one or more <dfn export>masonry tracks</dfn>,
+	which <dfn export>masonry items</dfn> are flowed into.
+
+	The direction that the [=masonry tracks=] extend
+	is the [=masonry container's=] [=main axis=]
+	(the [=block axis=] for [=column masonry containers=];
+	the [=inline axis=] for [=row masonry containers=]d),
+	and the perpendicular direction,
+	which tracks are stacked in,
+	is the [=cross axis=].
+
+
+
+Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 -----------------------------
 
-<pre class=propdef>
-Name: masonry-tracks
-Value: <<masonry-track-list>> | <<masonry-auto-track-list>>
-</pre>
+	<pre class=propdef>
+	Name: masonry-template-tracks
+	Value: <<masonry-extrinsic-track-list>> | <<masonry-intrinsic-track-list>> | subgrid <<line-name-list>>?
+	Initial: repeat(auto, auto)
+	Applies to: [=masonry containers=]
+	Inherited: no
+	Percentages: n/a
+	Computed value: by computed value type per item in the [=computed track list=]
+	Animation type: if list lengths match, by [=computed value=] type; otherwise, discrete
+	</pre>
 
-The 'masonry-tracks' property defines the <dfn>masonry tracks</dfn>
-for a [=masonry container=]:
-a set of rows or columns
-that fill the <dfn>masonry rectangle</dfn>.
+	The 'masonry-template-tracks' property defines,
+	as a space-separated [=track list=],
+	the [=line names=] and [=track sizing functions=] of the [=masonry=].
 
-Similar to Flexbox, Masonry is defined in terms of a [=main axis=] and a [=cross axis=].
-For "column" [=masonry containers=],
-the [=main axis=] is the [=masonry container's=] [=block axis=],
-and is the direction that [=masonry items=] are packed "tightly" in;
-the [=cross axis=] is its [=inline axis=],
-and is the direction that lines of items are stacked.
-For "row" [=masonry containers=],
-it's the opposite.
+	<pre class=prod>
+	<dfn>&lt;masonry-extrinsic-track-list></dfn> = [ <<line-names>>? [ <<extrinsic-track-size>> | <<extrinsic-track-repeat>> ] ]+ <<line-names>>?
+	<dfn>&lt;extrinsic-track-size></dfn> = <<extrinsic-breadth>> | minmax( <<fixed-breadth>>, <<extrinsic-breadth>> ) | fit-content( <<length-percentage [0, ∞]>> )
+	<dfn>&lt;extrinsic-track-repeat></dfn> = repeat( [ <<integer [1, ∞]>> | auto | auto-fill ] , [ <<line-names>>? <<extrinsic-track-size>> ]+ <<line-names>>? )
+	<dfn>&lt;extrinsic-breadth></dfn> = <<length-percentage [0,∞]>> | <<flex [0,∞]>>
+	<dfn>&lt;masonry-intrinsic-track-list></dfn> = <<line-names>>? <<masonry-intrinsic-repeat>> <<line-names>>?
+	<dfn>&lt;masonry-intrinsic-repeat></dfn> = repeat( [ <<integer [1, ∞]>> | auto | auto-fill ] , <<line-names>>? <<intrinsic-track-size>> <<line-names>>? )
+	<dfn>&lt;intrinsic-track-size></dfn> = <<intrinsic-breadth>> | minmax( <<inflexible-breadth>>, <<intrinsic-breadth>> ) | fit-content( <<length-percentage [0, ∞]>> )
+	<dfn>&lt;intrinsic-breadth></dfn> = auto | min-content | max-content
+	</pre>
 
-The [=masonry tracks=] are all the same length in the [=main axis=],
-but can have potentially differing widths in the [=cross axis=],
-determined by 'masonry-tracks'.
+	<div class=note>
 
-Similar to Grid, [=masonry tracks=] are pre-defined with specific "widths",
-and are separated by numbered lines,
-which can potentially correspond to gaps
-defined by 'row-gap' or 'column-gap'.
+		While similar to 'grid-template-columns'/'grid-template-rows',
+		'masonry-template-tracks' has a slightly different set of allowed values.
 
-<pre class=prod>
-<dfn>&lt;masonry-track-list></dfn> = [ <<line-names>>? [ <<track-size>> | <<track-repeat>> ] ]+ <<line-names>>?
+		Grid can use:
+		* any combination of fixed, flexible, or intrinsic tracks,
+			either directy or in integer ''repeat()''
+		* only fixed or flexible tracks in ''auto-fill''/''auto-fit'' ''repeat()''.
 
-<dfn>&lt;masonry-auto-track-list></dfn> = <<line-names>>? <<auto-repeat>> <<line-names>>?
-</pre>
+		While Masonry can use:
+		* any combination of fixed or flexible tracks (but not intrinsic tracks),
+			either directly, in integer ''repeat()'', or in ''auto-fill'' ''repeat()''
+		* any single intrinsic track size in ''repeat()/auto''/''auto-fill'' ''repeat()''
+	</div>
+
+	The <dfn value for=masonry-template-tracks>subgrid</dfn> value
+	indicates that the masonry will adopt the spanned portion
+	of its [=parent grid=] or [=parent masonry=].
+
+
+### Track Sizes ### {#track-sizes}
+
+	<dl dfn-for=masonry-template-tracks>
+		: <dfn><<length-percentage [0, ∞]>></dfn>
+		:: A non-negative length of percentage, as defined by CSS Values.
+			[[css-values-3]]
+
+			<<percentage>> values are relative to
+			the [=inner size|inner=] [=cross size=] of the [=masonry container=].
+			If the size of the [=masonry container=] depends on the size of its tracks,
+			the the <<percentage>> must be treated as the [=default masonry size=],
+			for the purpose of calculating the intrinsic sizes of the [=masonry container=],
+			and then resolve against that resulting [=masonry container=] size
+			for the purpose of laying out the [=masonry=] and its items.
+
+		: <dfn><<flex [0, ∞]>></dfn>
+		:: A non-negative dimension with the unit ''fr''
+			specifying the track's [=flex factor=].
+			Each <<flex>>-sized track takes a share of the remaining space
+			in proportion to its [=flex factor=].
+			<span class=note>For example, given a track listing of ''1fr 2fr'',
+			the tracks will take up 1/3 and 2/3 of the [=leftover space=], respectively.</span>
+
+		: <dfn>minmax(<var>min</var>, <var>max</var>)</dfn>
+		:: Defines a size range
+			greater than or equal to |min|
+			and less than or equal to |max|.
+			If the |max| is less than the |min|,
+			then the |max| will be floored by the |min|
+			(essentially yielding ''minmax(|min|, |min|)''.)
+
+			As a maximum, a <<flex>> value sets the track's [=flex factor=];
+			it is invalid as a minimum.
+
+		: <dfn>auto</dfn>
+		:: As a <em>maximum</em>:
+			represents the largest [=max-content contribution=]
+			among all the [=masonry items=],
+			[=corrected for spanning=];
+			but unlike ''masonry-template-track/max-content'',
+			allows expansion of the track
+			by the 'align-content' and 'justify-content' properties.
+
+			As a <em>minimum</em>:
+			represents the largest [=minimum size=]
+			among all the [=masonry items=],
+			[=corrected for spanning=].
+			(This initially is often, but not always,
+			equal to a ''masonry-template-track/min-content'' minimum--
+			see XXX.)
+
+			When appearing outside a ''minmax()'' notation:
+			equivalent to ''minmax(auto, auto)'',
+			representin the range between the minimum and maximum described above.
+			(This behaves similarly to ''minmax(min-content, max-content)''
+			in the most basic cases,
+			but with extra abilities.)
+
+		: <dfn>max-content</dfn>
+		:: Represents the largest [=max-content contribution=]
+			among all the [=masonry items=],
+			[=corrected for spanning=].
+
+		: <dfn>min-content</dfn>
+		:: Represents the largest [=min-content contribution=]
+			among all the [=masonry items=],
+			[=corrected for spanning=].
+
+		: <dfn>fit-content( <<length-percentage>> )</dfn>
+		:: ...
+	</dl>
+
+	<div algorithm>
+		To <dfn export for=masonry>correct for spanning</dfn>,
+		find the specified intrinsic size of the [=masonry item=],
+		subtract the sizes of the gaps it crosses,
+		then divide by its span.
+
+		Note: For single-track items,
+		[=correcting for spanning=] has no effect.
+	</div>
+
+	<div algorithm>
+		The <dfn export for=masonry>default masonry size</dfn>
+		is the size that a [=masonry track=] would be
+		if the masonry had ''masonry-template-tracks: repeat(N, auto)'',
+		where N is the number of tracks that the [=masonry container=] has.
+	</div>
+
+### Repeating Tracks: the ''repeat()'' notation ### {#repeat}
+
+	There are two distinct syntaxes for ''repeat()'' in Masonry:
+
+	* ''repeat( [ <integer> | auto | auto-fill ], <extrinsic-track-size>+ )'',
+		which allows you to specify one or more tracks to repeat,
+		using <<length-percentage>>, <<flex>>, or ''minmax()'' of those.
+
+	* ''repeat( [ <integer> | auto | auto-fill ], <intrinsic-track-size> )'',
+		which allows you to specify a *single* track to repeat,
+		using the intrinsic sizes (''masonry-template-track/auto'', ''masonry-template-track/min-content'', ''masonry-template-track/max-content'', or ''masonry-template-track/minmax()'' of them).
+
+	An <<integer>> repeat simply represents the same thing
+	as repeating the tracks specified by the second argument.
+	For example, ''repeat(2, 1em 300px)''
+	is identical to writing ''1em 300px 1em 300px''.
+
+	An ''auto-fill'' repeat represents repeating the second argument
+	the largest whole number of times
+	that wouldn't cause the [=masonry grid=]
+	(including tracks not in the ''repeat()'', gaps, etc)
+	to overflow the [=content box=] of the [=masonry container=]
+	(minimum of one repetition).
+
+	An ''repeat()/auto'' repeat depends on the value of 'masonry-template-areas':
+	* if 'masonry-template-areas' is ''masonry-template-areas/none'',
+		behaves as ''auto-fill''.
+	* otherwise, represents enough repetitions of the second argument
+		(with the final repetition possibly being only partial)
+		to match the number of tracks
+		specified by 'masonry-template-areas'.
+
+
+
+### Named Areas: the 'masonry-template-areas' property ### {#masonry-template-areas-property}
+
+	<pre class=propdef>
+	Name: masonry-template-areas
+	Value: none | <<string>>
+	Initial: none
+	Applies to: [=masonry containers=]
+	Inherited: no
+	Percentages: n/a
+	Computed Value: the keyword ''masonry-template-values/none'' or a string
+	Canonical Order: per grammar
+	Animation type: discrete
+	</pre>
+
+	This property specifies <dfn export>named masonry areas</dfn>,
+	which can be referenced from the [=masonry-placement properties=].
+
+	Values have the following meanings:
+
+	<dl dfn-type=value dfn-for=masonry-template-areas>
+		: <dfn>none</dfn>
+		:: Indicates no [=named masonry areas=] are defined by this property.
+
+			Note: [=Named masonry areas=] can still be created implicitly,
+			by manually naming lines like <css>foo-start</css> and <css>foo-end</css>
+			to create a <css>foo</css> area between them.
+
+		: <dfn><<string>></dfn>
+		:: The string is parsed into a number of cells, as follows:
+
+			1. Tokenize the string into a list of the following tokens,
+				using longest-match semantics:
+
+				* A sequence of [=ident code points=], representing a <dfn dfn>named cell token</dfn> with a name consisting of its code points.
+				* A sequence of one or more "." (U+002E FULL STOP), representing a <dfn dfn>null cell token</dfn>.
+				* A sequence of whitespace, representing nothing (does not produce a token).
+				* A sequence of any other code points, representing a <dfn dfn>trash token</dfn>.
+
+			2. * A [=null cell token=] represents an unnamed area in the [=masonry container=], covering one [=masonry track=].
+
+				* A [=named cell token=] creates a [=named masonry area=] with the same name.
+					Multiple adjacent [=named cell tokens=] with the same name
+					instead create a single named area that spans the corresponding number of [=masonry tracks=].
+
+				* A [=trash token=] is a syntax error, and makes the declaration invalid.
+
+			If the string doesn't define at least one cell token,
+			the declaration is invalid.
+			If the string defines multiple named areas with the same name,
+			the declaration is invalid.
+
+			Defined areas give [=implicitly assigned line names|implicit-assigned names=]
+			to [=grid lines=] in the [=masonry container=].
+	</dl>
+
+
+
+
+
+Track Direction: the 'masonry-direction' property {#masonry-direction}
+-------------------------------------------------
+
+	<pre class=propdef>
+	Name: masonry-direction
+	Value: row | column | row-reverse | column-reverse
+	Initial: column
+	Inherited: no
+	Applies to: [=masonry containers=]
+	Computed value: as specified
+	Animation type: discrete
+	</pre>
+
+	The 'masonry-direction' property
+	specifies how [=masonry items=] are placed
+	in the [=masonry container=],
+	by setting the direction of the [=masonry container's=] [=main axis=],
+	and its [=main-start=] and [=main-end=] directions.
+
+	<dl dfn-type=value dfn-for=masonry-direction>
+		: <dfn>column</dfn>
+		:: The [=masonry container's=] [=main axis=] is its [=block axis=],
+			and its [=main-start=] direction is its [=block-start=].
+
+		: <dfn>column-reverse</dfn>
+		:: The [=masonry container's=] [=main axis=] is its [=block axis=],
+			and its [=main-start=] direction is its [=block-end=].
+
+		: <dfn>row</dfn>
+		:: The [=masonry container's=] [=main axis=] is its [=inline axis=],
+			and its [=main-start=] direction is its [=inline-start=].
+
+		: <dfn>row-reverse</dfn>
+		:: The [=masonry container's=] [=main axis=] is its [=inline axis=],
+			and its [=main-start=] direction is its [=inline-end=].
+	</dl>
+
+	The [=masonry container's=] [=cross axis=]
+	is perpendicular to its [=main axis=],
+	and its [=cross-start=] direction is always the [=inline-start=]/[=block-start=] direction,
+	whichever is in that axis.
+	The [=main-end=] and [=cross-end=] directions
+	are opposite the [=main-start=] and [=cross-start=] directions.
+
+	A [=masonry container=] is a <dfn export>column masonry container</dfn>
+	if its [=main axis=] is the [=block axis=],
+	or a <dfn export>row masonry container</dfn>
+	if its [=main axis=] is the [=inline axis=].
+
+
+Track Filling: the 'masonry-fill' property {#masonry-fill}
+------------------------------------------
+
+	<pre class=propdef>
+	Name: masonry-fill
+	Value: <<length-percentage>> || reverse?
+	Initial: 1em
+	Percentages: relative to the [=main axis=] [=content box=] size of the [=masonry container=]
+	Inherited: no
+	Applies to: [=masonry containers=]
+	Computed value: a computed length, and optionally a ''masonry-fill/reverse'' keyword
+	Animation type: discrete
+	</pre>
+
+	[=Masonry containers=] are filled
+	by placing each [=masonry item=]
+	in whichever [=masonry track=] is currently the least filled.
+	When multiple tracks are tied for least-filled,
+	placing the items in order looks good.
+	But if tracks are only <em>very slightly</em> different heights,
+	it can look strange to have them not fill in order,
+	as the height differences aren't perceived as <em>meaningfully</em> different.
+
+	'masonry-fill' specifies what the threshold is
+	for considering tracks to be "the same height"
+	(causing them to fill in order),
+	and what direction they fill in
+	when their heights are tied in this way.
+
+	<dl dfn-type=value dfn-for=masonry-fill>
+		: <dfn><<length>></dfn>
+		:: Placement positions are considered to be "ties"
+			if they are within the specified distance
+			from the shortest position.
+
+			Note: The initial value is a "small" distance (''1em'')
+			that is probably appropriate to represent "close enough".
+
+		: <dfn>reverse</dfn>
+		:: If ''reverse'' is **not** specified,
+			ties are broken
+			by selecting the position that is [=cross-start=]-most.
+
+			If ''reverse'' **is** specified,
+			ties are broken
+			by selecting the position that is [=cross-end=]-most.
+	</dl>
+
+	Issue: Is ''1em'' the right default?
+
+
+Placing Grid Items {#placing}
+==================
+
+	<dfn property>masonry-track</dfn>,
+	<dfn property>masonry-track-start</dfn>,
+	<dfn property>masonry-track-end</dfn>,
+	and <dfn property>masonry-area</dfn>,
+	with the obvious definitions
+	matching 'grid-row'/etc.
+
+
+Alignment and Spacing {#alignment}
+=====================
+
+	Like Grid Layout [[css-grid-1]],
+	the 'align-*' properties align in the [=masonry container's=] [=block axis=],
+	and 'justify-*' in the [=inline axis=]
+	(rather than being based on the [=main axis=] and [=cross axis=],
+	like in Flexbox).
+
+	For [=column masonry containers=]:
+
+	: 'justify-content' on the [=masonry container=]
+	:: The [=alignment subjects=] are the [=masonry tracks=].
+		The [=alignment container=] is the [=masonry container's=] [=context box=].
+	: 'align-content' on the [=masonry container=]
+	:: The [=alignment subjects=] are
+		runs of consecutive single-track [=masonry items=] in a given track
+		between the start/end of the track or spanning items.
+		The [=alignment container=] is the available space in the track
+		between the two things bounding the run.
+		(See <a href="https://github.com/w3c/csswg-drafts/issues/10275">Issue 10275</a>.)
+	: 'justify-self' on the [=masonry items=]
+	:: The [=alignment subject=] is the [=masonry item=].
+		The [=alignment container=] is the available space
+		in the [=masonry area=] the item is placed in.
+	: 'align-self' on the [=masonry items=]
+	:: No effect.
+
+	For [=row masonry containers=],
+	swap all the axises above.
