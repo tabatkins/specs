@@ -451,6 +451,15 @@ Track Filling: the 'masonry-fill' property {#masonry-fill}
 
 	Issue: Is ''1em'' the right default?
 
+	Issue: Do we want a <css>dense</css> option,
+	a la 'grid-auto-flow'?
+	It's much more expensive in Masonry,
+	as you have to lay out the element in every possible gap spot
+	to see if it's short enough to fit;
+	Grid gets to just juggle some integers.
+	Leaving it out for now;
+	we can add it later if needed.
+
 
 Placing Grid Items {#placing}
 ==================
@@ -461,6 +470,9 @@ Placing Grid Items {#placing}
 	and <dfn property>masonry-area</dfn>,
 	with the obvious definitions
 	matching 'grid-row'/etc.
+
+	Spans are clamped at layout time to the defined masonry tracks;
+	there is no "implicit grid"
 
 
 Alignment and Spacing {#alignment}
