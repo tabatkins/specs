@@ -292,7 +292,8 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 
 
 
-### Named Areas: the 'masonry-template-areas' property ### {#masonry-template-areas-property}
+Named Areas: the 'masonry-template-areas' property {#masonry-template-areas-property}
+--------------------------------------------------
 
 	<pre class=propdef>
 	Name: masonry-template-areas
@@ -348,9 +349,6 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 	</dl>
 
 
-
-
-
 Track Direction: the 'masonry-direction' property {#masonry-direction}
 -------------------------------------------------
 
@@ -401,8 +399,39 @@ Track Direction: the 'masonry-direction' property {#masonry-direction}
 	if its [=main axis=] is the [=inline axis=].
 
 
-Track Filling: the 'masonry-fill' property {#masonry-fill}
-------------------------------------------
+
+
+Masonry Definition Shorthand: the 'masonry' property {#masonry-template}
+-----------------------------------------------------------
+
+<pre class="propdef shorthand">
+Name: masonry-template
+Value: <<'masonry-template-areas'> || <<'masonry-template-tracks'>> || <<'masonry-direction'>>
+</pre>
+
+The 'masonry-template' shorthand sets
+'masonry-template-areas',
+'masonry-template-tracks',
+and 'masonry-direction' at the same time.
+
+
+Placing Grid Items {#placing}
+==================
+
+	<dfn property>masonry-track</dfn>,
+	<dfn property>masonry-track-start</dfn>,
+	<dfn property>masonry-track-end</dfn>,
+	and <dfn property>masonry-area</dfn>,
+	with the obvious definitions
+	matching 'grid-row'/etc.
+
+	Spans are clamped at layout time to the defined masonry tracks;
+	there is no "implicit grid".
+
+
+
+Handling Ties During Filling: the 'masonry-fill' property {#masonry-fill}
+---------------------------------------------------------
 
 	<pre class=propdef>
 	Name: masonry-fill
@@ -461,18 +490,10 @@ Track Filling: the 'masonry-fill' property {#masonry-fill}
 	we can add it later if needed.
 
 
-Placing Grid Items {#placing}
-==================
+Masonry Placement Algorithm {#placement-algo}
+---------------------------
 
-	<dfn property>masonry-track</dfn>,
-	<dfn property>masonry-track-start</dfn>,
-	<dfn property>masonry-track-end</dfn>,
-	and <dfn property>masonry-area</dfn>,
-	with the obvious definitions
-	matching 'grid-row'/etc.
-
-	Spans are clamped at layout time to the defined masonry tracks;
-	there is no "implicit grid"
+...
 
 
 Alignment and Spacing {#alignment}
