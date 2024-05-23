@@ -82,7 +82,7 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 
 	<pre class=propdef>
 	Name: masonry-template-tracks
-	Value: <<masonry-extrinsic-track-list>> | <<masonry-intrinsic-track-list>> | subgrid <<line-name-list>>?
+	Value: <<masonry-track-list>> | <<masonry-auto-track-list>> | <<masonry-intrinsic-track-list>> | subgrid <<line-name-list>>?
 	Initial: repeat(auto, auto)
 	Applies to: [=masonry containers=]
 	Inherited: no
@@ -96,15 +96,49 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 	the [=line names=] and [=track sizing functions=] of the [=masonry=].
 
 	<pre class=prod>
-	<dfn>&lt;masonry-extrinsic-track-list></dfn> = [ <<line-names>>? [ <<extrinsic-track-size>> | <<extrinsic-track-repeat>> ] ]+ <<line-names>>?
-	<dfn>&lt;extrinsic-track-size></dfn> = <<extrinsic-breadth>> | minmax( <<fixed-breadth>>, <<extrinsic-breadth>> ) | fit-content( <<length-percentage [0, ∞]>> )
-	<dfn>&lt;extrinsic-track-repeat></dfn> = repeat( [ <<integer [1, ∞]>> | auto | auto-fill ] , [ <<line-names>>? <<extrinsic-track-size>> ]+ <<line-names>>? )
-	<dfn>&lt;extrinsic-breadth></dfn> = <<length-percentage [0,∞]>> | <<flex [0,∞]>>
-	<dfn>&lt;masonry-intrinsic-track-list></dfn> = <<line-names>>? <<masonry-intrinsic-repeat>> <<line-names>>?
-	<dfn>&lt;masonry-intrinsic-repeat></dfn> = repeat( [ <<integer [1, ∞]>> | auto | auto-fill ] , <<line-names>>? <<intrinsic-track-size>> <<line-names>>? )
+	<dfn>&lt;masonry-track-list></dfn> =
+		[ <<line-names>>? <<masonry-track-component>> ]+ <<line-names>>?
+	<dfn>&lt;masonry-track-component></dfn> =
+		<<extrinsic-track-size>> | <<extrinsic-fixed-repeat>>
+	<dfn>&lt;extrinsic-track-size></dfn> =
+		<<extrinsic-breadth>> | minmax( <<fixed-breadth>>, <<extrinsic-breadth>> )
+	<dfn>&lt;extrinsic-breadth></dfn> =
+		<<length-percentage [0,∞]>> | <<flex [0,∞]>>
+	<dfn>&lt;extrinsic-fixed-repeat></dfn> =
+		repeat( <<integer [1, ∞]>>, [ <<line-names>>? <<extrinsic-track-size>> ]+ <<line-names>>? )
+
+	<dfn>&lt;masonry-auto-track-list></dfn> =
+		[ <<line-names>> | <<masonry-track-list>> ]?
+		<<extrinsic-auto-repeat>>
+		[ <<line-names>> | <<masonry-track-list>> ]?
+	<dfn>&lt;extrinsic-auto-repeat></dfn> =
+		repeat( [ auto | auto-fill ] , [ <<line-names>>? <<extrinsic-track-size>> ]+ <<line-names>>? )
+
+	<dfn>&lt;masonry-intrinsic-track-list></dfn> =
+		<<line-names>>? <<masonry-intrinsic-repeat>> <<line-names>>?
+	<dfn>&lt;masonry-intrinsic-repeat></dfn> =
+		repeat( [ <<integer [1, ∞]>> | auto | auto-fill ] , <<line-names>>? <<intrinsic-track-size>> <<line-names>>? )
 	<dfn>&lt;intrinsic-track-size></dfn> = <<intrinsic-breadth>> | minmax( <<inflexible-breadth>>, <<intrinsic-breadth>> ) | fit-content( <<length-percentage [0, ∞]>> )
 	<dfn>&lt;intrinsic-breadth></dfn> = auto | min-content | max-content
 	</pre>
+
+	<div class=note>
+		The complex grammar above is much easier to understand in natural language.
+
+		Your track list can be any combination of:
+		* fixed sizes (lengths/percentages)
+		* flexible sizes (''fr'' units)
+		* ''minmax()'' of fixed/flexibles sizes
+		* ''repeat()'' with integer repetitions and fixed/flexible sizes
+		* at most one ''repeat()'' with ''repeat()/auto''/''repeat()/auto-fill'' repetitions
+
+		Alternately, it can be a single ''repeat()'' (with any repetition count)
+		using *intrinsic* sizes, like ''masonry-template-tracks/auto'' or ''masonry-template-tracks/min-content''.
+
+		Or as a third option, it can be a ''subgrid'' keyword,
+		which takes tracks from its parent [=grid container=] or [=masonry container=]
+		according to its span.
+	</div>
 
 	<div class=note>
 
@@ -247,6 +281,14 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 		(with the final repetition possibly being only partial)
 		to match the number of tracks
 		specified by 'masonry-template-areas'.
+
+	<div class=example>
+		For example, given ''masonry-template-areas: "a a a b b";'',
+		a ''repeat(auto, 100px 20px)''
+		is equivalent to specifying ''100px 20px 100px 20px 100px'':
+		two whole repeats and one partial repeat,
+		to match up with the five tracks specified by the areas.
+	</dvi>
 
 
 
