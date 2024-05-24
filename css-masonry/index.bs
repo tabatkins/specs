@@ -288,7 +288,7 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 		is equivalent to specifying ''100px 20px 100px 20px 100px'':
 		two whole repeats and one partial repeat,
 		to match up with the five tracks specified by the areas.
-	</dvi>
+	</div>
 
 
 
@@ -387,9 +387,9 @@ Track Direction: the 'masonry-direction' property {#masonry-direction}
 	</dl>
 
 	The [=masonry container's=] [=cross axis=]
-	is perpendicular to its [=main axis=],
-	and its [=cross-start=] direction is always the [=inline-start=]/[=block-start=] direction,
-	whichever is in that axis.
+	is perpendicular to its [=main axis=];
+	its [=cross-start=] direction
+	is determined by 'masonry-fill'.
 	The [=main-end=] and [=cross-end=] directions
 	are opposite the [=main-start=] and [=cross-start=] directions.
 
@@ -461,7 +461,9 @@ Handling Ties During Filling: the 'masonry-fill' property {#masonry-fill}
 
 	<dl dfn-type=value dfn-for=masonry-fill>
 		: <dfn><<length>></dfn>
-		:: Placement positions are considered to be "ties"
+		:: Specifies the <dfn dfn for=masonry>tie threshold</dfn>
+			for the [=masonry container=].
+			Placement positions are considered to be equally good ("ties")
 			if they are within the specified distance
 			from the shortest position.
 
@@ -470,12 +472,15 @@ Handling Ties During Filling: the 'masonry-fill' property {#masonry-fill}
 
 		: <dfn>reverse</dfn>
 		:: If ''reverse'' is **not** specified,
-			ties are broken
-			by selecting the position that is [=cross-start=]-most.
+			the [=masonry container's=] [=cross-start=] direction
+			is its [=inline-start=] or [=block-start=] direction
+			(whichever is in its [=cross axis=]).
+			<span class=note>(This means that ties are broken
+			by filling from start to end.)</span>
 
 			If ''reverse'' **is** specified,
-			ties are broken
-			by selecting the position that is [=cross-end=]-most.
+			the [=cross-start=] direction
+			is its [=inline-end=] or [=block-end=] direction, instead.
 	</dl>
 
 	Issue: Is ''1em'' the right default?
@@ -493,7 +498,116 @@ Handling Ties During Filling: the 'masonry-fill' property {#masonry-fill}
 Masonry Placement Algorithm {#placement-algo}
 ---------------------------
 
-...
+Masonry distributes its items as evenly as possible
+among its tracks,
+always choosing the least-filled track to place the next item into.
+
+An important property that this distribution maintains
+is that it always "moves forward" when there are ties:
+If multiple tracks are tied for shortest,
+it will still evenly distribute items to them one-by-one,
+even if they <em>remain</em> tied after each item is placed
+(because the item is zero height,
+or the [=tie threshold=] is a large value).
+
+<div class=algorithm>
+	The following <dfn export>masonry placement algorithm</dfn>
+	determines the position of all the [=masonry items=]
+	in a [=masonry container=],
+	distributing them across the [=masonry tracks=]
+	according to whichever is the least-filled.
+
+	Note: This algorithm refers to the "index" of tracks,
+	and talks about indexes being "smaller" or "larger" than each other;
+	this implies numbering them from the [=cross-start=] side
+	to the [=cross-end=] side
+	(and is thus dependent on 'masonry-fill').
+
+	1. Generate anonymous masonry items.
+
+	1. For each [=masonry track=],
+		maintain a |fill height|,
+		initially ''0px'' for all tracks.
+
+	1. Let |placement cursor| be an index into the track list,
+		initially pointing to the first track.
+
+	1. For each [=masonry item=] |item| in [=order-modified document order=]:
+
+		1. Let |chosen start track| be an index into the track list,
+			initially unset.
+
+		1. If |item| has a definite track position,
+			set |chosen start track| to that position.
+
+			Otherwise, [=choose a start track=],
+			given |item|,
+			the [=masonry tracks=] and their |fill height|s,
+			the [=masonry container's=] [=tie threshold=],
+			and |placement cursor|,
+			and set |chosen start track| to the result.
+
+		1. Let |spanned tracks| be the |chosen start track|
+			plus following tracks according to |item|'s span.
+
+		1. Lay out |item| into |spanned tracks|,
+			as specified in [[#item-layout]].
+
+			Let |item height| be the [=main size=] of |item| after layout.
+
+		1. Let |max fill height| be the largest |fill height|
+			among |spanned tracks|.
+
+			Update all of |spanned tracks|'s |fill height|s
+			to be |max fill height| + |item height|.
+
+		1. If |item| did not have a definition track position initially,
+			set |placement cursor| to the first track following |spanned tracks|;
+			if there are no tracks following |spanned tracks|,
+			set it to the first track.
+			<span class=note>(Definite-position items don't update the cursor.)</span>
+</div>
+
+<div algorithm>
+	Note: This algorithm chooses the track
+	that would result in the item being placed as highly as possible.
+	If there are ties, it chooses the earliest such track,
+	<em>after</em> the most recently placed item if possible.
+
+	To <dfn for=masonry>choose a start track</dfn> given:
+
+	* a [=masonry item=] |item|
+	* a set of [=masonry tracks=] |tracks| and their |fill height|s
+	* a [=tie threshold=] |threshold|
+	* a track index |placement cursor|
+
+	1. Let |extra span| be |item|'s span - 1.
+
+	1. Let |possible start tracks| be all but the last N |tracks|,
+		where N is |extra span|.
+
+	1. Let each item of |possible start tracks|
+		have a |spanning fill height|,
+		which is the largest |fill height|
+		among the track itself and the next |extra span| tracks.
+
+	1. Let |min fill height| be the smallest |spanning fill height| among |tracks|.
+
+	1. Let |choosable tracks| be all the |possible start tracks|
+		whose |spanning fill height|
+		is within |threshold|
+		of |min fill height|.
+
+	1. If any of the |choosable tracks| indexes
+		are equal or greater than |placement cursor|,
+		remove any items from |choosable tracks|
+		whose index is <em>smaller</em> than |placement cursor|.
+
+	1. Return the item of |chooseable tracks| with the smallest index.
+</div>
+
+
+
 
 
 Alignment and Spacing {#alignment}
