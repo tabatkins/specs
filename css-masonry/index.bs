@@ -83,7 +83,7 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 	<pre class=propdef>
 	Name: masonry-template-tracks
 	Value: <<masonry-track-list>> | <<masonry-auto-track-list>> | <<masonry-intrinsic-track-list>> | subgrid <<line-name-list>>?
-	Initial: repeat(auto, auto)
+	Initial: repeat(auto-areas, auto)
 	Applies to: [=masonry containers=]
 	Inherited: no
 	Percentages: n/a
@@ -112,12 +112,12 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 		<<extrinsic-auto-repeat>>
 		[ <<line-names>> | <<masonry-track-list>> ]?
 	<dfn>&lt;extrinsic-auto-repeat></dfn> =
-		repeat( [ auto | auto-fill ] , [ <<line-names>>? <<extrinsic-track-size>> ]+ <<line-names>>? )
+		repeat( [ auto-areas | auto-fill ] , [ <<line-names>>? <<extrinsic-track-size>> ]+ <<line-names>>? )
 
 	<dfn>&lt;masonry-intrinsic-track-list></dfn> =
 		<<line-names>>? <<masonry-intrinsic-repeat>> <<line-names>>?
 	<dfn>&lt;masonry-intrinsic-repeat></dfn> =
-		repeat( [ <<integer [1, ∞]>> | auto | auto-fill ] , <<line-names>>? <<intrinsic-track-size>> <<line-names>>? )
+		repeat( [ <<integer [1, ∞]>> | auto-areas | auto-fill ] , <<line-names>>? <<intrinsic-track-size>> <<line-names>>? )
 	<dfn>&lt;intrinsic-track-size></dfn> = <<intrinsic-breadth>> | minmax( <<inflexible-breadth>>, <<intrinsic-breadth>> ) | fit-content( <<length-percentage [0, ∞]>> )
 	<dfn>&lt;intrinsic-breadth></dfn> = auto | min-content | max-content
 	</pre>
@@ -130,7 +130,7 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 		* flexible sizes (''fr'' units)
 		* ''minmax()'' of fixed/flexibles sizes
 		* ''repeat()'' with integer repetitions and fixed/flexible sizes
-		* at most one ''repeat()'' with ''repeat()/auto''/''repeat()/auto-fill'' repetitions
+		* at most one ''repeat()'' with ''auto-areas''/''auto-fill'' repetitions
 
 		Alternately, it can be a single ''repeat()'' (with any repetition count)
 		using *intrinsic* sizes, like ''masonry-template-tracks/auto'' or ''masonry-template-tracks/min-content''.
@@ -153,7 +153,7 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 		While Masonry can use:
 		* any combination of fixed or flexible tracks (but not intrinsic tracks),
 			either directly, in integer ''repeat()'', or in ''auto-fill'' ''repeat()''
-		* any single intrinsic track size in ''repeat()/auto''/''auto-fill'' ''repeat()''
+		* any single intrinsic track size in ''auto-areas''/''auto-fill'' ''repeat()''
 	</div>
 
 	The <dfn value for=masonry-template-tracks>subgrid</dfn> value
@@ -254,11 +254,11 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 
 	There are two distinct syntaxes for ''repeat()'' in Masonry:
 
-	* ''repeat( [ <integer> | auto | auto-fill ], <extrinsic-track-size>+ )'',
+	* ''repeat( [ <integer> | auto-areas | auto-fill ], <extrinsic-track-size>+ )'',
 		which allows you to specify one or more tracks to repeat,
 		using <<length-percentage>>, <<flex>>, or ''minmax()'' of those.
 
-	* ''repeat( [ <integer> | auto | auto-fill ], <intrinsic-track-size> )'',
+	* ''repeat( [ <integer> | auto-areas | auto-fill ], <intrinsic-track-size> )'',
 		which allows you to specify a *single* track to repeat,
 		using the intrinsic sizes (''masonry-template-track/auto'', ''masonry-template-track/min-content'', ''masonry-template-track/max-content'', or ''masonry-template-track/minmax()'' of them).
 
@@ -274,7 +274,7 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 	to overflow the [=content box=] of the [=masonry container=]
 	(minimum of one repetition).
 
-	An ''repeat()/auto'' repeat depends on the value of 'masonry-template-areas':
+	An ''auto-areas'' repeat depends on the value of 'masonry-template-areas':
 	* if 'masonry-template-areas' is ''masonry-template-areas/none'',
 		behaves as ''auto-fill''.
 	* otherwise, represents enough repetitions of the second argument
@@ -284,7 +284,7 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 
 	<div class=example>
 		For example, given ''masonry-template-areas: "a a a b b";'',
-		a ''repeat(auto, 100px 20px)''
+		a ''repeat(auto-areas, 100px 20px)''
 		is equivalent to specifying ''100px 20px 100px 20px 100px'':
 		two whole repeats and one partial repeat,
 		to match up with the five tracks specified by the areas.
