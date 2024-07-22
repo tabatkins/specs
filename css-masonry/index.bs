@@ -11,6 +11,7 @@ Editor: Tab Atkins-Bittner, http://xanthir.com/contact
 Abstract: An alternate syntax proposal for the Masonry feature currently defined in Grid 3.
 Complain About: accidental-2119 yes, missing-example-ids yes
 Markup Shorthands: markdown yes
+Die On: nothing
 </pre>
 
 Introduction {#intro}
@@ -282,7 +283,7 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 		to match the number of tracks
 		specified by 'masonry-template-areas'.
 
-	<div class=example>
+	<div class=example id=ex-auto-areas>
 		For example, given ''masonry-template-areas: "a a a b b";'',
 		a ''repeat(auto-areas, 100px 20px)''
 		is equivalent to specifying ''100px 20px 100px 20px 100px'':
@@ -449,7 +450,7 @@ Masonry Definition Shorthand: the 'masonry' property {#masonry-template}
 
 <pre class="propdef shorthand">
 Name: masonry-template
-Value: <<'masonry-template-areas'> || <<'masonry-template-tracks'>> || <<'masonry-direction'>> || <<'masonry-fill'>>
+Value: <<'masonry-template-areas'>> || <<'masonry-template-tracks'>> || <<'masonry-direction'>> || <<'masonry-fill'>>
 </pre>
 
 The 'masonry-template' shorthand sets

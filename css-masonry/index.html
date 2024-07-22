@@ -5,9 +5,9 @@
   <title>CSS Masonry (alt proposal)</title>
   <meta content="w3c/UD" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
-  <meta content="Bikeshed version 3cdebb514, updated Mon Jun 17 15:12:51 2024 -0700" name="generator">
+  <meta content="Bikeshed version 8bee7fc02, updated Mon Jul 22 15:46:49 2024 -0700" name="generator">
   <link href="http://tabatkins.github.io/specs/css-masonry/" rel="canonical">
-  <meta content="99fc90c44b149aa945bdbc0f2d8d4d34e92b256d" name="revision">
+  <meta content="319d9b232fe0cb1ec4b7da3b2e8a19cb7de2cffe" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -874,7 +874,7 @@ the tracks will take up 1/3 and 2/3 of the <a data-link-type="dfn">leftover spac
      <p>Defines a size range
 greater than or equal to <var>min</var> and less than or equal to <var>max</var>.
 If the <var>max</var> is less than the <var>min</var>,
-then the <var>max</var> will be floored by the <var>min</var> (essentially yielding <span class="css">minmax(<var>min</var>, <var>min</var>)</span>.)</p>
+then the <var>max</var> will be floored by the <var>min</var> (essentially yielding <span class="css">minmax(|min|, |min|)</span>.)</p>
      <p>As a maximum, a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-flex" id="ref-for-typedef-flex③">&lt;flex></a> value sets the track’s <a data-link-type="dfn">flex factor</a>;
 it is invalid as a minimum.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="masonry-template-tracks" data-dfn-type="dfn" data-noexport id="masonry-template-tracks-auto">auto</dfn>
@@ -943,7 +943,7 @@ behaves as <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/
 to match the number of tracks
 specified by <a class="property css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas②">masonry-template-areas</a>.</p>
    </ul>
-   <div class="example" id="example-d214fd5e"><a class="self-link" href="#example-d214fd5e"></a> For example, given <a class="css" data-link-type="propdesc" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas③">masonry-template-areas: "a a a b b";</a>,
+   <div class="example" id="ex-auto-areas"><a class="self-link" href="#ex-auto-areas"></a> For example, given <a class="css" data-link-type="propdesc" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas③">masonry-template-areas: "a a a b b";</a>,
 		a <span class="css">repeat(auto-areas, 100px 20px)</span> is equivalent to specifying <span class="css">100px 20px 100px 20px 100px</span>:
 		two whole repeats and one partial repeat,
 		to match up with the five tracks specified by the areas. </div>
@@ -1168,7 +1168,7 @@ is its <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-masonry-template">masonry-template</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">&lt;&lt;<a class="property css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas⑤">masonry-template-areas</a>> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> <a class="production css" data-link-type="property" href="#propdef-masonry-template-tracks" id="ref-for-propdef-masonry-template-tracks④">&lt;'masonry-template-tracks'></a> <span id="ref-for-comb-any②">||</span> <a class="production css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction④">&lt;'masonry-direction'></a> <span id="ref-for-comb-any③">||</span> <a class="production css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill⑤">&lt;'masonry-fill'></a>
+      <td class="prod"><a class="production css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas⑤">&lt;'masonry-template-areas'></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> <a class="production css" data-link-type="property" href="#propdef-masonry-template-tracks" id="ref-for-propdef-masonry-template-tracks④">&lt;'masonry-template-tracks'></a> <span id="ref-for-comb-any②">||</span> <a class="production css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction④">&lt;'masonry-direction'></a> <span id="ref-for-comb-any③">||</span> <a class="production css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill⑤">&lt;'masonry-fill'></a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties
@@ -1360,8 +1360,8 @@ remove any items from <var>choosable tracks</var> whose index is <em>smaller</em
    </div>
    <h2 class="heading settled" data-level="5" id="alignment"><span class="secno">5. </span><span class="content">Alignment and Spacing</span><a class="self-link" href="#alignment"></a></h2>
    <p>Like Grid Layout <a data-link-type="biblio" href="#biblio-css-grid-1" title="CSS Grid Layout Module Level 1">[css-grid-1]</a>,
-	the <a class="property css" data-link-type="property">align-*</a> properties align in the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③②">masonry container’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-axis" id="ref-for-block-axis④">block axis</a>,
-	and <span class="property">justify-*</span> in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis④">inline axis</a> (rather than being based on the <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#main-axis" id="ref-for-main-axis①⓪">main axis</a> and <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-axis" id="ref-for-cross-axis③">cross axis</a>,
+	the <span class="css">align-*</span> properties align in the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③②">masonry container’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-axis" id="ref-for-block-axis④">block axis</a>,
+	and <span class="css">justify-*</span> in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis④">inline axis</a> (rather than being based on the <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#main-axis" id="ref-for-main-axis①⓪">main axis</a> and <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-axis" id="ref-for-cross-axis③">cross axis</a>,
 	like in Flexbox).</p>
    <p>For <a data-link-type="dfn" href="#column-masonry-container" id="ref-for-column-masonry-container①">column masonry containers</a>:</p>
    <dl>
@@ -1725,7 +1725,7 @@ in the <a data-link-type="dfn">masonry area</a> the item is placed in.</p>
       <td>a computed length
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-masonry-template" id="ref-for-propdef-masonry-template①">masonry-template</a>
-      <td>&lt;&lt;masonry-template-areas> || &lt;'masonry-template-tracks'> || &lt;'masonry-direction'> || &lt;'masonry-fill'>
+      <td>&lt;'masonry-template-areas'> || &lt;'masonry-template-tracks'> || &lt;'masonry-direction'> || &lt;'masonry-fill'>
       <td>see individual properties
       <td>see individual properties
       <td>see individual properties
