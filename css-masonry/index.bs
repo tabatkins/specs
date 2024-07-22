@@ -349,7 +349,7 @@ Named Areas: the 'masonry-template-areas' property {#masonry-template-areas-prop
 	</dl>
 
 
-Track Direction: the 'masonry-direction' property {#masonry-direction}
+Masonry Track Direction: the 'masonry-direction' property {#masonry-direction}
 -------------------------------------------------
 
 	<pre class=propdef>
@@ -399,6 +399,49 @@ Track Direction: the 'masonry-direction' property {#masonry-direction}
 	if its [=main axis=] is the [=inline axis=].
 
 
+Masonry Cross Direction: the 'masonry-fill' property {#masonry-fill}
+----------------------------
+
+	<pre class=propdef>
+	Name: masonry-fill
+	Value: normal | reverse
+	Initial: normal
+	Inherited: no
+	Applies to: [=masonry containers=]
+	Computed value: as specified
+	Animation type: discrete
+	</pre>
+
+	'masonry-fill' determines what direction [=masonry items=] are laid out in
+	when multiple tracks are tied for "shortest".
+
+	<dl dfn-for=masonry-fill dfn-type=value>
+		: <dfn>normal</dfn>
+		::
+			The [=masonry container's=] [=cross-start=] direction
+			is its [=inline-start=] or [=block-start=] direction
+			(whichever is in its [=cross axis=]).
+			<span class=note>(This means that ties are broken
+			by filling from start to end.)</span>
+
+		: <dfn>reverse</dfn>
+		::
+			The [=masonry container's=] [=cross-start=] direction
+			is its [=inline-end=] or [=block-end=] direction, instead.
+	</dl>
+
+Masonry Flow Directions: the 'masonry-flow' property {#masonry-flow}
+----------------------------
+
+	<pre class="propdef shorthand">
+	Name: masonry-flow
+	Value: <<'masonry-direction'>> || <<'masonry-fill'>>
+	</pre>
+
+	The 'masonry-flow' property is a [=shorthand=]
+	for the 'masonry-direction' and 'masonry-fill' properties.
+
+
 
 
 Masonry Definition Shorthand: the 'masonry' property {#masonry-template}
@@ -406,7 +449,7 @@ Masonry Definition Shorthand: the 'masonry' property {#masonry-template}
 
 <pre class="propdef shorthand">
 Name: masonry-template
-Value: <<'masonry-template-areas'> || <<'masonry-template-tracks'>> || <<'masonry-direction'>>
+Value: <<'masonry-template-areas'> || <<'masonry-template-tracks'>> || <<'masonry-direction'>> || <<'masonry-fill'>>
 </pre>
 
 The 'masonry-template' shorthand sets
@@ -430,17 +473,17 @@ Placing Grid Items {#placing}
 
 
 
-Handling Ties During Filling: the 'masonry-fill' property {#masonry-fill}
+Precision During Filling: the 'masonry-slack' property {#masonry-slack}
 ---------------------------------------------------------
 
 	<pre class=propdef>
-	Name: masonry-fill
-	Value: <<length-percentage>> || reverse?
+	Name: masonry-slack
+	Value: <<length-percentage>>
 	Initial: 1em
 	Percentages: relative to the [=main axis=] [=content box=] size of the [=masonry container=]
 	Inherited: no
 	Applies to: [=masonry containers=]
-	Computed value: a computed length, and optionally a ''masonry-fill/reverse'' keyword
+	Computed value: a computed length
 	Animation type: discrete
 	</pre>
 
@@ -453,13 +496,11 @@ Handling Ties During Filling: the 'masonry-fill' property {#masonry-fill}
 	it can look strange to have them not fill in order,
 	as the height differences aren't perceived as <em>meaningfully</em> different.
 
-	'masonry-fill' specifies what the threshold is
-	for considering tracks to be "the same height"
-	(causing them to fill in order),
-	and what direction they fill in
-	when their heights are tied in this way.
+	'masonry-slack' specifies what the threshold is
+	for considering tracks to be "the same height",
+	causing them to fill in order.
 
-	<dl dfn-type=value dfn-for=masonry-fill>
+	<dl dfn-type=value dfn-for=masonry-slack>
 		: <dfn><<length>></dfn>
 		:: Specifies the <dfn dfn for=masonry>tie threshold</dfn>
 			for the [=masonry container=].
@@ -469,18 +510,6 @@ Handling Ties During Filling: the 'masonry-fill' property {#masonry-fill}
 
 			Note: The initial value is a "small" distance (''1em'')
 			that is probably appropriate to represent "close enough".
-
-		: <dfn>reverse</dfn>
-		:: If ''reverse'' is **not** specified,
-			the [=masonry container's=] [=cross-start=] direction
-			is its [=inline-start=] or [=block-start=] direction
-			(whichever is in its [=cross axis=]).
-			<span class=note>(This means that ties are broken
-			by filling from start to end.)</span>
-
-			If ''reverse'' **is** specified,
-			the [=cross-start=] direction
-			is its [=inline-end=] or [=block-end=] direction, instead.
 	</dl>
 
 	Issue: Is ''1em'' the right default?

@@ -5,9 +5,9 @@
   <title>CSS Masonry (alt proposal)</title>
   <meta content="w3c/UD" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
-  <meta content="Bikeshed version 252612a0a, updated Sun May 12 20:20:45 2024 -0700" name="generator">
+  <meta content="Bikeshed version 3cdebb514, updated Mon Jun 17 15:12:51 2024 -0700" name="generator">
   <link href="http://tabatkins.github.io/specs/css-masonry/" rel="canonical">
-  <meta content="a0a9869fdcd00a131c26f9f190b4d614fd30d96c" name="revision">
+  <meta content="99fc90c44b149aa945bdbc0f2d8d4d34e92b256d" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -590,7 +590,7 @@ var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBC
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Masonry (alt proposal)</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2024-05-23">23 May 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2024-07-22">22 July 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -630,12 +630,12 @@ on screen, on paper, etc.
 	“[css-masonry] <i>…summary of comment…</i>”.
 	All issues and comments are <a href="https://lists.w3.org/Archives/Public/public-css-archive/">archived</a>.
 	Alternately, feedback can be sent to the (<a href="https://lists.w3.org/Archives/Public/www-style/">archived</a>) public mailing list <a href="mailto:www-style@w3.org?Subject=%5Bcss-masonry%5D%20PUT%20SUBJECT%20HERE">www-style@w3.org</a>. </p>
-   <p>This document is governed by the <a href="https://www.w3.org/2023/Process-20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
-   <p>This document was produced by a group operating under the <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/">W3C Patent Policy</a>.
+   <p>This document is governed by the <a href="https://www.w3.org/policies/process/20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
+   <p>This document was produced by a group operating under the <a href="https://www.w3.org/policies/patent-policy/20200915/">W3C Patent Policy</a>.
 	W3C maintains a <a href="https://www.w3.org/groups/wg/css/ipr" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
 	that page also includes instructions for disclosing a patent.
 	An individual who has actual knowledge of a patent which the individual believes
-	contains <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
+	contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -658,13 +658,15 @@ on screen, on paper, etc.
         <li><a href="#repeat"><span class="secno">3.1.2</span> <span class="content">Repeating Tracks: the <span class="css">repeat()</span> notation</span></a>
        </ol>
       <li><a href="#masonry-template-areas-property"><span class="secno">3.2</span> <span class="content">Named Areas: the <span class="property">masonry-template-areas</span> property</span></a>
-      <li><a href="#masonry-direction"><span class="secno">3.3</span> <span class="content">Track Direction: the <span class="property">masonry-direction</span> property</span></a>
-      <li><a href="#masonry-template"><span class="secno">3.4</span> <span class="content">Masonry Definition Shorthand: the <span class="property">masonry</span> property</span></a>
+      <li><a href="#masonry-direction"><span class="secno">3.3</span> <span class="content">Masonry Track Direction: the <span class="property">masonry-direction</span> property</span></a>
+      <li><a href="#masonry-fill"><span class="secno">3.4</span> <span class="content">Masonry Cross Direction: the <span class="property">masonry-fill</span> property</span></a>
+      <li><a href="#masonry-flow"><span class="secno">3.5</span> <span class="content">Masonry Flow Directions: the <span class="property">masonry-flow</span> property</span></a>
+      <li><a href="#masonry-template"><span class="secno">3.6</span> <span class="content">Masonry Definition Shorthand: the <span class="property">masonry</span> property</span></a>
      </ol>
     <li>
      <a href="#placing"><span class="secno">4</span> <span class="content">Placing Grid Items</span></a>
      <ol class="toc">
-      <li><a href="#masonry-fill"><span class="secno">4.1</span> <span class="content">Handling Ties During Filling: the <span class="property">masonry-fill</span> property</span></a>
+      <li><a href="#masonry-slack"><span class="secno">4.1</span> <span class="content">Precision During Filling: the <span class="property">masonry-slack</span> property</span></a>
       <li><a href="#placement-algo"><span class="secno">4.2</span> <span class="content">Masonry Placement Algorithm</span></a>
      </ol>
     <li><a href="#alignment"><span class="secno">5</span> <span class="content">Alignment and Spacing</span></a>
@@ -759,7 +761,7 @@ that is <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in
       <td class="prod"><a class="production css" data-link-type="type" href="#typedef-masonry-track-list" id="ref-for-typedef-masonry-track-list">&lt;masonry-track-list></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> <a class="production css" data-link-type="type" href="#typedef-masonry-auto-track-list" id="ref-for-typedef-masonry-auto-track-list">&lt;masonry-auto-track-list></a> <span id="ref-for-comb-one②">|</span> <a class="production css" data-link-type="type" href="#typedef-masonry-intrinsic-track-list" id="ref-for-typedef-masonry-intrinsic-track-list">&lt;masonry-intrinsic-track-list></a> <span id="ref-for-comb-one③">|</span> subgrid <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-name-list" id="ref-for-typedef-line-name-list">&lt;line-name-list></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
-      <td>repeat(auto, auto) 
+      <td>repeat(auto-areas, auto) 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
       <td><a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③">masonry containers</a> 
@@ -798,12 +800,12 @@ that is <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in
   <a class="production" data-link-type="type" href="#typedef-extrinsic-auto-repeat" id="ref-for-typedef-extrinsic-auto-repeat">&lt;extrinsic-auto-repeat></a>
   [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names⑤">&lt;line-names></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑧">|</a> <a class="production" data-link-type="type" href="#typedef-masonry-track-list" id="ref-for-typedef-masonry-track-list②">&lt;masonry-track-list></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt⑥">?</a>
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-extrinsic-auto-repeat">&lt;extrinsic-auto-repeat></dfn> =
-  repeat( [ auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> auto-fill ] <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-comma" id="ref-for-comb-comma②">,</a> [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names⑥">&lt;line-names></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt⑦">?</a> <a class="production" data-link-type="type" href="#typedef-extrinsic-track-size" id="ref-for-typedef-extrinsic-track-size②">&lt;extrinsic-track-size></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-one-plus" id="ref-for-mult-one-plus②">+</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names⑦">&lt;line-names></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt⑧">?</a> )
+  repeat( [ auto-areas <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> auto-fill ] <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-comma" id="ref-for-comb-comma②">,</a> [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names⑥">&lt;line-names></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt⑦">?</a> <a class="production" data-link-type="type" href="#typedef-extrinsic-track-size" id="ref-for-typedef-extrinsic-track-size②">&lt;extrinsic-track-size></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-one-plus" id="ref-for-mult-one-plus②">+</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names⑦">&lt;line-names></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt⑧">?</a> )
 
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-masonry-intrinsic-track-list">&lt;masonry-intrinsic-track-list></dfn> =
   <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names⑧">&lt;line-names></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt⑨">?</a> <a class="production" data-link-type="type" href="#typedef-masonry-intrinsic-repeat" id="ref-for-typedef-masonry-intrinsic-repeat">&lt;masonry-intrinsic-repeat></a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names⑨">&lt;line-names></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①⓪">?</a>
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-masonry-intrinsic-repeat">&lt;masonry-intrinsic-repeat></dfn> =
-  repeat( [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#integer-value" id="ref-for-integer-value①">&lt;integer [1,∞]></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⓪">|</a> auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①①">|</a> auto-fill ] <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-comma" id="ref-for-comb-comma③">,</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names①⓪">&lt;line-names></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①①">?</a> <a class="production" data-link-type="type" href="#typedef-intrinsic-track-size" id="ref-for-typedef-intrinsic-track-size">&lt;intrinsic-track-size></a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names①①">&lt;line-names></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①②">?</a> )
+  repeat( [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#integer-value" id="ref-for-integer-value①">&lt;integer [1,∞]></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⓪">|</a> auto-areas <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①①">|</a> auto-fill ] <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-comma" id="ref-for-comb-comma③">,</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names①⓪">&lt;line-names></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①①">?</a> <a class="production" data-link-type="type" href="#typedef-intrinsic-track-size" id="ref-for-typedef-intrinsic-track-size">&lt;intrinsic-track-size></a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-line-names" id="ref-for-typedef-line-names①①">&lt;line-names></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①②">?</a> )
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-intrinsic-track-size">&lt;intrinsic-track-size></dfn> = <a class="production" data-link-type="type" href="#typedef-intrinsic-breadth" id="ref-for-typedef-intrinsic-breadth">&lt;intrinsic-breadth></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①②">|</a> minmax( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-inflexible-breadth" id="ref-for-typedef-inflexible-breadth">&lt;inflexible-breadth></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-comma" id="ref-for-comb-comma④">,</a> <a class="production" data-link-type="type" href="#typedef-intrinsic-breadth" id="ref-for-typedef-intrinsic-breadth①">&lt;intrinsic-breadth></a> ) <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①③">|</a> fit-content( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage①">&lt;length-percentage [0,∞]></a> )
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-intrinsic-breadth">&lt;intrinsic-breadth></dfn> = auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①④">|</a> min-content <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑤">|</a> max-content
 </pre>
@@ -820,7 +822,7 @@ that is <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in
      <li data-md>
       <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#funcdef-repeat" id="ref-for-funcdef-repeat">repeat()</a> with integer repetitions and fixed/flexible sizes</p>
      <li data-md>
-      <p>at most one <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#funcdef-repeat" id="ref-for-funcdef-repeat①">repeat()</a> with <span class="css">auto</span>/<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#valdef-repeat-auto-fill" id="ref-for-valdef-repeat-auto-fill">auto-fill</a> repetitions</p>
+      <p>at most one <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#funcdef-repeat" id="ref-for-funcdef-repeat①">repeat()</a> with <span class="css">auto-areas</span>/<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#valdef-repeat-auto-fill" id="ref-for-valdef-repeat-auto-fill">auto-fill</a> repetitions</p>
     </ul>
     <p>Alternately, it can be a single <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#funcdef-repeat" id="ref-for-funcdef-repeat②">repeat()</a> (with any repetition count)
 		using <em>intrinsic</em> sizes, like <span class="css">auto</span> or <span class="css">min-content</span>.</p>
@@ -843,7 +845,7 @@ either directy or in integer <a class="css" data-link-type="maybe" href="https:/
       <p>any combination of fixed or flexible tracks (but not intrinsic tracks),
 either directly, in integer <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#funcdef-repeat" id="ref-for-funcdef-repeat⑤">repeat()</a>, or in <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#valdef-repeat-auto-fill" id="ref-for-valdef-repeat-auto-fill②">auto-fill</a> <span class="css" id="ref-for-funcdef-repeat⑥">repeat()</span></p>
      <li data-md>
-      <p>any single intrinsic track size in <span class="css">auto</span>/<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#valdef-repeat-auto-fill" id="ref-for-valdef-repeat-auto-fill③">auto-fill</a> <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#funcdef-repeat" id="ref-for-funcdef-repeat⑦">repeat()</a></p>
+      <p>any single intrinsic track size in <span class="css">auto-areas</span>/<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#valdef-repeat-auto-fill" id="ref-for-valdef-repeat-auto-fill③">auto-fill</a> <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#funcdef-repeat" id="ref-for-funcdef-repeat⑦">repeat()</a></p>
     </ul>
    </div>
    <p>The <dfn class="dfn-paneled css" data-dfn-for="masonry-template-tracks" data-dfn-type="value" data-export id="valdef-masonry-template-tracks-subgrid">subgrid</dfn> value
@@ -872,7 +874,7 @@ the tracks will take up 1/3 and 2/3 of the <a data-link-type="dfn">leftover spac
      <p>Defines a size range
 greater than or equal to <var>min</var> and less than or equal to <var>max</var>.
 If the <var>max</var> is less than the <var>min</var>,
-then the <var>max</var> will be floored by the <var>min</var> (essentially yielding <span class="css">minmax(|min|, |min|)</span>.)</p>
+then the <var>max</var> will be floored by the <var>min</var> (essentially yielding <span class="css">minmax(<var>min</var>, <var>min</var>)</span>.)</p>
      <p>As a maximum, a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-flex" id="ref-for-typedef-flex③">&lt;flex></a> value sets the track’s <a data-link-type="dfn">flex factor</a>;
 it is invalid as a minimum.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="masonry-template-tracks" data-dfn-type="dfn" data-noexport id="masonry-template-tracks-auto">auto</dfn>
@@ -915,11 +917,11 @@ but with extra abilities.)</p>
    <p>There are two distinct syntaxes for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#funcdef-repeat" id="ref-for-funcdef-repeat⑨">repeat()</a> in Masonry:</p>
    <ul>
     <li data-md>
-     <p><span class="css">repeat( [ <integer> | auto | auto-fill ], <extrinsic-track-size>+ )</extrinsic-track-size></integer></span>,
+     <p><span class="css">repeat( [ &lt;integer> | auto-areas | auto-fill ], <extrinsic-track-size>+ )</extrinsic-track-size></span>,
 which allows you to specify one or more tracks to repeat,
 using <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage④">&lt;length-percentage></a>, <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-grid-2/#typedef-flex" id="ref-for-typedef-flex④">&lt;flex></a>, or <a class="css" data-link-type="maybe" href="#funcdef-masonry-template-tracks-minmax" id="ref-for-funcdef-masonry-template-tracks-minmax②">minmax()</a> of those.</p>
     <li data-md>
-     <p><span class="css">repeat( [ <integer> | auto | auto-fill ], <intrinsic-track-size> )</intrinsic-track-size></integer></span>,
+     <p><span class="css">repeat( [ &lt;integer> | auto-areas | auto-fill ], <intrinsic-track-size> )</intrinsic-track-size></span>,
 which allows you to specify a <em>single</em> track to repeat,
 using the intrinsic sizes (<span class="css">auto</span>, <span class="css">min-content</span>, <span class="css">max-content</span>, or <span class="css">minmax()</span> of them).</p>
    </ul>
@@ -930,7 +932,7 @@ using the intrinsic sizes (<span class="css">auto</span>, <span class="css">min-
 	the largest whole number of times
 	that wouldn’t cause the <a data-link-type="dfn" href="#masonry-grid" id="ref-for-masonry-grid">masonry grid</a> (including tracks not in the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-grid-2/#funcdef-repeat" id="ref-for-funcdef-repeat①⓪">repeat()</a>, gaps, etc)
 	to overflow the <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#content-box" id="ref-for-content-box">content box</a> of the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container①⓪">masonry container</a> (minimum of one repetition).</p>
-   <p>An <span class="css">auto</span> repeat depends on the value of <a class="property css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas">masonry-template-areas</a>:</p>
+   <p>An <span class="css">auto-areas</span> repeat depends on the value of <a class="property css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas">masonry-template-areas</a>:</p>
    <ul>
     <li data-md>
      <p>if <a class="property css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas①">masonry-template-areas</a> is <a class="css" data-link-type="maybe" href="#valdef-masonry-template-areas-none" id="ref-for-valdef-masonry-template-areas-none">none</a>,
@@ -941,8 +943,8 @@ behaves as <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/
 to match the number of tracks
 specified by <a class="property css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas②">masonry-template-areas</a>.</p>
    </ul>
-   <div class="example" id="example-ed5496d7"><a class="self-link" href="#example-ed5496d7"></a> For example, given <a class="css" data-link-type="propdesc" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas③">masonry-template-areas: "a a a b b";</a>,
-		a <span class="css">repeat(auto, 100px 20px)</span> is equivalent to specifying <span class="css">100px 20px 100px 20px 100px</span>:
+   <div class="example" id="example-d214fd5e"><a class="self-link" href="#example-d214fd5e"></a> For example, given <a class="css" data-link-type="propdesc" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas③">masonry-template-areas: "a a a b b";</a>,
+		a <span class="css">repeat(auto-areas, 100px 20px)</span> is equivalent to specifying <span class="css">100px 20px 100px 20px 100px</span>:
 		two whole repeats and one partial repeat,
 		to match up with the five tracks specified by the areas. </div>
    <h3 class="heading settled" data-level="3.2" id="masonry-template-areas-property"><span class="secno">3.2. </span><span class="content">Named Areas: the <a class="property css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas④">masonry-template-areas</a> property</span><a class="self-link" href="#masonry-template-areas-property"></a></h3>
@@ -1020,7 +1022,7 @@ If the string defines multiple named areas with the same name,
 the declaration is invalid.</p>
      <p>Defined areas give <a data-link-type="dfn">implicit-assigned names</a> to <a data-link-type="dfn" href="https://drafts.csswg.org/css-grid-2/#grid-line" id="ref-for-grid-line">grid lines</a> in the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container①③">masonry container</a>.</p>
    </dl>
-   <h3 class="heading settled" data-level="3.3" id="masonry-direction"><span class="secno">3.3. </span><span class="content">Track Direction: the <a class="property css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction">masonry-direction</a> property</span><a class="self-link" href="#masonry-direction"></a></h3>
+   <h3 class="heading settled" data-level="3.3" id="masonry-direction"><span class="secno">3.3. </span><span class="content">Masonry Track Direction: the <a class="property css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction">masonry-direction</a> property</span><a class="self-link" href="#masonry-direction"></a></h3>
    <table class="def propdef" data-link-for-hint="masonry-direction">
     <tbody>
      <tr>
@@ -1081,7 +1083,84 @@ and its <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#ma
 	are opposite the <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#main-start" id="ref-for-main-start⑤">main-start</a> and <span id="ref-for-cross-start①">cross-start</span> directions.</p>
    <p>A <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②②">masonry container</a> is a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="column-masonry-container">column masonry container</dfn> if its <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#main-axis" id="ref-for-main-axis⑦">main axis</a> is the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-axis" id="ref-for-block-axis③">block axis</a>,
 	or a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="row-masonry-container">row masonry container</dfn> if its <span id="ref-for-main-axis⑧">main axis</span> is the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis③">inline axis</a>.</p>
-   <h3 class="heading settled" data-level="3.4" id="masonry-template"><span class="secno">3.4. </span><span class="content">Masonry Definition Shorthand: the <a class="property css" data-link-type="property">masonry</a> property</span><a class="self-link" href="#masonry-template"></a></h3>
+   <h3 class="heading settled" data-level="3.4" id="masonry-fill"><span class="secno">3.4. </span><span class="content">Masonry Cross Direction: the <a class="property css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill①">masonry-fill</a> property</span><a class="self-link" href="#masonry-fill"></a></h3>
+   <table class="def propdef" data-link-for-hint="masonry-fill">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-masonry-fill">masonry-fill</dfn>
+     <tr class="value">
+      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
+      <td class="prod">normal <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⓪">|</a> reverse 
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
+      <td>normal 
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
+      <td><a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②③">masonry containers</a> 
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
+      <td>no 
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
+      <td>n/a 
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
+      <td>as specified 
+     <tr>
+      <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
+      <td>per grammar 
+     <tr>
+      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
+      <td>discrete 
+   </table>
+   <p><a class="property css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill②">masonry-fill</a> determines what direction <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items⑥">masonry items</a> are laid out in
+	when multiple tracks are tied for "shortest".</p>
+   <dl>
+    <dt data-md><dfn class="dfn-paneled css" data-dfn-for="masonry-fill" data-dfn-type="value" data-export id="valdef-masonry-fill-normal">normal</dfn>
+    <dd data-md>
+     <p>The <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②④">masonry container’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-start" id="ref-for-cross-start②">cross-start</a> direction
+is its <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-start" id="ref-for-inline-start①">inline-start</a> or <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-start" id="ref-for-block-start①">block-start</a> direction
+(whichever is in its <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-axis" id="ref-for-cross-axis②">cross axis</a>). <span class="note">(This means that ties are broken
+by filling from start to end.)</span></p>
+    <dt data-md><dfn class="dfn-paneled css" data-dfn-for="masonry-fill" data-dfn-type="value" data-export id="valdef-masonry-fill-reverse">reverse</dfn>
+    <dd data-md>
+     <p>The <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②⑤">masonry container’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-start" id="ref-for-cross-start③">cross-start</a> direction
+is its <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-end" id="ref-for-inline-end①">inline-end</a> or <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-end" id="ref-for-block-end①">block-end</a> direction, instead.</p>
+   </dl>
+   <h3 class="heading settled" data-level="3.5" id="masonry-flow"><span class="secno">3.5. </span><span class="content">Masonry Flow Directions: the <a class="property css" data-link-type="property" href="#propdef-masonry-flow" id="ref-for-propdef-masonry-flow">masonry-flow</a> property</span><a class="self-link" href="#masonry-flow"></a></h3>
+   <table class="def propdef" data-link-for-hint="masonry-flow">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-masonry-flow">masonry-flow</dfn>
+     <tr class="value">
+      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
+      <td class="prod"><a class="production css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction②">&lt;'masonry-direction'></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any">||</a> <a class="production css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill③">&lt;'masonry-fill'></a> 
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
+      <td>see individual properties 
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
+      <td>see individual properties 
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
+      <td>see individual properties 
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
+      <td>see individual properties 
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
+      <td>see individual properties 
+     <tr>
+      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
+      <td>see individual properties 
+     <tr>
+      <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
+      <td>per grammar 
+   </table>
+   <p>The <a class="property css" data-link-type="property" href="#propdef-masonry-flow" id="ref-for-propdef-masonry-flow①">masonry-flow</a> property is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#shorthand-property" id="ref-for-shorthand-property">shorthand</a> for the <a class="property css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction③">masonry-direction</a> and <a class="property css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill④">masonry-fill</a> properties.</p>
+   <h3 class="heading settled" data-level="3.6" id="masonry-template"><span class="secno">3.6. </span><span class="content">Masonry Definition Shorthand: the <a class="property css" data-link-type="property">masonry</a> property</span><a class="self-link" href="#masonry-template"></a></h3>
    <table class="def propdef" data-link-for-hint="masonry-template">
     <tbody>
      <tr>
@@ -1089,7 +1168,7 @@ and its <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#ma
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-masonry-template">masonry-template</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">&lt;&lt;<a class="property css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas⑤">masonry-template-areas</a>> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any">||</a> <a class="production css" data-link-type="property" href="#propdef-masonry-template-tracks" id="ref-for-propdef-masonry-template-tracks④">&lt;'masonry-template-tracks'></a> <span id="ref-for-comb-any①">||</span> <a class="production css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction②">&lt;'masonry-direction'></a>
+      <td class="prod">&lt;&lt;<a class="property css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas⑤">masonry-template-areas</a>> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> <a class="production css" data-link-type="property" href="#propdef-masonry-template-tracks" id="ref-for-propdef-masonry-template-tracks④">&lt;'masonry-template-tracks'></a> <span id="ref-for-comb-any②">||</span> <a class="production css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction④">&lt;'masonry-direction'></a> <span id="ref-for-comb-any③">||</span> <a class="production css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill⑤">&lt;'masonry-fill'></a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties
@@ -1113,7 +1192,7 @@ and its <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#ma
       <td>per grammar
    </table>
    <p>The <a class="property css" data-link-type="property" href="#propdef-masonry-template" id="ref-for-propdef-masonry-template">masonry-template</a> shorthand sets <a class="property css" data-link-type="property" href="#propdef-masonry-template-areas" id="ref-for-propdef-masonry-template-areas⑥">masonry-template-areas</a>, <a class="property css" data-link-type="property" href="#propdef-masonry-template-tracks" id="ref-for-propdef-masonry-template-tracks⑤">masonry-template-tracks</a>,
-and <a class="property css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction③">masonry-direction</a> at the same time.</p>
+and <a class="property css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction⑤">masonry-direction</a> at the same time.</p>
    <h2 class="heading settled" data-level="4" id="placing"><span class="secno">4. </span><span class="content">Placing Grid Items</span><a class="self-link" href="#placing"></a></h2>
    <p><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-masonry-track">masonry-track</dfn>, <dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-masonry-track-start">masonry-track-start</dfn>, <dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-masonry-track-end">masonry-track-end</dfn>,
 	and <dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-masonry-area">masonry-area</dfn>,
@@ -1121,30 +1200,30 @@ and <a class="property css" data-link-type="property" href="#propdef-masonry-dir
 	matching <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-grid-2/#propdef-grid-row" id="ref-for-propdef-grid-row">grid-row</a>/etc.</p>
    <p>Spans are clamped at layout time to the defined masonry tracks;
 	there is no "implicit grid".</p>
-   <h3 class="heading settled" data-level="4.1" id="masonry-fill"><span class="secno">4.1. </span><span class="content">Handling Ties During Filling: the <a class="property css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill①">masonry-fill</a> property</span><a class="self-link" href="#masonry-fill"></a></h3>
-   <table class="def propdef" data-link-for-hint="masonry-fill">
+   <h3 class="heading settled" data-level="4.1" id="masonry-slack"><span class="secno">4.1. </span><span class="content">Precision During Filling: the <a class="property css" data-link-type="property" href="#propdef-masonry-slack" id="ref-for-propdef-masonry-slack">masonry-slack</a> property</span><a class="self-link" href="#masonry-slack"></a></h3>
+   <table class="def propdef" data-link-for-hint="masonry-slack">
     <tbody>
      <tr>
       <th>Name:
-      <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-masonry-fill">masonry-fill</dfn>
+      <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-masonry-slack">masonry-slack</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage⑤">&lt;length-percentage></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any②">||</a> reverse<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①③">?</a> 
+      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage⑤">&lt;length-percentage></a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>1em 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td><a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②③">masonry containers</a> 
+      <td><a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②⑥">masonry containers</a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
       <td>no 
      <tr>
       <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
-      <td>relative to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#main-axis" id="ref-for-main-axis⑨">main axis</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#content-box" id="ref-for-content-box①">content box</a> size of the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②④">masonry container</a> 
+      <td>relative to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#main-axis" id="ref-for-main-axis⑨">main axis</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#content-box" id="ref-for-content-box①">content box</a> size of the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②⑦">masonry container</a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
-      <td>a computed length, and optionally a <a class="css" data-link-type="maybe" href="#valdef-masonry-fill-reverse" id="ref-for-valdef-masonry-fill-reverse">reverse</a> keyword 
+      <td>a computed length 
      <tr>
       <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
       <td>per grammar 
@@ -1152,37 +1231,25 @@ and <a class="property css" data-link-type="property" href="#propdef-masonry-dir
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>discrete 
    </table>
-   <p><a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②⑤">Masonry containers</a> are filled
-	by placing each <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items⑥">masonry item</a> in whichever <a data-link-type="dfn" href="#masonry-tracks" id="ref-for-masonry-tracks④">masonry track</a> is currently the least filled.
+   <p><a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②⑧">Masonry containers</a> are filled
+	by placing each <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items⑦">masonry item</a> in whichever <a data-link-type="dfn" href="#masonry-tracks" id="ref-for-masonry-tracks④">masonry track</a> is currently the least filled.
 	When multiple tracks are tied for least-filled,
 	placing the items in order looks good.
 	But if tracks are only <em>very slightly</em> different heights,
 	it can look strange to have them not fill in order,
 	as the height differences aren’t perceived as <em>meaningfully</em> different.</p>
-   <p><a class="property css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill②">masonry-fill</a> specifies what the threshold is
-	for considering tracks to be "the same height"
-	(causing them to fill in order),
-	and what direction they fill in
-	when their heights are tied in this way.</p>
+   <p><a class="property css" data-link-type="property" href="#propdef-masonry-slack" id="ref-for-propdef-masonry-slack①">masonry-slack</a> specifies what the threshold is
+	for considering tracks to be "the same height",
+	causing them to fill in order.</p>
    <dl>
-    <dt data-md><dfn class="dfn-paneled css" data-dfn-for="masonry-fill" data-dfn-type="value" data-export id="valdef-masonry-fill-length"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value">&lt;length></a></dfn>
+    <dt data-md><dfn class="dfn-paneled css" data-dfn-for="masonry-slack" data-dfn-type="value" data-export id="valdef-masonry-slack-length"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value">&lt;length></a></dfn>
     <dd data-md>
-     <p>Specifies the <dfn class="dfn-paneled" data-dfn-for="masonry" data-dfn-type="dfn" data-noexport id="masonry-tie-threshold">tie threshold</dfn> for the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②⑥">masonry container</a>.
+     <p>Specifies the <dfn class="dfn-paneled" data-dfn-for="masonry" data-dfn-type="dfn" data-noexport id="masonry-tie-threshold">tie threshold</dfn> for the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②⑨">masonry container</a>.
 Placement positions are considered to be equally good ("ties")
 if they are within the specified distance
 from the shortest position.</p>
      <p class="note" role="note"><span class="marker">Note:</span> The initial value is a "small" distance (<span class="css">1em</span>)
 that is probably appropriate to represent "close enough".</p>
-    <dt data-md><dfn class="dfn-paneled css" data-dfn-for="masonry-fill" data-dfn-type="value" data-export id="valdef-masonry-fill-reverse">reverse</dfn>
-    <dd data-md>
-     <p>If <a class="css" data-link-type="maybe" href="#valdef-masonry-fill-reverse" id="ref-for-valdef-masonry-fill-reverse①">reverse</a> is <strong>not</strong> specified,
-the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②⑦">masonry container’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-start" id="ref-for-cross-start②">cross-start</a> direction
-is its <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-start" id="ref-for-inline-start①">inline-start</a> or <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-start" id="ref-for-block-start①">block-start</a> direction
-(whichever is in its <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-axis" id="ref-for-cross-axis②">cross axis</a>). <span class="note">(This means that ties are broken
-by filling from start to end.)</span></p>
-     <p>If <a class="css" data-link-type="maybe" href="#valdef-masonry-fill-reverse" id="ref-for-valdef-masonry-fill-reverse②">reverse</a> <strong>is</strong> specified,
-the <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-start" id="ref-for-cross-start③">cross-start</a> direction
-is its <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-end" id="ref-for-inline-end①">inline-end</a> or <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-end" id="ref-for-block-end①">block-end</a> direction, instead.</p>
    </dl>
    <p class="issue" id="issue-7bbfe9d5"><a class="self-link" href="#issue-7bbfe9d5"></a> Is <span class="css">1em</span> the right default?</p>
    <p class="issue" id="issue-590cc263"><a class="self-link" href="#issue-590cc263"></a> Do we want a <span class="css">dense</span> option,
@@ -1205,13 +1272,13 @@ even if they <em>remain</em> tied after each item is placed
 (because the item is zero height,
 or the <a data-link-type="dfn" href="#masonry-tie-threshold" id="ref-for-masonry-tie-threshold">tie threshold</a> is a large value).</p>
    <div class="algorithm">
-     The following <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="masonry-placement-algorithm">masonry placement algorithm</dfn> determines the position of all the <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items⑦">masonry items</a> in a <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②⑧">masonry container</a>,
+     The following <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="masonry-placement-algorithm">masonry placement algorithm</dfn> determines the position of all the <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items⑧">masonry items</a> in a <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③⓪">masonry container</a>,
 	distributing them across the <a data-link-type="dfn" href="#masonry-tracks" id="ref-for-masonry-tracks⑤">masonry tracks</a> according to whichever is the least-filled. 
     <p class="note" role="note"><span class="marker">Note:</span> This algorithm refers to the "index" of tracks,
 	and talks about indexes being "smaller" or "larger" than each other;
 	this implies numbering them from the <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-start" id="ref-for-cross-start④">cross-start</a> side
 	to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-end" id="ref-for-cross-end①">cross-end</a> side
-	(and is thus dependent on <a class="property css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill③">masonry-fill</a>).</p>
+	(and is thus dependent on <a class="property css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill⑥">masonry-fill</a>).</p>
     <ol>
      <li data-md>
       <p>Generate anonymous masonry items.</p>
@@ -1223,7 +1290,7 @@ initially <span class="css">0px</span> for all tracks.</p>
       <p>Let <var>placement cursor</var> be an index into the track list,
 initially pointing to the first track.</p>
      <li data-md>
-      <p>For each <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items⑧">masonry item</a> <var>item</var> in <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#order-modified-document-order" id="ref-for-order-modified-document-order">order-modified document order</a>:</p>
+      <p>For each <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items⑨">masonry item</a> <var>item</var> in <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#order-modified-document-order" id="ref-for-order-modified-document-order">order-modified document order</a>:</p>
       <ol>
        <li data-md>
         <p>Let <var>chosen start track</var> be an index into the track list,
@@ -1234,7 +1301,7 @@ set <var>chosen start track</var> to that position.</p>
         <p>Otherwise, <a data-link-type="dfn" href="#masonry-choose-a-start-track" id="ref-for-masonry-choose-a-start-track">choose a start track</a>,
 given <var>item</var>,
 the <a data-link-type="dfn" href="#masonry-tracks" id="ref-for-masonry-tracks⑦">masonry tracks</a> and their <var>fill height</var>s,
-the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container②⑨">masonry container’s</a> <a data-link-type="dfn" href="#masonry-tie-threshold" id="ref-for-masonry-tie-threshold①">tie threshold</a>,
+the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③①">masonry container’s</a> <a data-link-type="dfn" href="#masonry-tie-threshold" id="ref-for-masonry-tie-threshold①">tie threshold</a>,
 and <var>placement cursor</var>,
 and set <var>chosen start track</var> to the result.</p>
        <li data-md>
@@ -1262,7 +1329,7 @@ set it to the first track. <span class="note">(Definite-position items don’t u
     <p>To <dfn class="dfn-paneled" data-dfn-for="masonry" data-dfn-type="dfn" data-noexport id="masonry-choose-a-start-track">choose a start track</dfn> given:</p>
     <ul>
      <li data-md>
-      <p>a <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items⑨">masonry item</a> <var>item</var></p>
+      <p>a <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items①⓪">masonry item</a> <var>item</var></p>
      <li data-md>
       <p>a set of <a data-link-type="dfn" href="#masonry-tracks" id="ref-for-masonry-tracks⑧">masonry tracks</a> <var>tracks</var> and their <var>fill height</var>s</p>
      <li data-md>
@@ -1293,29 +1360,29 @@ remove any items from <var>choosable tracks</var> whose index is <em>smaller</em
    </div>
    <h2 class="heading settled" data-level="5" id="alignment"><span class="secno">5. </span><span class="content">Alignment and Spacing</span><a class="self-link" href="#alignment"></a></h2>
    <p>Like Grid Layout <a data-link-type="biblio" href="#biblio-css-grid-1" title="CSS Grid Layout Module Level 1">[css-grid-1]</a>,
-	the <span class="css">align-*</span> properties align in the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③⓪">masonry container’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-axis" id="ref-for-block-axis④">block axis</a>,
-	and <span class="css">justify-*</span> in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis④">inline axis</a> (rather than being based on the <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#main-axis" id="ref-for-main-axis①⓪">main axis</a> and <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-axis" id="ref-for-cross-axis③">cross axis</a>,
+	the <a class="property css" data-link-type="property">align-*</a> properties align in the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③②">masonry container’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-axis" id="ref-for-block-axis④">block axis</a>,
+	and <span class="property">justify-*</span> in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis④">inline axis</a> (rather than being based on the <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#main-axis" id="ref-for-main-axis①⓪">main axis</a> and <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#cross-axis" id="ref-for-cross-axis③">cross axis</a>,
 	like in Flexbox).</p>
    <p>For <a data-link-type="dfn" href="#column-masonry-container" id="ref-for-column-masonry-container①">column masonry containers</a>:</p>
    <dl>
-    <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-justify-content" id="ref-for-propdef-justify-content①">justify-content</a> on the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③①">masonry container</a>
+    <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-justify-content" id="ref-for-propdef-justify-content①">justify-content</a> on the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③③">masonry container</a>
     <dd data-md>
      <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#alignment-subject" id="ref-for-alignment-subject">alignment subjects</a> are the <a data-link-type="dfn" href="#masonry-tracks" id="ref-for-masonry-tracks⑨">masonry tracks</a>.
-The <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#alignment-container" id="ref-for-alignment-container">alignment container</a> is the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③②">masonry container’s</a> <a data-link-type="dfn">context box</a>.</p>
-    <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-align-content" id="ref-for-propdef-align-content①">align-content</a> on the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③③">masonry container</a>
+The <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#alignment-container" id="ref-for-alignment-container">alignment container</a> is the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③④">masonry container’s</a> <a data-link-type="dfn">context box</a>.</p>
+    <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-align-content" id="ref-for-propdef-align-content①">align-content</a> on the <a data-link-type="dfn" href="#masonry-container" id="ref-for-masonry-container③⑤">masonry container</a>
     <dd data-md>
      <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#alignment-subject" id="ref-for-alignment-subject①">alignment subjects</a> are
-runs of consecutive single-track <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items①⓪">masonry items</a> in a given track
+runs of consecutive single-track <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items①①">masonry items</a> in a given track
 between the start/end of the track or spanning items.
 The <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#alignment-container" id="ref-for-alignment-container①">alignment container</a> is the available space in the track
 between the two things bounding the run.
 (See <a href="https://github.com/w3c/csswg-drafts/issues/10275">Issue 10275</a>.)</p>
-    <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-justify-self" id="ref-for-propdef-justify-self">justify-self</a> on the <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items①①">masonry items</a>
+    <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-justify-self" id="ref-for-propdef-justify-self">justify-self</a> on the <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items①②">masonry items</a>
     <dd data-md>
-     <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#alignment-subject" id="ref-for-alignment-subject②">alignment subject</a> is the <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items①②">masonry item</a>.
+     <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#alignment-subject" id="ref-for-alignment-subject②">alignment subject</a> is the <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items①③">masonry item</a>.
 The <a data-link-type="dfn" href="https://drafts.csswg.org/css-align-3/#alignment-container" id="ref-for-alignment-container②">alignment container</a> is the available space
 in the <a data-link-type="dfn">masonry area</a> the item is placed in.</p>
-    <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-align-self" id="ref-for-propdef-align-self">align-self</a> on the <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items①③">masonry items</a>
+    <dt data-md><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-align-self" id="ref-for-propdef-align-self">align-self</a> on the <a data-link-type="dfn" href="#masonry-items" id="ref-for-masonry-items①④">masonry items</a>
     <dd data-md>
      <p>No effect.</p>
    </dl>
@@ -1424,20 +1491,22 @@ in the <a data-link-type="dfn">masonry area</a> the item is placed in.</p>
    <li><a href="#valdef-display-inline-masonry">inline-masonry</a><span>, in § 2.1</span>
    <li><a href="#typedef-intrinsic-breadth">&lt;intrinsic-breadth></a><span>, in § 3.1</span>
    <li><a href="#typedef-intrinsic-track-size">&lt;intrinsic-track-size></a><span>, in § 3.1</span>
-   <li><a href="#valdef-masonry-fill-length">&lt;length></a><span>, in § 4.1</span>
+   <li><a href="#valdef-masonry-slack-length">&lt;length></a><span>, in § 4.1</span>
    <li><a href="#valdef-masonry-template-tracks-length-percentage-0">&lt;length-percentage [0,∞]></a><span>, in § 3.1.1</span>
    <li><a href="#valdef-display-masonry">masonry</a><span>, in § 2.1</span>
    <li><a href="#propdef-masonry-area">masonry-area</a><span>, in § 4</span>
    <li><a href="#typedef-masonry-auto-track-list">&lt;masonry-auto-track-list></a><span>, in § 3.1</span>
    <li><a href="#masonry-container">masonry container</a><span>, in § 3</span>
    <li><a href="#propdef-masonry-direction">masonry-direction</a><span>, in § 3.3</span>
-   <li><a href="#propdef-masonry-fill">masonry-fill</a><span>, in § 4.1</span>
+   <li><a href="#propdef-masonry-fill">masonry-fill</a><span>, in § 3.4</span>
+   <li><a href="#propdef-masonry-flow">masonry-flow</a><span>, in § 3.5</span>
    <li><a href="#masonry-grid">masonry grid</a><span>, in § 3</span>
    <li><a href="#typedef-masonry-intrinsic-repeat">&lt;masonry-intrinsic-repeat></a><span>, in § 3.1</span>
    <li><a href="#typedef-masonry-intrinsic-track-list">&lt;masonry-intrinsic-track-list></a><span>, in § 3.1</span>
    <li><a href="#masonry-items">masonry items</a><span>, in § 3</span>
    <li><a href="#masonry-placement-algorithm">masonry placement algorithm</a><span>, in § 4.2</span>
-   <li><a href="#propdef-masonry-template">masonry-template</a><span>, in § 3.4</span>
+   <li><a href="#propdef-masonry-slack">masonry-slack</a><span>, in § 4.1</span>
+   <li><a href="#propdef-masonry-template">masonry-template</a><span>, in § 3.6</span>
    <li><a href="#propdef-masonry-template-areas">masonry-template-areas</a><span>, in § 3.2</span>
    <li><a href="#propdef-masonry-template-tracks">masonry-template-tracks</a><span>, in § 3.1</span>
    <li><a href="#propdef-masonry-track">masonry-track</a><span>, in § 4</span>
@@ -1452,8 +1521,9 @@ in the <a data-link-type="dfn">masonry area</a> the item is placed in.</p>
    <li><a href="#masonry-template-areas-named-cell-token">named cell token</a><span>, in § 3.2</span>
    <li><a href="#named-masonry-areas">named masonry areas</a><span>, in § 3.2</span>
    <li><a href="#valdef-masonry-template-areas-none">none</a><span>, in § 3.2</span>
+   <li><a href="#valdef-masonry-fill-normal">normal</a><span>, in § 3.4</span>
    <li><a href="#masonry-template-areas-null-cell-token">null cell token</a><span>, in § 3.2</span>
-   <li><a href="#valdef-masonry-fill-reverse">reverse</a><span>, in § 4.1</span>
+   <li><a href="#valdef-masonry-fill-reverse">reverse</a><span>, in § 3.4</span>
    <li><a href="#valdef-masonry-direction-row">row</a><span>, in § 3.3</span>
    <li><a href="#row-masonry-container">row masonry container</a><span>, in § 3.3</span>
    <li><a href="#valdef-masonry-direction-row-reverse">row-reverse</a><span>, in § 3.3</span>
@@ -1483,6 +1553,7 @@ in the <a data-link-type="dfn">masonry area</a> the item is placed in.</p>
     <a data-link-type="biblio">[CSS-CASCADE-5]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="9cd25054">computed value</span>
+     <li><span class="dfn-paneled" id="56177fad">shorthand</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-DISPLAY-4]</a> defines the following terms:
@@ -1613,7 +1684,7 @@ in the <a data-link-type="dfn">masonry area</a> the item is placed in.</p>
       <th scope="col">Com­puted value
     <tbody>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction④">masonry-direction</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-masonry-direction" id="ref-for-propdef-masonry-direction⑥">masonry-direction</a>
       <td>row | column | row-reverse | column-reverse
       <td>column
       <td>masonry containers
@@ -1623,18 +1694,38 @@ in the <a data-link-type="dfn">masonry area</a> the item is placed in.</p>
       <td>per grammar
       <td>as specified
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill④">masonry-fill</a>
-      <td>&lt;length-percentage> || reverse?
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-masonry-fill" id="ref-for-propdef-masonry-fill⑦">masonry-fill</a>
+      <td>normal | reverse
+      <td>normal
+      <td>masonry containers
+      <td>no
+      <td>n/a
+      <td>discrete
+      <td>per grammar
+      <td>as specified
+     <tr>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-masonry-flow" id="ref-for-propdef-masonry-flow②">masonry-flow</a>
+      <td>&lt;'masonry-direction'> || &lt;'masonry-fill'>
+      <td>see individual properties
+      <td>see individual properties
+      <td>see individual properties
+      <td>see individual properties
+      <td>see individual properties
+      <td>per grammar
+      <td>see individual properties
+     <tr>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-masonry-slack" id="ref-for-propdef-masonry-slack②">masonry-slack</a>
+      <td>&lt;length-percentage>
       <td>1em
       <td>masonry containers
       <td>no
       <td>relative to the main axis content box size of the masonry container
       <td>discrete
       <td>per grammar
-      <td>a computed length, and optionally a reverse keyword
+      <td>a computed length
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-masonry-template" id="ref-for-propdef-masonry-template①">masonry-template</a>
-      <td>&lt;&lt;masonry-template-areas> || &lt;'masonry-template-tracks'> || &lt;'masonry-direction'>
+      <td>&lt;&lt;masonry-template-areas> || &lt;'masonry-template-tracks'> || &lt;'masonry-direction'> || &lt;'masonry-fill'>
       <td>see individual properties
       <td>see individual properties
       <td>see individual properties
@@ -1655,7 +1746,7 @@ in the <a data-link-type="dfn">masonry area</a> the item is placed in.</p>
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-masonry-template-tracks" id="ref-for-propdef-masonry-template-tracks⑥">masonry-template-tracks</a>
       <td>&lt;masonry-track-list> | &lt;masonry-auto-track-list> | &lt;masonry-intrinsic-track-list> | subgrid &lt;line-name-list>?
-      <td>repeat(auto, auto)
+      <td>repeat(auto-areas, auto)
       <td>masonry containers
       <td>no
       <td>n/a
@@ -1879,30 +1970,31 @@ let dfnPanelData = {
 "035798cf": {"dfnID":"035798cf","dfnText":"inner size","external":true,"refSections":[{"refs":[{"id":"ref-for-inner-size"}],"title":"3.1.1. Track Sizes"}],"url":"https://drafts.csswg.org/css-sizing-3/#inner-size"},
 "0b918417": {"dfnID":"0b918417","dfnText":"min-content contribution","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content-contribution"}],"title":"3.1.1. Track Sizes"}],"url":"https://drafts.csswg.org/css-sizing-3/#min-content-contribution"},
 "0e56d89a": {"dfnID":"0e56d89a","dfnText":"<fixed-breadth>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-fixed-breadth"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"}],"url":"https://drafts.csswg.org/css-grid-2/#typedef-fixed-breadth"},
-"0ee1f0bc": {"dfnID":"0ee1f0bc","dfnText":"main-end","external":true,"refSections":[{"refs":[{"id":"ref-for-main-end"},{"id":"ref-for-main-end\u2460"}],"title":"3.3. Track Direction: the masonry-direction property"}],"url":"https://drafts.csswg.org/css-flexbox-1/#main-end"},
+"0ee1f0bc": {"dfnID":"0ee1f0bc","dfnText":"main-end","external":true,"refSections":[{"refs":[{"id":"ref-for-main-end"},{"id":"ref-for-main-end\u2460"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"}],"url":"https://drafts.csswg.org/css-flexbox-1/#main-end"},
 "0fdaa620": {"dfnID":"0fdaa620","dfnText":"justify-self","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-justify-self"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-align-3/#propdef-justify-self"},
-"1370dad0": {"dfnID":"1370dad0","dfnText":"block-start","external":true,"refSections":[{"refs":[{"id":"ref-for-block-start"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-block-start\u2460"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-start"},
+"1370dad0": {"dfnID":"1370dad0","dfnText":"block-start","external":true,"refSections":[{"refs":[{"id":"ref-for-block-start"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-block-start\u2460"}],"title":"3.4. Masonry Cross Direction: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-start"},
 "15f5b381": {"dfnID":"15f5b381","dfnText":"<percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-percentage-value"},{"id":"ref-for-percentage-value\u2460"}],"title":"3.1.1. Track Sizes"}],"url":"https://drafts.csswg.org/css-values-4/#percentage-value"},
-"18222566": {"dfnID":"18222566","dfnText":"<length-percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-length-percentage"},{"id":"ref-for-typedef-length-percentage\u2460"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-typedef-length-percentage\u2461"},{"id":"ref-for-typedef-length-percentage\u2462"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-typedef-length-percentage\u2463"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"},{"refs":[{"id":"ref-for-typedef-length-percentage\u2464"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-length-percentage"},
+"18222566": {"dfnID":"18222566","dfnText":"<length-percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-length-percentage"},{"id":"ref-for-typedef-length-percentage\u2460"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-typedef-length-percentage\u2461"},{"id":"ref-for-typedef-length-percentage\u2462"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-typedef-length-percentage\u2463"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"},{"refs":[{"id":"ref-for-typedef-length-percentage\u2464"}],"title":"4.1. Precision During Filling: the masonry-slack property"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-length-percentage"},
 "26bd7702": {"dfnID":"26bd7702","dfnText":"minimum size","external":true,"refSections":[{"refs":[{"id":"ref-for-min-width"}],"title":"3.1.1. Track Sizes"}],"url":"https://drafts.csswg.org/css-sizing-3/#min-width"},
 "3009f487": {"dfnID":"3009f487","dfnText":"track list","external":true,"refSections":[{"refs":[{"id":"ref-for-track-list"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"}],"url":"https://drafts.csswg.org/css-grid-2/#track-list"},
 "31168949": {"dfnID":"31168949","dfnText":"max-content contribution","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content-contribution"},{"id":"ref-for-max-content-contribution\u2460"}],"title":"3.1.1. Track Sizes"}],"url":"https://drafts.csswg.org/css-sizing-3/#max-content-contribution"},
 "35608715": {"dfnID":"35608715","dfnText":"cross size","external":true,"refSections":[{"refs":[{"id":"ref-for-cross-size"}],"title":"3.1.1. Track Sizes"}],"url":"https://drafts.csswg.org/css-flexbox-1/#cross-size"},
-"37c3d179": {"dfnID":"37c3d179","dfnText":"block-end","external":true,"refSections":[{"refs":[{"id":"ref-for-block-end"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-block-end\u2460"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-end"},
+"37c3d179": {"dfnID":"37c3d179","dfnText":"block-end","external":true,"refSections":[{"refs":[{"id":"ref-for-block-end"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-block-end\u2460"}],"title":"3.4. Masonry Cross Direction: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-end"},
 "3b8fe1d5": {"dfnID":"3b8fe1d5","dfnText":"ident code point","external":true,"refSections":[{"refs":[{"id":"ref-for-ident-code-point"}],"title":"3.2. Named Areas: the masonry-template-areas property"}],"url":"https://drafts.csswg.org/css-syntax-3/#ident-code-point"},
-"3dff0248": {"dfnID":"3dff0248","dfnText":"cross-start","external":true,"refSections":[{"refs":[{"id":"ref-for-cross-start"},{"id":"ref-for-cross-start\u2460"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-cross-start\u2461"},{"id":"ref-for-cross-start\u2462"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"},{"refs":[{"id":"ref-for-cross-start\u2463"}],"title":"4.2. Masonry Placement Algorithm"}],"url":"https://drafts.csswg.org/css-flexbox-1/#cross-start"},
-"43667deb": {"dfnID":"43667deb","dfnText":"inline axis","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-axis"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-inline-axis\u2460"},{"id":"ref-for-inline-axis\u2461"},{"id":"ref-for-inline-axis\u2462"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-inline-axis\u2463"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#inline-axis"},
-"466b2ed9": {"dfnID":"466b2ed9","dfnText":"inline-start","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-start"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-inline-start\u2460"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#inline-start"},
-"46c6a718": {"dfnID":"46c6a718","dfnText":"content box","external":true,"refSections":[{"refs":[{"id":"ref-for-content-box"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"},{"refs":[{"id":"ref-for-content-box\u2460"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-box-4/#content-box"},
+"3dff0248": {"dfnID":"3dff0248","dfnText":"cross-start","external":true,"refSections":[{"refs":[{"id":"ref-for-cross-start"},{"id":"ref-for-cross-start\u2460"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-cross-start\u2461"},{"id":"ref-for-cross-start\u2462"}],"title":"3.4. Masonry Cross Direction: the masonry-fill property"},{"refs":[{"id":"ref-for-cross-start\u2463"}],"title":"4.2. Masonry Placement Algorithm"}],"url":"https://drafts.csswg.org/css-flexbox-1/#cross-start"},
+"43667deb": {"dfnID":"43667deb","dfnText":"inline axis","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-axis"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-inline-axis\u2460"},{"id":"ref-for-inline-axis\u2461"},{"id":"ref-for-inline-axis\u2462"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-inline-axis\u2463"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#inline-axis"},
+"466b2ed9": {"dfnID":"466b2ed9","dfnText":"inline-start","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-start"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-inline-start\u2460"}],"title":"3.4. Masonry Cross Direction: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#inline-start"},
+"46c6a718": {"dfnID":"46c6a718","dfnText":"content box","external":true,"refSections":[{"refs":[{"id":"ref-for-content-box"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"},{"refs":[{"id":"ref-for-content-box\u2460"}],"title":"4.1. Precision During Filling: the masonry-slack property"}],"url":"https://drafts.csswg.org/css-box-4/#content-box"},
 "48350e83": {"dfnID":"48350e83","dfnText":"align-self","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-align-self"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-align-3/#propdef-align-self"},
-"537cf076": {"dfnID":"537cf076","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"},{"id":"ref-for-mult-opt\u2460"},{"id":"ref-for-mult-opt\u2461"},{"id":"ref-for-mult-opt\u2462"},{"id":"ref-for-mult-opt\u2463"},{"id":"ref-for-mult-opt\u2464"},{"id":"ref-for-mult-opt\u2465"},{"id":"ref-for-mult-opt\u2466"},{"id":"ref-for-mult-opt\u2467"},{"id":"ref-for-mult-opt\u2468"},{"id":"ref-for-mult-opt\u2460\u24ea"},{"id":"ref-for-mult-opt\u2460\u2460"},{"id":"ref-for-mult-opt\u2460\u2461"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-mult-opt\u2460\u2462"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
-"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"}],"title":"2.1. Establishing Masonry Containers: the masonry and inline-masonry display values"},{"refs":[{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"},{"id":"ref-for-comb-one\u2466"},{"id":"ref-for-comb-one\u2467"},{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"},{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"},{"id":"ref-for-comb-one\u2460\u2462"},{"id":"ref-for-comb-one\u2460\u2463"},{"id":"ref-for-comb-one\u2460\u2464"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2465"}],"title":"3.2. Named Areas: the masonry-template-areas property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2466"},{"id":"ref-for-comb-one\u2460\u2467"},{"id":"ref-for-comb-one\u2460\u2468"}],"title":"3.3. Track Direction: the masonry-direction property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"537cf076": {"dfnID":"537cf076","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"},{"id":"ref-for-mult-opt\u2460"},{"id":"ref-for-mult-opt\u2461"},{"id":"ref-for-mult-opt\u2462"},{"id":"ref-for-mult-opt\u2463"},{"id":"ref-for-mult-opt\u2464"},{"id":"ref-for-mult-opt\u2465"},{"id":"ref-for-mult-opt\u2466"},{"id":"ref-for-mult-opt\u2467"},{"id":"ref-for-mult-opt\u2468"},{"id":"ref-for-mult-opt\u2460\u24ea"},{"id":"ref-for-mult-opt\u2460\u2460"},{"id":"ref-for-mult-opt\u2460\u2461"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
+"56177fad": {"dfnID":"56177fad","dfnText":"shorthand","external":true,"refSections":[{"refs":[{"id":"ref-for-shorthand-property"}],"title":"3.5. Masonry Flow Directions: the masonry-flow property"}],"url":"https://drafts.csswg.org/css-cascade-5/#shorthand-property"},
+"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"}],"title":"2.1. Establishing Masonry Containers: the masonry and inline-masonry display values"},{"refs":[{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"},{"id":"ref-for-comb-one\u2466"},{"id":"ref-for-comb-one\u2467"},{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"},{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"},{"id":"ref-for-comb-one\u2460\u2462"},{"id":"ref-for-comb-one\u2460\u2463"},{"id":"ref-for-comb-one\u2460\u2464"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2465"}],"title":"3.2. Named Areas: the masonry-template-areas property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2466"},{"id":"ref-for-comb-one\u2460\u2467"},{"id":"ref-for-comb-one\u2460\u2468"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-comb-one\u2461\u24ea"}],"title":"3.4. Masonry Cross Direction: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
 "70c9f859": {"dfnID":"70c9f859","dfnText":"<integer>","external":true,"refSections":[{"refs":[{"id":"ref-for-integer-value"},{"id":"ref-for-integer-value\u2460"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-integer-value\u2461"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"}],"url":"https://drafts.csswg.org/css-values-4/#integer-value"},
-"72d5680b": {"dfnID":"72d5680b","dfnText":"grid-auto-flow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-grid-auto-flow"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-grid-2/#propdef-grid-auto-flow"},
+"72d5680b": {"dfnID":"72d5680b","dfnText":"grid-auto-flow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-grid-auto-flow"}],"title":"4.1. Precision During Filling: the masonry-slack property"}],"url":"https://drafts.csswg.org/css-grid-2/#propdef-grid-auto-flow"},
 "73c10739": {"dfnID":"73c10739","dfnText":"main size","external":true,"refSections":[{"refs":[{"id":"ref-for-main-size"}],"title":"4.2. Masonry Placement Algorithm"}],"url":"https://drafts.csswg.org/css-flexbox-1/#main-size"},
 "75f6cfb6": {"dfnID":"75f6cfb6","dfnText":"justify-content","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-justify-content"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-propdef-justify-content\u2460"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-align-3/#propdef-justify-content"},
 "8379845e": {"dfnID":"8379845e","dfnText":"block-level","external":true,"refSections":[{"refs":[{"id":"ref-for-block-level"}],"title":"2.1. Establishing Masonry Containers: the masonry and inline-masonry display values"}],"url":"https://drafts.csswg.org/css-display-4/#block-level"},
-"8a82fda1": {"dfnID":"8a82fda1","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"},{"id":"ref-for-comb-any\u2460"}],"title":"3.4. Masonry Definition Shorthand: the masonry property"},{"refs":[{"id":"ref-for-comb-any\u2461"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-any"},
+"8a82fda1": {"dfnID":"8a82fda1","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"}],"title":"3.5. Masonry Flow Directions: the masonry-flow property"},{"refs":[{"id":"ref-for-comb-any\u2460"},{"id":"ref-for-comb-any\u2461"},{"id":"ref-for-comb-any\u2462"}],"title":"3.6. Masonry Definition Shorthand: the masonry property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-any"},
 "977d3003": {"dfnID":"977d3003","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"},{"id":"ref-for-string-value\u2460"}],"title":"3.2. Named Areas: the masonry-template-areas property"}],"url":"https://drafts.csswg.org/css-values-4/#string-value"},
 "9cd25054": {"dfnID":"9cd25054","dfnText":"computed value","external":true,"refSections":[{"refs":[{"id":"ref-for-computed-value"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"}],"url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
 "9f9120ff": {"dfnID":"9f9120ff","dfnText":",","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-comma"},{"id":"ref-for-comb-comma\u2460"},{"id":"ref-for-comb-comma\u2461"},{"id":"ref-for-comb-comma\u2462"},{"id":"ref-for-comb-comma\u2463"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-comma"},
@@ -1920,30 +2012,30 @@ let dfnPanelData = {
 "cf59ba73": {"dfnID":"cf59ba73","dfnText":"grid line","external":true,"refSections":[{"refs":[{"id":"ref-for-grid-line"}],"title":"3.2. Named Areas: the masonry-template-areas property"}],"url":"https://drafts.csswg.org/css-grid-2/#grid-line"},
 "column-masonry-container": {"dfnID":"column-masonry-container","dfnText":"column masonry container","external":false,"refSections":[{"refs":[{"id":"ref-for-column-masonry-container"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-column-masonry-container\u2460"}],"title":"5. Alignment and Spacing"}],"url":"#column-masonry-container"},
 "d15331bf": {"dfnID":"d15331bf","dfnText":"alignment subject","external":true,"refSections":[{"refs":[{"id":"ref-for-alignment-subject"},{"id":"ref-for-alignment-subject\u2460"},{"id":"ref-for-alignment-subject\u2461"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-align-3/#alignment-subject"},
-"d282bfcc": {"dfnID":"d282bfcc","dfnText":"cross-end","external":true,"refSections":[{"refs":[{"id":"ref-for-cross-end"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-cross-end\u2460"}],"title":"4.2. Masonry Placement Algorithm"}],"url":"https://drafts.csswg.org/css-flexbox-1/#cross-end"},
-"d3f841bc": {"dfnID":"d3f841bc","dfnText":"cross axis","external":true,"refSections":[{"refs":[{"id":"ref-for-cross-axis"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-cross-axis\u2460"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-cross-axis\u2461"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"},{"refs":[{"id":"ref-for-cross-axis\u2462"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-flexbox-1/#cross-axis"},
+"d282bfcc": {"dfnID":"d282bfcc","dfnText":"cross-end","external":true,"refSections":[{"refs":[{"id":"ref-for-cross-end"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-cross-end\u2460"}],"title":"4.2. Masonry Placement Algorithm"}],"url":"https://drafts.csswg.org/css-flexbox-1/#cross-end"},
+"d3f841bc": {"dfnID":"d3f841bc","dfnText":"cross axis","external":true,"refSections":[{"refs":[{"id":"ref-for-cross-axis"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-cross-axis\u2460"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-cross-axis\u2461"}],"title":"3.4. Masonry Cross Direction: the masonry-fill property"},{"refs":[{"id":"ref-for-cross-axis\u2462"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-flexbox-1/#cross-axis"},
 "d5412931": {"dfnID":"d5412931","dfnText":"auto-fill","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-repeat-auto-fill"},{"id":"ref-for-valdef-repeat-auto-fill\u2460"},{"id":"ref-for-valdef-repeat-auto-fill\u2461"},{"id":"ref-for-valdef-repeat-auto-fill\u2462"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-valdef-repeat-auto-fill\u2463"},{"id":"ref-for-valdef-repeat-auto-fill\u2464"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"}],"url":"https://drafts.csswg.org/css-grid-2/#valdef-repeat-auto-fill"},
 "d7d5854f": {"dfnID":"d7d5854f","dfnText":"line name","external":true,"refSections":[{"refs":[{"id":"ref-for-line-name"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"}],"url":"https://drafts.csswg.org/css-grid-2/#line-name"},
 "d7fa3e1c": {"dfnID":"d7fa3e1c","dfnText":"inline-level","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-level"}],"title":"2.1. Establishing Masonry Containers: the masonry and inline-masonry display values"}],"url":"https://drafts.csswg.org/css-display-4/#inline-level"},
 "e0f38f8e": {"dfnID":"e0f38f8e","dfnText":"grid-template-columns","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-grid-template-columns"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"}],"url":"https://drafts.csswg.org/css-grid-2/#propdef-grid-template-columns"},
-"e1ab41b7": {"dfnID":"e1ab41b7","dfnText":"block axis","external":true,"refSections":[{"refs":[{"id":"ref-for-block-axis"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-block-axis\u2460"},{"id":"ref-for-block-axis\u2461"},{"id":"ref-for-block-axis\u2462"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-block-axis\u2463"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-axis"},
+"e1ab41b7": {"dfnID":"e1ab41b7","dfnText":"block axis","external":true,"refSections":[{"refs":[{"id":"ref-for-block-axis"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-block-axis\u2460"},{"id":"ref-for-block-axis\u2461"},{"id":"ref-for-block-axis\u2462"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-block-axis\u2463"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-axis"},
 "e7a4e2e2": {"dfnID":"e7a4e2e2","dfnText":"alignment container","external":true,"refSections":[{"refs":[{"id":"ref-for-alignment-container"},{"id":"ref-for-alignment-container\u2460"},{"id":"ref-for-alignment-container\u2461"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-align-3/#alignment-container"},
-"e7b3aa1a": {"dfnID":"e7b3aa1a","dfnText":"main axis","external":true,"refSections":[{"refs":[{"id":"ref-for-main-axis"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-main-axis\u2460"},{"id":"ref-for-main-axis\u2461"},{"id":"ref-for-main-axis\u2462"},{"id":"ref-for-main-axis\u2463"},{"id":"ref-for-main-axis\u2464"},{"id":"ref-for-main-axis\u2465"},{"id":"ref-for-main-axis\u2466"},{"id":"ref-for-main-axis\u2467"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-main-axis\u2468"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"},{"refs":[{"id":"ref-for-main-axis\u2460\u24ea"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-flexbox-1/#main-axis"},
+"e7b3aa1a": {"dfnID":"e7b3aa1a","dfnText":"main axis","external":true,"refSections":[{"refs":[{"id":"ref-for-main-axis"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-main-axis\u2460"},{"id":"ref-for-main-axis\u2461"},{"id":"ref-for-main-axis\u2462"},{"id":"ref-for-main-axis\u2463"},{"id":"ref-for-main-axis\u2464"},{"id":"ref-for-main-axis\u2465"},{"id":"ref-for-main-axis\u2466"},{"id":"ref-for-main-axis\u2467"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-main-axis\u2468"}],"title":"4.1. Precision During Filling: the masonry-slack property"},{"refs":[{"id":"ref-for-main-axis\u2460\u24ea"}],"title":"5. Alignment and Spacing"}],"url":"https://drafts.csswg.org/css-flexbox-1/#main-axis"},
 "e7f0dd6c": {"dfnID":"e7f0dd6c","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"},{"id":"ref-for-propdef-display\u2460"}],"title":"2.1. Establishing Masonry Containers: the masonry and inline-masonry display values"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
 "ef43e3d9": {"dfnID":"ef43e3d9","dfnText":"<inflexible-breadth>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-inflexible-breadth"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"}],"url":"https://drafts.csswg.org/css-grid-2/#typedef-inflexible-breadth"},
 "f005b2f6": {"dfnID":"f005b2f6","dfnText":"grid container","external":true,"refSections":[{"refs":[{"id":"ref-for-grid-container"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"}],"url":"https://drafts.csswg.org/css-grid-2/#grid-container"},
 "f271d0a1": {"dfnID":"f271d0a1","dfnText":"flow layout","external":true,"refSections":[{"refs":[{"id":"ref-for-flow-layout"},{"id":"ref-for-flow-layout\u2460"}],"title":"2.1. Establishing Masonry Containers: the masonry and inline-masonry display values"}],"url":"https://drafts.csswg.org/css-display-4/#flow-layout"},
-"f33d3db5": {"dfnID":"f33d3db5","dfnText":"main-start","external":true,"refSections":[{"refs":[{"id":"ref-for-main-start"},{"id":"ref-for-main-start\u2460"},{"id":"ref-for-main-start\u2461"},{"id":"ref-for-main-start\u2462"},{"id":"ref-for-main-start\u2463"},{"id":"ref-for-main-start\u2464"}],"title":"3.3. Track Direction: the masonry-direction property"}],"url":"https://drafts.csswg.org/css-flexbox-1/#main-start"},
-"f4a5f1c1": {"dfnID":"f4a5f1c1","dfnText":"inline-end","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-end"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-inline-end\u2460"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#inline-end"},
-"fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
+"f33d3db5": {"dfnID":"f33d3db5","dfnText":"main-start","external":true,"refSections":[{"refs":[{"id":"ref-for-main-start"},{"id":"ref-for-main-start\u2460"},{"id":"ref-for-main-start\u2461"},{"id":"ref-for-main-start\u2462"},{"id":"ref-for-main-start\u2463"},{"id":"ref-for-main-start\u2464"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"}],"url":"https://drafts.csswg.org/css-flexbox-1/#main-start"},
+"f4a5f1c1": {"dfnID":"f4a5f1c1","dfnText":"inline-end","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-end"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-inline-end\u2460"}],"title":"3.4. Masonry Cross Direction: the masonry-fill property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#inline-end"},
+"fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"}],"title":"4.1. Precision During Filling: the masonry-slack property"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
 "funcdef-masonry-template-tracks-fit-content": {"dfnID":"funcdef-masonry-template-tracks-fit-content","dfnText":"fit-content( <length-percentage> )","external":false,"refSections":[],"url":"#funcdef-masonry-template-tracks-fit-content"},
 "funcdef-masonry-template-tracks-minmax": {"dfnID":"funcdef-masonry-template-tracks-minmax","dfnText":"minmax(min, max)","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-masonry-template-tracks-minmax"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-funcdef-masonry-template-tracks-minmax\u2460"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-funcdef-masonry-template-tracks-minmax\u2461"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"}],"url":"#funcdef-masonry-template-tracks-minmax"},
 "masonry-choose-a-start-track": {"dfnID":"masonry-choose-a-start-track","dfnText":"choose a start track","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-choose-a-start-track"}],"title":"4.2. Masonry Placement Algorithm"}],"url":"#masonry-choose-a-start-track"},
-"masonry-container": {"dfnID":"masonry-container","dfnText":"masonry container","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-container"},{"id":"ref-for-masonry-container\u2460"}],"title":"2.1. Establishing Masonry Containers: the masonry and inline-masonry display values"},{"refs":[{"id":"ref-for-masonry-container\u2461"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-masonry-container\u2462"},{"id":"ref-for-masonry-container\u2463"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-masonry-container\u2464"},{"id":"ref-for-masonry-container\u2465"},{"id":"ref-for-masonry-container\u2466"},{"id":"ref-for-masonry-container\u2467"},{"id":"ref-for-masonry-container\u2468"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-masonry-container\u2460\u24ea"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"},{"refs":[{"id":"ref-for-masonry-container\u2460\u2460"},{"id":"ref-for-masonry-container\u2460\u2461"},{"id":"ref-for-masonry-container\u2460\u2462"}],"title":"3.2. Named Areas: the masonry-template-areas property"},{"refs":[{"id":"ref-for-masonry-container\u2460\u2463"},{"id":"ref-for-masonry-container\u2460\u2464"},{"id":"ref-for-masonry-container\u2460\u2465"},{"id":"ref-for-masonry-container\u2460\u2466"},{"id":"ref-for-masonry-container\u2460\u2467"},{"id":"ref-for-masonry-container\u2460\u2468"},{"id":"ref-for-masonry-container\u2461\u24ea"},{"id":"ref-for-masonry-container\u2461\u2460"},{"id":"ref-for-masonry-container\u2461\u2461"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-masonry-container\u2461\u2462"},{"id":"ref-for-masonry-container\u2461\u2463"},{"id":"ref-for-masonry-container\u2461\u2464"},{"id":"ref-for-masonry-container\u2461\u2465"},{"id":"ref-for-masonry-container\u2461\u2466"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"},{"refs":[{"id":"ref-for-masonry-container\u2461\u2467"},{"id":"ref-for-masonry-container\u2461\u2468"}],"title":"4.2. Masonry Placement Algorithm"},{"refs":[{"id":"ref-for-masonry-container\u2462\u24ea"},{"id":"ref-for-masonry-container\u2462\u2460"},{"id":"ref-for-masonry-container\u2462\u2461"},{"id":"ref-for-masonry-container\u2462\u2462"}],"title":"5. Alignment and Spacing"}],"url":"#masonry-container"},
+"masonry-container": {"dfnID":"masonry-container","dfnText":"masonry container","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-container"},{"id":"ref-for-masonry-container\u2460"}],"title":"2.1. Establishing Masonry Containers: the masonry and inline-masonry display values"},{"refs":[{"id":"ref-for-masonry-container\u2461"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-masonry-container\u2462"},{"id":"ref-for-masonry-container\u2463"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-masonry-container\u2464"},{"id":"ref-for-masonry-container\u2465"},{"id":"ref-for-masonry-container\u2466"},{"id":"ref-for-masonry-container\u2467"},{"id":"ref-for-masonry-container\u2468"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-masonry-container\u2460\u24ea"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"},{"refs":[{"id":"ref-for-masonry-container\u2460\u2460"},{"id":"ref-for-masonry-container\u2460\u2461"},{"id":"ref-for-masonry-container\u2460\u2462"}],"title":"3.2. Named Areas: the masonry-template-areas property"},{"refs":[{"id":"ref-for-masonry-container\u2460\u2463"},{"id":"ref-for-masonry-container\u2460\u2464"},{"id":"ref-for-masonry-container\u2460\u2465"},{"id":"ref-for-masonry-container\u2460\u2466"},{"id":"ref-for-masonry-container\u2460\u2467"},{"id":"ref-for-masonry-container\u2460\u2468"},{"id":"ref-for-masonry-container\u2461\u24ea"},{"id":"ref-for-masonry-container\u2461\u2460"},{"id":"ref-for-masonry-container\u2461\u2461"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-masonry-container\u2461\u2462"},{"id":"ref-for-masonry-container\u2461\u2463"},{"id":"ref-for-masonry-container\u2461\u2464"}],"title":"3.4. Masonry Cross Direction: the masonry-fill property"},{"refs":[{"id":"ref-for-masonry-container\u2461\u2465"},{"id":"ref-for-masonry-container\u2461\u2466"},{"id":"ref-for-masonry-container\u2461\u2467"},{"id":"ref-for-masonry-container\u2461\u2468"}],"title":"4.1. Precision During Filling: the masonry-slack property"},{"refs":[{"id":"ref-for-masonry-container\u2462\u24ea"},{"id":"ref-for-masonry-container\u2462\u2460"}],"title":"4.2. Masonry Placement Algorithm"},{"refs":[{"id":"ref-for-masonry-container\u2462\u2461"},{"id":"ref-for-masonry-container\u2462\u2462"},{"id":"ref-for-masonry-container\u2462\u2463"},{"id":"ref-for-masonry-container\u2462\u2464"}],"title":"5. Alignment and Spacing"}],"url":"#masonry-container"},
 "masonry-correct-for-spanning": {"dfnID":"masonry-correct-for-spanning","dfnText":"correct for spanning","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-correct-for-spanning"},{"id":"ref-for-masonry-correct-for-spanning\u2460"},{"id":"ref-for-masonry-correct-for-spanning\u2461"},{"id":"ref-for-masonry-correct-for-spanning\u2462"},{"id":"ref-for-masonry-correct-for-spanning\u2463"}],"title":"3.1.1. Track Sizes"}],"url":"#masonry-correct-for-spanning"},
 "masonry-default-masonry-size": {"dfnID":"masonry-default-masonry-size","dfnText":"default masonry size","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-default-masonry-size"}],"title":"3.1.1. Track Sizes"}],"url":"#masonry-default-masonry-size"},
 "masonry-grid": {"dfnID":"masonry-grid","dfnText":"masonry grid","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-grid"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"}],"url":"#masonry-grid"},
-"masonry-items": {"dfnID":"masonry-items","dfnText":"masonry items","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-items"},{"id":"ref-for-masonry-items\u2460"},{"id":"ref-for-masonry-items\u2461"},{"id":"ref-for-masonry-items\u2462"},{"id":"ref-for-masonry-items\u2463"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-masonry-items\u2464"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-masonry-items\u2465"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"},{"refs":[{"id":"ref-for-masonry-items\u2466"},{"id":"ref-for-masonry-items\u2467"},{"id":"ref-for-masonry-items\u2468"}],"title":"4.2. Masonry Placement Algorithm"},{"refs":[{"id":"ref-for-masonry-items\u2460\u24ea"},{"id":"ref-for-masonry-items\u2460\u2460"},{"id":"ref-for-masonry-items\u2460\u2461"},{"id":"ref-for-masonry-items\u2460\u2462"}],"title":"5. Alignment and Spacing"}],"url":"#masonry-items"},
+"masonry-items": {"dfnID":"masonry-items","dfnText":"masonry items","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-items"},{"id":"ref-for-masonry-items\u2460"},{"id":"ref-for-masonry-items\u2461"},{"id":"ref-for-masonry-items\u2462"},{"id":"ref-for-masonry-items\u2463"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-masonry-items\u2464"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-masonry-items\u2465"}],"title":"3.4. Masonry Cross Direction: the masonry-fill property"},{"refs":[{"id":"ref-for-masonry-items\u2466"}],"title":"4.1. Precision During Filling: the masonry-slack property"},{"refs":[{"id":"ref-for-masonry-items\u2467"},{"id":"ref-for-masonry-items\u2468"},{"id":"ref-for-masonry-items\u2460\u24ea"}],"title":"4.2. Masonry Placement Algorithm"},{"refs":[{"id":"ref-for-masonry-items\u2460\u2460"},{"id":"ref-for-masonry-items\u2460\u2461"},{"id":"ref-for-masonry-items\u2460\u2462"},{"id":"ref-for-masonry-items\u2460\u2463"}],"title":"5. Alignment and Spacing"}],"url":"#masonry-items"},
 "masonry-placement-algorithm": {"dfnID":"masonry-placement-algorithm","dfnText":"masonry placement algorithm","external":false,"refSections":[],"url":"#masonry-placement-algorithm"},
 "masonry-template-areas-named-cell-token": {"dfnID":"masonry-template-areas-named-cell-token","dfnText":"named cell token","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-template-areas-named-cell-token"},{"id":"ref-for-masonry-template-areas-named-cell-token\u2460"}],"title":"3.2. Named Areas: the masonry-template-areas property"}],"url":"#masonry-template-areas-named-cell-token"},
 "masonry-template-areas-null-cell-token": {"dfnID":"masonry-template-areas-null-cell-token","dfnText":"null cell token","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-template-areas-null-cell-token"}],"title":"3.2. Named Areas: the masonry-template-areas property"}],"url":"#masonry-template-areas-null-cell-token"},
@@ -1952,14 +2044,16 @@ let dfnPanelData = {
 "masonry-template-tracks-max-content": {"dfnID":"masonry-template-tracks-max-content","dfnText":"max-content","external":false,"refSections":[],"url":"#masonry-template-tracks-max-content"},
 "masonry-template-tracks-min-content": {"dfnID":"masonry-template-tracks-min-content","dfnText":"min-content","external":false,"refSections":[],"url":"#masonry-template-tracks-min-content"},
 "masonry-tie-threshold": {"dfnID":"masonry-tie-threshold","dfnText":"tie threshold","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-tie-threshold"},{"id":"ref-for-masonry-tie-threshold\u2460"},{"id":"ref-for-masonry-tie-threshold\u2461"}],"title":"4.2. Masonry Placement Algorithm"}],"url":"#masonry-tie-threshold"},
-"masonry-tracks": {"dfnID":"masonry-tracks","dfnText":"masonry tracks","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-tracks"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-masonry-tracks\u2460"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-masonry-tracks\u2461"},{"id":"ref-for-masonry-tracks\u2462"}],"title":"3.2. Named Areas: the masonry-template-areas property"},{"refs":[{"id":"ref-for-masonry-tracks\u2463"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"},{"refs":[{"id":"ref-for-masonry-tracks\u2464"},{"id":"ref-for-masonry-tracks\u2465"},{"id":"ref-for-masonry-tracks\u2466"},{"id":"ref-for-masonry-tracks\u2467"}],"title":"4.2. Masonry Placement Algorithm"},{"refs":[{"id":"ref-for-masonry-tracks\u2468"}],"title":"5. Alignment and Spacing"}],"url":"#masonry-tracks"},
+"masonry-tracks": {"dfnID":"masonry-tracks","dfnText":"masonry tracks","external":false,"refSections":[{"refs":[{"id":"ref-for-masonry-tracks"}],"title":"3. Defining the Masonry"},{"refs":[{"id":"ref-for-masonry-tracks\u2460"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-masonry-tracks\u2461"},{"id":"ref-for-masonry-tracks\u2462"}],"title":"3.2. Named Areas: the masonry-template-areas property"},{"refs":[{"id":"ref-for-masonry-tracks\u2463"}],"title":"4.1. Precision During Filling: the masonry-slack property"},{"refs":[{"id":"ref-for-masonry-tracks\u2464"},{"id":"ref-for-masonry-tracks\u2465"},{"id":"ref-for-masonry-tracks\u2466"},{"id":"ref-for-masonry-tracks\u2467"}],"title":"4.2. Masonry Placement Algorithm"},{"refs":[{"id":"ref-for-masonry-tracks\u2468"}],"title":"5. Alignment and Spacing"}],"url":"#masonry-tracks"},
 "named-masonry-areas": {"dfnID":"named-masonry-areas","dfnText":"named masonry areas","external":false,"refSections":[{"refs":[{"id":"ref-for-named-masonry-areas"},{"id":"ref-for-named-masonry-areas\u2460"},{"id":"ref-for-named-masonry-areas\u2461"}],"title":"3.2. Named Areas: the masonry-template-areas property"}],"url":"#named-masonry-areas"},
 "propdef-masonry-area": {"dfnID":"propdef-masonry-area","dfnText":"masonry-area","external":false,"refSections":[],"url":"#propdef-masonry-area"},
-"propdef-masonry-direction": {"dfnID":"propdef-masonry-direction","dfnText":"masonry-direction","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-direction"},{"id":"ref-for-propdef-masonry-direction\u2460"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-propdef-masonry-direction\u2461"},{"id":"ref-for-propdef-masonry-direction\u2462"}],"title":"3.4. Masonry Definition Shorthand: the masonry property"}],"url":"#propdef-masonry-direction"},
-"propdef-masonry-fill": {"dfnID":"propdef-masonry-fill","dfnText":"masonry-fill","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-fill"}],"title":"3.3. Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-propdef-masonry-fill\u2460"},{"id":"ref-for-propdef-masonry-fill\u2461"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"},{"refs":[{"id":"ref-for-propdef-masonry-fill\u2462"}],"title":"4.2. Masonry Placement Algorithm"}],"url":"#propdef-masonry-fill"},
-"propdef-masonry-template": {"dfnID":"propdef-masonry-template","dfnText":"masonry-template","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-template"}],"title":"3.4. Masonry Definition Shorthand: the masonry property"}],"url":"#propdef-masonry-template"},
-"propdef-masonry-template-areas": {"dfnID":"propdef-masonry-template-areas","dfnText":"masonry-template-areas","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-template-areas"},{"id":"ref-for-propdef-masonry-template-areas\u2460"},{"id":"ref-for-propdef-masonry-template-areas\u2461"},{"id":"ref-for-propdef-masonry-template-areas\u2462"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"},{"refs":[{"id":"ref-for-propdef-masonry-template-areas\u2463"}],"title":"3.2. Named Areas: the masonry-template-areas property"},{"refs":[{"id":"ref-for-propdef-masonry-template-areas\u2464"},{"id":"ref-for-propdef-masonry-template-areas\u2465"}],"title":"3.4. Masonry Definition Shorthand: the masonry property"}],"url":"#propdef-masonry-template-areas"},
-"propdef-masonry-template-tracks": {"dfnID":"propdef-masonry-template-tracks","dfnText":"masonry-template-tracks","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-template-tracks"},{"id":"ref-for-propdef-masonry-template-tracks\u2460"},{"id":"ref-for-propdef-masonry-template-tracks\u2461"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-propdef-masonry-template-tracks\u2462"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-propdef-masonry-template-tracks\u2463"},{"id":"ref-for-propdef-masonry-template-tracks\u2464"}],"title":"3.4. Masonry Definition Shorthand: the masonry property"}],"url":"#propdef-masonry-template-tracks"},
+"propdef-masonry-direction": {"dfnID":"propdef-masonry-direction","dfnText":"masonry-direction","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-direction"},{"id":"ref-for-propdef-masonry-direction\u2460"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-propdef-masonry-direction\u2461"},{"id":"ref-for-propdef-masonry-direction\u2462"}],"title":"3.5. Masonry Flow Directions: the masonry-flow property"},{"refs":[{"id":"ref-for-propdef-masonry-direction\u2463"},{"id":"ref-for-propdef-masonry-direction\u2464"}],"title":"3.6. Masonry Definition Shorthand: the masonry property"}],"url":"#propdef-masonry-direction"},
+"propdef-masonry-fill": {"dfnID":"propdef-masonry-fill","dfnText":"masonry-fill","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-fill"}],"title":"3.3. Masonry Track Direction: the masonry-direction property"},{"refs":[{"id":"ref-for-propdef-masonry-fill\u2460"},{"id":"ref-for-propdef-masonry-fill\u2461"}],"title":"3.4. Masonry Cross Direction: the masonry-fill property"},{"refs":[{"id":"ref-for-propdef-masonry-fill\u2462"},{"id":"ref-for-propdef-masonry-fill\u2463"}],"title":"3.5. Masonry Flow Directions: the masonry-flow property"},{"refs":[{"id":"ref-for-propdef-masonry-fill\u2464"}],"title":"3.6. Masonry Definition Shorthand: the masonry property"},{"refs":[{"id":"ref-for-propdef-masonry-fill\u2465"}],"title":"4.2. Masonry Placement Algorithm"}],"url":"#propdef-masonry-fill"},
+"propdef-masonry-flow": {"dfnID":"propdef-masonry-flow","dfnText":"masonry-flow","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-flow"},{"id":"ref-for-propdef-masonry-flow\u2460"}],"title":"3.5. Masonry Flow Directions: the masonry-flow property"}],"url":"#propdef-masonry-flow"},
+"propdef-masonry-slack": {"dfnID":"propdef-masonry-slack","dfnText":"masonry-slack","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-slack"},{"id":"ref-for-propdef-masonry-slack\u2460"}],"title":"4.1. Precision During Filling: the masonry-slack property"}],"url":"#propdef-masonry-slack"},
+"propdef-masonry-template": {"dfnID":"propdef-masonry-template","dfnText":"masonry-template","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-template"}],"title":"3.6. Masonry Definition Shorthand: the masonry property"}],"url":"#propdef-masonry-template"},
+"propdef-masonry-template-areas": {"dfnID":"propdef-masonry-template-areas","dfnText":"masonry-template-areas","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-template-areas"},{"id":"ref-for-propdef-masonry-template-areas\u2460"},{"id":"ref-for-propdef-masonry-template-areas\u2461"},{"id":"ref-for-propdef-masonry-template-areas\u2462"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"},{"refs":[{"id":"ref-for-propdef-masonry-template-areas\u2463"}],"title":"3.2. Named Areas: the masonry-template-areas property"},{"refs":[{"id":"ref-for-propdef-masonry-template-areas\u2464"},{"id":"ref-for-propdef-masonry-template-areas\u2465"}],"title":"3.6. Masonry Definition Shorthand: the masonry property"}],"url":"#propdef-masonry-template-areas"},
+"propdef-masonry-template-tracks": {"dfnID":"propdef-masonry-template-tracks","dfnText":"masonry-template-tracks","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-masonry-template-tracks"},{"id":"ref-for-propdef-masonry-template-tracks\u2460"},{"id":"ref-for-propdef-masonry-template-tracks\u2461"}],"title":"3.1. Defining Tracks: the masonry-template-tracks property"},{"refs":[{"id":"ref-for-propdef-masonry-template-tracks\u2462"}],"title":"3.1.1. Track Sizes"},{"refs":[{"id":"ref-for-propdef-masonry-template-tracks\u2463"},{"id":"ref-for-propdef-masonry-template-tracks\u2464"}],"title":"3.6. Masonry Definition Shorthand: the masonry property"}],"url":"#propdef-masonry-template-tracks"},
 "propdef-masonry-track": {"dfnID":"propdef-masonry-track","dfnText":"masonry-track","external":false,"refSections":[],"url":"#propdef-masonry-track"},
 "propdef-masonry-track-end": {"dfnID":"propdef-masonry-track-end","dfnText":"masonry-track-end","external":false,"refSections":[],"url":"#propdef-masonry-track-end"},
 "propdef-masonry-track-start": {"dfnID":"propdef-masonry-track-start","dfnText":"masonry-track-start","external":false,"refSections":[],"url":"#propdef-masonry-track-start"},
@@ -1981,8 +2075,9 @@ let dfnPanelData = {
 "valdef-masonry-direction-column-reverse": {"dfnID":"valdef-masonry-direction-column-reverse","dfnText":"column-reverse","external":false,"refSections":[],"url":"#valdef-masonry-direction-column-reverse"},
 "valdef-masonry-direction-row": {"dfnID":"valdef-masonry-direction-row","dfnText":"row","external":false,"refSections":[],"url":"#valdef-masonry-direction-row"},
 "valdef-masonry-direction-row-reverse": {"dfnID":"valdef-masonry-direction-row-reverse","dfnText":"row-reverse","external":false,"refSections":[],"url":"#valdef-masonry-direction-row-reverse"},
-"valdef-masonry-fill-length": {"dfnID":"valdef-masonry-fill-length","dfnText":"<length>","external":false,"refSections":[],"url":"#valdef-masonry-fill-length"},
-"valdef-masonry-fill-reverse": {"dfnID":"valdef-masonry-fill-reverse","dfnText":"reverse","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-masonry-fill-reverse"},{"id":"ref-for-valdef-masonry-fill-reverse\u2460"},{"id":"ref-for-valdef-masonry-fill-reverse\u2461"}],"title":"4.1. Handling Ties During Filling: the masonry-fill property"}],"url":"#valdef-masonry-fill-reverse"},
+"valdef-masonry-fill-normal": {"dfnID":"valdef-masonry-fill-normal","dfnText":"normal","external":false,"refSections":[],"url":"#valdef-masonry-fill-normal"},
+"valdef-masonry-fill-reverse": {"dfnID":"valdef-masonry-fill-reverse","dfnText":"reverse","external":false,"refSections":[],"url":"#valdef-masonry-fill-reverse"},
+"valdef-masonry-slack-length": {"dfnID":"valdef-masonry-slack-length","dfnText":"<length>","external":false,"refSections":[],"url":"#valdef-masonry-slack-length"},
 "valdef-masonry-template-areas-none": {"dfnID":"valdef-masonry-template-areas-none","dfnText":"none","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-masonry-template-areas-none"}],"title":"3.1.2. Repeating Tracks: the repeat() notation"}],"url":"#valdef-masonry-template-areas-none"},
 "valdef-masonry-template-areas-string": {"dfnID":"valdef-masonry-template-areas-string","dfnText":"<string>","external":false,"refSections":[],"url":"#valdef-masonry-template-areas-string"},
 "valdef-masonry-template-tracks-flex-0": {"dfnID":"valdef-masonry-template-tracks-flex-0","dfnText":"<flex [0,\u221e]>","external":false,"refSections":[],"url":"#valdef-masonry-template-tracks-flex-0"},
@@ -2411,6 +2506,8 @@ let refsData = {
 "#named-masonry-areas": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"named masonry areas","type":"dfn","url":"#named-masonry-areas"},
 "#propdef-masonry-direction": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"masonry-direction","type":"property","url":"#propdef-masonry-direction"},
 "#propdef-masonry-fill": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"masonry-fill","type":"property","url":"#propdef-masonry-fill"},
+"#propdef-masonry-flow": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"masonry-flow","type":"property","url":"#propdef-masonry-flow"},
+"#propdef-masonry-slack": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"masonry-slack","type":"property","url":"#propdef-masonry-slack"},
 "#propdef-masonry-template": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"masonry-template","type":"property","url":"#propdef-masonry-template"},
 "#propdef-masonry-template-areas": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"masonry-template-areas","type":"property","url":"#propdef-masonry-template-areas"},
 "#propdef-masonry-template-tracks": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"masonry-template-tracks","type":"property","url":"#propdef-masonry-template-tracks"},
@@ -2428,7 +2525,6 @@ let refsData = {
 "#typedef-masonry-track-list": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"<masonry-track-list>","type":"type","url":"#typedef-masonry-track-list"},
 "#valdef-display-inline-masonry": {"export":true,"for_":["display"],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"inline-masonry","type":"value","url":"#valdef-display-inline-masonry"},
 "#valdef-display-masonry": {"export":true,"for_":["display"],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"masonry","type":"value","url":"#valdef-display-masonry"},
-"#valdef-masonry-fill-reverse": {"export":true,"for_":["masonry-fill"],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"reverse","type":"value","url":"#valdef-masonry-fill-reverse"},
 "#valdef-masonry-template-areas-none": {"export":true,"for_":["masonry-template-areas"],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"none","type":"value","url":"#valdef-masonry-template-areas-none"},
 "#valdef-masonry-template-tracks-subgrid": {"export":true,"for_":["masonry-template-tracks"],"level":"1","normative":true,"shortname":"css-masonry","spec":"css-masonry-1","status":"local","text":"subgrid","type":"value","url":"#valdef-masonry-template-tracks-subgrid"},
 "https://drafts.csswg.org/css-align-3/#alignment-container": {"export":true,"for_":[],"level":"3","normative":true,"shortname":"css-align","spec":"css-align-3","status":"current","text":"alignment container","type":"dfn","url":"https://drafts.csswg.org/css-align-3/#alignment-container"},
@@ -2439,6 +2535,7 @@ let refsData = {
 "https://drafts.csswg.org/css-align-3/#propdef-justify-self": {"export":true,"for_":[],"level":"3","normative":true,"shortname":"css-align","spec":"css-align-3","status":"current","text":"justify-self","type":"property","url":"https://drafts.csswg.org/css-align-3/#propdef-justify-self"},
 "https://drafts.csswg.org/css-box-4/#content-box": {"export":true,"for_":[],"level":"4","normative":true,"shortname":"css-box","spec":"css-box-4","status":"current","text":"content box","type":"dfn","url":"https://drafts.csswg.org/css-box-4/#content-box"},
 "https://drafts.csswg.org/css-cascade-5/#computed-value": {"export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"computed value","type":"dfn","url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
+"https://drafts.csswg.org/css-cascade-5/#shorthand-property": {"export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"shorthand","type":"dfn","url":"https://drafts.csswg.org/css-cascade-5/#shorthand-property"},
 "https://drafts.csswg.org/css-display-4/#block-level": {"export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"block-level","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#block-level"},
 "https://drafts.csswg.org/css-display-4/#flow-layout": {"export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"flow layout","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#flow-layout"},
 "https://drafts.csswg.org/css-display-4/#inline-level": {"export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"inline-level","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#inline-level"},
