@@ -254,11 +254,11 @@ Defining Tracks: the 'masonry-template-tracks' property {#template-tracks}
 
 	There are two distinct syntaxes for ''repeat()'' in Masonry:
 
-	* ''repeat( [ <integer> | auto-areas | auto-fill ], <extrinsic-track-size>+ )'',
+	* ''repeat( [ <<integer>> | auto-areas | auto-fill ], <extrinsic-track-size>+ )'',
 		which allows you to specify one or more tracks to repeat,
 		using <<length-percentage>>, <<flex>>, or ''minmax()'' of those.
 
-	* ''repeat( [ <integer> | auto-areas | auto-fill ], <intrinsic-track-size> )'',
+	* ''repeat( [ <<integer>> | auto-areas | auto-fill ], <intrinsic-track-size> )'',
 		which allows you to specify a *single* track to repeat,
 		using the intrinsic sizes (''masonry-template-track/auto'', ''masonry-template-track/min-content'', ''masonry-template-track/max-content'', or ''masonry-template-track/minmax()'' of them).
 
