@@ -1,5 +1,5 @@
 <pre class='metadata'>
-Title: The `image/qrcode` MIME Type
+Title: The QRCODE Image Format
 Shortname: qrcode
 Level: 1
 Status: DREAM
@@ -8,7 +8,7 @@ URL: https://tabatkins.github.io/specs/qrcode/
 Editor: Tab Atkins-Bittner, https://xanthir.com
 Abstract: The "QR Code", invented in the 1990s, has emerged in recent years as the clear winner of the "encode small but complex data, especially URLs, for phones to read" format wars. All phone OSes have built-in ways to read them, and to generate them, but that generation capability isn't exposed to websites.
 Abstract:
-Abstract: This specification defines a new MIME type, `image/qrcode`, which represents the data in a QR code in a compact manner which is easily readable and hand-writable. Browser and other rendering agents that understand this format are expected to automatically generate a QR code image representing the data in the resource.
+Abstract: This specification defines a new image type, `image/qrcode`, which represents the data in a QR code in a declarative, compact manner which is easily readable and hand-writable. Browser and other rendering agents that understand this format are expected to automatically generate a QR code image representing the data in the resource.
 Complain About: accidental-2119 yes, missing-example-ids yes
 Markup Shorthands: markdown yes, css no
 </pre>
@@ -16,7 +16,39 @@ Markup Shorthands: markdown yes, css no
 Introduction {#intro}
 =====================
 
-Introduction here.
+Representing relatively small amounts of data in a machine-readable format
+has been important for decades.
+The humble UPC barcode format,
+for instance,
+allows storing numeric values
+up to ten decimal digits.
+
+As time has passed, tho, we've required larger amounts of data to be represented
+(even if the amounts are still modest; a few kilobytes at most),
+and better error correction
+(UPC barcodes can correct for *one* wrong digit, but no more).
+Many approaches have been proposed and even adopted in various industries,
+but the QR Code,
+first invented in Japan in the 90s for labeling parts in semi-automated factories,
+has emerged as the clear leader in overall usage across the world in recent years.
+
+While QR Code images are very usable in practice,
+they're difficult to *create*;
+beyond the ordinary difficulties of creating any image file programmatically,
+the QR format is non-trivial to follow,
+and the error-correction parts of the format are complex.
+However, all the devices a user can expect to *see* a QR Code
+have access to libraries for creating them.
+
+This specification defines a new QRCODE image format,
+and its associated MIME type `image/qrcode`,
+which represents the content of a QR code
+in a simple, human-readable, hand-authorable format.
+User agents, such as browsers, that recieve QRCODE images
+are expected to render them as QR codes.
+
+Notes {#notes}
+===============
 
 Parameters of a QR code:
 * "version": a number between 1 and 40, dictating the overall size in pixels/"modules". The eventual size of the QR code is <code>version * 4 + 17</code> modules, plus additional margin space around the code (typically, at least one module in width).
@@ -33,3 +65,64 @@ Additional params I need to introduce:
 * image size: a number of CSS pixels dictating the overall image size (which dictates the module size).
 	* using both module and image size would just ignore one of them, I guess. Maybe use the larger one.
 * margin?: a CSS pixel size for the safe area around the code
+
+Image Format {#format}
+============
+
+Every QRCODE image must begin with the bytes
+`51 52 43 4f 44 45 7b`
+(spelling "`QRCODE{`" in ASCII).
+Following that are zero or more non-`7d` bytes
+(the <dfn>parameter bytes</dfn>),
+followed by a `7d` byte ("}" in ASCII),
+optionally followed by `0d 0a` bytes (CR and NL in ASCII),
+followed by zero or more bytes with any value
+(the <dfn>payload bytes</dfn>).
+
+A QRCODE image that does not follow this byte format is [=invalid=].
+
+<div class=example id=example-bytes>
+	Thus, a valid QRCODE file might be
+	<code>QRCODE{}https://example.com</code>,
+	which will be rendered as QR Code image
+	containing a link to <code>example.com</code>.
+
+	Alternately, the link could be rendered on a separate line for readability,
+	like:
+
+	<pre>
+		QRCODE{}
+		https://example.com
+	</pre>
+
+	This is particular useful if several parameters are provided,
+	like:
+
+	<pre>
+		QRCODE{version=5;error=low;mask=3;modulesize=5;margin=2}
+		https://example.com
+	</pre>
+</div>
+
+Parameters {#parameters}
+----------
+
+The [=parameter bytes=] are interpreted into the [=QR code parameters=],
+which affect how the QR code image is generated.
+The format is intentionally identical to how MIME-type parameters are interpreted.
+
+<div algorithm>
+	To <dfn>parse parameter bytes</dfn> |bytes|
+	execute the following steps.
+	It returns either [=QR code parameters=],
+	or failure.
+
+	1. Let |str| be the result of [=isomorphic decoding=] |bytes|.
+		Let |parameters| be an empty [=QR code parameters=].
+
+	2. [=string/Strictly split=] |str| on the delimiter U+003B SEMICOLON (;),
+		and let |param strings| be the result.
+
+	3. [=list/For each=] |param string| of |param strings|:
+		1.
+</div>
