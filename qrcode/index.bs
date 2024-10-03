@@ -1,0 +1,35 @@
+<pre class='metadata'>
+Title: The `image/qrcode` MIME Type
+Shortname: qrcode
+Level: 1
+Status: DREAM
+Repository: tabatkins/specs
+URL: https://tabatkins.github.io/specs/qrcode/
+Editor: Tab Atkins-Bittner, https://xanthir.com
+Abstract: The "QR Code", invented in the 1990s, has emerged in recent years as the clear winner of the "encode small but complex data, especially URLs, for phones to read" format wars. All phone OSes have built-in ways to read them, and to generate them, but that generation capability isn't exposed to websites.
+Abstract:
+Abstract: This specification defines a new MIME type, `image/qrcode`, which represents the data in a QR code in a compact manner which is easily readable and hand-writable. Browser and other rendering agents that understand this format are expected to automatically generate a QR code image representing the data in the resource.
+Complain About: accidental-2119 yes, missing-example-ids yes
+Markup Shorthands: markdown yes, css no
+</pre>
+
+Introduction {#intro}
+=====================
+
+Introduction here.
+
+Parameters of a QR code:
+* "version": a number between 1 and 40, dictating the overall size in pixels/"modules". The eventual size of the QR code is <code>version * 4 + 17</code> modules, plus additional margin space around the code (typically, at least one module in width).
+* error-correction level: what level of error correction is applied to the payload, dictating how much of the code can be lost/obscured/misread without corrupting the code itself. Four values, corresponding to "low" (7% recoverable loss), "medium" (14%), "quartile" (25%), or "high" (30%).
+* mask type: to help avoid large black or white "fields" in the code that make it harder to read or recognize, some of the data pixels can be inverted. There are 8 mask types, dictating which pixels are inverted and should be read as their opposite value.
+* encoding type: how to interpret the bits in the payload. Three commonly-used value: "numeric", "alphanumeric", and "bytes".
+	* Numeric is the digits 0-9.
+	* Alphanumeric is 0-9, A-Z (uppercase only), and some punctuation. Aka a subset of ASCII.
+	* Bytes has been defined by specs as two different byte-based character encodings. In practice, treating it as UTF-8 seems to be modern practice and is widely recognized by scanners (possibly heuristically).
+
+Additional params I need to introduce:
+
+* module size: a number of CSS pixels dictating the side length of a module.
+* image size: a number of CSS pixels dictating the overall image size (which dictates the module size).
+	* using both module and image size would just ignore one of them, I guess. Maybe use the larger one.
+* margin?: a CSS pixel size for the safe area around the code
